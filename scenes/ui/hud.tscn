@@ -1,0 +1,265 @@
+[gd_scene load_steps=4 format=3 uid="uid://bwt7dtbn7pn3c"]
+
+[ext_resource type="Script" uid="uid://bmle6k05e5fff" path="res://scripts/hud.gd" id="1_moku2"]
+[ext_resource type="Script" uid="uid://bwvqb33hu6cxk" path="res://scripts/navbar.gd" id="1_r4m0t"]
+[ext_resource type="PackedScene" uid="uid://blm04kepg8q0g" path="res://scenes/ui/SliderWithLineEdit.tscn" id="3_f5f8u"]
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_moku2")
+
+[node name="Navbar" type="CanvasLayer" parent="."]
+script = ExtResource("1_r4m0t")
+
+[node name="TabButtons" type="Control" parent="Navbar"]
+layout_mode = 3
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 46.0
+grow_horizontal = 2
+mouse_filter = 2
+
+[node name="CometBtn" type="Button" parent="Navbar/TabButtons"]
+layout_mode = 0
+offset_left = 13.0
+offset_top = 11.0
+offset_right = 72.0
+offset_bottom = 42.0
+focus_mode = 0
+text = "Comet"
+
+[node name="JetsBtn" type="Button" parent="Navbar/TabButtons"]
+layout_mode = 0
+offset_left = 103.0
+offset_top = 11.0
+offset_right = 149.0
+offset_bottom = 42.0
+focus_mode = 0
+text = "Jets"
+
+[node name="GraphicsBtn" type="Button" parent="Navbar/TabButtons"]
+layout_mode = 0
+offset_left = 184.0
+offset_top = 11.0
+offset_right = 248.0
+offset_bottom = 42.0
+focus_mode = 0
+text = "Graphics"
+
+[node name="TriggerRotBtn" type="Button" parent="Navbar/TabButtons"]
+layout_mode = 0
+offset_left = 296.0
+offset_top = 11.0
+offset_right = 376.0
+offset_bottom = 42.0
+focus_mode = 0
+text = "Trigger Rotation"
+
+[node name="ResetRotnBtn" type="Button" parent="Navbar/TabButtons"]
+layout_mode = 0
+offset_left = 456.0
+offset_top = 11.0
+offset_right = 578.0
+offset_bottom = 43.0
+focus_mode = 0
+text = "Reset Rotation"
+
+[node name="HelpBtn" type="Button" parent="Navbar/TabButtons"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -55.0
+offset_top = 11.0
+offset_right = -11.0
+offset_bottom = 42.0
+grow_horizontal = 0
+focus_mode = 0
+text = "Help"
+
+[node name="ToggleAxesBtn" type="Button" parent="Navbar/TabButtons"]
+layout_mode = 0
+offset_left = 608.0
+offset_top = 11.0
+offset_right = 707.0
+offset_bottom = 42.0
+text = "Toggle Axes"
+
+[node name="CometTab" type="CanvasLayer" parent="Navbar"]
+visible = false
+
+[node name="Control" type="Control" parent="Navbar/CometTab"]
+layout_mode = 3
+anchor_top = 0.148
+anchor_bottom = 0.148
+offset_left = 1.0
+offset_top = -4.904
+offset_right = 195.0
+offset_bottom = 259.096
+size_flags_horizontal = 0
+metadata/_edit_use_anchors_ = true
+metadata/_edit_group_ = true
+
+[node name="EditRadius" parent="Navbar/CometTab/Control" instance=ExtResource("3_f5f8u")]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -0.974
+anchor_right = 0.0
+anchor_bottom = -0.974
+offset_left = 16.0
+offset_top = 262.136
+offset_right = 202.0
+offset_bottom = 317.258
+label = &"Radius"
+resize_type = &"radius"
+maximum_value = 5.0
+starting_value = 0.5
+
+[node name="EditHeight" parent="Navbar/CometTab/Control" instance=ExtResource("3_f5f8u")]
+visible = false
+layout_mode = 1
+offset_right = -39.0
+offset_bottom = -39.0
+label = &"Height"
+resize_type = &"height_"
+maximum_value = 1000.0
+starting_value = 1.0
+
+[node name="EditInclinationAxis" parent="Navbar/CometTab/Control" groups=["reset_rotation"] instance=ExtResource("3_f5f8u")]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.279
+anchor_right = 0.0
+anchor_bottom = 0.279
+offset_left = 16.0
+offset_top = 0.343987
+offset_right = 192.0
+offset_bottom = 59.344
+grow_horizontal = 1
+grow_vertical = 1
+label = &"Inclin. Rot."
+resize_type = &"inclination_rotation"
+maximum_value = 180.0
+starting_value = 90.0
+valid_zero = true
+
+[node name="EditDirectionRadius" parent="Navbar/CometTab/Control" groups=["reset_rotation"] instance=ExtResource("3_f5f8u")]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.513
+anchor_right = 0.0
+anchor_bottom = 0.513
+offset_left = 16.0
+offset_top = -2.43201
+offset_right = 192.0
+offset_bottom = 48.568
+grow_horizontal = 1
+grow_vertical = 0
+label = &"Dir. Rot."
+resize_type = &"direction_rotation"
+maximum_value = 360.0
+starting_value = 0.0
+valid_zero = true
+
+[node name="EditSunDir" parent="Navbar/CometTab/Control" instance=ExtResource("3_f5f8u")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.005
+anchor_top = 0.758
+anchor_right = 0.005
+anchor_bottom = 0.758
+offset_left = 15.03
+offset_top = 15.888
+offset_right = 191.03
+offset_bottom = 63.888
+label = &"Sun Inc. Rot."
+resize_type = &"sun_inc_rotation"
+maximum_value = 180.0
+starting_value = 90.0
+valid_zero = true
+
+[node name="EditSunIncl" parent="Navbar/CometTab/Control" instance=ExtResource("3_f5f8u")]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.03
+anchor_right = 0.005
+anchor_bottom = 1.03
+offset_left = 13.0
+offset_top = 0.0799866
+offset_right = 188.03
+offset_bottom = 48.08
+label = &"Sun Dir. Rot."
+resize_type = &"sun_dir_rotation"
+maximum_value = 360.0
+starting_value = 0.0
+valid_zero = true
+
+[node name="JetsTab" type="CanvasLayer" parent="Navbar"]
+visible = false
+
+[node name="Control" type="Control" parent="Navbar/JetsTab"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 13.0
+offset_bottom = 11.0
+mouse_filter = 2
+
+[node name="Button" type="Button" parent="Navbar/JetsTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 8.0
+anchor_bottom = 8.0
+offset_left = 1.0
+offset_top = 3.0
+offset_right = 346.0
+offset_bottom = 34.0
+text = "TODO Jets"
+
+[node name="GraphicTab" type="CanvasLayer" parent="Navbar"]
+visible = false
+
+[node name="Control" type="Control" parent="Navbar/GraphicTab"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 13.0
+offset_bottom = 11.0
+mouse_filter = 2
+
+[node name="Button" type="Button" parent="Navbar/GraphicTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 7.273
+anchor_bottom = 7.273
+offset_left = 13.0
+offset_top = -0.00300598
+offset_right = 132.0
+offset_bottom = 30.997
+text = "TODO Graphic"
+
+[node name="HelpPanel" type="CanvasLayer" parent="Navbar"]
+visible = false
+
+[node name="BoxContainer" type="BoxContainer" parent="Navbar/HelpPanel"]
+offset_left = 13.0
+offset_top = 79.0
+offset_right = 261.0
+offset_bottom = 220.0
+
+[node name="Label" type="Label" parent="Navbar/HelpPanel/BoxContainer"]
+layout_mode = 2
+text = "Right Click to rotate the view
+W/A/S/D to move around
+Q/E to go up/down
+R to reset position 
+Ctrl+Wheel Up to increase movement speed
+Ctrl+Weel Down to decrease movement speed
+Shift while moving to move faster
+Alt while moving to move slower
+"
+
+[connection signal="pressed" from="Navbar/TabButtons/CometBtn" to="Navbar" method="_on_cometbtn_pressed"]
+[connection signal="pressed" from="Navbar/TabButtons/JetsBtn" to="Navbar" method="_on_jetsbtn_pressed"]
+[connection signal="pressed" from="Navbar/TabButtons/GraphicsBtn" to="Navbar" method="_on_graphicsbtn_pressed"]
+[connection signal="pressed" from="Navbar/TabButtons/TriggerRotBtn" to="Navbar" method="_on_trigger_rot_btn_pressed"]
+[connection signal="pressed" from="Navbar/TabButtons/ResetRotnBtn" to="Navbar" method="_on_reset_rotn_btn_pressed"]
+[connection signal="pressed" from="Navbar/TabButtons/HelpBtn" to="Navbar" method="_on_help_btn_pressed"]
+[connection signal="pressed" from="Navbar/TabButtons/ToggleAxesBtn" to="Navbar" method="_on_toggle_axes_btn_pressed"]

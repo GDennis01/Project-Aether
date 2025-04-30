@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=3 uid="uid://bama27jprmert"]
+
+[ext_resource type="Script" uid="uid://cnxswiuhhy2xh" path="res://scripts/axis_arrow.gd" id="1_lx2ld"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_8wq6m"]
+top_radius = 0.03
+bottom_radius = 0.03
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qg3mf"]
+resource_local_to_scene = true
+transparency = 1
+albedo_color = Color(0.360784, 1, 0.227451, 0.607843)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_8kwkv"]
+resource_local_to_scene = true
+top_radius = 0.0
+bottom_radius = 0.07
+height = 0.1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v8ovc"]
+resource_local_to_scene = true
+transparency = 1
+albedo_color = Color(0.360784, 1, 0.227451, 0.607843)
+
+[node name="AxisArrow" type="Node3D" node_paths=PackedStringArray("arrow_arm", "arrow_head")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("1_lx2ld")
+arrow_arm = NodePath("ArrowArm")
+arrow_head = NodePath("ArrowHead")
+
+[node name="ArrowArm" type="MeshInstance3D" parent="."]
+mesh = SubResource("CylinderMesh_8wq6m")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_qg3mf")
+
+[node name="ArrowHead" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05116, 0)
+mesh = SubResource("CylinderMesh_8kwkv")
+surface_material_override/0 = SubResource("StandardMaterial3D_v8ovc")

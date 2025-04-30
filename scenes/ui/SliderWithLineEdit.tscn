@@ -1,0 +1,46 @@
+[gd_scene load_steps=2 format=3 uid="uid://blm04kepg8q0g"]
+
+[ext_resource type="Script" uid="uid://cenvj7oosq5qk" path="res://scripts/slider_with_line_edit.gd" id="1_nm6q3"]
+
+[node name="SliderWithLineEdit" type="Control" node_paths=PackedStringArray("slider", "line_edit")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1152.0
+offset_bottom = -648.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_nm6q3")
+slider = NodePath("Slider")
+line_edit = NodePath("LineEdit")
+label = &"Ciao"
+starting_value = 2.0
+
+[node name="Slider" type="HSlider" parent="."]
+layout_mode = 1
+anchors_preset = -1
+offset_top = 31.0
+offset_right = 176.0
+offset_bottom = 54.0
+focus_mode = 0
+max_value = 0.0
+step = 0.1
+
+[node name="LineEdit" type="LineEdit" parent="."]
+layout_mode = 0
+offset_left = 106.0
+offset_right = 173.063
+offset_bottom = 31.0
+focus_mode = 1
+text = "2.0"
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_right = 54.0
+offset_bottom = 31.0
+text = "Ciao"
+
+[connection signal="value_changed" from="Slider" to="." method="_on_slider_value_changed"]
+[connection signal="editing_toggled" from="LineEdit" to="." method="_on_line_edit_editing_toggled"]
+[connection signal="text_changed" from="LineEdit" to="." method="_on_line_edit_text_changed"]

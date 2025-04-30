@@ -1,0 +1,102 @@
+[gd_scene load_steps=20 format=3 uid="uid://bqxoxn8bpfcfa"]
+
+[ext_resource type="Texture2D" uid="uid://ci05lu7s7pmon" path="res://textures/rock_wall_13_diff_4k.png" id="1_gtgs4"]
+[ext_resource type="Script" uid="uid://dsimhylkxu4no" path="res://scripts/world_manager.gd" id="1_wu602"]
+[ext_resource type="Script" uid="uid://d1gcq008ypdlq" path="res://scenes/sun.gd" id="2_i7141"]
+[ext_resource type="Texture2D" uid="uid://buvd5p6wefg1o" path="res://textures/rock_wall_13_nor_gl_4k.png" id="2_m7tiq"]
+[ext_resource type="Texture2D" uid="uid://cen3wnntogdjt" path="res://textures/rock_wall_13_rough_4k.png" id="3_kdodi"]
+[ext_resource type="Script" uid="uid://cdbhqjf33rsg1" path="res://scripts/comet_mesh.gd" id="4_yu4gv"]
+[ext_resource type="Shader" uid="uid://ccpharluyb1qa" path="res://shaders/sphere.gdshader" id="6_4mrxx"]
+[ext_resource type="Script" uid="uid://dnlpubfbrpo7x" path="res://scripts/emitter.gd" id="8_7r4gi"]
+
+[sub_resource type="Environment" id="Environment_7r4gi"]
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_t5g0g"]
+
+[sub_resource type="Compositor" id="Compositor_5tdcg"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w7kh3"]
+shading_mode = 0
+
+[sub_resource type="SphereMesh" id="SphereMesh_i7141"]
+material = SubResource("StandardMaterial3D_w7kh3")
+radius = 0.1
+height = 0.2
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_hg46x"]
+size = Vector2(60, 60)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bjs0p"]
+albedo_texture = ExtResource("1_gtgs4")
+roughness_texture = ExtResource("3_kdodi")
+normal_enabled = true
+normal_scale = 3.87
+normal_texture = ExtResource("2_m7tiq")
+uv1_scale = Vector3(60, 60, 60)
+
+[sub_resource type="SphereMesh" id="SphereMesh_f4gce"]
+radius = 5.0
+height = 10.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7r4gi"]
+render_priority = 0
+shader = ExtResource("6_4mrxx")
+shader_parameter/base_color = Color(0.23831, 0.819307, 0.837305, 1)
+shader_parameter/line_color = Color(0.1, 0.1, 0.1, 1)
+shader_parameter/latitude_lines = 12.0
+shader_parameter/longitude_lines = 24.0
+shader_parameter/line_thickness = 0.051
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7r4gi"]
+shading_mode = 0
+
+[sub_resource type="SphereMesh" id="SphereMesh_4mrxx"]
+material = SubResource("StandardMaterial3D_7r4gi")
+radius = 0.05
+height = 0.1
+
+[node name="World" type="WorldEnvironment"]
+environment = SubResource("Environment_7r4gi")
+camera_attributes = SubResource("CameraAttributesPractical_t5g0g")
+compositor = SubResource("Compositor_5tdcg")
+script = ExtResource("1_wu602")
+
+[node name="Sun" type="Node3D" parent="." groups=["sun_dir_rotation", "sun_inc_rotation"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.038, 0)
+script = ExtResource("2_i7141")
+
+[node name="DirectionalLight3D" type="SpotLight3D" parent="Sun"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 200, 0)
+light_energy = 2.616
+shadow_enabled = true
+shadow_bias = 10.0
+spot_range = 4096.0
+spot_attenuation = -0.01
+spot_angle = 10.45
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Sun/DirectionalLight3D"]
+mesh = SubResource("SphereMesh_i7141")
+
+[node name="Ground" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -16.47, 0)
+mesh = SubResource("PlaneMesh_hg46x")
+surface_material_override/0 = SubResource("StandardMaterial3D_bjs0p")
+
+[node name="CometMesh" type="MeshInstance3D" parent="." groups=["direction_rotation", "height", "inclination_rotation", "radius", "reset_rotation", "trigger_rotation"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.03817, 0)
+mesh = SubResource("SphereMesh_f4gce")
+surface_material_override/0 = SubResource("ShaderMaterial_7r4gi")
+script = ExtResource("4_yu4gv")
+
+[node name="Emitter" type="Node3D" parent="CometMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0164878, 0.412227)
+visible = false
+script = ExtResource("8_7r4gi")
+max_particles = 300
+particle_per_second = 100
+particle_radius = 0.01
+
+[node name="Particle" type="MeshInstance3D" parent="CometMesh/Emitter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0657618)
+cast_shadow = 0
+mesh = SubResource("SphereMesh_4mrxx")
