@@ -7,4 +7,4 @@ So far, the available features are:
 - Editing rotation/inclination of both the comet and sun
 
 ## How to run
-Install [https://godotengine.org/download/archive/4.4-stable](Godot 4.4) then import the project and run it.
+Install [Godot 4.4](https://godotengine.org/download/archive/4.4-stable) then import the project and run it.
