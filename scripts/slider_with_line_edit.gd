@@ -3,6 +3,7 @@ extends Control
 class_name SliderWithLineEdit
 @export var slider:HSlider
 @export var line_edit:LineEdit
+var prev_value:StringName
 @export var label:StringName
 ## Name of the group on which to call the [code]update_resize_type[/code] function
 @export var resize_type:StringName
@@ -26,6 +27,7 @@ func _ready() -> void:
 	slider.max_value = maximum_value
 	slider.set_value_no_signal(starting_value)
 	line_edit.text = str(starting_value)
+	prev_value = line_edit.text
 	$Label.text = label
 	print_debug("[CALL] update_"+resize_type+"("+str(starting_value)+")")
 	get_tree().call_group(resize_type,"update_"+resize_type,starting_value)
@@ -33,12 +35,14 @@ func _ready() -> void:
 
 	
 func _on_line_edit_text_changed(new_text: String) -> void:
-	print_debug("entered here")
 	if new_text.is_valid_float():
 		var tmp = float(new_text)
 		if tmp > 0 or valid_zero:
 			slider.set_value_no_signal(float(new_text))
 			get_tree().call_group(resize_type,"update_"+resize_type,float(new_text))
+			prev_value =  str(tmp)
+	else:
+		line_edit.text = prev_value
 
 
 func _on_slider_value_changed(value: float) -> void:

@@ -23,7 +23,6 @@ transparency = 1
 albedo_color = Color(0.360784, 1, 0.227451, 0.607843)
 
 [node name="AxisArrow" type="Node3D" node_paths=PackedStringArray("arrow_arm", "arrow_head")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("1_lx2ld")
 arrow_arm = NodePath("ArrowArm")
 arrow_head = NodePath("ArrowHead")
@@ -34,6 +33,5 @@ skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_qg3mf")
 
 [node name="ArrowHead" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05116, 0)
 mesh = SubResource("CylinderMesh_8kwkv")
 surface_material_override/0 = SubResource("StandardMaterial3D_v8ovc")

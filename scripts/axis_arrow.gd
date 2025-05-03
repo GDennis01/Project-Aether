@@ -46,11 +46,14 @@ func set_height(value:float)->void:
 	if is_node_ready():
 		# scaling arrow arm
 		var required_y_scale  =(height/ _original_arm_mesh_height)
-		arrow_arm.scale = Vector3(_original_arm_mesh_scale.x,required_y_scale,_original_arm_mesh_scale.z)
-		#arrow_arm.position = Vector3(arrow_arm.position.x,arrow_arm.position.y+height/2,arrow_arm.position.z)
-		# positioning arrow head
-		var head_y_position = height/2.0
-		arrow_head.position = Vector3(arrow_head.position.x,head_y_position,arrow_head.position.z)
+		arrow_arm.scale = Vector3(required_y_scale,required_y_scale,required_y_scale)
+		# offsetting by the original height(which is 2 so 2/4 = 0.5) so that the arm is centered in the center of the mesh
+		arrow_arm.position.y = height/2 - _original_arm_mesh_height/4
+
+		# positioning arrow heads
+		arrow_head.scale = Vector3(required_y_scale,required_y_scale,required_y_scale)
+		arrow_head.position.y =  height - _original_arm_mesh_height/4 
+		
 		
 func toggle_axis()->void:
 	visible = not visible		

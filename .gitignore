@@ -3,3 +3,5 @@
 /android/
 *.tmp
 comet-models/
+*.exe
+*.cfg

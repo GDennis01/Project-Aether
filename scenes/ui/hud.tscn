@@ -12,77 +12,85 @@ script = ExtResource("1_r4m0t")
 
 [node name="TabButtons" type="Control" parent="Navbar"]
 layout_mode = 3
-anchors_preset = 10
+anchor_left = 0.001
+anchor_top = 0.025
 anchor_right = 1.0
-offset_bottom = 46.0
+anchor_bottom = 0.025
+offset_left = -1.152
+offset_top = -0.200001
+offset_right = -0.00012207
+offset_bottom = 44.8
 grow_horizontal = 2
 mouse_filter = 2
 
-[node name="CometBtn" type="Button" parent="Navbar/TabButtons"]
-layout_mode = 0
-offset_left = 13.0
-offset_top = 11.0
-offset_right = 72.0
-offset_bottom = 42.0
+[node name="ColorRect" type="ColorRect" parent="Navbar/TabButtons"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.001
+anchor_top = -0.111
+anchor_right = 1.001
+anchor_bottom = -0.111
+offset_left = -0.152
+offset_top = -3.005
+offset_right = -0.1521
+offset_bottom = 47.995
+color = Color(0.1476, 0.31044, 0.36, 0.592157)
+metadata/_edit_group_ = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Navbar/TabButtons/ColorRect"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.993
+offset_left = 8.0
+offset_top = 6.0
+offset_right = 0.0639648
+offset_bottom = 46.0
+
+[node name="CometBtn" type="Button" parent="Navbar/TabButtons/ColorRect/HBoxContainer"]
+layout_mode = 2
 focus_mode = 0
 text = "Comet"
 
-[node name="JetsBtn" type="Button" parent="Navbar/TabButtons"]
-layout_mode = 0
-offset_left = 103.0
-offset_top = 11.0
-offset_right = 149.0
-offset_bottom = 42.0
+[node name="JetsBtn" type="Button" parent="Navbar/TabButtons/ColorRect/HBoxContainer"]
+layout_mode = 2
 focus_mode = 0
 text = "Jets"
 
-[node name="GraphicsBtn" type="Button" parent="Navbar/TabButtons"]
-layout_mode = 0
-offset_left = 184.0
-offset_top = 11.0
-offset_right = 248.0
-offset_bottom = 42.0
+[node name="GraphicsBtn" type="Button" parent="Navbar/TabButtons/ColorRect/HBoxContainer"]
+layout_mode = 2
 focus_mode = 0
 text = "Graphics"
 
-[node name="TriggerRotBtn" type="Button" parent="Navbar/TabButtons"]
-layout_mode = 0
-offset_left = 296.0
-offset_top = 11.0
-offset_right = 376.0
-offset_bottom = 42.0
+[node name="Spacer2" type="Control" parent="Navbar/TabButtons/ColorRect/HBoxContainer"]
+layout_direction = 2
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.24
+
+[node name="TriggerRotBtn" type="Button" parent="Navbar/TabButtons/ColorRect/HBoxContainer"]
+layout_mode = 2
 focus_mode = 0
 text = "Trigger Rotation"
 
-[node name="ResetRotnBtn" type="Button" parent="Navbar/TabButtons"]
-layout_mode = 0
-offset_left = 456.0
-offset_top = 11.0
-offset_right = 578.0
-offset_bottom = 43.0
+[node name="ResetRotnBtn" type="Button" parent="Navbar/TabButtons/ColorRect/HBoxContainer"]
+layout_mode = 2
 focus_mode = 0
 text = "Reset Rotation"
 
-[node name="HelpBtn" type="Button" parent="Navbar/TabButtons"]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -55.0
-offset_top = 11.0
-offset_right = -11.0
-offset_bottom = 42.0
-grow_horizontal = 0
+[node name="ToggleAxesBtn" type="Button" parent="Navbar/TabButtons/ColorRect/HBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+text = "Toggle Axes"
+
+[node name="Spacer" type="Control" parent="Navbar/TabButtons/ColorRect/HBoxContainer"]
+layout_direction = 2
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HelpBtn" type="Button" parent="Navbar/TabButtons/ColorRect/HBoxContainer"]
+layout_mode = 2
 focus_mode = 0
 text = "Help"
-
-[node name="ToggleAxesBtn" type="Button" parent="Navbar/TabButtons"]
-layout_mode = 0
-offset_left = 608.0
-offset_top = 11.0
-offset_right = 707.0
-offset_bottom = 42.0
-text = "Toggle Axes"
 
 [node name="CometTab" type="CanvasLayer" parent="Navbar"]
 visible = false
@@ -111,6 +119,7 @@ offset_right = 202.0
 offset_bottom = 317.258
 label = &"Radius"
 resize_type = &"radius"
+minimum_value = 0.01
 maximum_value = 5.0
 starting_value = 0.5
 
@@ -121,6 +130,7 @@ offset_right = -39.0
 offset_bottom = -39.0
 label = &"Height"
 resize_type = &"height_"
+minimum_value = 0.01
 maximum_value = 1000.0
 starting_value = 1.0
 
@@ -256,10 +266,10 @@ Shift while moving to move faster
 Alt while moving to move slower
 "
 
-[connection signal="pressed" from="Navbar/TabButtons/CometBtn" to="Navbar" method="_on_cometbtn_pressed"]
-[connection signal="pressed" from="Navbar/TabButtons/JetsBtn" to="Navbar" method="_on_jetsbtn_pressed"]
-[connection signal="pressed" from="Navbar/TabButtons/GraphicsBtn" to="Navbar" method="_on_graphicsbtn_pressed"]
-[connection signal="pressed" from="Navbar/TabButtons/TriggerRotBtn" to="Navbar" method="_on_trigger_rot_btn_pressed"]
-[connection signal="pressed" from="Navbar/TabButtons/ResetRotnBtn" to="Navbar" method="_on_reset_rotn_btn_pressed"]
-[connection signal="pressed" from="Navbar/TabButtons/HelpBtn" to="Navbar" method="_on_help_btn_pressed"]
-[connection signal="pressed" from="Navbar/TabButtons/ToggleAxesBtn" to="Navbar" method="_on_toggle_axes_btn_pressed"]
+[connection signal="pressed" from="Navbar/TabButtons/ColorRect/HBoxContainer/CometBtn" to="Navbar" method="_on_cometbtn_pressed"]
+[connection signal="pressed" from="Navbar/TabButtons/ColorRect/HBoxContainer/JetsBtn" to="Navbar" method="_on_jetsbtn_pressed"]
+[connection signal="pressed" from="Navbar/TabButtons/ColorRect/HBoxContainer/GraphicsBtn" to="Navbar" method="_on_graphicsbtn_pressed"]
+[connection signal="pressed" from="Navbar/TabButtons/ColorRect/HBoxContainer/TriggerRotBtn" to="Navbar" method="_on_trigger_rot_btn_pressed"]
+[connection signal="pressed" from="Navbar/TabButtons/ColorRect/HBoxContainer/ResetRotnBtn" to="Navbar" method="_on_reset_rotn_btn_pressed"]
+[connection signal="pressed" from="Navbar/TabButtons/ColorRect/HBoxContainer/ToggleAxesBtn" to="Navbar" method="_on_toggle_axes_btn_pressed"]
+[connection signal="pressed" from="Navbar/TabButtons/ColorRect/HBoxContainer/HelpBtn" to="Navbar" method="_on_help_btn_pressed"]
