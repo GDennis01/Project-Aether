@@ -61,3 +61,10 @@ func _on_reset_rotn_btn_pressed() -> void:
 
 func _on_toggle_axes_btn_pressed() -> void:
 	get_tree().call_group("toggle_axis","toggle_axis")
+
+
+func _on_spawn_emitter_pressed() -> void:
+	var lat:float = float($"JetsTab/Control/Latitude".text)
+	var long:float = float($"JetsTab/Control/Longitude".text)
+	
+	get_tree().call_group("latitude","spawn_emitter_at",lat,long)

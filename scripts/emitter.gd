@@ -1,12 +1,17 @@
 extends Node3D
-
+class_name Emitter
 var particles_alive:Array[MeshInstance3D]
 var time_start:float
 var time_now:float
 var _sphere_mesh:SphereMesh
+
+const RAY_LENGHT = 1000000
 @export var max_particles:int = 10
 @export var particle_per_second:int = 5
 @export var particle_radius:float = 0.1
+@export var enabled:bool = true
+@export var light_source:SpotLight3D
+@export var comet_collider:CollisionObject3D
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	time_start = Time.get_ticks_msec()
@@ -15,16 +20,36 @@ func _ready() -> void:
 	unshaded_material.shading_mode = StandardMaterial3D.SHADING_MODE_UNSHADED
 	unshaded_material.albedo_color = Color.WHITE
 	
+	#$Particle/ParticleArea/ParticleShape.shape.set_radius($Particle.mesh.radius)
+	$Particle/ParticleArea/ParticleShape.shape.set_radius($Particle.mesh.radius)
+	
 	_sphere_mesh = SphereMesh.new()
 	_sphere_mesh.radius = particle_radius
 	_sphere_mesh.height = particle_radius*2
 	_sphere_mesh.surface_set_material(0,unshaded_material)
 	
-	pass
+func _physics_process(delta: float) -> void:
+	var space_state := get_world_3d().direct_space_state 
+	
+	var ray_origin = global_position
+	var light_dir_vector = light_source.global_transform.basis.z.normalized()
+	var ray_end = ray_origin+light_dir_vector*RAY_LENGHT
+	DebugLine.DrawLine(ray_origin,ray_end,Color(0,255,0))
+
+	var query = PhysicsRayQueryParameters3D.create(ray_origin,ray_end)
+	query.collide_with_areas = true
+
+	query.exclude = []
+	var result := space_state.intersect_ray(query)
+	if result.is_empty():
+		enabled = true
+	else:
+		enabled = false
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	time_now = Time.get_ticks_msec()
-	if time_now-time_start> 1000 * 1.0/particle_per_second:
+	
+	if enabled and time_now-time_start> 1000 * 1.0/particle_per_second:
 		#var my_mesh = MeshInstance3D.new()
 		#add_child(my_mesh)
 		#my_mesh.mesh = _sphere_mesh

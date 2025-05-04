@@ -56,7 +56,7 @@ func set_height(value:float)->void:
 		
 		
 func toggle_axis()->void:
-	visible = not visible		
+	visible = not visible
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta: float) -> void:
 	#pass

@@ -105,7 +105,6 @@ offset_right = 195.0
 offset_bottom = 259.096
 size_flags_horizontal = 0
 metadata/_edit_use_anchors_ = true
-metadata/_edit_group_ = true
 
 [node name="EditRadius" parent="Navbar/CometTab/Control" instance=ExtResource("3_f5f8u")]
 layout_mode = 1
@@ -204,7 +203,6 @@ starting_value = 0.0
 valid_zero = true
 
 [node name="JetsTab" type="CanvasLayer" parent="Navbar"]
-visible = false
 
 [node name="Control" type="Control" parent="Navbar/JetsTab"]
 layout_mode = 3
@@ -213,16 +211,28 @@ offset_right = 13.0
 offset_bottom = 11.0
 mouse_filter = 2
 
-[node name="Button" type="Button" parent="Navbar/JetsTab/Control"]
+[node name="SpawnEmitter" type="Button" parent="Navbar/JetsTab/Control"]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 8.0
 anchor_bottom = 8.0
 offset_left = 1.0
 offset_top = 3.0
-offset_right = 346.0
-offset_bottom = 34.0
-text = "TODO Jets"
+offset_right = 149.0
+offset_bottom = 48.0
+text = "Spawn Emitter"
+
+[node name="Longitude" type="LineEdit" parent="Navbar/JetsTab/Control"]
+layout_mode = 0
+offset_left = 80.0
+offset_top = 144.0
+offset_right = 148.563
+offset_bottom = 175.0
+
+[node name="Latitude" type="LineEdit" parent="Navbar/JetsTab/Control"]
+offset_top = 144.0
+offset_right = 68.5625
+offset_bottom = 175.0
 
 [node name="GraphicTab" type="CanvasLayer" parent="Navbar"]
 visible = false
@@ -273,3 +283,4 @@ Alt while moving to move slower
 [connection signal="pressed" from="Navbar/TabButtons/ColorRect/HBoxContainer/ResetRotnBtn" to="Navbar" method="_on_reset_rotn_btn_pressed"]
 [connection signal="pressed" from="Navbar/TabButtons/ColorRect/HBoxContainer/ToggleAxesBtn" to="Navbar" method="_on_toggle_axes_btn_pressed"]
 [connection signal="pressed" from="Navbar/TabButtons/ColorRect/HBoxContainer/HelpBtn" to="Navbar" method="_on_help_btn_pressed"]
+[connection signal="pressed" from="Navbar/JetsTab/Control/SpawnEmitter" to="Navbar" method="_on_spawn_emitter_pressed"]
