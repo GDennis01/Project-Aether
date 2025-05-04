@@ -1,11 +1,16 @@
 extends Node3D
 class_name Emitter
+const RAY_LENGHT = 1000000
+
 var particles_alive:Array[MeshInstance3D]
 var time_start:float
 var time_now:float
 var _sphere_mesh:SphereMesh
 
-const RAY_LENGHT = 1000000
+var latitude:float
+var longitude:float
+
+var is_lit:bool=false
 @export var max_particles:int = 10
 @export var particle_per_second:int = 5
 @export var particle_radius:float = 0.1
@@ -41,10 +46,16 @@ func _physics_process(delta: float) -> void:
 
 	query.exclude = []
 	var result := space_state.intersect_ray(query)
-	if result.is_empty():
-		enabled = true
-	else:
-		enabled = false
+	if not is_lit and result.is_empty():
+		#enabled = true
+		print("LIT\n")
+		is_lit = true
+		$Particle.get_surface_override_material(0).albedo_color = Color.WHITE
+	elif is_lit and not result.is_empty():
+		is_lit = false
+		print("NOT LIT\n"+str(result))
+		$Particle.get_surface_override_material(0).albedo_color = Color.RED
+		#enabled = false
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	time_now = Time.get_ticks_msec()
@@ -86,3 +97,7 @@ func _process(delta: float) -> void:
 		#particle.position.y = helix_center.y + pitch_factor * current_angle*0.01
 		#particle.position.z = helix_center.z + radius * sin(current_angle)*0.01
 	pass
+	
+func update_position(radius:float)->void:
+	var new_pos = Util.latlon_to_vector3(latitude,longitude+90,radius)
+	position = new_pos

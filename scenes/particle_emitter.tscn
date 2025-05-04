@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://b70hmmhnx5apn"]
+[gd_scene load_steps=6 format=3 uid="uid://b70hmmhnx5apn"]
 
 [ext_resource type="Script" uid="uid://dnlpubfbrpo7x" path="res://scripts/emitter.gd" id="1_87byf"]
 
@@ -7,14 +7,17 @@ shading_mode = 0
 
 [sub_resource type="SphereMesh" id="SphereMesh_vd55s"]
 material = SubResource("StandardMaterial3D_7r4gi")
-radius = 0.05
-height = 0.1
+radius = 0.01
+height = 0.02
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_87byf"]
+shading_mode = 0
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_87byf"]
 resource_local_to_scene = true
 radius = 0.01
 
-[node name="Emitter" type="Node3D"]
+[node name="Emitter" type="Node3D" groups=["emitter"]]
 script = ExtResource("1_87byf")
 max_particles = 300
 particle_per_second = 100
@@ -23,6 +26,7 @@ particle_radius = 0.01
 [node name="Particle" type="MeshInstance3D" parent="."]
 cast_shadow = 0
 mesh = SubResource("SphereMesh_vd55s")
+surface_material_override/0 = SubResource("StandardMaterial3D_87byf")
 
 [node name="ParticleArea" type="Area3D" parent="Particle"]
 

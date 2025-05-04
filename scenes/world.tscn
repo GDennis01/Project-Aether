@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bqxoxn8bpfcfa"]
+[gd_scene load_steps=18 format=3 uid="uid://bqxoxn8bpfcfa"]
 
 [ext_resource type="Texture2D" uid="uid://ci05lu7s7pmon" path="res://textures/rock_wall_13_diff_4k.png" id="1_gtgs4"]
 [ext_resource type="Script" uid="uid://dsimhylkxu4no" path="res://scripts/world_manager.gd" id="1_wu602"]
@@ -7,7 +7,6 @@
 [ext_resource type="Texture2D" uid="uid://cen3wnntogdjt" path="res://textures/rock_wall_13_rough_4k.png" id="3_kdodi"]
 [ext_resource type="Script" uid="uid://cdbhqjf33rsg1" path="res://scripts/comet_mesh.gd" id="4_yu4gv"]
 [ext_resource type="Shader" uid="uid://ccpharluyb1qa" path="res://shaders/sphere.gdshader" id="6_4mrxx"]
-[ext_resource type="PackedScene" uid="uid://b70hmmhnx5apn" path="res://scenes/particle_emitter.tscn" id="9_7r4gi"]
 
 [sub_resource type="Environment" id="Environment_7r4gi"]
 
@@ -57,7 +56,7 @@ script = ExtResource("1_wu602")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.038, 0)
 script = ExtResource("2_i7141")
 
-[node name="DirectionalLight3D" type="SpotLight3D" parent="Sun"]
+[node name="SpotLight3D" type="SpotLight3D" parent="Sun"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 200, 0)
 light_energy = 2.616
 shadow_enabled = true
@@ -66,7 +65,7 @@ spot_range = 4096.0
 spot_attenuation = -0.01
 spot_angle = 10.45
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Sun/DirectionalLight3D"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Sun/SpotLight3D"]
 mesh = SubResource("SphereMesh_i7141")
 
 [node name="Ground" type="MeshInstance3D" parent="."]
@@ -79,7 +78,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.03817, 0)
 mesh = SubResource("SphereMesh_f4gce")
 surface_material_override/0 = SubResource("ShaderMaterial_7r4gi")
 script = ExtResource("4_yu4gv")
-light_source = NodePath("../Sun/DirectionalLight3D")
+light_source = NodePath("../Sun/SpotLight3D")
 comet_collider = NodePath("CometArea")
 
 [node name="CometArea" type="Area3D" parent="CometMesh"]
@@ -87,10 +86,3 @@ comet_collider = NodePath("CometArea")
 [node name="CometCollisionShape" type="CollisionShape3D" parent="CometMesh/CometArea"]
 shape = SubResource("SphereShape3D_4mrxx")
 debug_color = Color(0.771851, 0.441145, 0.120771, 0.42)
-
-[node name="Emitter2" parent="CometMesh" node_paths=PackedStringArray("light_source", "comet_collider") instance=ExtResource("9_7r4gi")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000480175, 0.271206, 0.425209)
-visible = false
-enabled = false
-light_source = NodePath("../../Sun/DirectionalLight3D")
-comet_collider = NodePath("../CometArea")

@@ -22,6 +22,7 @@ config/icon="res://icon.svg"
 Hud="*res://scenes/ui/hud.tscn"
 FlyCamera="*res://scenes/fly_camera.tscn"
 DebugLine="*res://scripts/3d_lines.gd"
+Util="*res://scripts/util.gd"
 
 [input]
 
