@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://bwt7dtbn7pn3c"]
+[gd_scene load_steps=5 format=3 uid="uid://bwt7dtbn7pn3c"]
 
 [ext_resource type="Script" uid="uid://bmle6k05e5fff" path="res://scripts/hud.gd" id="1_moku2"]
 [ext_resource type="Script" uid="uid://bwvqb33hu6cxk" path="res://scripts/navbar.gd" id="1_r4m0t"]
 [ext_resource type="PackedScene" uid="uid://blm04kepg8q0g" path="res://scenes/ui/SliderWithLineEdit.tscn" id="3_f5f8u"]
+[ext_resource type="PackedScene" uid="uid://owonx4k017vt" path="res://scenes/ui/jet_entry.tscn" id="4_8qguk"]
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_moku2")
@@ -212,6 +213,7 @@ offset_bottom = 11.0
 mouse_filter = 2
 
 [node name="SpawnEmitter" type="Button" parent="Navbar/JetsTab/Control"]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 8.0
@@ -223,6 +225,7 @@ offset_bottom = 48.0
 text = "Spawn Emitter"
 
 [node name="Longitude" type="LineEdit" parent="Navbar/JetsTab/Control"]
+visible = false
 layout_mode = 0
 offset_left = 80.0
 offset_top = 144.0
@@ -230,9 +233,145 @@ offset_right = 148.563
 offset_bottom = 175.0
 
 [node name="Latitude" type="LineEdit" parent="Navbar/JetsTab/Control"]
+visible = false
+layout_mode = 0
 offset_top = 144.0
 offset_right = 68.5625
 offset_bottom = 175.0
+
+[node name="JetIDLabel" type="Label" parent="Navbar/JetsTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 10.909
+anchor_right = 1.0
+anchor_bottom = 10.909
+offset_left = -5.0
+offset_top = -31.999
+offset_right = 22.0
+offset_bottom = -8.99901
+scale = Vector2(0.7, 0.7)
+text = "ID"
+
+[node name="SpeedLabel" type="Label" parent="Navbar/JetsTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 3.077
+anchor_top = 10.909
+anchor_right = 3.077
+anchor_bottom = 10.909
+offset_left = -0.00100327
+offset_top = -31.999
+offset_right = 47.999
+offset_bottom = -8.99901
+scale = Vector2(0.7, 0.7)
+text = "Speed"
+
+[node name="LatitudeLabel" type="Label" parent="Navbar/JetsTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 7.385
+anchor_top = 10.909
+anchor_right = 7.385
+anchor_bottom = 10.909
+offset_left = -0.00498962
+offset_top = -31.999
+offset_right = 31.995
+offset_bottom = -8.99901
+scale = Vector2(0.7, 0.7)
+text = "Lat."
+
+[node name="LongitudeLabel" type="Label" parent="Navbar/JetsTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 11.692
+anchor_top = 10.909
+anchor_right = 11.692
+anchor_bottom = 10.909
+offset_left = 0.00401306
+offset_top = -31.999
+offset_right = 42.004
+offset_bottom = -8.99901
+scale = Vector2(0.7, 0.7)
+text = "Long."
+
+[node name="DiffusionLabel" type="Label" parent="Navbar/JetsTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 21.538
+anchor_top = 10.909
+anchor_right = 21.538
+anchor_bottom = 10.909
+offset_left = -79.994
+offset_top = -31.999
+offset_right = -28.994
+offset_bottom = -8.99901
+scale = Vector2(0.7, 0.7)
+text = "Diffus."
+
+[node name="ColorLabel" type="Label" parent="Navbar/JetsTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 19.692
+anchor_top = 10.909
+anchor_right = 19.692
+anchor_bottom = 10.909
+offset_left = -7.99602
+offset_top = -31.999
+offset_right = 34.004
+offset_bottom = -8.99901
+scale = Vector2(0.7, 0.7)
+text = "Color"
+
+[node name="JetTable" type="VBoxContainer" parent="Navbar/JetsTab/Control"]
+layout_mode = 2
+offset_left = 8.0
+offset_top = 112.0
+offset_right = 512.0
+offset_bottom = 497.0
+scale = Vector2(0.7, 0.7)
+metadata/_edit_group_ = true
+
+[node name="JetBodyScrollBar" type="ScrollContainer" parent="Navbar/JetsTab/Control/JetTable"]
+custom_minimum_size = Vector2(390.93, 340)
+layout_mode = 2
+vertical_scroll_mode = 4
+
+[node name="JetBody" type="VBoxContainer" parent="Navbar/JetsTab/Control/JetTable/JetBodyScrollBar"]
+layout_mode = 2
+
+[node name="JetEntry" parent="Navbar/JetsTab/Control/JetTable/JetBodyScrollBar/JetBody" instance=ExtResource("4_8qguk")]
+layout_mode = 2
+size_flags_stretch_ratio = 2.28
+
+[node name="JetEntry2" parent="Navbar/JetsTab/Control/JetTable/JetBodyScrollBar/JetBody" instance=ExtResource("4_8qguk")]
+layout_mode = 2
+
+[node name="JetEntry3" parent="Navbar/JetsTab/Control/JetTable/JetBodyScrollBar/JetBody" instance=ExtResource("4_8qguk")]
+layout_mode = 2
+size_flags_stretch_ratio = 2.28
+
+[node name="JetEntry4" parent="Navbar/JetsTab/Control/JetTable/JetBodyScrollBar/JetBody" instance=ExtResource("4_8qguk")]
+layout_mode = 2
+size_flags_stretch_ratio = 2.28
+
+[node name="JetEntry5" parent="Navbar/JetsTab/Control/JetTable/JetBodyScrollBar/JetBody" instance=ExtResource("4_8qguk")]
+layout_mode = 2
+size_flags_stretch_ratio = 2.28
+
+[node name="JetEntry6" parent="Navbar/JetsTab/Control/JetTable/JetBodyScrollBar/JetBody" instance=ExtResource("4_8qguk")]
+layout_mode = 2
+
+[node name="JetEntry7" parent="Navbar/JetsTab/Control/JetTable/JetBodyScrollBar/JetBody" instance=ExtResource("4_8qguk")]
+layout_mode = 2
+
+[node name="JetEntry8" parent="Navbar/JetsTab/Control/JetTable/JetBodyScrollBar/JetBody" instance=ExtResource("4_8qguk")]
+layout_mode = 2
+
+[node name="AddJetEntryBtn" type="Button" parent="Navbar/JetsTab/Control/JetTable"]
+layout_mode = 2
+size_flags_stretch_ratio = 3.62
+text = "Add Jet Entry"
 
 [node name="GraphicTab" type="CanvasLayer" parent="Navbar"]
 visible = false

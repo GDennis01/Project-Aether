@@ -6,7 +6,7 @@ var emitter_scene := preload("res://scenes/particle_emitter.tscn")
 @onready var x_axis:AxisArrow
 @onready var y_axis:AxisArrow
 @onready var z_axis:AxisArrow
-@export var light_source:SpotLight3D
+@export var light_source:Light3D
 @export var comet_collider:CollisionObject3D
 var rotation_enabled = false
 var starting_rotation:Vector3
@@ -41,6 +41,8 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if rotation_enabled:
 		rotate_object_local(Vector3.UP,1*delta)
+		# TODO: understand how to make precession motion
+		rotate_object_local(Vector3.FORWARD,0.1*delta)
 		pass
 	pass
 
@@ -69,7 +71,7 @@ func reset_rotation()->void:
 func update_radius(value:float)->void:
 	#print_debug("[UPDATE RADIUS] Before:"+str(mesh.radius)+" After:"+str(value))
 	mesh.set_radius(value)
-	$CometArea/CometCollisionShape.shape.set_radius(value-0.001)
+	$CometArea/CometCollisionShape.shape.set_radius(value-0.0001)
 	mesh.set_height(value*2)
 	if x_axis:
 		x_axis.set_height(mesh.height)

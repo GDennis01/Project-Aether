@@ -10,12 +10,12 @@ var _sphere_mesh:SphereMesh
 var latitude:float
 var longitude:float
 
-var is_lit:bool=false
+var is_lit:bool=true
 @export var max_particles:int = 10
 @export var particle_per_second:int = 5
 @export var particle_radius:float = 0.1
 @export var enabled:bool = true
-@export var light_source:SpotLight3D
+@export var light_source:Light3D
 @export var comet_collider:CollisionObject3D
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -33,28 +33,43 @@ func _ready() -> void:
 	_sphere_mesh.height = particle_radius*2
 	_sphere_mesh.surface_set_material(0,unshaded_material)
 	
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	var space_state := get_world_3d().direct_space_state 
+	var has_line_of_sight:bool
 	
-	var ray_origin = global_position
+	#var ray_origin = global_position
+	#var light_dir_vector = light_source.global_transform.basis.z.normalized()
+	#var ray_end = ray_origin+light_dir_vector*RAY_LENGHT
+	#DebugLine.DrawLine(ray_origin,ray_end,Color(0,255,0))
+#
+	#var query = PhysicsRayQueryParameters3D.create(ray_origin,ray_end)
+	var light_pos = light_source.global_position
 	var light_dir_vector = light_source.global_transform.basis.z.normalized()
-	var ray_end = ray_origin+light_dir_vector*RAY_LENGHT
-	DebugLine.DrawLine(ray_origin,ray_end,Color(0,255,0))
+	var emitter_pos = global_position
+	DebugLine.DrawLine(light_pos,emitter_pos,Color(0,255,0))
 
-	var query = PhysicsRayQueryParameters3D.create(ray_origin,ray_end)
+	var query = PhysicsRayQueryParameters3D.create(light_pos,emitter_pos)
 	query.collide_with_areas = true
-
-	query.exclude = []
+	#query.collide_with_bodies = true
+	
+	query.exclude = [$Particle/ParticleArea.get_rid()]
 	var result := space_state.intersect_ray(query)
-	if not is_lit and result.is_empty():
+
+	# TODO: fare in modo che is_lit venga settato da una state machine o roba simile.
+	# Così almeno non si bugga all'inizio alla prima iterazione
+	# Oppure convertire tutto sto processo in un metodo e richiamarlo al ready per settare
+	# lo stato iniziale di is_lit
+	if  not is_lit and result.is_empty():
 		#enabled = true
-		print("LIT\n")
+		#print("LIT\n")
 		is_lit = true
 		$Particle.get_surface_override_material(0).albedo_color = Color.WHITE
 	elif is_lit and not result.is_empty():
 		is_lit = false
-		print("NOT LIT\n"+str(result))
+		#print("NOT LIT\n"+str(result))
 		$Particle.get_surface_override_material(0).albedo_color = Color.RED
+	#else:
+	#print(result)
 		#enabled = false
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

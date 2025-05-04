@@ -1,0 +1,116 @@
+[gd_scene load_steps=2 format=3 uid="uid://owonx4k017vt"]
+
+[ext_resource type="Script" uid="uid://djgel4sl6epn1" path="res://scripts/jet_entry.gd" id="1_3tf12"]
+
+[node name="JetEntry" type="Control"]
+custom_minimum_size = Vector2(475, 45)
+layout_mode = 3
+anchor_left = -0.00954861
+anchor_top = 0.0154321
+anchor_right = 0.442597
+anchor_bottom = 0.0851111
+offset_left = 11.0
+offset_right = 2.12796
+offset_bottom = -0.152008
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_3tf12")
+metadata/_edit_use_anchors_ = true
+
+[node name="JetID" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -0.2
+anchor_bottom = -0.2
+offset_left = 8.0
+offset_top = 16.0
+offset_right = 32.0
+offset_bottom = 39.0
+text = "0"
+metadata/_edit_use_anchors_ = true
+
+[node name="SpeedEdit" type="LineEdit" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -0.2
+anchor_bottom = -0.2
+offset_left = 34.822
+offset_top = 16.0
+offset_right = 114.822
+offset_bottom = 47.0
+theme_override_constants/minimum_character_width = 0
+text = "1234.555"
+alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="LatitudeEdit" type="LineEdit" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -0.2
+anchor_bottom = -0.2
+offset_left = 128.0
+offset_top = 16.0
+offset_right = 184.0
+offset_bottom = 47.0
+theme_override_constants/minimum_character_width = 0
+text = "-90.85"
+metadata/_edit_use_anchors_ = true
+
+[node name="LongitudeEdit" type="LineEdit" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -0.2
+anchor_bottom = -0.2
+offset_left = 200.0
+offset_top = 16.0
+offset_right = 256.0
+offset_bottom = 47.0
+theme_override_constants/minimum_character_width = 0
+text = "-90.85"
+metadata/_edit_use_anchors_ = true
+
+[node name="DiffusionEdit" type="LineEdit" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -0.2
+anchor_bottom = -0.2
+offset_left = 272.0
+offset_top = 16.0
+offset_right = 328.0
+offset_bottom = 47.0
+theme_override_constants/minimum_character_width = 0
+text = "-90.85"
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -0.2
+anchor_bottom = -0.2
+offset_left = 344.0
+offset_top = 16.0
+offset_right = 392.0
+offset_bottom = 47.0
+color = Color(0.454524, 0.454524, 0.454524, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -0.222
+anchor_bottom = -0.222
+offset_left = 456.0
+offset_top = 15.99
+offset_right = 488.0
+offset_bottom = 46.99
+text = "X"
+
+[node name="CheckButton" type="CheckButton" parent="."]
+layout_mode = 0
+offset_left = 392.0
+offset_top = 6.0
+offset_right = 436.0
+offset_bottom = 30.0
+scale = Vector2(1.41, 1.41)
+
+[connection signal="text_changed" from="SpeedEdit" to="." method="_on_speed_edit_text_changed"]
