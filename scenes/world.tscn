@@ -34,6 +34,8 @@ normal_texture = ExtResource("2_m7tiq")
 uv1_scale = Vector3(60, 60, 60)
 
 [sub_resource type="SphereMesh" id="SphereMesh_f4gce"]
+radius = 5.0
+height = 10.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7r4gi"]
 render_priority = 0
@@ -53,7 +55,7 @@ compositor = SubResource("Compositor_5tdcg")
 script = ExtResource("1_wu602")
 
 [node name="Sun" type="Node3D" parent="." groups=["sun_dir_rotation", "sun_inc_rotation"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.038, 0)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 3.038, 0)
 script = ExtResource("2_i7141")
 
 [node name="SpotLight3D" type="SpotLight3D" parent="Sun"]
@@ -86,3 +88,18 @@ comet_collider = NodePath("CometArea")
 [node name="CometCollisionShape" type="CollisionShape3D" parent="CometMesh/CometArea"]
 shape = SubResource("SphereShape3D_4mrxx")
 debug_color = Color(0.771851, 0.441145, 0.120771, 0.42)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." groups=["sun_dir_rotation", "sun_inc_rotation"]]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+rotation_order = 1
+visible = false
+light_energy = 16.0
+light_indirect_energy = 0.0
+light_volumetric_fog_energy = 0.0
+light_specular = 0.443
+light_bake_mode = 0
+directional_shadow_mode = 0
+directional_shadow_fade_start = 0.843
+directional_shadow_max_distance = 85.5
+sky_mode = 1
+script = ExtResource("2_i7141")
