@@ -11,6 +11,7 @@ radius = 0.01
 height = 0.02
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_87byf"]
+resource_local_to_scene = true
 shading_mode = 0
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_87byf"]

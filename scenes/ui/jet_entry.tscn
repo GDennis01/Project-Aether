@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://djgel4sl6epn1" path="res://scripts/jet_entry.gd" id="1_3tf12"]
 
-[node name="JetEntry" type="Control"]
+[node name="JetEntry" type="Control" groups=["jet_entry"]]
 custom_minimum_size = Vector2(475, 45)
 layout_mode = 3
 anchor_left = -0.00954861
@@ -14,6 +14,7 @@ offset_right = 2.12796
 offset_bottom = -0.152008
 grow_horizontal = 2
 grow_vertical = 2
+focus_mode = 1
 script = ExtResource("1_3tf12")
 metadata/_edit_use_anchors_ = true
 
@@ -26,6 +27,7 @@ offset_left = 8.0
 offset_top = 16.0
 offset_right = 32.0
 offset_bottom = 39.0
+focus_mode = 1
 text = "0"
 metadata/_edit_use_anchors_ = true
 
@@ -38,6 +40,7 @@ offset_left = 34.822
 offset_top = 16.0
 offset_right = 114.822
 offset_bottom = 47.0
+focus_mode = 1
 theme_override_constants/minimum_character_width = 0
 text = "1234.555"
 alignment = 1
@@ -52,6 +55,7 @@ offset_left = 128.0
 offset_top = 16.0
 offset_right = 184.0
 offset_bottom = 47.0
+focus_mode = 1
 theme_override_constants/minimum_character_width = 0
 text = "-90.85"
 metadata/_edit_use_anchors_ = true
@@ -65,6 +69,7 @@ offset_left = 200.0
 offset_top = 16.0
 offset_right = 256.0
 offset_bottom = 47.0
+focus_mode = 1
 theme_override_constants/minimum_character_width = 0
 text = "-90.85"
 metadata/_edit_use_anchors_ = true
@@ -78,6 +83,7 @@ offset_left = 272.0
 offset_top = 16.0
 offset_right = 328.0
 offset_bottom = 47.0
+focus_mode = 1
 theme_override_constants/minimum_character_width = 0
 text = "-90.85"
 metadata/_edit_use_anchors_ = true
@@ -91,10 +97,21 @@ offset_left = 344.0
 offset_top = 16.0
 offset_right = 392.0
 offset_bottom = 47.0
+focus_mode = 0
 color = Color(0.454524, 0.454524, 0.454524, 1)
 metadata/_edit_use_anchors_ = true
 
-[node name="Button" type="Button" parent="."]
+[node name="ToggleJet" type="CheckButton" parent="."]
+layout_mode = 0
+offset_left = 392.0
+offset_top = 6.0
+offset_right = 436.0
+offset_bottom = 30.0
+scale = Vector2(1.41, 1.41)
+focus_mode = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="RemoveJetBtn" type="Button" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = -0.222
@@ -103,14 +120,17 @@ offset_left = 456.0
 offset_top = 15.99
 offset_right = 488.0
 offset_bottom = 46.99
+focus_mode = 0
 text = "X"
+metadata/_edit_use_anchors_ = true
 
-[node name="CheckButton" type="CheckButton" parent="."]
-layout_mode = 0
-offset_left = 392.0
-offset_top = 6.0
-offset_right = 436.0
-offset_bottom = 30.0
-scale = Vector2(1.41, 1.41)
-
+[connection signal="editing_toggled" from="SpeedEdit" to="." method="_on_speed_edit_editing_toggled"]
 [connection signal="text_changed" from="SpeedEdit" to="." method="_on_speed_edit_text_changed"]
+[connection signal="editing_toggled" from="LatitudeEdit" to="." method="_on_latitude_edit_editing_toggled"]
+[connection signal="text_changed" from="LatitudeEdit" to="." method="_on_latitude_edit_text_changed"]
+[connection signal="editing_toggled" from="LongitudeEdit" to="." method="_on_longitude_edit_editing_toggled"]
+[connection signal="text_changed" from="LongitudeEdit" to="." method="_on_longitude_edit_text_changed"]
+[connection signal="editing_toggled" from="DiffusionEdit" to="." method="_on_diffusion_edit_editing_toggled"]
+[connection signal="text_changed" from="DiffusionEdit" to="." method="_on_diffusion_edit_text_changed"]
+[connection signal="pressed" from="ToggleJet" to="." method="_on_toggle_jet_pressed"]
+[connection signal="pressed" from="RemoveJetBtn" to="." method="_on_remove_jet_btn_pressed"]
