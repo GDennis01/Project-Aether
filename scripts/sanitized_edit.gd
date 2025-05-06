@@ -5,28 +5,31 @@ var property_value: float
 var previous_value: float
 @export var lower_bound: float = 0
 @export var higher_bound: float = 0
-@onready var line_edit: LineEdit = $LineEdit
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass # Replace with function body.
 
 func sanitize_field(low: float, high: float) -> void:
-	if line_edit.text.is_valid_float():
-		var new_val = clampf(float(line_edit.text), low, high)
+	if self.text.is_valid_float():
+		var new_val = clampf(float(self.text), low, high)
 		property_value = new_val
 		previous_value = new_val
+		self.text = str(new_val)
 	else:
-		line_edit.text = str(previous_value)
+		self.text = str(previous_value)
 func _unhandled_input(event: InputEvent) -> void:
-	if line_edit and line_edit.has_focus():
+	if self and self.has_focus():
 			if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
-				line_edit.release_focus()
+				self.release_focus()
 				sanitize_field(lower_bound, higher_bound)
 
 
-func _on_line_edit_editing_toggled(toggled_on: bool) -> void:
+func _on_editing_toggled(toggled_on: bool) -> void:
+	print("e")
 	if toggled_on:
 		FlyCamera.set_process(false)
+		print("t")
 	else:
 		FlyCamera.set_process(true)
+		print("o")

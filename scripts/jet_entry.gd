@@ -57,79 +57,8 @@ func set_id_label(value: int) -> void:
 	$JetID.text = str(value)
 	jet_id = value
 	
-###############################################
-# updating/sanitizing variables linked to line edit values
-###############################################
-func _on_speed_edit_text_changed(new_text: String) -> void:
-	if new_text.is_valid_float():
-		var new_val = max(0, float(new_text))
-		speed = new_val
-		prev_speed = new_val
-	else:
-		$SpeedEdit.text = str(prev_speed)
-		
-func _on_latitude_edit_text_changed(new_text: String) -> void:
-	print("PREV:" + str(prev_lat))
-	
-	if new_text.is_valid_float():
-		var new_val = clampf(float(new_text), -90, 90)
-		prev_lat = new_val
-			# $LatitudeEdit.text = str(prev_lat)
-	# else:
-	# 	$LatitudeEdit.text = str(prev_lat)
-
-func _on_latitude_edit_focus_exited() -> void:
-	$LatitudeEdit.release_focus()
-	if not $LatitudeEdit.text.is_valid_float():
-		$LatitudeEdit.text = str(prev_lat)
-
-
-func _on_longitude_edit_text_changed(new_text: String) -> void:
-	if new_text.is_valid_float():
-		var new_val = clampf(float(new_text), 0, 360)
-		longitude = new_val
-		prev_long = new_val
-	else:
-		$LongitudeEdit.text = str(prev_long)
-
-func _on_diffusion_edit_text_changed(new_text: String) -> void:
-	if new_text.is_valid_float():
-		var new_val = clampf(float(new_text), 0, 100)
-		diffusion = new_val
-		prev_diff = new_val
-	# else:
-		# $DiffusionEdit.text = str(prev_diff)
-
-
-######################################
-# Disabling Focus on line edit buttons
-#####################################
-func _on_speed_edit_editing_toggled(toggled_on: bool) -> void:
-	if toggled_on:
-		FlyCamera.set_process(false)
-	else:
-		FlyCamera.set_process(true)
-
-func _on_latitude_edit_editing_toggled(toggled_on: bool) -> void:
-	if toggled_on:
-		FlyCamera.set_process(false)
-	else:
-		FlyCamera.set_process(true)
-
-func _on_longitude_edit_editing_toggled(toggled_on: bool) -> void:
-	if toggled_on:
-		FlyCamera.set_process(false)
-	else:
-		FlyCamera.set_process(true)
-
-func _on_diffusion_edit_editing_toggled(toggled_on: bool) -> void:
-	if toggled_on:
-		FlyCamera.set_process(false)
-	else:
-		FlyCamera.set_process(true)
-
-##################################
-# Other buttons (toggle and remove
+###################################
+# Other buttons (toggle and remove)
 ###################################
 """
 Calls JetTable.remove_jet_entry
@@ -165,10 +94,10 @@ func sanitize_field(line_edit: LineEdit, low: float, higher: float) -> void:
 		line_edit.prev_val = new_val
 	else:
 		line_edit.text = str(line_edit.prev_val)
-func _unhandled_input(event: InputEvent) -> void:
-	var edit_fields = [$SpeedEdit, $LatitudeEdit, $LongitudeEdit, $DiffusionEdit]
-	var edit_sanitization_field = [??,??,??]
-	for edit_field in edit_fields:
-		if edit_field and edit_field.has_focus():
-			if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
-				edit_field.release_focus()
+# func _unhandled_input(event: InputEvent) -> void:
+# 	var edit_fields = [$SpeedEdit, $LatitudeEdit, $LongitudeEdit, $DiffusionEdit]
+# 	var edit_sanitization_field = [??,??,??]
+# 	for edit_field in edit_fields:
+# 		if edit_field and edit_field.has_focus():
+# 			if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
+# 				edit_field.release_focus()

@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://owonx4k017vt"]
+[gd_scene load_steps=3 format=3 uid="uid://owonx4k017vt"]
 
 [ext_resource type="Script" uid="uid://djgel4sl6epn1" path="res://scripts/jet_entry.gd" id="1_3tf12"]
+[ext_resource type="PackedScene" uid="uid://b31lb3a4drve4" path="res://scenes/ui/sanitized_edit.tscn" id="2_65ngw"]
 
 [node name="JetEntry" type="Control" groups=["jet_entry"]]
 custom_minimum_size = Vector2(475, 45)
@@ -31,62 +32,50 @@ focus_mode = 1
 text = "0"
 metadata/_edit_use_anchors_ = true
 
-[node name="SpeedEdit" type="LineEdit" parent="."]
+[node name="SpeedEdit" parent="." instance=ExtResource("2_65ngw")]
 layout_mode = 1
-anchors_preset = -1
-anchor_top = -0.2
-anchor_bottom = -0.2
-offset_left = 34.822
-offset_top = 16.0
-offset_right = 114.822
-offset_bottom = 47.0
-focus_mode = 1
-theme_override_constants/minimum_character_width = 0
-text = "1234.555"
-alignment = 1
-metadata/_edit_use_anchors_ = true
+anchor_top = -0.222
+anchor_right = 0.0
+anchor_bottom = -0.222
+offset_left = 35.0
+offset_top = 16.99
+offset_right = 115.0
+offset_bottom = 47.99
+higher_bound = 10000.0
 
-[node name="LatitudeEdit" type="LineEdit" parent="."]
+[node name="LatitudeEdit" parent="." instance=ExtResource("2_65ngw")]
 layout_mode = 1
-anchors_preset = -1
-anchor_top = -0.2
-anchor_bottom = -0.2
+anchor_top = -0.222
+anchor_right = 0.0
+anchor_bottom = -0.222
 offset_left = 128.0
-offset_top = 16.0
+offset_top = 16.99
 offset_right = 184.0
-offset_bottom = 47.0
-focus_mode = 1
-theme_override_constants/minimum_character_width = 0
-text = "-90.85"
-metadata/_edit_use_anchors_ = true
+offset_bottom = 47.99
+lower_bound = -90.0
+higher_bound = 90.0
 
-[node name="LongitudeEdit" type="LineEdit" parent="."]
+[node name="LongitudeEdit" parent="." instance=ExtResource("2_65ngw")]
 layout_mode = 1
-anchors_preset = -1
-anchor_top = -0.2
-anchor_bottom = -0.2
+anchor_top = -0.222
+anchor_right = 0.0
+anchor_bottom = -0.222
 offset_left = 200.0
-offset_top = 16.0
-offset_right = 256.0
-offset_bottom = 47.0
-focus_mode = 1
-theme_override_constants/minimum_character_width = 0
-text = "-90.85"
-metadata/_edit_use_anchors_ = true
+offset_top = 15.99
+offset_right = 256.96
+offset_bottom = 46.99
+higher_bound = 360.0
 
-[node name="DiffusionEdit" type="LineEdit" parent="."]
+[node name="DiffusionEdit" parent="." instance=ExtResource("2_65ngw")]
 layout_mode = 1
-anchors_preset = -1
-anchor_top = -0.2
-anchor_bottom = -0.2
+anchor_top = -0.222
+anchor_right = 0.0
+anchor_bottom = -0.222
 offset_left = 272.0
-offset_top = 16.0
-offset_right = 328.0
-offset_bottom = 47.0
-focus_mode = 1
-theme_override_constants/minimum_character_width = 0
-text = "-90.85"
-metadata/_edit_use_anchors_ = true
+offset_top = 15.99
+offset_right = 328.96
+offset_bottom = 46.99
+higher_bound = 100.0
 
 [node name="ColorPickerButton" type="ColorPickerButton" parent="."]
 layout_mode = 1
@@ -125,15 +114,5 @@ focus_mode = 0
 text = "X"
 metadata/_edit_use_anchors_ = true
 
-[connection signal="editing_toggled" from="SpeedEdit" to="." method="_on_speed_edit_editing_toggled"]
-[connection signal="text_changed" from="SpeedEdit" to="." method="_on_speed_edit_text_changed"]
-[connection signal="editing_toggled" from="LatitudeEdit" to="." method="_on_latitude_edit_editing_toggled"]
-[connection signal="focus_exited" from="LatitudeEdit" to="." method="_on_latitude_edit_focus_exited"]
-[connection signal="gui_input" from="LatitudeEdit" to="." method="_on_latitude_edit_gui_input"]
-[connection signal="text_changed" from="LatitudeEdit" to="." method="_on_latitude_edit_text_changed"]
-[connection signal="editing_toggled" from="LongitudeEdit" to="." method="_on_longitude_edit_editing_toggled"]
-[connection signal="text_changed" from="LongitudeEdit" to="." method="_on_longitude_edit_text_changed"]
-[connection signal="editing_toggled" from="DiffusionEdit" to="." method="_on_diffusion_edit_editing_toggled"]
-[connection signal="text_changed" from="DiffusionEdit" to="." method="_on_diffusion_edit_text_changed"]
 [connection signal="pressed" from="ToggleJet" to="." method="_on_toggle_jet_pressed"]
 [connection signal="pressed" from="RemoveJetBtn" to="." method="_on_remove_jet_btn_pressed"]
