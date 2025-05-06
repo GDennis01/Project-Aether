@@ -1,0 +1,17 @@
+In the HUD->JetTable->JetBody
+    When I press "Add Jet Entry button", a new Emitter is spawned at the 0,0 lat/long of the sphere.
+    The Emitter should be a child of the CometMesh.
+    Thus, in jet_entry.gd, I call, trough get_tree().call_group() a method on the comet_mesh.gd script.(spawn_emitter_at)
+    Somehow, make so that the jet_entry.gd script has a reference to the comet_mesh.gd script so that can be removed.
+
+JetTable:
+- add/remove entry HUD and call a method on the comet_mesh.gd script to add/remove the emitter.
+- edit entry HUD and call a method on the comet_mesh.gd script to edit the emitter.
+
+JetEntry:
+- should store information about the emitter (name, color, size, etc.)
+- should have a reference to the emitter (or the comet_mesh.gd script) to update the emitter when the entry is edited.
+
+CometMesh:
+- should have a reference to the emitter(as it should be a child of the comet mesh)
+    

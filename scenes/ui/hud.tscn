@@ -1,18 +1,17 @@
-[gd_scene load_steps=6 format=3 uid="uid://bwt7dtbn7pn3c"]
+[gd_scene load_steps=5 format=3 uid="uid://bwt7dtbn7pn3c"]
 
 [ext_resource type="Script" uid="uid://bmle6k05e5fff" path="res://scripts/hud.gd" id="1_moku2"]
 [ext_resource type="Script" uid="uid://bwvqb33hu6cxk" path="res://scripts/navbar.gd" id="1_r4m0t"]
 [ext_resource type="PackedScene" uid="uid://blm04kepg8q0g" path="res://scenes/ui/SliderWithLineEdit.tscn" id="3_f5f8u"]
-[ext_resource type="PackedScene" uid="uid://owonx4k017vt" path="res://scenes/ui/jet_entry.tscn" id="4_8qguk"]
 [ext_resource type="Script" uid="uid://cpcxn2i4yw141" path="res://scripts/jet_table.gd" id="4_136eg"]
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_moku2")
 
-[node name="Navbar" type="CanvasLayer" parent="."]
+[node name="Body" type="CanvasLayer" parent="."]
 script = ExtResource("1_r4m0t")
 
-[node name="TabButtons" type="Control" parent="Navbar"]
+[node name="TabButtons" type="Control" parent="Body"]
 layout_mode = 3
 anchor_left = 0.001
 anchor_top = 0.025
@@ -25,7 +24,7 @@ offset_bottom = 44.8
 grow_horizontal = 2
 mouse_filter = 2
 
-[node name="ColorRect" type="ColorRect" parent="Navbar/TabButtons"]
+[node name="ColorRect" type="ColorRect" parent="Body/TabButtons"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.001
@@ -39,7 +38,7 @@ offset_bottom = 47.995
 color = Color(0.1476, 0.31044, 0.36, 0.592157)
 metadata/_edit_group_ = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Navbar/TabButtons/ColorRect"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Body/TabButtons/ColorRect"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 0.993
@@ -48,56 +47,57 @@ offset_top = 6.0
 offset_right = 0.0639648
 offset_bottom = 46.0
 
-[node name="CometBtn" type="Button" parent="Navbar/TabButtons/ColorRect/HBoxContainer"]
+[node name="CometBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
+z_index = 1
 layout_mode = 2
 focus_mode = 0
 text = "Comet"
 
-[node name="JetsBtn" type="Button" parent="Navbar/TabButtons/ColorRect/HBoxContainer"]
+[node name="JetsBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 layout_mode = 2
 focus_mode = 0
 text = "Jets"
 
-[node name="GraphicsBtn" type="Button" parent="Navbar/TabButtons/ColorRect/HBoxContainer"]
+[node name="GraphicsBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 layout_mode = 2
 focus_mode = 0
 text = "Graphics"
 
-[node name="Spacer2" type="Control" parent="Navbar/TabButtons/ColorRect/HBoxContainer"]
+[node name="Spacer2" type="Control" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 layout_direction = 2
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.24
 
-[node name="TriggerRotBtn" type="Button" parent="Navbar/TabButtons/ColorRect/HBoxContainer"]
+[node name="TriggerRotBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 layout_mode = 2
 focus_mode = 0
 text = "Trigger Rotation"
 
-[node name="ResetRotnBtn" type="Button" parent="Navbar/TabButtons/ColorRect/HBoxContainer"]
+[node name="ResetRotnBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 layout_mode = 2
 focus_mode = 0
 text = "Reset Rotation"
 
-[node name="ToggleAxesBtn" type="Button" parent="Navbar/TabButtons/ColorRect/HBoxContainer"]
+[node name="ToggleAxesBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 layout_mode = 2
 focus_mode = 0
 text = "Toggle Axes"
 
-[node name="Spacer" type="Control" parent="Navbar/TabButtons/ColorRect/HBoxContainer"]
+[node name="Spacer" type="Control" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 layout_direction = 2
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="HelpBtn" type="Button" parent="Navbar/TabButtons/ColorRect/HBoxContainer"]
+[node name="HelpBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 layout_mode = 2
 focus_mode = 0
 text = "Help"
 
-[node name="CometTab" type="CanvasLayer" parent="Navbar"]
+[node name="CometTab" type="CanvasLayer" parent="Body"]
 visible = false
 
-[node name="Control" type="Control" parent="Navbar/CometTab"]
+[node name="Control" type="Control" parent="Body/CometTab"]
 layout_mode = 3
 anchor_top = 0.148
 anchor_bottom = 0.148
@@ -108,7 +108,7 @@ offset_bottom = 259.096
 size_flags_horizontal = 0
 metadata/_edit_use_anchors_ = true
 
-[node name="EditRadius" parent="Navbar/CometTab/Control" instance=ExtResource("3_f5f8u")]
+[node name="EditRadius" parent="Body/CometTab/Control" instance=ExtResource("3_f5f8u")]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = -0.974
@@ -124,7 +124,7 @@ minimum_value = 0.01
 maximum_value = 5.0
 starting_value = 0.5
 
-[node name="EditHeight" parent="Navbar/CometTab/Control" instance=ExtResource("3_f5f8u")]
+[node name="EditHeight" parent="Body/CometTab/Control" instance=ExtResource("3_f5f8u")]
 visible = false
 layout_mode = 1
 offset_right = -39.0
@@ -135,7 +135,7 @@ minimum_value = 0.01
 maximum_value = 1000.0
 starting_value = 1.0
 
-[node name="EditInclinationAxis" parent="Navbar/CometTab/Control" groups=["reset_rotation"] instance=ExtResource("3_f5f8u")]
+[node name="EditInclinationAxis" parent="Body/CometTab/Control" groups=["reset_rotation"] instance=ExtResource("3_f5f8u")]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.279
@@ -153,7 +153,7 @@ maximum_value = 180.0
 starting_value = 90.0
 valid_zero = true
 
-[node name="EditDirectionRadius" parent="Navbar/CometTab/Control" groups=["reset_rotation"] instance=ExtResource("3_f5f8u")]
+[node name="EditDirectionRadius" parent="Body/CometTab/Control" groups=["reset_rotation"] instance=ExtResource("3_f5f8u")]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.513
@@ -171,7 +171,7 @@ maximum_value = 360.0
 starting_value = 0.0
 valid_zero = true
 
-[node name="EditSunDir" parent="Navbar/CometTab/Control" instance=ExtResource("3_f5f8u")]
+[node name="EditSunDir" parent="Body/CometTab/Control" instance=ExtResource("3_f5f8u")]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.005
@@ -188,7 +188,7 @@ maximum_value = 180.0
 starting_value = 90.0
 valid_zero = true
 
-[node name="EditSunIncl" parent="Navbar/CometTab/Control" instance=ExtResource("3_f5f8u")]
+[node name="EditSunIncl" parent="Body/CometTab/Control" instance=ExtResource("3_f5f8u")]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 1.03
@@ -204,16 +204,17 @@ maximum_value = 360.0
 starting_value = 0.0
 valid_zero = true
 
-[node name="JetsTab" type="CanvasLayer" parent="Navbar"]
+[node name="JetsTab" type="CanvasLayer" parent="Body"]
 
-[node name="Control" type="Control" parent="Navbar/JetsTab"]
+[node name="Control" type="Control" parent="Body/JetsTab"]
+z_index = 1
 layout_mode = 3
 anchors_preset = 0
 offset_right = 13.0
 offset_bottom = 11.0
 mouse_filter = 2
 
-[node name="SpawnEmitter" type="Button" parent="Navbar/JetsTab/Control"]
+[node name="SpawnEmitter" type="Button" parent="Body/JetsTab/Control"]
 visible = false
 layout_mode = 1
 anchors_preset = -1
@@ -225,7 +226,7 @@ offset_right = 149.0
 offset_bottom = 48.0
 text = "Spawn Emitter"
 
-[node name="Longitude" type="LineEdit" parent="Navbar/JetsTab/Control"]
+[node name="Longitude" type="LineEdit" parent="Body/JetsTab/Control"]
 visible = false
 layout_mode = 0
 offset_left = 80.0
@@ -233,14 +234,14 @@ offset_top = 144.0
 offset_right = 148.563
 offset_bottom = 175.0
 
-[node name="Latitude" type="LineEdit" parent="Navbar/JetsTab/Control"]
+[node name="Latitude" type="LineEdit" parent="Body/JetsTab/Control"]
 visible = false
 layout_mode = 0
 offset_top = 144.0
 offset_right = 68.5625
 offset_bottom = 175.0
 
-[node name="JetIDLabel" type="Label" parent="Navbar/JetsTab/Control"]
+[node name="JetIDLabel" type="Label" parent="Body/JetsTab/Control"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 1.0
@@ -254,7 +255,7 @@ offset_bottom = -8.99901
 scale = Vector2(0.7, 0.7)
 text = "ID"
 
-[node name="SpeedLabel" type="Label" parent="Navbar/JetsTab/Control"]
+[node name="SpeedLabel" type="Label" parent="Body/JetsTab/Control"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 3.077
@@ -268,7 +269,7 @@ offset_bottom = -8.99901
 scale = Vector2(0.7, 0.7)
 text = "Speed"
 
-[node name="LatitudeLabel" type="Label" parent="Navbar/JetsTab/Control"]
+[node name="LatitudeLabel" type="Label" parent="Body/JetsTab/Control"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 7.385
@@ -282,7 +283,7 @@ offset_bottom = -8.99901
 scale = Vector2(0.7, 0.7)
 text = "Lat."
 
-[node name="LongitudeLabel" type="Label" parent="Navbar/JetsTab/Control"]
+[node name="LongitudeLabel" type="Label" parent="Body/JetsTab/Control"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 11.692
@@ -296,7 +297,7 @@ offset_bottom = -8.99901
 scale = Vector2(0.7, 0.7)
 text = "Long."
 
-[node name="DiffusionLabel" type="Label" parent="Navbar/JetsTab/Control"]
+[node name="DiffusionLabel" type="Label" parent="Body/JetsTab/Control"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 15.385
@@ -310,7 +311,7 @@ offset_bottom = -8.99901
 scale = Vector2(0.7, 0.7)
 text = "Diffus."
 
-[node name="ColorLabel" type="Label" parent="Navbar/JetsTab/Control"]
+[node name="ColorLabel" type="Label" parent="Body/JetsTab/Control"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 19.077
@@ -324,7 +325,7 @@ offset_bottom = -8.99901
 scale = Vector2(0.7, 0.7)
 text = "Color"
 
-[node name="ColorLabel2" type="Label" parent="Navbar/JetsTab/Control"]
+[node name="ColorLabel2" type="Label" parent="Body/JetsTab/Control"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 22.769
@@ -338,7 +339,7 @@ offset_bottom = -8.99901
 scale = Vector2(0.7, 0.7)
 text = "Toggle"
 
-[node name="ColorLabel3" type="Label" parent="Navbar/JetsTab/Control"]
+[node name="ColorLabel3" type="Label" parent="Body/JetsTab/Control"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 25.231
@@ -352,7 +353,8 @@ offset_bottom = -8.99901
 scale = Vector2(0.7, 0.7)
 text = "Remove"
 
-[node name="JetTable" type="VBoxContainer" parent="Navbar/JetsTab/Control" node_paths=PackedStringArray("content_node", "scroll_container") groups=["jet_table"]]
+[node name="JetTable" type="VBoxContainer" parent="Body/JetsTab/Control" node_paths=PackedStringArray("content_node", "scroll_container") groups=["jet_table"]]
+z_index = 1
 layout_mode = 2
 offset_left = 8.0
 offset_top = 112.0
@@ -364,36 +366,30 @@ content_node = NodePath("JetBodyScrollBar/JetBody")
 scroll_container = NodePath("JetBodyScrollBar")
 metadata/_edit_group_ = true
 
-[node name="JetBodyScrollBar" type="ScrollContainer" parent="Navbar/JetsTab/Control/JetTable"]
-custom_minimum_size = Vector2(0, 45)
+[node name="JetBodyScrollBar" type="ScrollContainer" parent="Body/JetsTab/Control/JetTable"]
 layout_mode = 2
 vertical_scroll_mode = 4
 
-[node name="JetBody" type="VBoxContainer" parent="Navbar/JetsTab/Control/JetTable/JetBodyScrollBar"]
+[node name="JetBody" type="VBoxContainer" parent="Body/JetsTab/Control/JetTable/JetBodyScrollBar"]
 layout_mode = 2
 
-[node name="JetEntry" parent="Navbar/JetsTab/Control/JetTable/JetBodyScrollBar/JetBody" instance=ExtResource("4_8qguk")]
-custom_minimum_size = Vector2(495, 45)
-layout_mode = 2
-size_flags_stretch_ratio = 2.28
-
-[node name="AddJetEntryBtn" type="Button" parent="Navbar/JetsTab/Control/JetTable"]
+[node name="AddJetEntryBtn" type="Button" parent="Body/JetsTab/Control/JetTable"]
 layout_mode = 2
 size_flags_stretch_ratio = 3.62
 focus_mode = 0
 text = "Add Jet Entry"
 
-[node name="GraphicTab" type="CanvasLayer" parent="Navbar"]
+[node name="GraphicTab" type="CanvasLayer" parent="Body"]
 visible = false
 
-[node name="Control" type="Control" parent="Navbar/GraphicTab"]
+[node name="Control" type="Control" parent="Body/GraphicTab"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 13.0
 offset_bottom = 11.0
 mouse_filter = 2
 
-[node name="Button" type="Button" parent="Navbar/GraphicTab/Control"]
+[node name="Button" type="Button" parent="Body/GraphicTab/Control"]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 7.273
@@ -404,16 +400,16 @@ offset_right = 132.0
 offset_bottom = 30.997
 text = "TODO Graphic"
 
-[node name="HelpPanel" type="CanvasLayer" parent="Navbar"]
+[node name="HelpPanel" type="CanvasLayer" parent="Body"]
 visible = false
 
-[node name="BoxContainer" type="BoxContainer" parent="Navbar/HelpPanel"]
+[node name="BoxContainer" type="BoxContainer" parent="Body/HelpPanel"]
 offset_left = 13.0
 offset_top = 79.0
 offset_right = 261.0
 offset_bottom = 220.0
 
-[node name="Label" type="Label" parent="Navbar/HelpPanel/BoxContainer"]
+[node name="Label" type="Label" parent="Body/HelpPanel/BoxContainer"]
 layout_mode = 2
 text = "Right Click to rotate the view
 W/A/S/D to move around
@@ -425,12 +421,13 @@ Shift while moving to move faster
 Alt while moving to move slower
 "
 
-[connection signal="pressed" from="Navbar/TabButtons/ColorRect/HBoxContainer/CometBtn" to="Navbar" method="_on_cometbtn_pressed"]
-[connection signal="pressed" from="Navbar/TabButtons/ColorRect/HBoxContainer/JetsBtn" to="Navbar" method="_on_jetsbtn_pressed"]
-[connection signal="pressed" from="Navbar/TabButtons/ColorRect/HBoxContainer/GraphicsBtn" to="Navbar" method="_on_graphicsbtn_pressed"]
-[connection signal="pressed" from="Navbar/TabButtons/ColorRect/HBoxContainer/TriggerRotBtn" to="Navbar" method="_on_trigger_rot_btn_pressed"]
-[connection signal="pressed" from="Navbar/TabButtons/ColorRect/HBoxContainer/ResetRotnBtn" to="Navbar" method="_on_reset_rotn_btn_pressed"]
-[connection signal="pressed" from="Navbar/TabButtons/ColorRect/HBoxContainer/ToggleAxesBtn" to="Navbar" method="_on_toggle_axes_btn_pressed"]
-[connection signal="pressed" from="Navbar/TabButtons/ColorRect/HBoxContainer/HelpBtn" to="Navbar" method="_on_help_btn_pressed"]
-[connection signal="pressed" from="Navbar/JetsTab/Control/SpawnEmitter" to="Navbar" method="_on_spawn_emitter_pressed"]
-[connection signal="pressed" from="Navbar/JetsTab/Control/JetTable/AddJetEntryBtn" to="Navbar/JetsTab/Control/JetTable" method="_on_add_jet_entry_btn_pressed"]
+[connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/CometBtn" to="Body" method="_on_cometbtn_pressed"]
+[connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/JetsBtn" to="Body" method="_on_jetsbtn_pressed"]
+[connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/GraphicsBtn" to="Body" method="_on_graphicsbtn_pressed"]
+[connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/TriggerRotBtn" to="Body" method="_on_trigger_rot_btn_pressed"]
+[connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ResetRotnBtn" to="Body" method="_on_reset_rotn_btn_pressed"]
+[connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ToggleAxesBtn" to="Body" method="_on_toggle_axes_btn_pressed"]
+[connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/HelpBtn" to="Body" method="_on_help_btn_pressed"]
+[connection signal="pressed" from="Body/JetsTab/Control/SpawnEmitter" to="Body" method="_on_spawn_emitter_pressed"]
+[connection signal="pressed" from="Body/JetsTab/Control/JetTable/AddJetEntryBtn" to="Body" method="_on_add_jet_entry_btn_pressed"]
+[connection signal="pressed" from="Body/JetsTab/Control/JetTable/AddJetEntryBtn" to="Body/JetsTab/Control/JetTable" method="_on_add_jet_entry_btn_pressed"]

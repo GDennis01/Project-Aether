@@ -2,21 +2,21 @@ extends Node3D
 class_name Emitter
 const RAY_LENGHT = 1000000
 
-var particles_alive:Array[MeshInstance3D]
-var time_start:float
-var time_now:float
-var _sphere_mesh:SphereMesh
+var particles_alive: Array[MeshInstance3D]
+var time_start: float
+var time_now: float
+var _sphere_mesh: SphereMesh
 
-var latitude:float
-var longitude:float
+var latitude: float
+var longitude: float
 
-var is_lit:bool=true
-@export var max_particles:int = 10
-@export var particle_per_second:int = 5
-@export var particle_radius:float = 0.1
-@export var enabled:bool = true
-@export var light_source:Light3D
-@export var comet_collider:CollisionObject3D
+var is_lit: bool = true
+@export var max_particles: int = 10
+@export var particle_per_second: int = 5
+@export var particle_radius: float = 0.1
+@export var enabled: bool = true
+@export var light_source: Light3D
+@export var comet_collider: CollisionObject3D
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	time_start = Time.get_ticks_msec()
@@ -30,12 +30,14 @@ func _ready() -> void:
 	
 	_sphere_mesh = SphereMesh.new()
 	_sphere_mesh.radius = particle_radius
-	_sphere_mesh.height = particle_radius*2
-	_sphere_mesh.surface_set_material(0,unshaded_material)
+	_sphere_mesh.height = particle_radius * 2
+	_sphere_mesh.surface_set_material(0, unshaded_material)
 	
 func _physics_process(_delta: float) -> void:
-	var space_state := get_world_3d().direct_space_state 
-	var has_line_of_sight:bool
+	if not visible:
+		return
+	var space_state := get_world_3d().direct_space_state
+	var has_line_of_sight: bool
 	
 	#var ray_origin = global_position
 	#var light_dir_vector = light_source.global_transform.basis.z.normalized()
@@ -46,9 +48,9 @@ func _physics_process(_delta: float) -> void:
 	var light_pos = light_source.global_position
 	var light_dir_vector = light_source.global_transform.basis.z.normalized()
 	var emitter_pos = global_position
-	DebugLine.DrawLine(light_pos,emitter_pos,Color(0,255,0))
+	DebugLine.DrawLine(light_pos, emitter_pos, Color(0, 255, 0))
 
-	var query = PhysicsRayQueryParameters3D.create(light_pos,emitter_pos)
+	var query = PhysicsRayQueryParameters3D.create(light_pos, emitter_pos)
 	query.collide_with_areas = true
 	#query.collide_with_bodies = true
 	
@@ -59,7 +61,7 @@ func _physics_process(_delta: float) -> void:
 	# Così almeno non si bugga all'inizio alla prima iterazione
 	# Oppure convertire tutto sto processo in un metodo e richiamarlo al ready per settare
 	# lo stato iniziale di is_lit
-	if  not is_lit and result.is_empty():
+	if not is_lit and result.is_empty():
 		#enabled = true
 		#print("LIT\n")
 		is_lit = true
@@ -75,7 +77,7 @@ func _physics_process(_delta: float) -> void:
 func _process(delta: float) -> void:
 	time_now = Time.get_ticks_msec()
 	
-	if enabled and time_now-time_start> 1000 * 1.0/particle_per_second:
+	if enabled and time_now - time_start > 1000 * 1.0 / particle_per_second:
 		#var my_mesh = MeshInstance3D.new()
 		#add_child(my_mesh)
 		#my_mesh.mesh = _sphere_mesh
@@ -89,7 +91,7 @@ func _process(delta: float) -> void:
 			#particles_alive.append(my_mesh)
 			#particles_alive = particles_alive.slice(1,-1)
 		time_start = Time.get_ticks_msec()
-		var my_mesh:MeshInstance3D	
+		var my_mesh: MeshInstance3D
 		if particles_alive.size() < max_particles:
 			my_mesh = MeshInstance3D.new()
 			my_mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
@@ -103,7 +105,7 @@ func _process(delta: float) -> void:
 			my_mesh.global_position = global_position
 			particles_alive.append(my_mesh)
 	for particle in particles_alive:
-		particle.global_position.x +=1*delta
+		particle.global_position.x += 1 * delta
 		
 	#var current_angle = angular_speed * time_now
 #
@@ -113,6 +115,6 @@ func _process(delta: float) -> void:
 		#particle.position.z = helix_center.z + radius * sin(current_angle)*0.01
 	pass
 	
-func update_position(radius:float)->void:
-	var new_pos = Util.latlon_to_vector3(latitude,longitude+90,radius)
+func update_position(radius: float) -> void:
+	var new_pos = Util.latlon_to_vector3(latitude, longitude + 90, radius)
 	position = new_pos

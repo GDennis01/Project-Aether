@@ -109,6 +109,7 @@ offset_right = 436.0
 offset_bottom = 30.0
 scale = Vector2(1.41, 1.41)
 focus_mode = 0
+button_pressed = true
 metadata/_edit_use_anchors_ = true
 
 [node name="RemoveJetBtn" type="Button" parent="."]
@@ -127,6 +128,8 @@ metadata/_edit_use_anchors_ = true
 [connection signal="editing_toggled" from="SpeedEdit" to="." method="_on_speed_edit_editing_toggled"]
 [connection signal="text_changed" from="SpeedEdit" to="." method="_on_speed_edit_text_changed"]
 [connection signal="editing_toggled" from="LatitudeEdit" to="." method="_on_latitude_edit_editing_toggled"]
+[connection signal="focus_exited" from="LatitudeEdit" to="." method="_on_latitude_edit_focus_exited"]
+[connection signal="gui_input" from="LatitudeEdit" to="." method="_on_latitude_edit_gui_input"]
 [connection signal="text_changed" from="LatitudeEdit" to="." method="_on_latitude_edit_text_changed"]
 [connection signal="editing_toggled" from="LongitudeEdit" to="." method="_on_longitude_edit_editing_toggled"]
 [connection signal="text_changed" from="LongitudeEdit" to="." method="_on_longitude_edit_text_changed"]

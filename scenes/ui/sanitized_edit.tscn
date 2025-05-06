@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3 uid="uid://b31lb3a4drve4"]
+
+[ext_resource type="Script" uid="uid://ed326t4b8lbg" path="res://scripts/sanitized_edit.gd" id="1_httd2"]
+
+[node name="SanitizedEdit" type="Control"]
+layout_mode = 3
+anchor_right = 0.06
+anchor_bottom = 0.048
+offset_right = -0.120003
+offset_bottom = -0.104
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_httd2")
+
+[node name="LineEdit" type="LineEdit" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.994
+anchor_bottom = 0.969
+offset_right = -0.0234985
+offset_bottom = -0.00800133
+
+[connection signal="editing_toggled" from="LineEdit" to="." method="_on_line_edit_editing_toggled"]

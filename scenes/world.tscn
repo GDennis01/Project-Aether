@@ -75,7 +75,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -16.47, 0)
 mesh = SubResource("PlaneMesh_hg46x")
 surface_material_override/0 = SubResource("StandardMaterial3D_bjs0p")
 
-[node name="CometMesh" type="MeshInstance3D" parent="." node_paths=PackedStringArray("light_source", "comet_collider") groups=["direction_rotation", "height", "inclination_rotation", "latitude", "longitude", "radius", "reset_rotation", "trigger_rotation"]]
+[node name="CometMesh" type="MeshInstance3D" parent="." node_paths=PackedStringArray("light_source", "comet_collider") groups=["comet", "direction_rotation", "height", "inclination_rotation", "latitude", "longitude", "radius", "reset_rotation", "trigger_rotation"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.03817, 0)
 mesh = SubResource("SphereMesh_f4gce")
 surface_material_override/0 = SubResource("ShaderMaterial_7r4gi")
