@@ -82,3 +82,7 @@ func _on_add_jet_entry_btn_pressed() -> void:
 	# $JetsTab/Control/JetTable/JetBodyScrollBar/JetBody.add_child(new_entry)
 	# $JetsTab/Control/JetTable._update_scroll_container_height()
 	pass
+
+func _on_save_btn_pressed() -> void:
+	print(OS.get_data_dir())
+	SaveManager.config.save("user://config.cfg")

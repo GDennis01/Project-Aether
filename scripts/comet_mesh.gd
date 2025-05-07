@@ -91,7 +91,8 @@ func update_radius(value: float) -> void:
 		y_axis.set_height(mesh.height)
 	if z_axis:
 		z_axis.set_height(mesh.height)
-	get_tree().call_group("emitter", "update_position", mesh.radius)
+	SaveManager.config.set_value("comet", "radius", mesh.radius)
+	get_tree().call_group("emitter", "update_position", value)
 		
 ## Deprecated
 func update_height(value: float) -> void:
@@ -101,6 +102,8 @@ func update_height(value: float) -> void:
 
 func update_direction_rotation(value: float) -> void:
 	rotation_degrees.z = value
+	SaveManager.config.set_value("comet", "direction", value)
 func update_inclination_rotation(value: float) -> void:
 	#print_debug("[UPDATE INCLINATION]")
 	rotation_degrees.x = - value + 90
+	SaveManager.config.set_value("comet", "inclination", value)

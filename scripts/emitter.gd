@@ -9,6 +9,7 @@ var _sphere_mesh: SphereMesh
 var comet_radius: float
 
 # properties of emitter/jet_entry
+var jet_id: int
 var speed: float
 var latitude: float
 var longitude: float

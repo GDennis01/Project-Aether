@@ -23,6 +23,7 @@ Hud="*res://scenes/ui/hud.tscn"
 FlyCamera="*res://scenes/fly_camera.tscn"
 DebugLine="*res://scripts/3d_lines.gd"
 Util="*res://scripts/util.gd"
+SaveManager="*res://scenes/save_manager.tscn"
 
 [input]
 

@@ -25,17 +25,20 @@ func _update_scroll_container_height() -> void:
 	
 	
 func _on_add_jet_entry_btn_pressed() -> void:
+	# creating the entry in the hud
 	var new_entry = jet_entry_scene.instantiate() as JetEntry
 	var entries := get_tree().get_nodes_in_group("jet_entry")
 	var max_id = entries.size()
 	new_entry.set_id_label(max_id)
 
+	# adding the entry to the vertical container
 	content_node.add_child(new_entry)
 	_update_scroll_container_height()
 
 	# instantiating an emitter so that I can pass it to the CometMesh and thus setting correctly the position according
 	# to the comet radius
 	var emitter = load("res://scenes/particle_emitter.tscn").instantiate() as Emitter
+
 	# connecting the emitter to SanitizedEdit signals so that whenever one of those SanitizedEdit value changes,
 	# the corresponding update method is called on the emitter
 	new_entry.speed_edit.sanitized_edit_focus_exited.connect(emitter.update_speed)
@@ -44,20 +47,29 @@ func _on_add_jet_entry_btn_pressed() -> void:
 	new_entry.diffusion_edit.sanitized_edit_focus_exited.connect(emitter.update_diff)
 	new_entry.color_edit.color_changed.connect(emitter.update_color)
 
+	# Saving entry to config
+	# TODO: trovare un modo per usare il jet_id -> bisogna prima fixare l'update del jet_id
+	SaveManager.config.set_value("jet_" + str(emitter.get_instance_id()), "speed", new_entry.speed)
+	SaveManager.config.set_value("jet_" + str(emitter.get_instance_id()), "latitude", new_entry.latitude)
+	SaveManager.config.set_value("jet_" + str(emitter.get_instance_id()), "longitude", new_entry.longitude)
+	SaveManager.config.set_value("jet_" + str(emitter.get_instance_id()), "diffusion", new_entry.diffusion)
+	SaveManager.config.set_value("jet_" + str(emitter.get_instance_id()), "color", new_entry.color)
+
 	# Saving (jet_entry,emitter) to a dictionary so that later on I can remove both entry(HUD) and the emitter node
 	entry_emitter_dict.set(new_entry.get_instance_id(), emitter.get_instance_id())
 	get_tree().call_group("latitude", "spawn_emitter_at", 0.0, 0.0, emitter)
 
 	# spawning an emitter at the latitude and longitude given by the second-last entry
 """
-Called by JetEntry._on_remove_jet_btn_pressed()
-TODO: logica per cancellare anche la particella
+CalledbyJetEntry._on_remove_jet_btn_pressed()
 """
 func remove_jet_entry(id: int) -> void:
 	# first deleting the entry, then removing the emitter by calling a comet's method
 	var entry = instance_from_id(id)
 	var emitter_id = entry_emitter_dict[id]
 	entry.queue_free()
+	# removing corresponding jet section
+	SaveManager.config.erase_section("jet_" + str(emitter_id))
 	get_tree().call_group("comet", "remove_emitter", emitter_id)
 	await get_tree().process_frame
 	_update_scroll_container_height()
@@ -73,8 +85,7 @@ func remove_jet_entry(id: int) -> void:
 			# var id_tmp = _entry.get_instance_id()
 
 """
-Called by JetEntry._on_toggle_jet_btn_pressed()
-TODO: logica per il toggle della particella
+CalledbyJetEntry._on_toggle_jet_btn_pressed()
 """
 func toggle_jet_entry(id: int) -> void:
 	var emitter_to_toggle = instance_from_id(entry_emitter_dict[id])

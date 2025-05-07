@@ -8,8 +8,6 @@ var previous_value: float
 @export var lower_bound: float = 0
 @export var higher_bound: float = 0
 
-# TODO: make a custom signal when it exit out of focus so that I can trigger custom actions
-# capire come connetterlo ai vari componenti??
 signal sanitized_edit_focus_exited
 
 # Called when the node enters the scene tree for the first time.
