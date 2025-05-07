@@ -48,7 +48,9 @@ func _process(delta: float) -> void:
 		pass
 	pass
 
-
+"""
+Called by JetTable._on_add_jet_entry_btn_pressed
+"""
 func spawn_emitter_at(latitude: float, longitude: float, emitter: Emitter) -> void:
 	print("Latitude:" + str(latitude) + " Longitude:" + str(longitude))
 	add_child(emitter)
@@ -58,6 +60,7 @@ func spawn_emitter_at(latitude: float, longitude: float, emitter: Emitter) -> vo
 	emitter.position = emitter_pos
 	emitter.enabled = false
 	emitter.comet_collider = comet_collider
+	emitter.comet_radius = mesh.radius
 	emitter.light_source = light_source
 """
 Called by JetTable.remove_jet_entry

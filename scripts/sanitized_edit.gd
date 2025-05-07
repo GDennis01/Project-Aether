@@ -29,7 +29,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
 				self.release_focus()
 				sanitize_field(lower_bound, higher_bound)
-				# sanitized_edit_focus_exited.emit()
+				sanitized_edit_focus_exited.emit(float(self.text))
 				if slider:
 					slider.set_value_no_signal(float(self.text))
 				if resize_type:

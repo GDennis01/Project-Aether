@@ -6,9 +6,14 @@ var particles_alive: Array[MeshInstance3D]
 var time_start: float
 var time_now: float
 var _sphere_mesh: SphereMesh
+var comet_radius: float
 
+# properties of emitter/jet_entry
+var speed: float
 var latitude: float
 var longitude: float
+var diffusion: float
+var color: Color
 
 var is_lit: bool = true
 @export var max_particles: int = 10
@@ -43,7 +48,7 @@ func _physics_process(_delta: float) -> void:
 	#var light_dir_vector = light_source.global_transform.basis.z.normalized()
 	#var ray_end = ray_origin+light_dir_vector*RAY_LENGHT
 	#DebugLine.DrawLine(ray_origin,ray_end,Color(0,255,0))
-#
+
 	#var query = PhysicsRayQueryParameters3D.create(ray_origin,ray_end)
 	var light_pos = light_source.global_position
 	var light_dir_vector = light_source.global_transform.basis.z.normalized()
@@ -108,13 +113,36 @@ func _process(delta: float) -> void:
 		particle.global_position.x += 1 * delta
 		
 	#var current_angle = angular_speed * time_now
-#
 	#for particle in particles_alive:
 		#particle.position.x = helix_center.x + radius * cos(current_angle)*0.01
 		#particle.position.y = helix_center.y + pitch_factor * current_angle*0.01
 		#particle.position.z = helix_center.z + radius * sin(current_angle)*0.01
 	pass
-	
+
+
+###################################################################################
+# Update methods called when sanitized_edit.sanitized_edit_focus_exited is emitted
+# Connection of signals is done in JetTable._on_add_jet_entry_btn_pressed
+###################################################################################
 func update_position(radius: float) -> void:
 	var new_pos = Util.latlon_to_vector3(latitude, longitude + 90, radius)
 	position = new_pos
+func update_speed(speed: float) -> void:
+	print("new_speed:" + str(speed))
+	pass
+func update_lat(lat: float) -> void:
+	print("new_lat:" + str(lat))
+	latitude = lat
+	var new_pos = Util.latlon_to_vector3(latitude, longitude, comet_radius)
+	position = new_pos
+func update_long(long: float) -> void:
+	print("new_long:" + str(long))
+	longitude = long + 90
+	var new_pos = Util.latlon_to_vector3(latitude, longitude, comet_radius)
+	position = new_pos
+func update_diff(diffusion: float) -> void:
+	print("new_diff:" + str(diffusion))
+	pass
+func update_color(_color: Color) -> void:
+	print("new_color:" + str(_color))
+	color = _color

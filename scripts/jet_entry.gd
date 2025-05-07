@@ -3,6 +3,14 @@ class_name JetEntry
 
 var emitter_scene := preload("res://scenes/particle_emitter.tscn")
 
+
+#entry nodes
+var speed_edit: SanitizedEdit
+var latitude_edit: SanitizedEdit
+var longitude_edit: SanitizedEdit
+var diffusion_edit: SanitizedEdit
+var color_edit: ColorPickerButton
+
 # entry fields
 var jet_id: int = 0
 var speed: float = 0
@@ -14,6 +22,7 @@ var prev_long: float = 0
 var diffusion: float = 0
 var prev_diff: float = 0
 var color: Color = Color.WHITE
+
 # emitter node
 var emitter: Emitter
 
@@ -29,6 +38,14 @@ func _ready() -> void:
 	$DiffusionEdit.text = str(randf())
 	$ColorPickerButton.color = Color(randf(), randf(), randf())
 	print(Hud.current_radius)
+
+	# setting nodes
+	speed_edit = $SpeedEdit
+	latitude_edit = $LatitudeEdit
+	longitude_edit = $LongitudeEdit
+	diffusion_edit = $DiffusionEdit
+	color_edit = $ColorPickerButton
+
 	# Setting the color picker shape/features
 	var color_picker := $ColorPickerButton.get_picker() as ColorPicker
 	color_picker.presets_visible = false
@@ -47,12 +64,6 @@ func _ready() -> void:
 	#emitter.comet_collider = Hud.comet_collider
 	#emitter.light_source = Hud.light_source
 	#add_child(emitter)
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta: float) -> void:
-	#pass
-
 func set_id_label(value: int) -> void:
 	$JetID.text = str(value)
 	jet_id = value
@@ -71,33 +82,3 @@ Calls JetTable.toggle_jet_entry
 """
 func _on_toggle_jet_pressed() -> void:
 	get_tree().call_group("jet_table", "toggle_jet_entry", self.get_instance_id())
-
-
-func set_jet_entry_field(line_edit: LineEdit, value: float) -> void:
-	if line_edit == $LatitudeEdit:
-		latitude = value
-		prev_lat = value
-	elif line_edit == $LongitudeEdit:
-		longitude = value
-		prev_long = value
-	elif line_edit == $SpeedEdit:
-		speed = value
-		prev_speed = value
-	elif line_edit == $DiffusionEdit:
-		diffusion = value
-		prev_diff = value
-		
-func sanitize_field(line_edit: LineEdit, low: float, higher: float) -> void:
-	if line_edit.text.is_valid_float():
-		var new_val = clampf(float(line_edit.text), low, higher)
-		set_jet_entry_field(line_edit, new_val)
-		line_edit.prev_val = new_val
-	else:
-		line_edit.text = str(line_edit.prev_val)
-# func _unhandled_input(event: InputEvent) -> void:
-# 	var edit_fields = [$SpeedEdit, $LatitudeEdit, $LongitudeEdit, $DiffusionEdit]
-# 	var edit_sanitization_field = [??,??,??]
-# 	for edit_field in edit_fields:
-# 		if edit_field and edit_field.has_focus():
-# 			if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
-# 				edit_field.release_focus()

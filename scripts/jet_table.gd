@@ -36,9 +36,17 @@ func _on_add_jet_entry_btn_pressed() -> void:
 	# instantiating an emitter so that I can pass it to the CometMesh and thus setting correctly the position according
 	# to the comet radius
 	var emitter = load("res://scenes/particle_emitter.tscn").instantiate() as Emitter
+	# connecting the emitter to SanitizedEdit signals so that whenever one of those SanitizedEdit value changes,
+	# the corresponding update method is called on the emitter
+	new_entry.speed_edit.sanitized_edit_focus_exited.connect(emitter.update_speed)
+	new_entry.latitude_edit.sanitized_edit_focus_exited.connect(emitter.update_lat)
+	new_entry.longitude_edit.sanitized_edit_focus_exited.connect(emitter.update_long)
+	new_entry.diffusion_edit.sanitized_edit_focus_exited.connect(emitter.update_diff)
+	new_entry.color_edit.color_changed.connect(emitter.update_color)
+
 	# Saving (jet_entry,emitter) to a dictionary so that later on I can remove both entry(HUD) and the emitter node
 	entry_emitter_dict.set(new_entry.get_instance_id(), emitter.get_instance_id())
-	get_tree().call_group("latitude", "spawn_emitter_at", randf() * 10, randf() * 10, emitter)
+	get_tree().call_group("latitude", "spawn_emitter_at", 0.0, 0.0, emitter)
 
 	# spawning an emitter at the latitude and longitude given by the second-last entry
 """
