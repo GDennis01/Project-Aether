@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://blm04kepg8q0g"]
+[gd_scene load_steps=3 format=3 uid="uid://blm04kepg8q0g"]
 
 [ext_resource type="Script" uid="uid://cenvj7oosq5qk" path="res://scripts/slider_with_line_edit.gd" id="1_nm6q3"]
+[ext_resource type="PackedScene" uid="uid://b31lb3a4drve4" path="res://scenes/ui/sanitized_edit.tscn" id="2_1k185"]
 
 [node name="SliderWithLineEdit" type="Control" node_paths=PackedStringArray("slider", "line_edit")]
 layout_mode = 3
@@ -13,7 +14,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_nm6q3")
 slider = NodePath("Slider")
-line_edit = NodePath("LineEdit")
+line_edit = NodePath("SanitizedEdit")
 label = &"Ciao"
 starting_value = 2.0
 
@@ -28,9 +29,10 @@ max_value = 0.0
 step = 0.1
 
 [node name="LineEdit" type="LineEdit" parent="."]
+visible = false
 layout_mode = 0
 offset_left = 106.0
-offset_right = 173.063
+offset_right = 174.563
 offset_bottom = 31.0
 focus_mode = 1
 text = "2.0"
@@ -41,6 +43,15 @@ offset_right = 54.0
 offset_bottom = 31.0
 text = "Ciao"
 
+[node name="SanitizedEdit" parent="." node_paths=PackedStringArray("slider") instance=ExtResource("2_1k185")]
+layout_mode = 1
+offset_left = 107.0
+offset_right = 168.0
+offset_bottom = 31.0
+text = "2.0"
+slider = NodePath("../Slider")
+
 [connection signal="value_changed" from="Slider" to="." method="_on_slider_value_changed"]
 [connection signal="editing_toggled" from="LineEdit" to="." method="_on_line_edit_editing_toggled"]
 [connection signal="text_changed" from="LineEdit" to="." method="_on_line_edit_text_changed"]
+[connection signal="text_changed" from="SanitizedEdit" to="." method="_on_sanitized_edit_text_changed"]

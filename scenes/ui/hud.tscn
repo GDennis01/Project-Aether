@@ -95,7 +95,6 @@ focus_mode = 0
 text = "Help"
 
 [node name="CometTab" type="CanvasLayer" parent="Body"]
-visible = false
 
 [node name="Control" type="Control" parent="Body/CometTab"]
 layout_mode = 3
@@ -111,13 +110,14 @@ metadata/_edit_use_anchors_ = true
 [node name="EditRadius" parent="Body/CometTab/Control" instance=ExtResource("3_f5f8u")]
 layout_mode = 1
 anchors_preset = -1
-anchor_top = -0.974
-anchor_right = 0.0
-anchor_bottom = -0.974
-offset_left = 16.0
-offset_top = 262.136
-offset_right = 202.0
-offset_bottom = 317.258
+anchor_left = 0.077
+anchor_top = 0.019
+anchor_right = 0.077
+anchor_bottom = 0.019
+offset_left = 1.062
+offset_top = -0.0160003
+offset_right = 192.062
+offset_bottom = 54.984
 label = &"Radius"
 resize_type = &"radius"
 minimum_value = 0.01
@@ -127,8 +127,16 @@ starting_value = 0.5
 [node name="EditHeight" parent="Body/CometTab/Control" instance=ExtResource("3_f5f8u")]
 visible = false
 layout_mode = 1
-offset_right = -39.0
-offset_bottom = -39.0
+anchors_preset = -1
+anchor_left = 1.108
+anchor_right = 1.108
+anchor_bottom = 0.0
+offset_left = 0.0479889
+offset_top = 5.0
+offset_right = 176.048
+offset_bottom = 54.0
+grow_horizontal = 1
+grow_vertical = 1
 label = &"Height"
 resize_type = &"height_"
 minimum_value = 0.01
@@ -143,7 +151,7 @@ anchor_right = 0.0
 anchor_bottom = 0.279
 offset_left = 16.0
 offset_top = 0.343987
-offset_right = 192.0
+offset_right = 215.0
 offset_bottom = 59.344
 grow_horizontal = 1
 grow_vertical = 1
@@ -205,6 +213,7 @@ starting_value = 0.0
 valid_zero = true
 
 [node name="JetsTab" type="CanvasLayer" parent="Body"]
+visible = false
 
 [node name="Control" type="Control" parent="Body/JetsTab"]
 z_index = 1

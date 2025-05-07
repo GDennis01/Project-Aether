@@ -3,8 +3,14 @@ class_name SanitizedEdit
 
 var property_value: float
 var previous_value: float
+@export var resize_type: StringName
+@export var slider: Slider
 @export var lower_bound: float = 0
 @export var higher_bound: float = 0
+
+# TODO: make a custom signal when it exit out of focus so that I can trigger custom actions
+# capire come connetterlo ai vari componenti??
+signal sanitized_edit_focus_exited
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -23,13 +29,15 @@ func _unhandled_input(event: InputEvent) -> void:
 			if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
 				self.release_focus()
 				sanitize_field(lower_bound, higher_bound)
+				# sanitized_edit_focus_exited.emit()
+				if slider:
+					slider.set_value_no_signal(float(self.text))
+				if resize_type:
+					get_tree().call_group(resize_type, "update_" + resize_type, float(self.text))
 
 
 func _on_editing_toggled(toggled_on: bool) -> void:
-	print("e")
 	if toggled_on:
 		FlyCamera.set_process(false)
-		print("t")
 	else:
 		FlyCamera.set_process(true)
-		print("o")
