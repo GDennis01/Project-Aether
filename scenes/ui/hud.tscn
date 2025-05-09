@@ -105,6 +105,10 @@ layout_mode = 2
 focus_mode = 0
 text = "Help"
 
+[node name="FileExplorer" type="FileDialog" parent="Body/TabButtons/ColorRect/HBoxContainer"]
+access = 2
+use_native_dialog = true
+
 [node name="CometTab" type="CanvasLayer" parent="Body" groups=["load"]]
 visible = false
 script = ExtResource("3_136eg")
@@ -452,6 +456,7 @@ Alt while moving to move slower
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/SaveBtn" to="Body" method="_on_save_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/LoadBtn" to="Body" method="_on_load_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/HelpBtn" to="Body" method="_on_help_btn_pressed"]
+[connection signal="file_selected" from="Body/TabButtons/ColorRect/HBoxContainer/FileExplorer" to="Body" method="_on_file_explorer_file_selected"]
 [connection signal="pressed" from="Body/JetsTab/Control/SpawnEmitter" to="Body" method="_on_spawn_emitter_pressed"]
 [connection signal="pressed" from="Body/JetsTab/Control/JetTable/AddJetEntryBtn" to="Body" method="_on_add_jet_entry_btn_pressed"]
 [connection signal="pressed" from="Body/JetsTab/Control/JetTable/AddJetEntryBtn" to="Body/JetsTab/Control/JetTable" method="_on_add_jet_entry_btn_pressed"]

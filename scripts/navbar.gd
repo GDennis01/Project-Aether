@@ -85,9 +85,17 @@ func _on_add_jet_entry_btn_pressed() -> void:
 
 func _on_save_btn_pressed() -> void:
 	print(OS.get_data_dir())
-	SaveManager.save("user://config.cfg")
-
+	$TabButtons/ColorRect/HBoxContainer/FileExplorer.file_mode = FileDialog.FILE_MODE_SAVE_FILE
+	$TabButtons/ColorRect/HBoxContainer/FileExplorer.visible = true
 
 func _on_load_btn_pressed() -> void:
-	SaveManager.load("user://config.cfg")
-	get_tree().call_group("load", "load_data")
+	$TabButtons/ColorRect/HBoxContainer/FileExplorer.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+	$TabButtons/ColorRect/HBoxContainer/FileExplorer.visible = true
+
+	
+func _on_file_explorer_file_selected(path: String) -> void:
+	if $TabButtons/ColorRect/HBoxContainer/FileExplorer.file_mode == FileDialog.FILE_MODE_SAVE_FILE:
+		SaveManager.save(path)
+	if $TabButtons/ColorRect/HBoxContainer/FileExplorer.file_mode == FileDialog.FILE_MODE_OPEN_FILE:
+		SaveManager.load(path)
+		get_tree().call_group("load", "load_data")
