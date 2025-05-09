@@ -37,7 +37,21 @@ func _on_slider_value_changed(value: float) -> void:
 	#print("entered slider","update_"+resize_type)
 	get_tree().call_group(resize_type, "update_" + resize_type, value)
 
-		
+"""
+Sets the value of both line edit and slider
+"""
+func set_value(value: float) -> void:
+	value = clampf(value, minimum_value, maximum_value)
+	print(value)
+	# print(label + " clamped value between" + str(minimum_value) + " and maiximum value:" + str(maximum_value) + " is:" + str(value))
+	# this loc triggers _on_slider_value_changed
+	slider.value = value
+	print(slider.value)
+
+
+"""
+Called by Navbar._on_reset_rotn_btn_pressed()
+"""
 func reset_rotation() -> void:
 	slider.value = starting_value
 	line_edit.text = str(starting_value)

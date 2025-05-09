@@ -85,4 +85,9 @@ func _on_add_jet_entry_btn_pressed() -> void:
 
 func _on_save_btn_pressed() -> void:
 	print(OS.get_data_dir())
-	SaveManager.config.save("user://config.cfg")
+	SaveManager.save("user://config.cfg")
+
+
+func _on_load_btn_pressed() -> void:
+	SaveManager.load("user://config.cfg")
+	get_tree().call_group("load", "load_data")

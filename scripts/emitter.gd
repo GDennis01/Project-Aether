@@ -128,8 +128,8 @@ func _process(delta: float) -> void:
 func update_position(radius: float) -> void:
 	var new_pos = Util.latlon_to_vector3(latitude, longitude + 90, radius)
 	position = new_pos
-func update_speed(speed: float) -> void:
-	print("new_speed:" + str(speed))
+func update_speed(_speed: float) -> void:
+	print("new__speed:" + str(_speed))
 	pass
 func update_lat(lat: float) -> void:
 	print("new_lat:" + str(lat))
@@ -141,8 +141,8 @@ func update_long(long: float) -> void:
 	longitude = long + 90
 	var new_pos = Util.latlon_to_vector3(latitude, longitude, comet_radius)
 	position = new_pos
-func update_diff(diffusion: float) -> void:
-	print("new_diff:" + str(diffusion))
+func update_diff(_diffusion: float) -> void:
+	print("new_diff:" + str(_diffusion))
 	pass
 func update_color(_color: Color) -> void:
 	print("new_color:" + str(_color))

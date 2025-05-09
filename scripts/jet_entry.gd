@@ -31,13 +31,19 @@ var emitter: Emitter
 func _ready() -> void:
 	# Debug only
 	$SpeedEdit.text = str(randf())
+	speed = float($SpeedEdit.text)
+
 	$LatitudeEdit.text = str(randf() * 50)
 	latitude = float($LatitudeEdit.text)
+
 	$LongitudeEdit.text = str(randf() * 50)
 	longitude = float($LongitudeEdit.text)
+
 	$DiffusionEdit.text = str(randf())
+	diffusion = float($DiffusionEdit.text)
+
 	$ColorPickerButton.color = Color(randf(), randf(), randf())
-	print(Hud.current_radius)
+	color = $ColorPickerButton.color
 
 	# setting nodes
 	speed_edit = $SpeedEdit
@@ -53,20 +59,26 @@ func _ready() -> void:
 	color_picker.picker_shape = ColorPicker.SHAPE_VHS_CIRCLE
 	color_picker.color_modes_visible = false
 	color_picker.sampler_visible = false
-	
-	# Creating an emitter
-	#emitter = emitter_scene.instantiate() as Emitter
-	#var emitter_pos = Util.latlon_to_vector3(0,0+90,Hud.current_radius)
-	#emitter.latitude = latitude
-	#emitter.longitude = longitude
-	#emitter.position = emitter_pos
-	#emitter.enabled = false
-	#emitter.comet_collider = Hud.comet_collider
-	#emitter.light_source = Hud.light_source
-	#add_child(emitter)
+
 func set_id_label(value: int) -> void:
-	$JetID.text = str(value)
 	jet_id = value
+	$JetID.text = str(value)
+func set_speed(value: float) -> void:
+	speed = value
+	speed_edit.set_value(value)
+func set_latitude(value: float) -> void:
+	latitude = value
+	latitude_edit.set_value(value)
+func set_longitude(value: float) -> void:
+	longitude = value
+	longitude_edit.set_value(value)
+func set_diffusion(value: float) -> void:
+	diffusion = value
+	diffusion_edit.set_value(value)
+func set_color(value: Color) -> void:
+	color = value
+	color_edit.color = value
+
 	
 ###################################
 # Other buttons (toggle and remove)
@@ -82,3 +94,9 @@ Calls JetTable.toggle_jet_entry
 """
 func _on_toggle_jet_pressed() -> void:
 	get_tree().call_group("jet_table", "toggle_jet_entry", self.get_instance_id())
+
+
+func disable_remove() -> void:
+	$RemoveJetBtn.disabled = true
+func enable_remove() -> void:
+	$RemoveJetBtn.disabled = false

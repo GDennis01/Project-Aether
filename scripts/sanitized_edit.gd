@@ -14,6 +14,12 @@ signal sanitized_edit_focus_exited
 func _ready() -> void:
 	pass # Replace with function body.
 
+func set_value(_value: float) -> void:
+	self.text = str(_value)
+	var tmp = property_value
+	previous_value = tmp
+	property_value = _value
+
 func sanitize_field(low: float, high: float) -> void:
 	if self.text.is_valid_float():
 		var new_val = clampf(float(self.text), low, high)

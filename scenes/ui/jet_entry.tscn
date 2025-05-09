@@ -101,7 +101,7 @@ focus_mode = 0
 button_pressed = true
 metadata/_edit_use_anchors_ = true
 
-[node name="RemoveJetBtn" type="Button" parent="."]
+[node name="RemoveJetBtn" type="Button" parent="." groups=["remove"]]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = -0.222

@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://bwt7dtbn7pn3c"]
+[gd_scene load_steps=6 format=3 uid="uid://bwt7dtbn7pn3c"]
 
 [ext_resource type="Script" uid="uid://bmle6k05e5fff" path="res://scripts/hud.gd" id="1_moku2"]
 [ext_resource type="Script" uid="uid://bwvqb33hu6cxk" path="res://scripts/navbar.gd" id="1_r4m0t"]
+[ext_resource type="Script" uid="uid://c3wk256unbuoe" path="res://scripts/comet_tab.gd" id="3_136eg"]
 [ext_resource type="PackedScene" uid="uid://blm04kepg8q0g" path="res://scenes/ui/SliderWithLineEdit.tscn" id="3_f5f8u"]
 [ext_resource type="Script" uid="uid://cpcxn2i4yw141" path="res://scripts/jet_table.gd" id="4_136eg"]
 
@@ -91,14 +92,22 @@ size_flags_horizontal = 3
 
 [node name="SaveBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 layout_mode = 2
+focus_mode = 0
 text = "Save"
+
+[node name="LoadBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+text = "Load"
 
 [node name="HelpBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 layout_mode = 2
 focus_mode = 0
 text = "Help"
 
-[node name="CometTab" type="CanvasLayer" parent="Body"]
+[node name="CometTab" type="CanvasLayer" parent="Body" groups=["load"]]
+visible = false
+script = ExtResource("3_136eg")
 
 [node name="Control" type="Control" parent="Body/CometTab"]
 layout_mode = 3
@@ -111,7 +120,7 @@ offset_bottom = 259.096
 size_flags_horizontal = 0
 metadata/_edit_use_anchors_ = true
 
-[node name="EditRadius" parent="Body/CometTab/Control" instance=ExtResource("3_f5f8u")]
+[node name="EditRadius" parent="Body/CometTab/Control" groups=["load"] instance=ExtResource("3_f5f8u")]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.077
@@ -147,7 +156,7 @@ minimum_value = 0.01
 maximum_value = 1000.0
 starting_value = 1.0
 
-[node name="EditInclinationAxis" parent="Body/CometTab/Control" groups=["reset_rotation"] instance=ExtResource("3_f5f8u")]
+[node name="EditCometIncl" parent="Body/CometTab/Control" groups=["load", "reset_rotation"] instance=ExtResource("3_f5f8u")]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.279
@@ -165,7 +174,7 @@ maximum_value = 180.0
 starting_value = 90.0
 valid_zero = true
 
-[node name="EditDirectionRadius" parent="Body/CometTab/Control" groups=["reset_rotation"] instance=ExtResource("3_f5f8u")]
+[node name="EditCometDir" parent="Body/CometTab/Control" groups=["load", "reset_rotation"] instance=ExtResource("3_f5f8u")]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.513
@@ -183,7 +192,7 @@ maximum_value = 360.0
 starting_value = 0.0
 valid_zero = true
 
-[node name="EditSunDir" parent="Body/CometTab/Control" instance=ExtResource("3_f5f8u")]
+[node name="EditSunIncl" parent="Body/CometTab/Control" groups=["load"] instance=ExtResource("3_f5f8u")]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.005
@@ -200,7 +209,7 @@ maximum_value = 180.0
 starting_value = 90.0
 valid_zero = true
 
-[node name="EditSunIncl" parent="Body/CometTab/Control" instance=ExtResource("3_f5f8u")]
+[node name="EditSunDir" parent="Body/CometTab/Control" groups=["load"] instance=ExtResource("3_f5f8u")]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 1.03
@@ -366,7 +375,7 @@ offset_bottom = -8.99901
 scale = Vector2(0.7, 0.7)
 text = "Remove"
 
-[node name="JetTable" type="VBoxContainer" parent="Body/JetsTab/Control" node_paths=PackedStringArray("content_node", "scroll_container") groups=["jet_table"]]
+[node name="JetTable" type="VBoxContainer" parent="Body/JetsTab/Control" node_paths=PackedStringArray("content_node", "scroll_container") groups=["jet_table", "load"]]
 z_index = 1
 layout_mode = 2
 offset_left = 8.0
@@ -441,6 +450,7 @@ Alt while moving to move slower
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ResetRotnBtn" to="Body" method="_on_reset_rotn_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ToggleAxesBtn" to="Body" method="_on_toggle_axes_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/SaveBtn" to="Body" method="_on_save_btn_pressed"]
+[connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/LoadBtn" to="Body" method="_on_load_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/HelpBtn" to="Body" method="_on_help_btn_pressed"]
 [connection signal="pressed" from="Body/JetsTab/Control/SpawnEmitter" to="Body" method="_on_spawn_emitter_pressed"]
 [connection signal="pressed" from="Body/JetsTab/Control/JetTable/AddJetEntryBtn" to="Body" method="_on_add_jet_entry_btn_pressed"]

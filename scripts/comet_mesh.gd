@@ -52,7 +52,7 @@ func _process(delta: float) -> void:
 Called by JetTable._on_add_jet_entry_btn_pressed
 """
 func spawn_emitter_at(latitude: float, longitude: float, emitter: Emitter) -> void:
-	print("Latitude:" + str(latitude) + " Longitude:" + str(longitude))
+	# print("Latitude:" + str(latitude) + " Longitude:" + str(longitude))
 	add_child(emitter)
 	var emitter_pos = Util.latlon_to_vector3(latitude, longitude + 90, mesh.radius)
 	emitter.latitude = latitude
