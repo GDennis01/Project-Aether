@@ -20,7 +20,7 @@ radius = 0.01
 
 [node name="Emitter" type="Node3D" groups=["emitter"]]
 script = ExtResource("1_87byf")
-max_particles = 300
+max_particles = 1000
 particle_per_second = 100
 particle_radius = 0.01
 

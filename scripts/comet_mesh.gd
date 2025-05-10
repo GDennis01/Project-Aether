@@ -10,11 +10,13 @@ var emitter_scene := preload("res://scenes/particle_emitter.tscn")
 @export var comet_collider: CollisionObject3D
 var rotation_enabled = false
 var starting_rotation: Vector3
+
+var rotation_angle: float = 0.0
+
 func _ready() -> void:
 	var _x_axis = axis_scene.instantiate() as AxisArrow
 	add_child(_x_axis)
 	_x_axis.add_to_group("toggle_axis")
-	clamp(1, 2, 3)
 	_x_axis.set_axis_type(AxisArrow.AxisType.X)
 	_x_axis.set_height(mesh.height)
 	
@@ -42,9 +44,12 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if rotation_enabled:
+		# TODO: emit a signal whenever rotation_angle is changed (homi gaio)
+		rotation_angle = fmod(rotation_angle + delta, 2 * PI)
+
 		rotate_object_local(Vector3.UP, 1 * delta)
 		# TODO: understand how to make precession motion
-		rotate_object_local(Vector3.FORWARD, 0.1 * delta)
+		# rotate_object_local(Vector3.FORWARD, 0.1 * delta)
 		pass
 	pass
 
@@ -53,7 +58,6 @@ Called by JetTable._on_add_jet_entry_btn_pressed
 """
 func spawn_emitter_at(latitude: float, longitude: float, emitter: Emitter) -> void:
 	# print("Latitude:" + str(latitude) + " Longitude:" + str(longitude))
-	add_child(emitter)
 	var emitter_pos = Util.latlon_to_vector3(latitude, longitude + 90, mesh.radius)
 	emitter.latitude = latitude
 	emitter.longitude = longitude
@@ -62,6 +66,7 @@ func spawn_emitter_at(latitude: float, longitude: float, emitter: Emitter) -> vo
 	emitter.comet_collider = comet_collider
 	emitter.comet_radius = mesh.radius
 	emitter.light_source = light_source
+	add_child(emitter)
 """
 Called by JetTable.remove_jet_entry
 """

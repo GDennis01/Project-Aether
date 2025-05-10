@@ -2,7 +2,9 @@ extends Node3D
 class_name Emitter
 const RAY_LENGHT = 1000000
 
-var particles_alive: Array[MeshInstance3D]
+var particle_scene := preload("res://scenes/particle.tscn")
+
+var particles_alive: Array[Particle]
 var time_start: float
 var time_now: float
 var _sphere_mesh: SphereMesh
@@ -16,6 +18,7 @@ var longitude: float
 var diffusion: float
 var color: Color
 
+
 var is_lit: bool = true
 @export var max_particles: int = 10
 @export var particle_per_second: int = 5
@@ -23,6 +26,8 @@ var is_lit: bool = true
 @export var enabled: bool = true
 @export var light_source: Light3D
 @export var comet_collider: CollisionObject3D
+var norm: Vector3 = Vector3(0, 1, 0)
+var initial_norm: Vector3 = Vector3(0, 1, 0)
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	time_start = Time.get_ticks_msec()
@@ -38,7 +43,22 @@ func _ready() -> void:
 	_sphere_mesh.radius = particle_radius
 	_sphere_mesh.height = particle_radius * 2
 	_sphere_mesh.surface_set_material(0, unshaded_material)
-	
+
+	var lat_rad = deg_to_rad(latitude)
+	var lon_rad = deg_to_rad(longitude)
+ 
+	initial_norm = Vector3(
+		cos(lat_rad) * cos(lon_rad) * 5,
+		sin(lat_rad) * 5,
+		cos(lat_rad) * sin(lon_rad) * 5
+	).normalized().rotated(Vector3.UP, deg_to_rad(-90))
+	norm = initial_norm
+
+	enabled = true
+	print(get_parent().global_transform.basis)
+	# norm = norm.rotated(Vector3.RIGHT, deg_to_rad(longitude))
+
+
 func _physics_process(_delta: float) -> void:
 	if not visible:
 		return
@@ -80,51 +100,38 @@ func _physics_process(_delta: float) -> void:
 	#print(result)
 		#enabled = false
 # Called every frame. 'delta' is the elapsed time since the previous frame.
+
+# TODO: triggerare lo spawn solo quando si è in rotazione
+# TODO: far sì che l'update di lat/long si rifletta anche sull'emitter correttamente
 func _process(delta: float) -> void:
 	time_now = Time.get_ticks_msec()
-	
 	if enabled and time_now - time_start > 1000 * 1.0 / particle_per_second:
-		#var my_mesh = MeshInstance3D.new()
-		#add_child(my_mesh)
-		#my_mesh.mesh = _sphere_mesh
-		#my_mesh.top_level = true
-		#if particles_alive.size() < max_particles:
-			## at least 1 second has passed thus I spawn another child
-			#time_start = Time.get_ticks_msec()
-			#particles_alive.append(my_mesh)
-		#else:
-			#particles_alive[0].queue_free()
-			#particles_alive.append(my_mesh)
-			#particles_alive = particles_alive.slice(1,-1)
 		time_start = Time.get_ticks_msec()
-		var my_mesh: MeshInstance3D
+		var particle: Particle
 		if particles_alive.size() < max_particles:
-			my_mesh = MeshInstance3D.new()
-			my_mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-			
-			add_child(my_mesh)
-			my_mesh.mesh = _sphere_mesh
-			my_mesh.top_level = true
-			particles_alive.append(my_mesh)
-		else:
-			my_mesh = particles_alive.pop_front()
-			my_mesh.global_position = global_position
-			particles_alive.append(my_mesh)
-	for particle in particles_alive:
-		particle.global_position.x += 1 * delta
-		
-	#var current_angle = angular_speed * time_now
-	#for particle in particles_alive:
-		#particle.position.x = helix_center.x + radius * cos(current_angle)*0.01
-		#particle.position.y = helix_center.y + pitch_factor * current_angle*0.01
-		#particle.position.z = helix_center.z + radius * sin(current_angle)*0.01
-	pass
+			particle = particle_scene.instantiate() as Particle
+			# particle.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			particle.top_level = true
+			particle.normal_direction = norm
+			particle.enabled = true
+			particle.global_position = self.global_position
+			add_child(particle)
+			particles_alive.append(particle)
+		# else:
+		# 	particle = particles_alive.pop_front()
+		# 	particle.global_position = global_position
+		# 	particles_alive.append(particle)
+	update_norm()
+
+	# for particle in particles_alive:
+	# 	particle.global_position += norm * 1 * delta
 
 
 ###################################################################################
 # Update methods called when sanitized_edit.sanitized_edit_focus_exited is emitted
 # Connection of signals is done in JetTable._on_add_jet_entry_btn_pressed
 ###################################################################################
+#region update methods
 func update_position(radius: float) -> void:
 	var new_pos = Util.latlon_to_vector3(latitude, longitude + 90, radius)
 	position = new_pos
@@ -147,3 +154,16 @@ func update_diff(_diffusion: float) -> void:
 func update_color(_color: Color) -> void:
 	print("new_color:" + str(_color))
 	color = _color
+#endregion update methods
+
+func update_norm() -> void:
+	# print(get_parent().rotation_angle)
+	var rotation_matrix: Basis = get_parent().global_transform.basis
+	# rotation_matrix = rotation_matrix.rotated(Vector3.UP, deg_to_rad(get_parent().rotation_degrees.y))
+	# norm = rotation_matrix * Vector3.UP
+	# norm = norm.rotated(Vector3.UP, deg_to_rad(-90))
+	norm = initial_norm * rotation_matrix.inverse()
+
+	norm = norm.normalized()
+	# print(rotation_matrix)
+	pass

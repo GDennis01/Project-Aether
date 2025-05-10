@@ -9,6 +9,7 @@ bottom_radius = 0.03
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qg3mf"]
 resource_local_to_scene = true
 transparency = 1
+shading_mode = 0
 albedo_color = Color(0.360784, 1, 0.227451, 0.607843)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_8kwkv"]
@@ -20,6 +21,7 @@ height = 0.1
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v8ovc"]
 resource_local_to_scene = true
 transparency = 1
+shading_mode = 0
 albedo_color = Color(0.360784, 1, 0.227451, 0.607843)
 
 [node name="AxisArrow" type="Node3D" node_paths=PackedStringArray("arrow_arm", "arrow_head")]
@@ -28,10 +30,12 @@ arrow_arm = NodePath("ArrowArm")
 arrow_head = NodePath("ArrowHead")
 
 [node name="ArrowArm" type="MeshInstance3D" parent="."]
+cast_shadow = 0
 mesh = SubResource("CylinderMesh_8wq6m")
 skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_qg3mf")
 
 [node name="ArrowHead" type="MeshInstance3D" parent="."]
+cast_shadow = 0
 mesh = SubResource("CylinderMesh_8kwkv")
 surface_material_override/0 = SubResource("StandardMaterial3D_v8ovc")
