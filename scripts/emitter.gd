@@ -53,8 +53,7 @@ func _ready() -> void:
 		cos(lat_rad) * sin(lon_rad) * 5
 	).normalized().rotated(Vector3.UP, deg_to_rad(-90))
 	norm = initial_norm
-
-	enabled = true
+	
 	print(get_parent().global_transform.basis)
 	# norm = norm.rotated(Vector3.RIGHT, deg_to_rad(longitude))
 

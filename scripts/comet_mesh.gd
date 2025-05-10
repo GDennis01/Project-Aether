@@ -62,16 +62,18 @@ func spawn_emitter_at(latitude: float, longitude: float, emitter: Emitter) -> vo
 	emitter.latitude = latitude
 	emitter.longitude = longitude
 	emitter.position = emitter_pos
-	emitter.enabled = false
+	emitter.enabled = rotation_enabled
 	emitter.comet_collider = comet_collider
 	emitter.comet_radius = mesh.radius
 	emitter.light_source = light_source
+	emitter.add_to_group("emitter")
 	add_child(emitter)
 """
 Called by JetTable.remove_jet_entry
 """
 func remove_emitter(emitter_id: int) -> void:
 	var emitter = instance_from_id(emitter_id)
+	emitter.remove_from_group("emitter")
 	print(emitter)
 	# remove_child(emitter)
 	emitter.queue_free()
@@ -79,8 +81,12 @@ func remove_emitter(emitter_id: int) -> void:
 
 func trigger_rotation() -> void:
 	rotation_enabled = not rotation_enabled
+	for emitter in get_tree().get_nodes_in_group("emitter"):
+		emitter.enabled = rotation_enabled
 func reset_rotation() -> void:
 	rotation_enabled = false
+	for emitter in get_tree().get_nodes_in_group("emitter"):
+		emitter.enabled = rotation_enabled
 	#rotation.y = starting_rotation.y
 	rotation = starting_rotation
 
