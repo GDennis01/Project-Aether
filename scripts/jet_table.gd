@@ -69,6 +69,10 @@ func load_data() -> void:
 func _on_add_jet_entry_btn_pressed() -> void:
 	# creating the entry in the hud
 	var new_entry = jet_entry_scene.instantiate() as JetEntry
+	new_entry.latitude = 0
+	new_entry.longitude = 0
+	new_entry.speed = 0
+	new_entry.diffusion = 0
 	var entries := get_tree().get_nodes_in_group("jet_entry")
 	var max_id = entries.size()
 	new_entry.set_id_label(max_id)

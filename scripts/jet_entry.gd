@@ -30,17 +30,19 @@ var emitter: Emitter
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# Debug only
-	$SpeedEdit.text = str(randf())
-	speed = float($SpeedEdit.text)
+	$SpeedEdit.text = str(speed)
+	# speed = float($SpeedEdit.text)
 
-	$LatitudeEdit.text = str(randf() * 50)
-	latitude = float($LatitudeEdit.text)
+	$LatitudeEdit.text = str(latitude)
+	# $LatitudeEdit.text = str(randf() * 50)
+	# latitude = float($LatitudeEdit.text)
 
-	$LongitudeEdit.text = str(randf() * 50)
-	longitude = float($LongitudeEdit.text)
+	$LongitudeEdit.text = str(longitude)
+	# $LongitudeEdit.text = str(randf() * 50)
+	# longitude = float($LongitudeEdit.text)
 
-	$DiffusionEdit.text = str(randf())
-	diffusion = float($DiffusionEdit.text)
+	$DiffusionEdit.text = str(diffusion)
+	# diffusion = float($DiffusionEdit.text)
 
 	$ColorPickerButton.color = Color(randf(), randf(), randf())
 	color = $ColorPickerButton.color

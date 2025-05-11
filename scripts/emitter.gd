@@ -44,6 +44,8 @@ func _ready() -> void:
 	_sphere_mesh.height = particle_radius * 2
 	_sphere_mesh.surface_set_material(0, unshaded_material)
 
+	longitude += 90 # longitude is shifted by 90°
+
 	var lat_rad = deg_to_rad(latitude)
 	var lon_rad = deg_to_rad(longitude)
  
@@ -51,8 +53,9 @@ func _ready() -> void:
 		cos(lat_rad) * cos(lon_rad) * 5,
 		sin(lat_rad) * 5,
 		cos(lat_rad) * sin(lon_rad) * 5
-	).normalized().rotated(Vector3.UP, deg_to_rad(-90))
+	).normalized()
 	norm = initial_norm
+	update_norm()
 	
 	print(get_parent().global_transform.basis)
 	# norm = norm.rotated(Vector3.RIGHT, deg_to_rad(longitude))
@@ -100,9 +103,8 @@ func _physics_process(_delta: float) -> void:
 		#enabled = false
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 
-# TODO: triggerare lo spawn solo quando si è in rotazione
-# TODO: far sì che l'update di lat/long si rifletta anche sull'emitter correttamente
-func _process(delta: float) -> void:
+
+func _process(_delta: float) -> void:
 	time_now = Time.get_ticks_msec()
 	if enabled and time_now - time_start > 1000 * 1.0 / particle_per_second:
 		time_start = Time.get_ticks_msec()
@@ -116,14 +118,7 @@ func _process(delta: float) -> void:
 			particle.global_position = self.global_position
 			add_child(particle)
 			particles_alive.append(particle)
-		# else:
-		# 	particle = particles_alive.pop_front()
-		# 	particle.global_position = global_position
-		# 	particles_alive.append(particle)
-	update_norm()
-
-	# for particle in particles_alive:
-	# 	particle.global_position += norm * 1 * delta
+		update_norm()
 
 
 ###################################################################################
@@ -139,30 +134,40 @@ func update_speed(_speed: float) -> void:
 	pass
 func update_lat(lat: float) -> void:
 	print("new_lat:" + str(lat))
+	print("new_long:" + str(longitude))
 	latitude = lat
 	var new_pos = Util.latlon_to_vector3(latitude, longitude, comet_radius)
 	position = new_pos
+	update_initial_norm(latitude, longitude)
 func update_long(long: float) -> void:
+	print("new_lat:" + str(latitude))
 	print("new_long:" + str(long))
 	longitude = long + 90
 	var new_pos = Util.latlon_to_vector3(latitude, longitude, comet_radius)
 	position = new_pos
+	update_initial_norm(latitude, longitude)
 func update_diff(_diffusion: float) -> void:
 	print("new_diff:" + str(_diffusion))
 	pass
 func update_color(_color: Color) -> void:
 	print("new_color:" + str(_color))
 	color = _color
-#endregion update methods
 
+func update_initial_norm(_lat: float, _long: float) -> void:
+	print("UPDATED NORM")
+	var lat_rad = deg_to_rad(_lat)
+	var lon_rad = deg_to_rad(_long)
+	initial_norm = Vector3(
+		cos(lat_rad) * cos(lon_rad) * 5,
+		sin(lat_rad) * 5,
+		cos(lat_rad) * sin(lon_rad) * 5
+	).normalized()
+	norm = initial_norm
+	update_norm()
+#endregion update methods
 func update_norm() -> void:
 	# print(get_parent().rotation_angle)
 	var rotation_matrix: Basis = get_parent().global_transform.basis
-	# rotation_matrix = rotation_matrix.rotated(Vector3.UP, deg_to_rad(get_parent().rotation_degrees.y))
-	# norm = rotation_matrix * Vector3.UP
-	# norm = norm.rotated(Vector3.UP, deg_to_rad(-90))
 	norm = initial_norm * rotation_matrix.inverse()
-
 	norm = norm.normalized()
-	# print(rotation_matrix)
 	pass
