@@ -106,7 +106,7 @@ func _physics_process(_delta: float) -> void:
 
 func _process(_delta: float) -> void:
 	time_now = Time.get_ticks_msec()
-	if enabled and time_now - time_start > 1000 * 1.0 / particle_per_second:
+	if enabled and is_lit and time_now - time_start > 1000 * 1.0 / particle_per_second:
 		time_start = Time.get_ticks_msec()
 		var particle: Particle
 		if particles_alive.size() < max_particles:
@@ -116,10 +116,12 @@ func _process(_delta: float) -> void:
 			particle.normal_direction = norm
 			particle.enabled = true
 			particle.global_position = self.global_position
+			particle.time_to_live = 10
 			add_child(particle)
+			particle.add_to_group("particle")
 			particles_alive.append(particle)
 		update_norm()
-
+		
 
 ###################################################################################
 # Update methods called when sanitized_edit.sanitized_edit_focus_exited is emitted
@@ -164,10 +166,10 @@ func update_initial_norm(_lat: float, _long: float) -> void:
 	).normalized()
 	norm = initial_norm
 	update_norm()
-#endregion update methods
 func update_norm() -> void:
 	# print(get_parent().rotation_angle)
 	var rotation_matrix: Basis = get_parent().global_transform.basis
 	norm = initial_norm * rotation_matrix.inverse()
 	norm = norm.normalized()
 	pass
+#endregion update methods

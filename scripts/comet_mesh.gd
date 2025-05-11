@@ -42,7 +42,7 @@ func _ready() -> void:
 	Hud.light_source = light_source
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if rotation_enabled:
 		# TODO: emit a signal whenever rotation_angle is changed (homi gaio)
 		rotation_angle = fmod(rotation_angle + delta, 2 * PI)
@@ -83,6 +83,8 @@ func trigger_rotation() -> void:
 	rotation_enabled = not rotation_enabled
 	for emitter in get_tree().get_nodes_in_group("emitter"):
 		emitter.enabled = rotation_enabled
+	for particle in get_tree().get_nodes_in_group("particle"):
+		particle.enabled = rotation_enabled
 func reset_rotation() -> void:
 	rotation_enabled = false
 	for emitter in get_tree().get_nodes_in_group("emitter"):
