@@ -13,13 +13,21 @@ var color_edit: ColorPickerButton
 
 # entry fields
 var jet_id: int = 0
-var speed: float = 0
+var speed: float = 0:
+	get:
+		return speed_edit.property_value
 var prev_speed: float = 0
-var latitude: float = 0
+var latitude: float = 0:
+	get:
+		return latitude_edit.property_value
 var prev_lat: float = 0
-var longitude: float = 0
+var longitude: float = 0:
+	get:
+		return longitude_edit.property_value
 var prev_long: float = 0
-var diffusion: float = 0
+var diffusion: float = 0:
+	get:
+		return diffusion_edit.property_value
 var prev_diff: float = 0
 var color: Color = Color.WHITE
 
@@ -30,20 +38,10 @@ var emitter: Emitter
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# Debug only
-	$SpeedEdit.text = str(speed)
-	# speed = float($SpeedEdit.text)
-
-	$LatitudeEdit.text = str(latitude)
-	# $LatitudeEdit.text = str(randf() * 50)
-	# latitude = float($LatitudeEdit.text)
-
-	$LongitudeEdit.text = str(longitude)
-	# $LongitudeEdit.text = str(randf() * 50)
-	# longitude = float($LongitudeEdit.text)
-
-	$DiffusionEdit.text = str(diffusion)
-	# diffusion = float($DiffusionEdit.text)
-
+	$SpeedEdit.text = str(0.0)
+	$LatitudeEdit.text = str(0.0)
+	$LongitudeEdit.text = str(0.0)
+	$DiffusionEdit.text = str(0.0)
 	$ColorPickerButton.color = Color(randf(), randf(), randf())
 	color = $ColorPickerButton.color
 

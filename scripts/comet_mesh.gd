@@ -1,11 +1,28 @@
 @tool
 extends MeshInstance3D
 
+enum ANIMATION_STATE {
+	STARTED,
+	PAUSED,
+	STOPPED,
+	RESUMED,
+}
+
+var animation_state: ANIMATION_STATE = ANIMATION_STATE.STOPPED
+var step_count: int = 0
+var n_steps: int = 0
+var angle_per_step: float = 0
+
+var jet_rate: float = 0
+var num_rotation: float = 0
+var frequency: float = 0
+
 var axis_scene := preload("res://scenes/axis_arrow.tscn")
 var emitter_scene := preload("res://scenes/particle_emitter.tscn")
 @onready var x_axis: AxisArrow
 @onready var y_axis: AxisArrow
 @onready var z_axis: AxisArrow
+@onready var animation_slider: AnimationSlider = $"/root/Hud/Body/TabButtons/ColorRect/HBoxContainer/AnimationSlider"
 @export var light_source: Light3D
 @export var comet_collider: CollisionObject3D
 var rotation_enabled = false
@@ -41,17 +58,79 @@ func _ready() -> void:
 	Hud.comet_collider = comet_collider
 	Hud.light_source = light_source
 
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
-	if rotation_enabled:
-		# TODO: emit a signal whenever rotation_angle is changed (homi gaio)
-		rotation_angle = fmod(rotation_angle + delta, 2 * PI)
+	# if rotation_enabled:
+	# 	# TODO: emit a signal whenever rotation_angle is changed (homi gaio)
+	# 	rotation_angle = fmod(rotation_angle + delta, 2 * PI)
+	# 	rotate_object_local(Vector3.UP, 1 * delta)
+	# 	# TODO: understand how to make precession motion
+	# 	# rotate_object_local(Vector3.FORWARD, 0.1 * delta)
+	match animation_state:
+		ANIMATION_STATE.STARTED, ANIMATION_STATE.RESUMED:
+			if n_steps == 0:
+				animation_state = ANIMATION_STATE.STOPPED
+			else:
+				tick()
+				n_steps -= 1
+			pass
 
-		rotate_object_local(Vector3.UP, 1 * delta)
-		# TODO: understand how to make precession motion
-		# rotate_object_local(Vector3.FORWARD, 0.1 * delta)
-		pass
+		ANIMATION_STATE.PAUSED:
+			pass
+		ANIMATION_STATE.STOPPED:
+			pass
+
 	pass
+
+"""
+Single elaboration step of the simulation.
+Each tick spawn a new particle from the jet
+"""
+func tick() -> void:
+	for emitter: Emitter in get_tree().get_nodes_in_group("emitter"):
+		emitter.tick()
+	animation_slider.tick()
+	rotate_object_local(Vector3.UP, deg_to_rad(angle_per_step))
+#region Simulation related
+"""
+Called by play_animation_slider._on_play_btn_pressed
+"""
+func animation_started() -> void:
+	match animation_state:
+		ANIMATION_STATE.PAUSED:
+			animation_state = ANIMATION_STATE.RESUMED
+		ANIMATION_STATE.STOPPED:
+			animation_state = ANIMATION_STATE.STARTED
+		_:
+			# print("From RESUME to STARTED should never happen")
+			pass
+			
+	if animation_state == ANIMATION_STATE.STARTED:
+		starting_rotation = rotation
+		n_steps = int(num_rotation * frequency * 60 / jet_rate)
+		# if I have a rotation period of 360 minutes and a jet_rate of 1 min, it means I have 1 angle per tick()
+		angle_per_step = 1 / (frequency * 60 / jet_rate) * 360
+	pass
+
+"""
+Called by play_animation_slider._on_pause_btn_pressed
+"""
+func animation_paused() -> void:
+	animation_state = ANIMATION_STATE.PAUSED
+	pass
+
+"""
+Called by play_animation_slider._on_stop_btn_pressed
+"""
+func animation_stopped() -> void:
+	animation_state = ANIMATION_STATE.STOPPED
+	reset_rotation()
+	# delete all particles
+	for emitter: Emitter in get_tree().get_nodes_in_group("emitter"):
+		emitter.reset_particles()
+		emitter.update_norm()
+#endregion Simulation related
 
 """
 Called by JetTable._on_add_jet_entry_btn_pressed
@@ -68,6 +147,7 @@ func spawn_emitter_at(latitude: float, longitude: float, emitter: Emitter) -> vo
 	emitter.light_source = light_source
 	emitter.add_to_group("emitter")
 	add_child(emitter)
+
 """
 Called by JetTable.remove_jet_entry
 """
@@ -92,7 +172,8 @@ func reset_rotation() -> void:
 	#rotation.y = starting_rotation.y
 	rotation = starting_rotation
 
-	
+#region Update methods
+## These methods are called by SanitizedEdit through call_group() mechanism
 func update_radius(value: float) -> void:
 	#print_debug("[UPDATE RADIUS] Before:"+str(mesh.radius)+" After:"+str(value))
 	mesh.set_radius(value)
@@ -106,13 +187,10 @@ func update_radius(value: float) -> void:
 		z_axis.set_height(mesh.height)
 	SaveManager.config.set_value("comet", "radius", mesh.radius)
 	get_tree().call_group("emitter", "update_position", value)
-		
 ## Deprecated
 func update_height(value: float) -> void:
 	#print_debug("[UPDATE HEIGHT] Before:"+str(mesh.height)+" After:"+str(value))
 	mesh.set_height(value)
-
-
 func update_direction_rotation(value: float) -> void:
 	rotation_degrees.z = value
 	SaveManager.config.set_value("comet", "direction", value)
@@ -120,3 +198,11 @@ func update_inclination_rotation(value: float) -> void:
 	#print_debug("[UPDATE INCLINATION]")
 	rotation_degrees.x = - value + 90
 	SaveManager.config.set_value("comet", "inclination", value)
+func update_jet_rate(value: float) -> void:
+	print("updated jetrate")
+	jet_rate = value
+func update_num_rotation(value: float) -> void:
+	num_rotation = value
+func update_frequency(value: float) -> void:
+	frequency = value
+#endregion Update methods

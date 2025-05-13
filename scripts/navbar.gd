@@ -16,8 +16,8 @@ var entry_emitter_dict := Dictionary()
 func _on_cometbtn_pressed() -> void:
 	if $JetsTab.visible:
 		$JetsTab.visible = false
-	if $GraphicTab.visible:
-		$GraphicTab.visible = false
+	if $SimTab.visible:
+		$SimTab.visible = false
 	if $HelpPanel.visible:
 		$HelpPanel.visible = false
 	$CometTab.visible = not $CometTab.visible
@@ -26,21 +26,21 @@ func _on_cometbtn_pressed() -> void:
 func _on_jetsbtn_pressed() -> void:
 	if $CometTab.visible:
 		$CometTab.visible = false
-	if $GraphicTab.visible:
-		$GraphicTab.visible = false
+	if $SimTab.visible:
+		$SimTab.visible = false
 	if $HelpPanel.visible:
 		$HelpPanel.visible = false
 	$JetsTab.visible = not $JetsTab.visible
 
 
-func _on_graphicsbtn_pressed() -> void:
+func _on_sim_btn_pressed() -> void:
 	if $CometTab.visible:
 		$CometTab.visible = false
 	if $JetsTab.visible:
 		$JetsTab.visible = false
 	if $HelpPanel.visible:
 		$HelpPanel.visible = false
-	$GraphicTab.visible = not $GraphicTab.visible
+	$SimTab.visible = not $SimTab.visible
 
 
 func _on_help_btn_pressed() -> void:
@@ -48,8 +48,8 @@ func _on_help_btn_pressed() -> void:
 		$CometTab.visible = false
 	if $JetsTab.visible:
 		$JetsTab.visible = false
-	if $GraphicTab.visible:
-		$GraphicTab.visible = false
+	if $SimTab.visible:
+		$SimTab.visible = false
 	$HelpPanel.visible = not $HelpPanel.visible
 		
 
@@ -95,6 +95,7 @@ func _on_load_btn_pressed() -> void:
 	
 func _on_file_explorer_file_selected(path: String) -> void:
 	if $TabButtons/ColorRect/HBoxContainer/FileExplorer.file_mode == FileDialog.FILE_MODE_SAVE_FILE:
+		get_tree().call_group("save", "save_data")
 		SaveManager.save(path)
 	if $TabButtons/ColorRect/HBoxContainer/FileExplorer.file_mode == FileDialog.FILE_MODE_OPEN_FILE:
 		SaveManager.load(path)

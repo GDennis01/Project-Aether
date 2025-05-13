@@ -1,10 +1,13 @@
-[gd_scene load_steps=6 format=3 uid="uid://bwt7dtbn7pn3c"]
+[gd_scene load_steps=9 format=3 uid="uid://bwt7dtbn7pn3c"]
 
 [ext_resource type="Script" uid="uid://bmle6k05e5fff" path="res://scripts/hud.gd" id="1_moku2"]
 [ext_resource type="Script" uid="uid://bwvqb33hu6cxk" path="res://scripts/navbar.gd" id="1_r4m0t"]
 [ext_resource type="Script" uid="uid://c3wk256unbuoe" path="res://scripts/comet_tab.gd" id="3_136eg"]
 [ext_resource type="PackedScene" uid="uid://blm04kepg8q0g" path="res://scenes/ui/SliderWithLineEdit.tscn" id="3_f5f8u"]
+[ext_resource type="PackedScene" uid="uid://dfq2g8u3hd1nh" path="res://scenes/ui/play_animation_slider.tscn" id="3_gss2c"]
 [ext_resource type="Script" uid="uid://cpcxn2i4yw141" path="res://scripts/jet_table.gd" id="4_136eg"]
+[ext_resource type="PackedScene" uid="uid://b31lb3a4drve4" path="res://scenes/ui/sanitized_edit.tscn" id="6_oj5la"]
+[ext_resource type="Script" uid="uid://c3hrn6jcfsf4a" path="res://scripts/sim_tab.gd" id="7_h022r"]
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_moku2")
@@ -59,16 +62,21 @@ layout_mode = 2
 focus_mode = 0
 text = "Jets"
 
-[node name="GraphicsBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
+[node name="SimBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 layout_mode = 2
 focus_mode = 0
-text = "Graphics"
+text = "Simulation
+"
 
 [node name="Spacer2" type="Control" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 layout_direction = 2
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.24
+
+[node name="AnimationSlider" parent="Body/TabButtons/ColorRect/HBoxContainer" instance=ExtResource("3_gss2c")]
+layout_mode = 2
+num_steps = 500
 
 [node name="TriggerRotBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 layout_mode = 2
@@ -134,7 +142,7 @@ anchor_bottom = 0.019
 offset_left = 1.062
 offset_top = -0.0160003
 offset_right = 192.062
-offset_bottom = 54.984
+offset_bottom = 47.984
 label = &"Radius"
 resize_type = &"radius"
 minimum_value = 0.01
@@ -379,7 +387,7 @@ offset_bottom = -8.99901
 scale = Vector2(0.7, 0.7)
 text = "Remove"
 
-[node name="JetTable" type="VBoxContainer" parent="Body/JetsTab/Control" node_paths=PackedStringArray("content_node", "scroll_container") groups=["jet_table", "load"]]
+[node name="JetTable" type="VBoxContainer" parent="Body/JetsTab/Control" node_paths=PackedStringArray("content_node", "scroll_container") groups=["jet_table", "load", "save"]]
 z_index = 1
 layout_mode = 2
 offset_left = 8.0
@@ -405,26 +413,108 @@ size_flags_stretch_ratio = 3.62
 focus_mode = 0
 text = "Add Jet Entry"
 
-[node name="GraphicTab" type="CanvasLayer" parent="Body"]
-visible = false
+[node name="SimTab" type="CanvasLayer" parent="Body" groups=["load", "save"]]
+script = ExtResource("7_h022r")
 
-[node name="Control" type="Control" parent="Body/GraphicTab"]
+[node name="Control" type="Control" parent="Body/SimTab"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 13.0
 offset_bottom = 11.0
 mouse_filter = 2
 
-[node name="Button" type="Button" parent="Body/GraphicTab/Control"]
+[node name="FrequencyEdit" parent="Body/SimTab/Control" instance=ExtResource("6_oj5la")]
+layout_mode = 1
+anchor_left = 1.231
+anchor_top = 9.455
+anchor_right = 1.231
+anchor_bottom = 9.455
+offset_left = 95.997
+offset_top = -8.00501
+offset_right = 127.997
+offset_bottom = 22.995
+resize_type = &"frequency"
+lower_bound = 0.1
+higher_bound = -1.0
+
+[node name="NumRotationEdit" parent="Body/SimTab/Control" instance=ExtResource("6_oj5la")]
+layout_mode = 1
+anchor_left = 1.231
+anchor_top = 13.091
+anchor_right = 1.231
+anchor_bottom = 13.091
+offset_left = 95.997
+offset_top = -8.00101
+offset_right = 127.997
+offset_bottom = 22.999
+resize_type = &"num_rotation"
+lower_bound = 0.1
+higher_bound = -1.0
+
+[node name="JetRateEdit" parent="Body/SimTab/Control" instance=ExtResource("6_oj5la")]
+layout_mode = 1
+anchor_left = 1.231
+anchor_top = 16.727
+anchor_right = 1.231
+anchor_bottom = 16.727
+offset_left = 95.997
+offset_top = -7.99701
+offset_right = 127.997
+offset_bottom = 23.003
+resize_type = &"jet_rate"
+lower_bound = 0.5
+higher_bound = -1.0
+
+[node name="FrequencyLabel" type="Label" parent="Body/SimTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_top = 7.273
-anchor_bottom = 7.273
-offset_left = 13.0
-offset_top = -0.00300598
-offset_right = 132.0
-offset_bottom = 30.997
-text = "TODO Graphic"
+anchor_left = 1.231
+anchor_top = 9.455
+anchor_right = 1.231
+anchor_bottom = 9.455
+offset_left = -0.00300026
+offset_top = -8.00501
+offset_right = 109.997
+offset_bottom = 31.995
+scale = Vector2(0.6, 0.6)
+tooltip_text = "Frequency of rotation in hours"
+mouse_filter = 0
+text = "Rot. Period (h)"
+vertical_alignment = 1
+
+[node name="NumRotationLabel" type="Label" parent="Body/SimTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.231
+anchor_top = 13.091
+anchor_right = 1.231
+anchor_bottom = 13.091
+offset_left = -0.00300026
+offset_top = -8.00101
+offset_right = 132.997
+offset_bottom = 31.999
+scale = Vector2(0.6, 0.6)
+tooltip_text = "Number of rotations"
+mouse_filter = 0
+text = "Num. Rotations"
+vertical_alignment = 1
+
+[node name="JetRateLabel" type="Label" parent="Body/SimTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.231
+anchor_top = 16.727
+anchor_right = 1.231
+anchor_bottom = 16.727
+offset_left = -0.00300026
+offset_top = -7.99701
+offset_right = 103.997
+offset_bottom = 32.003
+scale = Vector2(0.6, 0.6)
+tooltip_text = "Jet emission rate in minutes"
+mouse_filter = 0
+text = "Jet Rate (min)"
+vertical_alignment = 1
 
 [node name="HelpPanel" type="CanvasLayer" parent="Body"]
 visible = false
@@ -449,7 +539,7 @@ Alt while moving to move slower
 
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/CometBtn" to="Body" method="_on_cometbtn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/JetsBtn" to="Body" method="_on_jetsbtn_pressed"]
-[connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/GraphicsBtn" to="Body" method="_on_graphicsbtn_pressed"]
+[connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/SimBtn" to="Body" method="_on_sim_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/TriggerRotBtn" to="Body" method="_on_trigger_rot_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ResetRotnBtn" to="Body" method="_on_reset_rotn_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ToggleAxesBtn" to="Body" method="_on_toggle_axes_btn_pressed"]

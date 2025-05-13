@@ -19,9 +19,12 @@ func set_value(_value: float) -> void:
 	var tmp = property_value
 	previous_value = tmp
 	property_value = _value
+	get_tree().call_group(resize_type, "update_" + resize_type, property_value)
 
 func sanitize_field(low: float, high: float) -> void:
 	if self.text.is_valid_float():
+		if int(high) == -1:
+			high = INF
 		var new_val = clampf(float(self.text), low, high)
 		property_value = new_val
 		previous_value = new_val

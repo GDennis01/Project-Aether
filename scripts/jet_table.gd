@@ -25,9 +25,17 @@ func _update_scroll_container_height() -> void:
 	if scroll_container.custom_minimum_size.y != new_height:
 		scroll_container.custom_minimum_size.y = new_height
 	
+"""
+Called by Navbar._on_file_explorer_file_selected().
+Save the jet table data into the config
+"""
+func save_data() -> void:
+	for entry: JetEntry in content_node.get_children():
+		SaveManager.config.set_value("jets", str(entry.jet_id), [entry.speed, entry.latitude, entry.longitude, entry.diffusion, entry.color])
+
 
 """
-Called by Navbar._on_load_btn_pressed().
+Called by Navbar._on_file_explorer_file_selected().
 Loads the data from the config file into the different element of the scene
 """
 func load_data() -> void:
@@ -39,6 +47,7 @@ func load_data() -> void:
 	print("Entries to add:" + str(entries_to_add))
 	for entry in entries_to_add:
 		var loaded_entry = SaveManager.config.get_value("jets", str(entry))
+		print(loaded_entry)
 		var new_entry = jet_entry_scene.instantiate() as JetEntry
 		new_entry.set_id_label(int(entry))
 		content_node.add_child(new_entry)
@@ -69,10 +78,6 @@ func load_data() -> void:
 func _on_add_jet_entry_btn_pressed() -> void:
 	# creating the entry in the hud
 	var new_entry = jet_entry_scene.instantiate() as JetEntry
-	new_entry.latitude = 0
-	new_entry.longitude = 0
-	new_entry.speed = 0
-	new_entry.diffusion = 0
 	var entries := get_tree().get_nodes_in_group("jet_entry")
 	var max_id = entries.size()
 	new_entry.set_id_label(max_id)
@@ -119,7 +124,8 @@ func remove_jet_entry(id: int) -> void:
 	entry_emitter_dict.erase(id)
 	entry.queue_free()
 	# removing corresponding jet section
-	SaveManager.config.erase_section("jet_" + str(emitter_id))
+	if SaveManager.config.has_section("jet_" + str(emitter_id)):
+		SaveManager.config.erase_section("jet_" + str(emitter_id))
 	get_tree().call_group("comet", "remove_emitter", emitter_id)
 
 	# update container size and ids of each jet entry

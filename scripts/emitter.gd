@@ -105,23 +105,45 @@ func _physics_process(_delta: float) -> void:
 
 
 func _process(_delta: float) -> void:
-	time_now = Time.get_ticks_msec()
-	if enabled and is_lit and time_now - time_start > 1000 * 1.0 / particle_per_second:
-		time_start = Time.get_ticks_msec()
-		var particle: Particle
-		if particles_alive.size() < max_particles:
-			particle = particle_scene.instantiate() as Particle
-			# particle.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-			particle.top_level = true
-			particle.normal_direction = norm
-			particle.enabled = true
-			particle.global_position = self.global_position
-			particle.time_to_live = 10
-			add_child(particle)
-			particle.add_to_group("particle")
-			particles_alive.append(particle)
-		update_norm()
-		
+	# time_now = Time.get_ticks_msec()
+	# if enabled and is_lit and time_now - time_start > 1000 * 1.0 / particle_per_second:
+	# 	time_start = Time.get_ticks_msec()
+	# 	var particle: Particle
+	# 	if particles_alive.size() < max_particles:
+	# 		particle = particle_scene.instantiate() as Particle
+	# 		# particle.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	# 		particle.top_level = true
+	# 		particle.normal_direction = norm
+	# 		particle.enabled = true
+	# 		particle.global_position = self.global_position
+	# 		particle.time_to_live = 10
+	# 		add_child(particle)
+	# 		particle.add_to_group("particle")
+	# 		particles_alive.append(particle)
+	# 	update_norm()
+	pass
+func tick() -> void:
+	# trigger tick() on every particles alive
+	for particle in particles_alive:
+		particle.tick()
+	# then spawn a new particle if needed
+	if is_lit and particles_alive.size() < max_particles:
+		var particle := particle_scene.instantiate() as Particle
+		# particle.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		particle.top_level = true
+		particle.normal_direction = norm
+		particle.enabled = true
+		particle.time_to_live = 10
+		add_child(particle)
+		particle.global_position = self.global_position
+		particle.add_to_group("particle")
+		particles_alive.append(particle)
+	update_norm()
+
+func reset_particles() -> void:
+	for particle in particles_alive:
+		particle.queue_free()
+	particles_alive.clear()
 
 ###################################################################################
 # Update methods called when sanitized_edit.sanitized_edit_focus_exited is emitted

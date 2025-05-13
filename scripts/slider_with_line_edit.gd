@@ -32,8 +32,8 @@ func _ready() -> void:
 
 func _on_slider_value_changed(value: float) -> void:
 	line_edit.text = str(value)
-	if resize_type == "radius":
-		Hud.current_radius = value
+	# if resize_type == "radius":
+	# 	Hud.current_radius = value
 	#print("entered slider","update_"+resize_type)
 	get_tree().call_group(resize_type, "update_" + resize_type, value)
 
