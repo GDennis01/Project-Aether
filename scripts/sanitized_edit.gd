@@ -48,3 +48,12 @@ func _on_editing_toggled(toggled_on: bool) -> void:
 		FlyCamera.set_process(false)
 	else:
 		FlyCamera.set_process(true)
+
+
+func _on_focus_exited() -> void:
+	sanitize_field(lower_bound, higher_bound)
+	sanitized_edit_focus_exited.emit(float(self.text))
+	if slider:
+		slider.set_value_no_signal(float(self.text))
+	if resize_type:
+		get_tree().call_group(resize_type, "update_" + resize_type, float(self.text))

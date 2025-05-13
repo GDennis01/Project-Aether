@@ -13,3 +13,4 @@ theme_override_constants/minimum_character_width = 0
 script = ExtResource("1_httd2")
 
 [connection signal="editing_toggled" from="." to="." method="_on_editing_toggled"]
+[connection signal="focus_exited" from="." to="." method="_on_focus_exited"]

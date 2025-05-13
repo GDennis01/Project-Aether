@@ -103,7 +103,8 @@ func _physics_process(_delta: float) -> void:
 		#enabled = false
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 
-
+func is_lit_math(sun_inc: float, sun_dir: float) -> void:
+	pass
 # func _process(_delta: float) -> void:
 	# time_now = Time.get_ticks_msec()
 	# if enabled and is_lit and time_now - time_start > 1000 * 1.0 / particle_per_second:

@@ -130,6 +130,7 @@ offset_top = -4.904
 offset_right = 195.0
 offset_bottom = 259.096
 size_flags_horizontal = 0
+mouse_filter = 2
 metadata/_edit_use_anchors_ = true
 
 [node name="EditRadius" parent="Body/CometTab/Control" groups=["load"] instance=ExtResource("3_f5f8u")]
@@ -410,10 +411,11 @@ layout_mode = 2
 [node name="AddJetEntryBtn" type="Button" parent="Body/JetsTab/Control/JetTable"]
 layout_mode = 2
 size_flags_stretch_ratio = 3.62
-focus_mode = 0
+focus_mode = 1
 text = "Add Jet Entry"
 
 [node name="SimTab" type="CanvasLayer" parent="Body" groups=["load", "save"]]
+visible = false
 script = ExtResource("7_h022r")
 
 [node name="Control" type="Control" parent="Body/SimTab"]
