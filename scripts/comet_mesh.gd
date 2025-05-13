@@ -14,8 +14,10 @@ var n_steps: int = 0
 var angle_per_step: float = 0
 
 var jet_rate: float = 0
+var jet_rate_sped_up: float = 0
 var num_rotation: float = 0
 var frequency: float = 0
+var freq_sped_up: float = 0
 
 var axis_scene := preload("res://scenes/axis_arrow.tscn")
 var emitter_scene := preload("res://scenes/particle_emitter.tscn")
@@ -29,6 +31,8 @@ var rotation_enabled = false
 var starting_rotation: Vector3
 
 var rotation_angle: float = 0.0
+
+var speed_sim: int = 1
 
 func _ready() -> void:
 	var _x_axis = axis_scene.instantiate() as AxisArrow
@@ -60,20 +64,23 @@ func _ready() -> void:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _physics_process(delta: float) -> void:
+func _process(delta: float) -> void:
+	# return
 	# if rotation_enabled:
 	# 	# TODO: emit a signal whenever rotation_angle is changed (homi gaio)
 	# 	rotation_angle = fmod(rotation_angle + delta, 2 * PI)
 	# 	rotate_object_local(Vector3.UP, 1 * delta)
 	# 	# TODO: understand how to make precession motion
 	# 	# rotate_object_local(Vector3.FORWARD, 0.1 * delta)
+	# print(Engine.get_frames_per_second())
 	match animation_state:
 		ANIMATION_STATE.STARTED, ANIMATION_STATE.RESUMED:
 			if n_steps == 0:
 				animation_state = ANIMATION_STATE.STOPPED
 			else:
-				tick()
-				n_steps -= 1
+				for i in speed_sim:
+					tick()
+					n_steps -= 1
 			pass
 
 		ANIMATION_STATE.PAUSED:
@@ -82,6 +89,7 @@ func _physics_process(delta: float) -> void:
 			pass
 
 	pass
+
 
 """
 Single elaboration step of the simulation.
@@ -109,8 +117,12 @@ func animation_started() -> void:
 	if animation_state == ANIMATION_STATE.STARTED:
 		starting_rotation = rotation
 		n_steps = int(num_rotation * frequency * 60 / jet_rate)
+		print(n_steps)
 		# if I have a rotation period of 360 minutes and a jet_rate of 1 min, it means I have 1 angle per tick()
 		angle_per_step = 1 / (frequency * 60 / jet_rate) * 360
+		animation_slider.set_step_rate(100.0 / n_steps)
+		# animation_slider.tick()
+		# simulation()
 	pass
 
 """
@@ -119,7 +131,6 @@ Called by play_animation_slider._on_pause_btn_pressed
 func animation_paused() -> void:
 	animation_state = ANIMATION_STATE.PAUSED
 	pass
-
 """
 Called by play_animation_slider._on_stop_btn_pressed
 """
@@ -130,8 +141,20 @@ func animation_stopped() -> void:
 	for emitter: Emitter in get_tree().get_nodes_in_group("emitter"):
 		emitter.reset_particles()
 		emitter.update_norm()
-#endregion Simulation related
+	animation_slider.reset()
 
+"""
+Called by play_animation_slider._on_speed_up_btn_pressed
+"""
+func speed_up(value: int) -> void:
+	speed_sim = value
+	freq_sped_up = frequency / value
+	jet_rate_sped_up = jet_rate / value
+	n_steps = int(num_rotation * freq_sped_up * 60 / jet_rate_sped_up)
+	angle_per_step = 1 / (freq_sped_up * 60 / jet_rate_sped_up) * 360
+
+	
+#endregion Simulation related
 """
 Called by JetTable._on_add_jet_entry_btn_pressed
 """

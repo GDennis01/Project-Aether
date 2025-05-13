@@ -104,7 +104,7 @@ func _physics_process(_delta: float) -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 
 
-func _process(_delta: float) -> void:
+# func _process(_delta: float) -> void:
 	# time_now = Time.get_ticks_msec()
 	# if enabled and is_lit and time_now - time_start > 1000 * 1.0 / particle_per_second:
 	# 	time_start = Time.get_ticks_msec()
@@ -121,7 +121,7 @@ func _process(_delta: float) -> void:
 	# 		particle.add_to_group("particle")
 	# 		particles_alive.append(particle)
 	# 	update_norm()
-	pass
+	# pass
 func tick() -> void:
 	# trigger tick() on every particles alive
 	for particle in particles_alive:
