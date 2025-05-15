@@ -52,6 +52,9 @@ func _ready() -> void:
 	_sphere_mesh.radius = particle_radius
 	_sphere_mesh.height = particle_radius * 2
 	_sphere_mesh.surface_set_material(0, unshaded_material)
+	# to reduce the polygons
+	_sphere_mesh.radial_segments = 4
+	_sphere_mesh.rings = 2
 
 	longitude += 90 # longitude is shifted by 90°
 
@@ -84,6 +87,9 @@ func init_multimesh(multi_mesh_istance: MultiMeshInstance3D) -> void:
 	multi_mesh_istance.multimesh.visible_instance_count = 0 # 0 so no particles are shown at the beginning
 	# setting particle radius
 	multi_mesh_istance.multimesh.mesh = _sphere_mesh
+	multi_mesh_istance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	multi_mesh_istance.gi_mode = GeometryInstance3D.GI_MODE_DISABLED
+	multi_mesh_istance.lod_bias = 0.0001
 	# mm_emitter.top_level = true
 	
 func _physics_process(_delta: float) -> void:
@@ -170,15 +176,6 @@ func tick_optimized() -> void:
 		var local_transf = mm_emitter.multimesh.get_instance_transform(i)
 
 		global_positions[i] = global_positions[i] + _normal_dir * 0.01
-		# # converting the origin to global space
-		# var instance_global_origin = mm_global_transform * local_transf.origin
-		# # computing new global position
-		# var new_instance_global_pos = instance_global_origin + _normal_dir * 0.01
-		# # converting it back to local position
-		# var new_instance_local_pos = mm_global_transform_inverse * new_instance_global_pos
-		# mm_emitter.multimesh.set_instance_transform(i, Transform3D(local_transf.basis, new_instance_local_pos))
-
-		# local_transf.origin += mm_global_transform_inverse * _normal_dir * 0.01
 		local_transf.origin = to_local(global_positions[i])
 		mm_emitter.multimesh.set_instance_transform(i, local_transf)
 
