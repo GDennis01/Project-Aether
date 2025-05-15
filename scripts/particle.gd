@@ -3,9 +3,10 @@ class_name Particle
 var normal_direction: Vector3 = Vector3(0, 1, 0)
 var enabled: bool = true
 var time_to_live: float = 0
+var color: Color
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	$ParticleMesh.get_surface_override_material(0).albedo_color = color
 
 
 # # Called every frame. 'delta' is the elapsed time since the previous frame.

@@ -54,6 +54,7 @@ func load_data() -> void:
 
 		var emitter = emitter_scene.instantiate() as Emitter
 
+
 		new_entry.speed_edit.sanitized_edit_focus_exited.connect(emitter.update_speed)
 		new_entry.latitude_edit.sanitized_edit_focus_exited.connect(emitter.update_lat)
 		new_entry.longitude_edit.sanitized_edit_focus_exited.connect(emitter.update_long)
@@ -65,6 +66,12 @@ func load_data() -> void:
 		new_entry.set_longitude(loaded_entry[2])
 		new_entry.set_diffusion(loaded_entry[3])
 		new_entry.set_color(loaded_entry[4])
+		
+		emitter.speed = new_entry.speed
+		emitter.latitude = new_entry.latitude
+		emitter.longitude = new_entry.longitude
+		emitter.diffusion = new_entry.diffusion
+		emitter.color = new_entry.color
 
 		# Saving (jet_entry,emitter) to a dictionary so that later on I can remove both entry(HUD) and the emitter node
 		entry_emitter_dict.set(new_entry.get_instance_id(), emitter.get_instance_id())
@@ -88,7 +95,7 @@ func _on_add_jet_entry_btn_pressed() -> void:
 
 	# instantiating an emitter so that I can pass it to the CometMesh and thus setting correctly the position according
 	# to the comet radius
-	var emitter = load("res://scenes/particle_emitter.tscn").instantiate() as Emitter
+	var emitter = emitter_scene.instantiate() as Emitter
 
 	# connecting the emitter to SanitizedEdit signals so that whenever one of those SanitizedEdit value changes,
 	# the corresponding update method is called on the emitter

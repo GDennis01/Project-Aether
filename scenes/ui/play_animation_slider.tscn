@@ -45,6 +45,7 @@ disabled = true
 text = "STOP"
 
 [node name="SpeedUpBtn" type="Button" parent="."]
+visible = false
 layout_mode = 0
 offset_left = 128.0
 offset_right = 210.0

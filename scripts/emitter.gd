@@ -19,10 +19,18 @@ var diffusion: float
 var color: Color
 
 
+#multimesh
+var mm_emitter: MultiMeshInstance3D = MultiMeshInstance3D.new()
+var global_positions: Array[Vector3] # global position of the mm_emitter at each instance spawned
+var normal_dirs: Array[Vector3] # normal_dir of the mm_emitter at each instance spawned
+
+#sim related
+var num_particles: int = 0
+
 var is_lit: bool = true
 @export var max_particles: int = 10
 @export var particle_per_second: int = 5
-@export var particle_radius: float = 0.1
+@export var particle_radius: float = 0.5
 @export var enabled: bool = true
 @export var light_source: Light3D
 @export var comet_collider: CollisionObject3D
@@ -34,7 +42,8 @@ func _ready() -> void:
 	
 	var unshaded_material = StandardMaterial3D.new()
 	unshaded_material.shading_mode = StandardMaterial3D.SHADING_MODE_UNSHADED
-	unshaded_material.albedo_color = Color.WHITE
+	# unshaded_material.albedo_color = Color.WHITE
+	unshaded_material.vertex_color_use_as_albedo = true
 	
 	#$Particle/ParticleArea/ParticleShape.shape.set_radius($Particle.mesh.radius)
 	$Particle/ParticleArea/ParticleShape.shape.set_radius($Particle.mesh.radius)
@@ -56,11 +65,27 @@ func _ready() -> void:
 	).normalized()
 	norm = initial_norm
 	update_norm()
+
+	init_multimesh(mm_emitter)
+	add_child(mm_emitter)
+	# for top_level = true
+	# mm_emitter.global_position = global_position
 	
-	print(get_parent().global_transform.basis)
 	# norm = norm.rotated(Vector3.RIGHT, deg_to_rad(longitude))
 
-
+func init_multimesh(multi_mesh_istance: MultiMeshInstance3D) -> void:
+	# init multimesh object
+	multi_mesh_istance.multimesh = MultiMesh.new()
+	multi_mesh_istance.multimesh.transform_format = MultiMesh.TRANSFORM_3D
+	mm_emitter.multimesh.use_colors = true
+	mm_emitter.multimesh.use_custom_data = true
+	# init instance count(max particles) to an arbitrary number bc yes lol
+	multi_mesh_istance.multimesh.instance_count = 1000
+	multi_mesh_istance.multimesh.visible_instance_count = 0 # 0 so no particles are shown at the beginning
+	# setting particle radius
+	multi_mesh_istance.multimesh.mesh = _sphere_mesh
+	# mm_emitter.top_level = true
+	
 func _physics_process(_delta: float) -> void:
 	if not visible:
 		return
@@ -76,7 +101,9 @@ func _physics_process(_delta: float) -> void:
 	var light_pos = light_source.global_position
 	var light_dir_vector = light_source.global_transform.basis.z.normalized()
 	var emitter_pos = global_position
-	DebugLine.DrawLine(light_pos, emitter_pos, Color(0, 255, 0))
+
+
+	# DebugLine.DrawLine(light_pos, emitter_pos, Color(0, 255, 0))
 
 	var query = PhysicsRayQueryParameters3D.create(light_pos, emitter_pos)
 	query.collide_with_areas = true
@@ -105,24 +132,7 @@ func _physics_process(_delta: float) -> void:
 
 func is_lit_math(sun_inc: float, sun_dir: float) -> void:
 	pass
-# func _process(_delta: float) -> void:
-	# time_now = Time.get_ticks_msec()
-	# if enabled and is_lit and time_now - time_start > 1000 * 1.0 / particle_per_second:
-	# 	time_start = Time.get_ticks_msec()
-	# 	var particle: Particle
-	# 	if particles_alive.size() < max_particles:
-	# 		particle = particle_scene.instantiate() as Particle
-	# 		# particle.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	# 		particle.top_level = true
-	# 		particle.normal_direction = norm
-	# 		particle.enabled = true
-	# 		particle.global_position = self.global_position
-	# 		particle.time_to_live = 10
-	# 		add_child(particle)
-	# 		particle.add_to_group("particle")
-	# 		particles_alive.append(particle)
-	# 	update_norm()
-	# pass
+
 func tick() -> void:
 	# trigger tick() on every particles alive
 	for particle in particles_alive:
@@ -135,16 +145,72 @@ func tick() -> void:
 		particle.normal_direction = norm
 		particle.enabled = true
 		particle.time_to_live = 10
+		particle.color = color
 		add_child(particle)
 		particle.global_position = self.global_position
 		particle.add_to_group("particle")
 		particles_alive.append(particle)
 	update_norm()
 
+
+#region Multimesh related
+func set_number_particles(num: int) -> void:
+	num_particles = num
+	mm_emitter.multimesh.instance_count = num_particles
+func tick_optimized() -> void:
+	var mm_global_transform := mm_emitter.global_transform
+	var mm_global_transform_inverse := mm_global_transform.affine_inverse()
+	# for top_level=true
+	# mm_emitter.global_position = global_position
+	# foreach to move each particle
+	for i in mm_emitter.multimesh.visible_instance_count:
+		# getting normal direction and converting it to vector3 since it's saved as a Color
+		var _normal_dir_as_color := mm_emitter.multimesh.get_instance_custom_data(i) as Color
+		var _normal_dir = Vector3(_normal_dir_as_color.r, _normal_dir_as_color.g, _normal_dir_as_color.b)
+		var local_transf = mm_emitter.multimesh.get_instance_transform(i)
+
+		global_positions[i] = global_positions[i] + _normal_dir * 0.01
+		# # converting the origin to global space
+		# var instance_global_origin = mm_global_transform * local_transf.origin
+		# # computing new global position
+		# var new_instance_global_pos = instance_global_origin + _normal_dir * 0.01
+		# # converting it back to local position
+		# var new_instance_local_pos = mm_global_transform_inverse * new_instance_global_pos
+		# mm_emitter.multimesh.set_instance_transform(i, Transform3D(local_transf.basis, new_instance_local_pos))
+
+		# local_transf.origin += mm_global_transform_inverse * _normal_dir * 0.01
+		local_transf.origin = to_local(global_positions[i])
+		mm_emitter.multimesh.set_instance_transform(i, local_transf)
+
+
+	# whether to spawn a new particle or not
+	if is_lit:
+		# incrementing number of maximum drawn particles (to simulate spawning them)
+		var last_id = mm_emitter.multimesh.visible_instance_count + 1
+		mm_emitter.multimesh.visible_instance_count = last_id
+		# change color of particle based on emitter color
+		mm_emitter.multimesh.set_instance_color(last_id - 1, color)
+		# assign the normal direction to the particle
+		mm_emitter.multimesh.set_instance_custom_data(last_id - 1, Color(norm.x, norm.y, norm.z))
+		normal_dirs.append(norm)
+		global_positions.append(mm_emitter.global_position)
+		# spawn new particle at origin
+		mm_emitter.multimesh.set_instance_transform(last_id - 1, Transform3D(Basis(), Vector3.ZERO))
+	update_norm()
+	
+
 func reset_particles() -> void:
 	for particle in particles_alive:
 		particle.queue_free()
 	particles_alive.clear()
+func reset_multimesh() -> void:
+	mm_emitter.multimesh.instance_count = 0
+	mm_emitter.multimesh.visible_instance_count = 0
+	global_positions.clear()
+	normal_dirs.clear()
+func destroy_multimesh() -> void:
+	mm_emitter.queue_free()
+#endregion Multimesh
 
 ###################################################################################
 # Update methods called when sanitized_edit.sanitized_edit_focus_exited is emitted
@@ -155,6 +221,7 @@ func update_position(radius: float) -> void:
 	var new_pos = Util.latlon_to_vector3(latitude, longitude + 90, radius)
 	position = new_pos
 func update_speed(_speed: float) -> void:
+	speed = _speed
 	print("new__speed:" + str(_speed))
 	pass
 func update_lat(lat: float) -> void:
@@ -172,6 +239,7 @@ func update_long(long: float) -> void:
 	position = new_pos
 	update_initial_norm(latitude, longitude)
 func update_diff(_diffusion: float) -> void:
+	diffusion = _diffusion
 	print("new_diff:" + str(_diffusion))
 	pass
 func update_color(_color: Color) -> void:
@@ -179,7 +247,6 @@ func update_color(_color: Color) -> void:
 	color = _color
 
 func update_initial_norm(_lat: float, _long: float) -> void:
-	print("UPDATED NORM")
 	var lat_rad = deg_to_rad(_lat)
 	var lon_rad = deg_to_rad(_long)
 	initial_norm = Vector3(

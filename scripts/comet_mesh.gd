@@ -97,7 +97,8 @@ Each tick spawn a new particle from the jet
 """
 func tick() -> void:
 	for emitter: Emitter in get_tree().get_nodes_in_group("emitter"):
-		emitter.tick()
+		# emitter.tick()
+		emitter.tick_optimized()
 	animation_slider.tick()
 	rotate_object_local(Vector3.UP, deg_to_rad(angle_per_step))
 #region Simulation related
@@ -117,6 +118,8 @@ func animation_started() -> void:
 	if animation_state == ANIMATION_STATE.STARTED:
 		starting_rotation = rotation
 		n_steps = int(num_rotation * frequency * 60 / jet_rate)
+		for emitter: Emitter in get_tree().get_nodes_in_group("emitter"):
+			emitter.set_number_particles(n_steps)
 		print(n_steps)
 		# if I have a rotation period of 360 minutes and a jet_rate of 1 min, it means I have 1 angle per tick()
 		angle_per_step = 1 / (frequency * 60 / jet_rate) * 360
@@ -141,6 +144,7 @@ func animation_stopped() -> void:
 	for emitter: Emitter in get_tree().get_nodes_in_group("emitter"):
 		emitter.reset_particles()
 		emitter.update_norm()
+		emitter.reset_multimesh()
 	animation_slider.reset()
 
 """
@@ -161,8 +165,6 @@ Called by JetTable._on_add_jet_entry_btn_pressed
 func spawn_emitter_at(latitude: float, longitude: float, emitter: Emitter) -> void:
 	# print("Latitude:" + str(latitude) + " Longitude:" + str(longitude))
 	var emitter_pos = Util.latlon_to_vector3(latitude, longitude + 90, mesh.radius)
-	emitter.latitude = latitude
-	emitter.longitude = longitude
 	emitter.position = emitter_pos
 	emitter.enabled = rotation_enabled
 	emitter.comet_collider = comet_collider
@@ -175,10 +177,11 @@ func spawn_emitter_at(latitude: float, longitude: float, emitter: Emitter) -> vo
 Called by JetTable.remove_jet_entry
 """
 func remove_emitter(emitter_id: int) -> void:
-	var emitter = instance_from_id(emitter_id)
+	var emitter: Emitter = instance_from_id(emitter_id)
 	emitter.remove_from_group("emitter")
 	print(emitter)
 	# remove_child(emitter)
+	emitter.destroy_multimesh()
 	emitter.queue_free()
 	pass
 

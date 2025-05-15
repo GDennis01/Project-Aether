@@ -76,14 +76,18 @@ size_flags_stretch_ratio = 0.24
 
 [node name="AnimationSlider" parent="Body/TabButtons/ColorRect/HBoxContainer" instance=ExtResource("3_gss2c")]
 layout_mode = 2
+size_flags_vertical = 1
+size_flags_stretch_ratio = 0.45
 num_steps = 500
 
 [node name="TriggerRotBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
+visible = false
 layout_mode = 2
 focus_mode = 0
 text = "Trigger Rotation"
 
 [node name="ResetRotnBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
+visible = false
 layout_mode = 2
 focus_mode = 0
 text = "Reset Rotation"
@@ -94,6 +98,7 @@ focus_mode = 0
 text = "Toggle Axes"
 
 [node name="Spacer" type="Control" parent="Body/TabButtons/ColorRect/HBoxContainer"]
+visible = false
 layout_direction = 2
 layout_mode = 2
 size_flags_horizontal = 3

@@ -22,7 +22,7 @@ radius = 0.01
 script = ExtResource("1_87byf")
 max_particles = 10000
 particle_per_second = 100
-particle_radius = 0.01
+particle_radius = 0.05
 
 [node name="Particle" type="MeshInstance3D" parent="."]
 cast_shadow = 0

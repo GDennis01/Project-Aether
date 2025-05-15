@@ -2,12 +2,14 @@ extends CanvasLayer
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	$Control/FrequencyEdit.set_value(1)
+	$Control/NumRotationEdit.set_value(1)
+	$Control/JetRateEdit.set_value(5)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+# func _process(delta: float) -> void:
+# 	pass
 
 func save_data() -> void:
 	var freq = float($Control/FrequencyEdit.text)
