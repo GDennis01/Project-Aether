@@ -38,20 +38,20 @@ func _ready() -> void:
 	var _x_axis := axis_scene.instantiate() as AxisArrow
 	add_child(_x_axis)
 	_x_axis.add_to_group("toggle_axis")
-	_x_axis.set_axis_type(AxisArrow.AxisType.X)
+	_x_axis.set_axis_type(AxisArrow.AXIS_TYPE.X)
 	_x_axis.set_height(mesh.height)
 	
 	var _y_axis := axis_scene.instantiate() as AxisArrow
 	add_child(_y_axis)
 	_y_axis.add_to_group("toggle_axis")
-	_y_axis.set_axis_type(AxisArrow.AxisType.Y)
+	_y_axis.set_axis_type(AxisArrow.AXIS_TYPE.Y)
 	_y_axis.set_height(mesh.height)
 	
 	var _z_axis := axis_scene.instantiate() as AxisArrow
 	add_child(_z_axis)
 	_z_axis.add_to_group("toggle_axis")
 	# calling after all axises are added to the scenetree and thus are _ready
-	_z_axis.set_axis_type(AxisArrow.AxisType.Z)
+	_z_axis.set_axis_type(AxisArrow.AXIS_TYPE.Z)
 	_z_axis.set_height(mesh.height)
 	
 	x_axis = _x_axis

@@ -9,7 +9,8 @@ class_name AxisArrow
 var _original_arm_mesh_height: float = 1.0
 var _original_arm_mesh_scale: Vector3 = Vector3.ONE
 
-enum AxisType {X, Y, Z}
+enum AXIS_TYPE {X, Y, Z}
+var axis_type: AXIS_TYPE
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	#arrow_arm.mesh.material.albedo_color = color
@@ -19,22 +20,23 @@ func _ready() -> void:
 	
 	#set_height(height)
 
-func set_axis_type(type: AxisType) -> void:
+func set_axis_type(type: AXIS_TYPE) -> void:
 	const ALPHA: float = 0.4
-	match type:
-		AxisType.X: # pitch axis
+	axis_type = type
+	match axis_type:
+		AXIS_TYPE.X: # pitch axis
 			rotation_degrees.z = -90
 			position = Vector3(height / 2, 0, 0)
 			arrow_arm.get_surface_override_material(0).albedo_color = Color(Color.RED, ALPHA)
 			arrow_head.get_surface_override_material(0).albedo_color = Color(Color.RED, ALPHA)
 			pass
-		AxisType.Y:
+		AXIS_TYPE.Y:
 			# default axis(yaw)
 			position = Vector3(0, height / 2, 0)
 			arrow_arm.get_surface_override_material(0).albedo_color = Color(Color.GREEN, ALPHA)
 			arrow_head.get_surface_override_material(0).albedo_color = Color(Color.GREEN, ALPHA)
 			pass
-		AxisType.Z: # roll axis
+		AXIS_TYPE.Z: # roll axis
 			rotation_degrees.x = 90
 			position = Vector3(0, 0, height / 2)
 			arrow_arm.get_surface_override_material(0).albedo_color = Color(Color.BLUE, ALPHA)
@@ -55,8 +57,10 @@ func set_height(value: float) -> void:
 		arrow_head.position.y = height - _original_arm_mesh_height / 4
 		
 		
-func toggle_axis() -> void:
-	visible = not visible
+func toggle_axis(type: AXIS_TYPE) -> void:
+	print()
+	if type == axis_type:
+		visible = not visible
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta: float) -> void:
 	#pass

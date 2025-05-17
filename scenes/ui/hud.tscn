@@ -92,10 +92,18 @@ layout_mode = 2
 focus_mode = 0
 text = "Reset Rotation"
 
+[node name="ToggleSunBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
+layout_mode = 2
+text = "Toggle Sun Axis"
+
+[node name="ToggleYBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
+layout_mode = 2
+text = "Toggle Y"
+
 [node name="ToggleAxesBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 layout_mode = 2
 focus_mode = 0
-text = "Toggle Axes"
+text = "Toggle X/Z"
 
 [node name="Spacer" type="Control" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 visible = false
@@ -549,6 +557,7 @@ Alt while moving to move slower
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/SimBtn" to="Body" method="_on_sim_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/TriggerRotBtn" to="Body" method="_on_trigger_rot_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ResetRotnBtn" to="Body" method="_on_reset_rotn_btn_pressed"]
+[connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ToggleYBtn" to="Body" method="_on_toggle_y_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ToggleAxesBtn" to="Body" method="_on_toggle_axes_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/SaveBtn" to="Body" method="_on_save_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/LoadBtn" to="Body" method="_on_load_btn_pressed"]
