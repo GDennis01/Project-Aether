@@ -27,7 +27,7 @@ var emitter_scene := preload("res://scenes/particle_emitter.tscn")
 @onready var animation_slider: AnimationSlider = $"/root/Hud/Body/TabButtons/ColorRect/HBoxContainer/AnimationSlider"
 @export var light_source: Light3D
 @export var comet_collider: CollisionObject3D
-var rotation_enabled = false
+var rotation_enabled := false
 var starting_rotation: Vector3
 
 var rotation_angle: float = 0.0
@@ -35,19 +35,19 @@ var rotation_angle: float = 0.0
 var speed_sim: int = 1
 
 func _ready() -> void:
-	var _x_axis = axis_scene.instantiate() as AxisArrow
+	var _x_axis := axis_scene.instantiate() as AxisArrow
 	add_child(_x_axis)
 	_x_axis.add_to_group("toggle_axis")
 	_x_axis.set_axis_type(AxisArrow.AxisType.X)
 	_x_axis.set_height(mesh.height)
 	
-	var _y_axis = axis_scene.instantiate() as AxisArrow
+	var _y_axis := axis_scene.instantiate() as AxisArrow
 	add_child(_y_axis)
 	_y_axis.add_to_group("toggle_axis")
 	_y_axis.set_axis_type(AxisArrow.AxisType.Y)
 	_y_axis.set_height(mesh.height)
 	
-	var _z_axis = axis_scene.instantiate() as AxisArrow
+	var _z_axis := axis_scene.instantiate() as AxisArrow
 	add_child(_z_axis)
 	_z_axis.add_to_group("toggle_axis")
 	# calling after all axises are added to the scenetree and thus are _ready
@@ -164,7 +164,7 @@ Called by JetTable._on_add_jet_entry_btn_pressed
 """
 func spawn_emitter_at(latitude: float, longitude: float, emitter: Emitter) -> void:
 	# print("Latitude:" + str(latitude) + " Longitude:" + str(longitude))
-	var emitter_pos = Util.latlon_to_vector3(latitude, longitude + 90, mesh.radius)
+	var emitter_pos := Util.latlon_to_vector3(latitude, longitude + 90, mesh.radius)
 	emitter.position = emitter_pos
 	emitter.enabled = rotation_enabled
 	emitter.comet_collider = comet_collider

@@ -7,7 +7,7 @@ var entry_emitter_dict := Dictionary()
 @export var scroll_container: ScrollContainer
 @export var max_height: float = 300
 
-var _is_id_update_pending = false
+var _is_id_update_pending := false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	if not is_instance_valid(scroll_container) or not is_instance_valid(content_node):
@@ -21,7 +21,7 @@ func _update_scroll_container_height() -> void:
 	if not is_instance_valid(scroll_container) or not is_instance_valid(content_node):
 		return
 	var total_content_node_height := content_node.get_combined_minimum_size().y
-	var new_height = min(total_content_node_height, max_height)
+	var new_height: float = min(total_content_node_height, max_height)
 	if scroll_container.custom_minimum_size.y != new_height:
 		scroll_container.custom_minimum_size.y = new_height
 	
@@ -46,13 +46,13 @@ func load_data() -> void:
 	var entries_to_add = SaveManager.config.get_section_keys("jets")
 	print("Entries to add:" + str(entries_to_add))
 	for entry in entries_to_add:
-		var loaded_entry = SaveManager.config.get_value("jets", str(entry))
+		var loaded_entry: Array[Variant] = SaveManager.config.get_value("jets", str(entry))
 		print(loaded_entry)
-		var new_entry = jet_entry_scene.instantiate() as JetEntry
+		var new_entry := jet_entry_scene.instantiate() as JetEntry
 		new_entry.set_id_label(int(entry))
 		content_node.add_child(new_entry)
 
-		var emitter = emitter_scene.instantiate() as Emitter
+		var emitter := emitter_scene.instantiate() as Emitter
 
 
 		new_entry.speed_edit.sanitized_edit_focus_exited.connect(emitter.update_speed)
@@ -84,9 +84,9 @@ func load_data() -> void:
 	pass
 func _on_add_jet_entry_btn_pressed() -> void:
 	# creating the entry in the hud
-	var new_entry = jet_entry_scene.instantiate() as JetEntry
+	var new_entry := jet_entry_scene.instantiate() as JetEntry
 	var entries := get_tree().get_nodes_in_group("jet_entry")
-	var max_id = entries.size()
+	var max_id := entries.size()
 	new_entry.set_id_label(max_id)
 
 	# adding the entry to the vertical container
@@ -95,7 +95,7 @@ func _on_add_jet_entry_btn_pressed() -> void:
 
 	# instantiating an emitter so that I can pass it to the CometMesh and thus setting correctly the position according
 	# to the comet radius
-	var emitter = emitter_scene.instantiate() as Emitter
+	var emitter := emitter_scene.instantiate() as Emitter
 
 	# connecting the emitter to SanitizedEdit signals so that whenever one of those SanitizedEdit value changes,
 	# the corresponding update method is called on the emitter
@@ -114,9 +114,9 @@ func _on_add_jet_entry_btn_pressed() -> void:
 	get_tree().call_group("latitude", "spawn_emitter_at", new_entry.latitude, new_entry.longitude, emitter)
 
 func _clear_data_for_load() -> void:
-	for child in content_node.get_children().duplicate():
-		var id = child.get_instance_id()
-		var emitter_id = entry_emitter_dict[id]
+	for child: Node in content_node.get_children().duplicate():
+		var id := child.get_instance_id()
+		var emitter_id: int = entry_emitter_dict[id]
 		entry_emitter_dict.erase(id)
 		child.queue_free()
 		get_tree().call_group("comet", "remove_emitter", emitter_id)
@@ -126,8 +126,8 @@ CalledbyJetEntry._on_remove_jet_btn_pressed()
 """
 func remove_jet_entry(id: int) -> void:
 	# first deleting the entry, then removing the emitter by calling a comet's method
-	var entry = instance_from_id(id)
-	var emitter_id = entry_emitter_dict[id]
+	var entry := instance_from_id(id)
+	var emitter_id: int = entry_emitter_dict[id]
 	entry_emitter_dict.erase(id)
 	entry.queue_free()
 	# removing corresponding jet section
@@ -156,7 +156,7 @@ func _deferred_update_ids_and_scroll() -> void:
 	_update_scroll_container_height()
 
 	var entries := $JetBodyScrollBar/JetBody.get_children()
-	var tmp_id = 0
+	var tmp_id := 0
 
 	for _entry in entries as Array[JetEntry]:
 		if _entry is JetEntry and is_instance_valid(_entry):
@@ -174,5 +174,5 @@ func _deferred_update_ids_and_scroll() -> void:
 CalledbyJetEntry._on_toggle_jet_btn_pressed()
 """
 func toggle_jet_entry(id: int) -> void:
-	var emitter_to_toggle = instance_from_id(entry_emitter_dict[id])
+	var emitter_to_toggle := instance_from_id(entry_emitter_dict[id])
 	emitter_to_toggle.visible = not emitter_to_toggle.visible

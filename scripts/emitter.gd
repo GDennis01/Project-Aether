@@ -40,7 +40,7 @@ var initial_norm: Vector3 = Vector3(0, 1, 0)
 func _ready() -> void:
 	time_start = Time.get_ticks_msec()
 	
-	var unshaded_material = StandardMaterial3D.new()
+	var unshaded_material := StandardMaterial3D.new()
 	unshaded_material.shading_mode = StandardMaterial3D.SHADING_MODE_UNSHADED
 	# unshaded_material.albedo_color = Color.WHITE
 	unshaded_material.vertex_color_use_as_albedo = true
@@ -58,8 +58,8 @@ func _ready() -> void:
 
 	longitude += 90 # longitude is shifted by 90°
 
-	var lat_rad = deg_to_rad(latitude)
-	var lon_rad = deg_to_rad(longitude)
+	var lat_rad := deg_to_rad(latitude)
+	var lon_rad := deg_to_rad(longitude)
  
 	initial_norm = Vector3(
 		cos(lat_rad) * cos(lon_rad) * 5,
@@ -104,14 +104,14 @@ func _physics_process(_delta: float) -> void:
 	#DebugLine.DrawLine(ray_origin,ray_end,Color(0,255,0))
 
 	#var query = PhysicsRayQueryParameters3D.create(ray_origin,ray_end)
-	var light_pos = light_source.global_position
-	var light_dir_vector = light_source.global_transform.basis.z.normalized()
-	var emitter_pos = global_position
+	var light_pos := light_source.global_position
+	var light_dir_vector := light_source.global_transform.basis.z.normalized()
+	var emitter_pos := global_position
 
 
 	# DebugLine.DrawLine(light_pos, emitter_pos, Color(0, 255, 0))
 
-	var query = PhysicsRayQueryParameters3D.create(light_pos, emitter_pos)
+	var query := PhysicsRayQueryParameters3D.create(light_pos, emitter_pos)
 	query.collide_with_areas = true
 	#query.collide_with_bodies = true
 	
@@ -172,8 +172,8 @@ func tick_optimized() -> void:
 	for i in mm_emitter.multimesh.visible_instance_count:
 		# getting normal direction and converting it to vector3 since it's saved as a Color
 		var _normal_dir_as_color := mm_emitter.multimesh.get_instance_custom_data(i) as Color
-		var _normal_dir = Vector3(_normal_dir_as_color.r, _normal_dir_as_color.g, _normal_dir_as_color.b)
-		var local_transf = mm_emitter.multimesh.get_instance_transform(i)
+		var _normal_dir := Vector3(_normal_dir_as_color.r, _normal_dir_as_color.g, _normal_dir_as_color.b)
+		var local_transf := mm_emitter.multimesh.get_instance_transform(i)
 
 		global_positions[i] = global_positions[i] + _normal_dir * 0.01
 		local_transf.origin = to_local(global_positions[i])
@@ -183,7 +183,7 @@ func tick_optimized() -> void:
 	# whether to spawn a new particle or not
 	if is_lit:
 		# incrementing number of maximum drawn particles (to simulate spawning them)
-		var last_id = mm_emitter.multimesh.visible_instance_count + 1
+		var last_id := mm_emitter.multimesh.visible_instance_count + 1
 		mm_emitter.multimesh.visible_instance_count = last_id
 		# change color of particle based on emitter color
 		mm_emitter.multimesh.set_instance_color(last_id - 1, color)
@@ -215,7 +215,7 @@ func destroy_multimesh() -> void:
 ###################################################################################
 #region update methods
 func update_position(radius: float) -> void:
-	var new_pos = Util.latlon_to_vector3(latitude, longitude + 90, radius)
+	var new_pos := Util.latlon_to_vector3(latitude, longitude + 90, radius)
 	position = new_pos
 func update_speed(_speed: float) -> void:
 	speed = _speed
@@ -225,14 +225,14 @@ func update_lat(lat: float) -> void:
 	print("new_lat:" + str(lat))
 	print("new_long:" + str(longitude))
 	latitude = lat
-	var new_pos = Util.latlon_to_vector3(latitude, longitude, comet_radius)
+	var new_pos := Util.latlon_to_vector3(latitude, longitude, comet_radius)
 	position = new_pos
 	update_initial_norm(latitude, longitude)
 func update_long(long: float) -> void:
 	print("new_lat:" + str(latitude))
 	print("new_long:" + str(long))
 	longitude = long + 90
-	var new_pos = Util.latlon_to_vector3(latitude, longitude, comet_radius)
+	var new_pos := Util.latlon_to_vector3(latitude, longitude, comet_radius)
 	position = new_pos
 	update_initial_norm(latitude, longitude)
 func update_diff(_diffusion: float) -> void:
@@ -244,8 +244,8 @@ func update_color(_color: Color) -> void:
 	color = _color
 
 func update_initial_norm(_lat: float, _long: float) -> void:
-	var lat_rad = deg_to_rad(_lat)
-	var lon_rad = deg_to_rad(_long)
+	var lat_rad := deg_to_rad(_lat)
+	var lon_rad := deg_to_rad(_long)
 	initial_norm = Vector3(
 		cos(lat_rad) * cos(lon_rad) * 5,
 		sin(lat_rad) * 5,

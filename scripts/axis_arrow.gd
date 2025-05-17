@@ -1,15 +1,15 @@
 @tool
 extends Node3D
 class_name AxisArrow
-@export var arrow_arm:MeshInstance3D
-@export var arrow_head:MeshInstance3D
-@export var height: float = 1.0: set=set_height
-@export var color:Color
+@export var arrow_arm: MeshInstance3D
+@export var arrow_head: MeshInstance3D
+@export var height: float = 1.0: set = set_height
+@export var color: Color
 
-var _original_arm_mesh_height:float = 1.0
-var _original_arm_mesh_scale:Vector3 = Vector3.ONE
+var _original_arm_mesh_height: float = 1.0
+var _original_arm_mesh_scale: Vector3 = Vector3.ONE
 
-enum AxisType{X,Y,Z}
+enum AxisType {X, Y, Z}
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	#arrow_arm.mesh.material.albedo_color = color
@@ -19,43 +19,43 @@ func _ready() -> void:
 	
 	#set_height(height)
 
-func set_axis_type(type:AxisType):
-	const ALPHA:float = 0.4
+func set_axis_type(type: AxisType) -> void:
+	const ALPHA: float = 0.4
 	match type:
 		AxisType.X: # pitch axis
 			rotation_degrees.z = -90
-			position = Vector3(height/2,0,0)
-			arrow_arm.get_surface_override_material(0).albedo_color = Color(Color.RED,ALPHA)
-			arrow_head.get_surface_override_material(0).albedo_color = Color(Color.RED,ALPHA)
+			position = Vector3(height / 2, 0, 0)
+			arrow_arm.get_surface_override_material(0).albedo_color = Color(Color.RED, ALPHA)
+			arrow_head.get_surface_override_material(0).albedo_color = Color(Color.RED, ALPHA)
 			pass
 		AxisType.Y:
 			# default axis(yaw)
-			position = Vector3(0,height/2,0)
-			arrow_arm.get_surface_override_material(0).albedo_color = Color(Color.GREEN,ALPHA)
-			arrow_head.get_surface_override_material(0).albedo_color = Color(Color.GREEN,ALPHA)
+			position = Vector3(0, height / 2, 0)
+			arrow_arm.get_surface_override_material(0).albedo_color = Color(Color.GREEN, ALPHA)
+			arrow_head.get_surface_override_material(0).albedo_color = Color(Color.GREEN, ALPHA)
 			pass
 		AxisType.Z: # roll axis
 			rotation_degrees.x = 90
-			position=Vector3(0,0,height/2)
-			arrow_arm.get_surface_override_material(0).albedo_color = Color(Color.BLUE,ALPHA)
-			arrow_head.get_surface_override_material(0).albedo_color = Color(Color.BLUE,ALPHA)
+			position = Vector3(0, 0, height / 2)
+			arrow_arm.get_surface_override_material(0).albedo_color = Color(Color.BLUE, ALPHA)
+			arrow_head.get_surface_override_material(0).albedo_color = Color(Color.BLUE, ALPHA)
 			pass
 		
-func set_height(value:float)->void:
-	height = max(0.01,value)
+func set_height(value: float) -> void:
+	height = max(0.01, value)
 	if is_node_ready():
 		# scaling arrow arm
-		var required_y_scale  =(height/ _original_arm_mesh_height)
-		arrow_arm.scale = Vector3(required_y_scale,required_y_scale,required_y_scale)
+		var required_y_scale := (height / _original_arm_mesh_height)
+		arrow_arm.scale = Vector3(required_y_scale, required_y_scale, required_y_scale)
 		# offsetting by the original height(which is 2 so 2/4 = 0.5) so that the arm is centered in the center of the mesh
-		arrow_arm.position.y = height/2 - _original_arm_mesh_height/4
+		arrow_arm.position.y = height / 2 - _original_arm_mesh_height / 4
 
 		# positioning arrow heads
-		arrow_head.scale = Vector3(required_y_scale,required_y_scale,required_y_scale)
-		arrow_head.position.y =  height - _original_arm_mesh_height/4 
+		arrow_head.scale = Vector3(required_y_scale, required_y_scale, required_y_scale)
+		arrow_head.position.y = height - _original_arm_mesh_height / 4
 		
 		
-func toggle_axis()->void:
+func toggle_axis() -> void:
 	visible = not visible
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta: float) -> void:

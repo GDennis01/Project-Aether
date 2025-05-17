@@ -3,7 +3,7 @@ extends Control
 class_name AnimationSlider
 @export var num_steps: int = 0
 var step_rate: float = 0
-var speed_up = 1
+var speed_up := 1
 
 
 # Called when the node enters the scene tree for the first time.

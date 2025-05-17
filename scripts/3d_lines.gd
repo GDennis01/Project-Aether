@@ -19,8 +19,8 @@ func _process(delta):
 	for i in range(len(Lines)):
 		Lines[i].time -= delta
 	
-	if(len(Lines) > 0 || RemovedLine):
-		queue_redraw() #Calls _draw
+	if (len(Lines) > 0 || RemovedLine):
+		queue_redraw() # Calls _draw
 		RemovedLine = false
 
 func _draw():
@@ -32,7 +32,7 @@ func _draw():
 		#Dont draw line if either start or end is considered behind the camera
 		#this causes the line to not be drawn sometimes but avoids a bug where the
 		#line is drawn incorrectly
-		if(Cam.is_position_behind(Lines[i].Start) ||
+		if (Cam.is_position_behind(Lines[i].Start) ||
 			Cam.is_position_behind(Lines[i].End)):
 			continue
 		
@@ -41,7 +41,7 @@ func _draw():
 	#Remove lines that have timed out
 	var i = Lines.size() - 1
 	while (i >= 0):
-		if(Lines[i].time < 0.0):
+		if (Lines[i].time < 0.0):
 			Lines.remove_at(i)
 			RemovedLine = true
 		i -= 1

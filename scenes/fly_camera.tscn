@@ -3,10 +3,9 @@
 [ext_resource type="Script" uid="uid://ckhlhsuy1jfdr" path="res://scripts/camera_3d.gd" id="1_remm5"]
 
 [node name="Node3D" type="Node3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.708, 2.475)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 2.475)
 script = ExtResource("1_remm5")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.816572, 0)
 current = true
 fov = 45.0
