@@ -25,6 +25,10 @@ DebugLine="*res://scripts/3d_lines.gd"
 Util="*res://scripts/util.gd"
 SaveManager="*res://scenes/save_manager.tscn"
 
+[debug]
+
+gdscript/warnings/untyped_declaration=1
+
 [input]
 
 ui_left={

@@ -9,7 +9,7 @@ class_name AxisArrow
 var _original_arm_mesh_height: float = 1.0
 var _original_arm_mesh_scale: Vector3 = Vector3.ONE
 
-enum AXIS_TYPE {X, Y, Z}
+enum AXIS_TYPE {X, Y, Z, SUN}
 var axis_type: AXIS_TYPE
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -42,6 +42,13 @@ func set_axis_type(type: AXIS_TYPE) -> void:
 			arrow_arm.get_surface_override_material(0).albedo_color = Color(Color.BLUE, ALPHA)
 			arrow_head.get_surface_override_material(0).albedo_color = Color(Color.BLUE, ALPHA)
 			pass
+		AXIS_TYPE.SUN:
+			rotation_degrees.x = -180
+			# FIXME: fix position
+			position = Vector3(0, height / 2, 0)
+			arrow_arm.get_surface_override_material(0).albedo_color = Color(Color.YELLOW, ALPHA)
+			arrow_head.get_surface_override_material(0).albedo_color = Color(Color.YELLOW, ALPHA)
+			pass
 		
 func set_height(value: float) -> void:
 	height = max(0.01, value)
@@ -58,7 +65,6 @@ func set_height(value: float) -> void:
 		
 		
 func toggle_axis(type: AXIS_TYPE) -> void:
-	print()
 	if type == axis_type:
 		visible = not visible
 # Called every frame. 'delta' is the elapsed time since the previous frame.

@@ -1,6 +1,22 @@
 extends Node3D
 
+var axis_scene := preload("res://scenes/axis_arrow.tscn")
+var sun_axis: AxisArrow
+func _ready() -> void:
+	sun_axis = axis_scene.instantiate() as AxisArrow
+	add_child(sun_axis)
+	sun_axis.add_to_group("toggle_axis")
+	sun_axis.set_axis_type(AxisArrow.AXIS_TYPE.SUN)
+	sun_axis.set_height(1)
+	pass
 
+## Updates the sun axis position and size	
+## Called by Comet.update_radius
+func update_sun_axis(value: float) -> void:
+	print("UPDATE SUN")
+	if sun_axis:
+		sun_axis.set_height(value)
+	pass
 func update_sun_dir_rotation(value: float) -> void:
 	if is_instance_of(self, DirectionalLight3D):
 		rotation.y = deg_to_rad(-value)

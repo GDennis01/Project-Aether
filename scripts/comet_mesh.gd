@@ -1,6 +1,6 @@
 @tool
 extends MeshInstance3D
-
+class_name Comet
 enum ANIMATION_STATE {
 	STARTED,
 	PAUSED,
@@ -59,8 +59,10 @@ func _ready() -> void:
 	z_axis = _z_axis
 
 	starting_rotation = rotation
-	Hud.comet_collider = comet_collider
-	Hud.light_source = light_source
+
+	get_tree().call_group("sun", "update_sun_axis", mesh.height)
+	# Hud.comet_collider = comet_collider
+	# Hud.light_source = light_source
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -211,6 +213,8 @@ func update_radius(value: float) -> void:
 		y_axis.set_height(mesh.height)
 	if z_axis:
 		z_axis.set_height(mesh.height)
+	# update position and size of sun axis
+	get_tree().call_group("sun", "update_sun_axis", value * 2)
 	SaveManager.config.set_value("comet", "radius", mesh.radius)
 	get_tree().call_group("emitter", "update_position", value)
 ## Deprecated

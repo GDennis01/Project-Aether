@@ -7,6 +7,8 @@ const ALT_MULTIPLIER = 1.0 / SHIFT_MULTIPLIER
 @export_range(0.0, 1.0) var sensitivity: float = 0.25
 
 @onready var starting_position := position
+@onready var starting_rotation := rotation
+@onready var starting_mouse_pos := Vector2(0.0, 0.0)
 
 @export var enabled: bool = true
 
@@ -67,6 +69,9 @@ func _input(event: InputEvent) -> void:
 				_alt = event.pressed
 			KEY_R:
 				position = starting_position
+				rotation = starting_rotation
+				_mouse_position = starting_mouse_pos
+				_total_pitch = 0.0
 
 # Updates mouselook and movement every frame
 func _process(delta: float) -> void:

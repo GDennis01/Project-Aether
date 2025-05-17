@@ -67,10 +67,9 @@ func _on_toggle_axes_btn_pressed() -> void:
 func _on_toggle_y_btn_pressed() -> void:
 	get_tree().call_group("toggle_axis", "toggle_axis", AxisArrow.AXIS_TYPE.Y)
 
-
 ## Toggle Sun Axis
 func _on_toggle_sun_btn_pressed() -> void:
-	pass # Replace with function body.
+	get_tree().call_group("toggle_axis", "toggle_axis", AxisArrow.AXIS_TYPE.SUN)
 
 ## Spawns an emitter at a given latitude and longitude. No Longer Used
 func _on_spawn_emitter_pressed() -> void:

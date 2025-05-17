@@ -1,6 +1,6 @@
 extends Node
 
-
+var comet_radius: float = 0.0
 # Converts Latitude/Longitude (in degrees) to a local 3D position
 # vector relative to the center of a sphere with the given radius.
 # Assumes Y-Up, Latitude 0 = Equator, Longitude 0 = +X axis.

@@ -94,10 +94,12 @@ text = "Reset Rotation"
 
 [node name="ToggleSunBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 layout_mode = 2
+focus_mode = 0
 text = "Toggle Sun Axis"
 
 [node name="ToggleYBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 layout_mode = 2
+focus_mode = 0
 text = "Toggle Y"
 
 [node name="ToggleAxesBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
@@ -532,7 +534,6 @@ text = "Jet Rate (min)"
 vertical_alignment = 1
 
 [node name="HelpPanel" type="CanvasLayer" parent="Body"]
-visible = false
 
 [node name="BoxContainer" type="BoxContainer" parent="Body/HelpPanel"]
 offset_left = 13.0
@@ -545,7 +546,7 @@ layout_mode = 2
 text = "Right Click to rotate the view
 W/A/S/D to move around
 Q/E to go up/down
-R to reset position 
+R to reset position to earth's view
 Ctrl+Wheel Up to increase movement speed
 Ctrl+Weel Down to decrease movement speed
 Shift while moving to move faster
@@ -557,6 +558,7 @@ Alt while moving to move slower
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/SimBtn" to="Body" method="_on_sim_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/TriggerRotBtn" to="Body" method="_on_trigger_rot_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ResetRotnBtn" to="Body" method="_on_reset_rotn_btn_pressed"]
+[connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ToggleSunBtn" to="Body" method="_on_toggle_sun_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ToggleYBtn" to="Body" method="_on_toggle_y_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ToggleAxesBtn" to="Body" method="_on_toggle_axes_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/SaveBtn" to="Body" method="_on_save_btn_pressed"]
