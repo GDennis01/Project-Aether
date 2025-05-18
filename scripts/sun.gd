@@ -21,6 +21,7 @@ func update_sun_dir_rotation(value: float) -> void:
 	if is_instance_of(self, DirectionalLight3D):
 		rotation.y = deg_to_rad(-value)
 	else:
+		# rotation_degrees.x = value
 		rotation_degrees.z = value
 		SaveManager.config.set_value("sun", "direction", value)
 	
