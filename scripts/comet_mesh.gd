@@ -61,6 +61,8 @@ func _ready() -> void:
 	starting_rotation = rotation
 
 	get_tree().call_group("sun", "update_sun_axis", mesh.height)
+	
+	Hud.comet_radius = mesh.radius
 	# Hud.comet_collider = comet_collider
 	# Hud.light_source = light_source
 
@@ -204,6 +206,7 @@ func reset_rotation() -> void:
 ## These methods are called by SanitizedEdit through call_group() mechanism
 func update_radius(value: float) -> void:
 	#print_debug("[UPDATE RADIUS] Before:"+str(mesh.radius)+" After:"+str(value))
+	Hud.comet_radius = value
 	mesh.set_radius(value)
 	$CometArea/CometCollisionShape.shape.set_radius(value - 0.0001)
 	mesh.set_height(value * 2)

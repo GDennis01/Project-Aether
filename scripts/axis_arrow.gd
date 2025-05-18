@@ -45,7 +45,7 @@ func set_axis_type(type: AXIS_TYPE) -> void:
 		AXIS_TYPE.SUN:
 			rotation_degrees.x = -180
 			# FIXME: fix position
-			position = Vector3(0, height / 2, 0)
+			position = Vector3(0, 0, 0)
 			arrow_arm.get_surface_override_material(0).albedo_color = Color(Color.YELLOW, ALPHA)
 			arrow_head.get_surface_override_material(0).albedo_color = Color(Color.YELLOW, ALPHA)
 			pass
@@ -56,14 +56,20 @@ func set_height(value: float) -> void:
 		# scaling arrow arm
 		var required_y_scale := (height / _original_arm_mesh_height)
 		arrow_arm.scale = Vector3(required_y_scale, required_y_scale, required_y_scale)
-		# offsetting by the original height(which is 2 so 2/4 = 0.5) so that the arm is centered in the center of the mesh
-		arrow_arm.position.y = height / 2 - _original_arm_mesh_height / 4
-
-		# positioning arrow heads
 		arrow_head.scale = Vector3(required_y_scale, required_y_scale, required_y_scale)
-		arrow_head.position.y = height - _original_arm_mesh_height / 4
-		
-		
+		# offsetting by the original height(which is 2 so 2/4 = 0.5) so that the arm is centered in the center of the mesh
+		if axis_type == AXIS_TYPE.SUN:
+			print(height)
+			arrow_arm.position.y = - height - Hud.comet_radius
+			arrow_head.position.y = - height
+			# TODO:
+			pass
+		else:
+			arrow_arm.position.y = height / 2 - _original_arm_mesh_height / 4
+			# positioning arrow heads
+			arrow_head.position.y = height - _original_arm_mesh_height / 4
+
+
 func toggle_axis(type: AXIS_TYPE) -> void:
 	if type == axis_type:
 		visible = not visible
