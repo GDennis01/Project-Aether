@@ -229,7 +229,8 @@ func update_direction_rotation(value: float) -> void:
 	SaveManager.config.set_value("comet", "direction", value)
 func update_inclination_rotation(value: float) -> void:
 	#print_debug("[UPDATE INCLINATION]")
-	rotation_degrees.y = - value + 90
+	# rotation_degrees.y = - value + 90
+	rotation_degrees.y = - value
 	# rotate_object_local(Vector3.UP, deg_to_rad(-value + 90))
 	SaveManager.config.set_value("comet", "inclination", value)
 func update_jet_rate(value: float) -> void:

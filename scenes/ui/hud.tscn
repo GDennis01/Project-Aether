@@ -133,7 +133,6 @@ access = 2
 use_native_dialog = true
 
 [node name="CometTab" type="CanvasLayer" parent="Body" groups=["load"]]
-visible = false
 script = ExtResource("3_136eg")
 
 [node name="Control" type="Control" parent="Body/CometTab"]
@@ -198,8 +197,9 @@ grow_horizontal = 1
 grow_vertical = 1
 label = &"Inclin. Rot."
 resize_type = &"inclination_rotation"
-maximum_value = 180.0
-starting_value = 90.0
+minimum_value = -90.0
+maximum_value = 90.0
+starting_value = 0.0
 valid_zero = true
 
 [node name="EditCometDir" parent="Body/CometTab/Control" groups=["load", "reset_rotation"] instance=ExtResource("3_f5f8u")]
@@ -233,8 +233,9 @@ offset_right = 191.03
 offset_bottom = 63.888
 label = &"Sun Inc. Rot."
 resize_type = &"sun_inc_rotation"
-maximum_value = 180.0
-starting_value = 90.0
+minimum_value = -90.0
+maximum_value = 90.0
+starting_value = 0.0
 valid_zero = true
 
 [node name="EditSunDir" parent="Body/CometTab/Control" groups=["load"] instance=ExtResource("3_f5f8u")]
@@ -534,6 +535,7 @@ text = "Jet Rate (min)"
 vertical_alignment = 1
 
 [node name="HelpPanel" type="CanvasLayer" parent="Body"]
+visible = false
 
 [node name="BoxContainer" type="BoxContainer" parent="Body/HelpPanel"]
 offset_left = 13.0
