@@ -19,9 +19,9 @@ var _total_pitch := 0.0
 # Movement state
 var _direction := Vector3(0.0, 0.0, 0.0)
 var _velocity := Vector3(0.0, 0.0, 0.0)
-var _acceleration := 30
-var _deceleration := -10
-var _vel_multiplier := 4
+var _acceleration := 30.0
+var _deceleration := -10.0
+var _vel_multiplier := 4.0
 
 # Keyboard state
 var _w := false
@@ -44,8 +44,10 @@ func _input(event: InputEvent) -> void:
 			MOUSE_BUTTON_RIGHT: # Only allows rotation if right click down
 				Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED if event.pressed else Input.MOUSE_MODE_VISIBLE)
 			MOUSE_BUTTON_WHEEL_UP: # Increases max velocity
+				print(_vel_multiplier)
 				_vel_multiplier = clamp(_vel_multiplier * 1.1, 0.2, 20)
 			MOUSE_BUTTON_WHEEL_DOWN: # Decereases max velocity
+				print(_vel_multiplier)
 				_vel_multiplier = clamp(_vel_multiplier / 1.1, 0.2, 20)
 
 	# Receives key input
@@ -93,7 +95,7 @@ func _update_movement(delta: float) -> void:
 		+ _velocity.normalized() * _deceleration * _vel_multiplier * delta
 	
 	# Compute modifiers' speed multiplier
-	var speed_multi := 1
+	var speed_multi := 1.0
 	if _shift: speed_multi *= SHIFT_MULTIPLIER
 	if _alt: speed_multi *= ALT_MULTIPLIER
 	
@@ -123,4 +125,4 @@ func _update_mouselook() -> void:
 		_total_pitch += pitch
 	
 		rotate_y(deg_to_rad(-yaw))
-		rotate_object_local(Vector3(1, 0, 0), deg_to_rad(-pitch))
+		rotate_object_local(Vector3(1.0, 0, 0), deg_to_rad(-pitch))

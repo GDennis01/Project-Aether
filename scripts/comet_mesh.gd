@@ -58,6 +58,10 @@ func _ready() -> void:
 	y_axis = _y_axis
 	z_axis = _z_axis
 
+	# disabled by default
+	x_axis.visible = false
+	z_axis.visible = false
+
 	starting_rotation = rotation
 
 	get_tree().call_group("sun", "update_sun_axis", mesh.height)
