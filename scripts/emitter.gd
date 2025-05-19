@@ -96,7 +96,7 @@ func _physics_process(_delta: float) -> void:
 	if not visible:
 		return
 	var space_state := get_world_3d().direct_space_state
-	var has_line_of_sight: bool
+	# var has_line_of_sight: bool
 	
 	#var ray_origin = global_position
 	#var light_dir_vector = light_source.global_transform.basis.z.normalized()
@@ -105,7 +105,7 @@ func _physics_process(_delta: float) -> void:
 
 	#var query = PhysicsRayQueryParameters3D.create(ray_origin,ray_end)
 	var light_pos := light_source.global_position
-	var light_dir_vector := light_source.global_transform.basis.z.normalized()
+	# var light_dir_vector := light_source.global_transform.basis.z.normalized()
 	var emitter_pos := global_position
 
 
@@ -136,8 +136,53 @@ func _physics_process(_delta: float) -> void:
 		#enabled = false
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 
-func is_lit_math(sun_inc: float, sun_dir: float) -> void:
-	pass
+## Get the longitudinal angle given the angle between the comet inclination rotation angle and the sun inclination angle
+func _get_longitude_angle(sun_comet_angle: float) -> float:
+	var longitude_angle: float = 0.0
+	match sun_comet_angle:
+		0:
+			if latitude < 0:
+				longitude_angle = -90
+			else:
+				longitude_angle = 90
+		var x when x < 90: # 0<x<90
+			if latitude >= sun_comet_angle:
+				longitude_angle = 90
+			elif latitude <= -sun_comet_angle:
+				longitude_angle = -90
+			else:
+				longitude_angle = 90.0 * latitude / sun_comet_angle # linear formula
+		90:
+			longitude_angle = 0
+		var x when x < 180: # 90<x<180
+			if latitude >= (180 - sun_comet_angle): # never
+				longitude_angle = -90 #
+				printerr("Error in 90<\"sun_comet_angle\"<180 branch")
+			elif latitude <= (180 - sun_comet_angle):
+				longitude_angle = 90
+			else:
+				longitude_angle = -90.0 * latitude / (180.0 - sun_comet_angle)
+
+		180:
+			if latitude > 0:
+				longitude_angle = -90
+			else:
+				longitude_angle = 90
+		_:
+			printerr("Error: sun_comet_angle is greater than 180°")
+	return longitude_angle
+## Returns whether the emitter is lit by the sun or not, 
+## based on sun inclination and direction angle, comet inclination and comet current rotation angle
+## FIXME: probably this doesn't work properly
+func is_lit_math(sun_incl: float, sun_dir: float, comet_incl: float, comet_rotation_angle: float) -> bool:
+	var sun_comet_angle: float = absf(sun_incl - comet_incl)
+	var longitude_angle: float = _get_longitude_angle(sun_comet_angle)
+
+	var angle_comet_sun: float = absf(comet_rotation_angle - sun_dir)
+	if angle_comet_sun <= (90 + longitude_angle) or angle_comet_sun >= 180 - (90 + longitude_angle):
+		return true
+	else:
+		return false
 
 func tick() -> void:
 	# trigger tick() on every particles alive
@@ -164,8 +209,8 @@ func set_number_particles(num: int) -> void:
 	num_particles = num
 	mm_emitter.multimesh.instance_count = num_particles
 func tick_optimized() -> void:
-	var mm_global_transform := mm_emitter.global_transform
-	var mm_global_transform_inverse := mm_global_transform.affine_inverse()
+	# var mm_global_transform := mm_emitter.global_transform
+	# var mm_global_transform_inverse := mm_global_transform.affine_inverse()
 	# for top_level=true
 	# mm_emitter.global_position = global_position
 	# foreach to move each particle
@@ -179,7 +224,11 @@ func tick_optimized() -> void:
 		local_transf.origin = to_local(global_positions[i])
 		mm_emitter.multimesh.set_instance_transform(i, local_transf)
 
-
+	# these three lines make so that the is_lit property is not computed based on raycasting but rather on sheer math
+	# var comet_inclination: float = get_parent().rotation_degrees.y
+	# var comet_rotation_angle: float = get_parent().rotation_degrees.z
+	# var _is_lit: bool = is_lit_math(Util.sun_inclination, Util.sun_direction, comet_inclination, comet_rotation_angle)
+	# if _is_lit:
 	# whether to spawn a new particle or not
 	if is_lit:
 		# incrementing number of maximum drawn particles (to simulate spawning them)

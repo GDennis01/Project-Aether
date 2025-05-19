@@ -66,16 +66,16 @@ func _ready() -> void:
 
 	get_tree().call_group("sun", "update_sun_axis", mesh.height)
 	
-	Hud.comet_radius = mesh.radius
+	Util.comet_radius = mesh.radius
 	# Hud.comet_collider = comet_collider
 	# Hud.light_source = light_source
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	# return
 	# if rotation_enabled:
-	# 	# TODO: emit a signal whenever rotation_angle is changed (homi gaio)
+	# 	# TODO: emit a signal whenever rotation_angle is changed 
 	# 	rotation_angle = fmod(rotation_angle + delta, 2 * PI)
 	# 	rotate_object_local(Vector3.UP, 1 * delta)
 	# 	# TODO: understand how to make precession motion
@@ -99,20 +99,26 @@ func _process(delta: float) -> void:
 	pass
 
 
-"""
-Single elaboration step of the simulation.
-Each tick spawn a new particle from the jet
-"""
+#region Simulation related
+
+## Single elaboration step of the simulation.
+## Each tick spawn a new particle from the jet
 func tick() -> void:
 	for emitter: Emitter in get_tree().get_nodes_in_group("emitter"):
 		# emitter.tick()
 		emitter.tick_optimized()
 	animation_slider.tick()
 	rotate_object_local(Vector3.UP, deg_to_rad(angle_per_step))
-#region Simulation related
-"""
-Called by play_animation_slider._on_play_btn_pressed
-"""
+
+## Instant simulation.
+## TODO: put a loading screen maybe?
+func instant_simulation() -> void:
+	for i in range(n_steps):
+		tick()
+		print(i)
+	pass
+
+## Called by play_animation_slider._on_play_btn_pressed
 func animation_started() -> void:
 	match animation_state:
 		ANIMATION_STATE.PAUSED:
@@ -132,19 +138,19 @@ func animation_started() -> void:
 		# if I have a rotation period of 360 minutes and a jet_rate of 1 min, it means I have 1 angle per tick()
 		angle_per_step = 1 / (frequency * 60 / jet_rate) * 360
 		animation_slider.set_step_rate(100.0 / n_steps)
-		# animation_slider.tick()
-		# simulation()
+
+		# de-comment these lines to trigger instant simulation and disables per-tick simulation
+		set_process(false)
+		instant_simulation()
 	pass
 
-"""
-Called by play_animation_slider._on_pause_btn_pressed
-"""
+
+## Called by play_animation_slider._on_pause_btn_pressed
 func animation_paused() -> void:
 	animation_state = ANIMATION_STATE.PAUSED
 	pass
-"""
-Called by play_animation_slider._on_stop_btn_pressed
-"""
+
+## Called by play_animation_slider._on_stop_btn_pressed
 func animation_stopped() -> void:
 	animation_state = ANIMATION_STATE.STOPPED
 	reset_rotation()
@@ -155,9 +161,8 @@ func animation_stopped() -> void:
 		emitter.reset_multimesh()
 	animation_slider.reset()
 
-"""
-Called by play_animation_slider._on_speed_up_btn_pressed
-"""
+
+## Called by play_animation_slider._on_speed_up_btn_pressed
 func speed_up(value: int) -> void:
 	speed_sim = value
 	freq_sped_up = frequency / value
@@ -167,9 +172,8 @@ func speed_up(value: int) -> void:
 
 	
 #endregion Simulation related
-"""
-Called by JetTable._on_add_jet_entry_btn_pressed
-"""
+
+## Called by JetTable._on_add_jet_entry_btn_pressed
 func spawn_emitter_at(latitude: float, longitude: float, emitter: Emitter) -> void:
 	# print("Latitude:" + str(latitude) + " Longitude:" + str(longitude))
 	var emitter_pos := Util.latlon_to_vector3(latitude, longitude + 90, mesh.radius)
@@ -181,9 +185,8 @@ func spawn_emitter_at(latitude: float, longitude: float, emitter: Emitter) -> vo
 	emitter.add_to_group("emitter")
 	add_child(emitter)
 
-"""
-Called by JetTable.remove_jet_entry
-"""
+
+## Called by JetTable.remove_jet_entry
 func remove_emitter(emitter_id: int) -> void:
 	var emitter: Emitter = instance_from_id(emitter_id)
 	emitter.remove_from_group("emitter")
@@ -208,9 +211,10 @@ func reset_rotation() -> void:
 
 #region Update methods
 ## These methods are called by SanitizedEdit through call_group() mechanism
+
 func update_radius(value: float) -> void:
 	#print_debug("[UPDATE RADIUS] Before:"+str(mesh.radius)+" After:"+str(value))
-	Hud.comet_radius = value
+	Util.comet_radius = value
 	mesh.set_radius(value)
 	$CometArea/CometCollisionShape.shape.set_radius(value - 0.0001)
 	mesh.set_height(value * 2)

@@ -23,6 +23,7 @@ func update_sun_dir_rotation(value: float) -> void:
 	else:
 		# rotation_degrees.x = value
 		rotation_degrees.z = value
+		Util.sun_direction = value
 		SaveManager.config.set_value("sun", "direction", value)
 	
 func update_sun_inc_rotation(value: float) -> void:
@@ -31,4 +32,5 @@ func update_sun_inc_rotation(value: float) -> void:
 	else:
 		# rotation_degrees.y = - value + 90
 		rotation_degrees.y = - value
+		Util.sun_inclination = value
 		SaveManager.config.set_value("sun", "inclination", value)

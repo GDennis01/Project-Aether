@@ -1,9 +1,14 @@
 extends Node
 
+## current radius of the comet
 var comet_radius: float = 0.0
-# Converts Latitude/Longitude (in degrees) to a local 3D position
-# vector relative to the center of a sphere with the given radius.
-# Assumes Y-Up, Latitude 0 = Equator, Longitude 0 = +X axis.
+## current inclination angle of the sun
+var sun_inclination: float = 0.0
+## current direction angle of the sun
+var sun_direction: float = 0.0
+## Converts Latitude/Longitude (in degrees) to a local 3D position
+## vector relative to the center of a sphere with the given radius.
+## Assumes Y-Up, Latitude 0 = Equator, Longitude 0 = +X axis.
 func latlon_to_vector3(latitude: float, longitude: float, radius: float) -> Vector3:
 	# Ensure inputs are valid floats (optional, but good practice)
 	if not (typeof(latitude) == TYPE_FLOAT and typeof(longitude) == TYPE_FLOAT and typeof(radius) == TYPE_FLOAT):

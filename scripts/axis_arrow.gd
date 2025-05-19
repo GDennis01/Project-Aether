@@ -60,10 +60,8 @@ func set_height(value: float) -> void:
 		# offsetting by the original height(which is 2 so 2/4 = 0.5) so that the arm is centered in the center of the mesh
 		if axis_type == AXIS_TYPE.SUN:
 			print(height)
-			arrow_arm.position.y = - height * 1.1 - Hud.comet_radius
+			arrow_arm.position.y = - height * 1.1 - Util.comet_radius
 			arrow_head.position.y = - height * 1.1
-			# TODO:
-			pass
 		else:
 			arrow_arm.position.y = height / 2 - _original_arm_mesh_height / 4
 			# positioning arrow heads
