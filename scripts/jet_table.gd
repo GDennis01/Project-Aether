@@ -40,14 +40,13 @@ Loads the data from the config file into the different element of the scene
 """
 func load_data() -> void:
 	# first I remove all jet_entries
-	print("Before deleting the current jet_body" + str(entry_emitter_dict))
+	# print("Before deleting the current jet_body" + str(entry_emitter_dict))
 	_clear_data_for_load()
-	print("After deleting current jet_body" + str(entry_emitter_dict))
+	# print("After deleting current jet_body" + str(entry_emitter_dict))
 	var entries_to_add = SaveManager.config.get_section_keys("jets")
-	print("Entries to add:" + str(entries_to_add))
+	# print("Entries to add:" + str(entries_to_add))
 	for entry in entries_to_add:
 		var loaded_entry: Array[Variant] = SaveManager.config.get_value("jets", str(entry))
-		print(loaded_entry)
 		var new_entry := jet_entry_scene.instantiate() as JetEntry
 		new_entry.set_id_label(int(entry))
 		content_node.add_child(new_entry)
@@ -75,11 +74,11 @@ func load_data() -> void:
 
 		# Saving (jet_entry,emitter) to a dictionary so that later on I can remove both entry(HUD) and the emitter node
 		entry_emitter_dict.set(new_entry.get_instance_id(), emitter.get_instance_id())
-		print("Adding entry" + str(new_entry.get_instance_id()))
+		# print("Adding entry" + str(new_entry.get_instance_id()))
 		# spawning an emitter at (0,0)
 		get_tree().call_group("latitude", "spawn_emitter_at", new_entry.latitude, new_entry.longitude, emitter)
-	print("Dict after finished loading" + str(entry_emitter_dict))
-	print("--------------------")
+	# print("Dict after finished loading" + str(entry_emitter_dict))
+	# print("--------------------")
 	_update_scroll_container_height()
 	pass
 func _on_add_jet_entry_btn_pressed() -> void:

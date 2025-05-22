@@ -42,11 +42,9 @@ Sets the value of both line edit and slider
 """
 func set_value(value: float) -> void:
 	value = clampf(value, minimum_value, maximum_value)
-	print(value)
 	# print(label + " clamped value between" + str(minimum_value) + " and maiximum value:" + str(maximum_value) + " is:" + str(value))
-	# this loc triggers _on_slider_value_changed
+	# this line of code triggers _on_slider_value_changed
 	slider.value = value
-	print(slider.value)
 
 
 """
