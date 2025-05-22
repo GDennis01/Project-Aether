@@ -18,6 +18,9 @@ var longitude: float
 var diffusion: float
 var color: Color
 
+## acceleration of a single particle
+@onready var a: float = compute_acceleration()
+
 
 #multimesh
 var mm_emitter: MultiMeshInstance3D = MultiMeshInstance3D.new()
@@ -75,6 +78,7 @@ func _ready() -> void:
 	# mm_emitter.global_position = global_position
 	
 	# norm = norm.rotated(Vector3.RIGHT, deg_to_rad(longitude))
+	print("albedo:%f p:%f d:%f D:%f  a:%f" % [Util.albedo, Util.particle_density, Util.particle_diameter, Util.sun_comet_distance, a])
 
 func init_multimesh(multi_mesh_istance: MultiMeshInstance3D) -> void:
 	# init multimesh object
@@ -174,11 +178,16 @@ func _get_longitude_angle(sun_comet_angle: float) -> float:
 ## Returns whether the emitter is lit by the sun or not, 
 ## based on sun inclination and direction angle, comet inclination and comet current rotation angle
 ## FIXME: probably this doesn't work properly
-func is_lit_math(sun_incl: float, sun_dir: float, comet_incl: float, comet_rotation_angle: float) -> bool:
-	var sun_comet_angle: float = absf(sun_incl - comet_incl)
+func is_lit_math(sun_incl: float, sun_dir: float, comet_dir: float, comet_rotation_angle: float) -> bool:
+	# var sun_comet_angle: float = absf(sun_dir - comet_dir)
+	var sun_comet_angle: float = absf(fmod(comet_dir - sun_dir, 180.0))
 	var longitude_angle: float = _get_longitude_angle(sun_comet_angle)
 
+
 	var angle_comet_sun: float = absf(comet_rotation_angle - sun_dir)
+	print("sun_comet_angle %f Longitude angle %f Angle comet sun %f" % [sun_comet_angle, longitude_angle, angle_comet_sun])
+	print("Comet rotation angle:%s Comet direction:%s Sun inclination:%s Sun dir:%s" % [str(comet_rotation_angle), str(comet_dir), str(sun_incl), str(sun_dir)])
+	print()
 	if angle_comet_sun <= (90 + longitude_angle) or angle_comet_sun >= 180 - (90 + longitude_angle):
 		return true
 	else:
@@ -208,7 +217,7 @@ func tick() -> void:
 func set_number_particles(num: int) -> void:
 	num_particles = num
 	mm_emitter.multimesh.instance_count = num_particles
-func tick_optimized() -> void:
+func tick_optimized(_n_iteration: int, comet_rotation_angle: float) -> void:
 	# var mm_global_transform := mm_emitter.global_transform
 	# var mm_global_transform_inverse := mm_global_transform.affine_inverse()
 	# for top_level=true
@@ -225,15 +234,14 @@ func tick_optimized() -> void:
 		mm_emitter.multimesh.set_instance_transform(i, local_transf)
 
 	# these three lines make so that the is_lit property is not computed based on raycasting but rather on sheer math
-	# var comet_inclination: float = get_parent().rotation_degrees.y
-	# var comet_rotation_angle: float = get_parent().rotation_degrees.z
-	# var _is_lit: bool = is_lit_math(Util.sun_inclination, Util.sun_direction, comet_inclination, comet_rotation_angle)
+	# var _is_lit: bool = is_lit_math(Util.sun_inclination, Util.sun_direction, Util.comet_direction, comet_rotation_angle)
 	# if _is_lit:
 	# whether to spawn a new particle or not
 	if is_lit:
 		# incrementing number of maximum drawn particles (to simulate spawning them)
 		var last_id := mm_emitter.multimesh.visible_instance_count + 1
-		mm_emitter.multimesh.visible_instance_count = last_id
+		if last_id < mm_emitter.multimesh.instance_count:
+			mm_emitter.multimesh.visible_instance_count = last_id
 		# change color of particle based on emitter color
 		mm_emitter.multimesh.set_instance_color(last_id - 1, color)
 		# assign the normal direction to the particle
@@ -243,8 +251,20 @@ func tick_optimized() -> void:
 		# spawn new particle at origin
 		mm_emitter.multimesh.set_instance_transform(last_id - 1, Transform3D(Basis(), Vector3.ZERO))
 	update_norm()
-	
 
+## Computes acceleration based on particle density, particle radius, particle albedo, solar pressure etc
+## It uses the following formula: a = 3\*P/(4\*d/2\*p) where
+## d, p and alpha are particle diameter, particle density and albedo
+## P = eps \* (2-alpha) 	 and eps = I/c = L_sun/(4\*PI\*c\*D^2) is the pressure radiation
+## D is the sun-comet distance and c is the light speed and L_sun is the sun luminosity (J/s)
+func compute_acceleration() -> float:
+	# Ls / 4PI * c *(AU*sun_comet_distance)^2
+	var eps: float = Util.SUN_LUMINOSITY / (4 * PI) * Util.LIGHT_SPEED * pow(Util.AU * Util.sun_comet_distance, 2)
+	var P: float = eps * (1 + Util.albedo)
+	# P * 3 / (4 * d/2 * p)
+	print("eps:%f P:%f" % [eps, P])
+	var _a: float = P * 3 / (4 * ((Util.particle_diameter / 1000) / 2) * (Util.particle_density * 1000))
+	return _a
 func reset_particles() -> void:
 	for particle in particles_alive:
 		particle.queue_free()

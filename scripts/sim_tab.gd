@@ -2,9 +2,10 @@ extends CanvasLayer
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	$Control/FrequencyEdit.set_value(1)
-	$Control/NumRotationEdit.set_value(1)
-	$Control/JetRateEdit.set_value(5)
+	# $Control/FrequencyEdit.set_value(1)
+	# $Control/NumRotationEdit.set_value(1)
+	# $Control/JetRateEdit.set_value(5)
+	pass
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

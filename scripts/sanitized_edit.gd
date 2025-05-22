@@ -12,14 +12,16 @@ signal sanitized_edit_focus_exited
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	set_value(float(self.text))
 
 func set_value(_value: float) -> void:
 	self.text = str(_value)
 	var tmp := property_value
 	previous_value = tmp
 	property_value = _value
-	get_tree().call_group(resize_type, "update_" + resize_type, property_value)
+	if resize_type:
+		print("Calling update_%s" % resize_type)
+		get_tree().call_group(resize_type, "update_" + resize_type, property_value)
 
 func sanitize_field(low: float, high: float) -> void:
 	if self.text.is_valid_float():

@@ -19,6 +19,7 @@ var num_rotation: float = 0
 var frequency: float = 0
 var freq_sped_up: float = 0
 
+
 var axis_scene := preload("res://scenes/axis_arrow.tscn")
 var emitter_scene := preload("res://scenes/particle_emitter.tscn")
 @onready var x_axis: AxisArrow
@@ -73,7 +74,6 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	# return
 	# if rotation_enabled:
 	# 	# TODO: emit a signal whenever rotation_angle is changed 
 	# 	rotation_angle = fmod(rotation_angle + delta, 2 * PI)
@@ -86,8 +86,8 @@ func _process(_delta: float) -> void:
 			if n_steps == 0:
 				animation_state = ANIMATION_STATE.STOPPED
 			else:
-				for i in speed_sim:
-					tick()
+				for _i in speed_sim:
+					tick(_i)
 					n_steps -= 1
 			pass
 
@@ -103,22 +103,30 @@ func _process(_delta: float) -> void:
 
 ## Single elaboration step of the simulation.
 ## Each tick spawn a new particle from the jet
-func tick() -> void:
+func tick(n_iteration: int) -> void:
+	# TODO: fix this
+	# dTempo = (lPasso - 1) / (60 / Cometa.Intervallo)
+	# Getto(iGetto).Longitudine + (2 * 3.1415927 / Cometa.Periodo) * dTempo
+	# comet_rotation_angle = longitude + (2*PI/frequency) * dTempo
+	var comet_rotation_angle: float
+	var time_passed: float = (n_iteration - 1) / (60 / jet_rate)
 	for emitter: Emitter in get_tree().get_nodes_in_group("emitter"):
 		# emitter.tick()
-		emitter.tick_optimized()
+		comet_rotation_angle = emitter.longitude + (2.0 * PI / frequency) * time_passed
+		emitter.tick_optimized(n_iteration, comet_rotation_angle)
 	animation_slider.tick()
 	rotate_object_local(Vector3.UP, deg_to_rad(angle_per_step))
 
 ## Instant simulation.
 ## TODO: put a loading screen maybe?
 func instant_simulation() -> void:
-	for i in range(n_steps):
-		tick()
-		print(i)
+	for _i in range(n_steps):
+		tick(_i)
+		print(_i)
 	pass
 
 ## Called by play_animation_slider._on_play_btn_pressed
+var i: int = 0
 func animation_started() -> void:
 	match animation_state:
 		ANIMATION_STATE.PAUSED:
@@ -134,14 +142,16 @@ func animation_started() -> void:
 		n_steps = int(num_rotation * frequency * 60 / jet_rate)
 		for emitter: Emitter in get_tree().get_nodes_in_group("emitter"):
 			emitter.set_number_particles(n_steps)
-		print(n_steps)
 		# if I have a rotation period of 360 minutes and a jet_rate of 1 min, it means I have 1 angle per tick()
-		angle_per_step = 1 / (frequency * 60 / jet_rate) * 360
+		# TODO: maybe this is wrong??
+		angle_per_step = 1.0 / (frequency * 60.0 / jet_rate) * 360.0
 		animation_slider.set_step_rate(100.0 / n_steps)
 
 		# de-comment these lines to trigger instant simulation and disables per-tick simulation
-		set_process(false)
-		instant_simulation()
+		# set_process(false)
+		# instant_simulation()
+		tick(i + 1)
+		i += 1
 	pass
 
 
@@ -234,11 +244,14 @@ func update_height(value: float) -> void:
 	mesh.set_height(value)
 func update_direction_rotation(value: float) -> void:
 	rotation_degrees.z = value
+	Util.comet_direction = value
 	SaveManager.config.set_value("comet", "direction", value)
 func update_inclination_rotation(value: float) -> void:
 	#print_debug("[UPDATE INCLINATION]")
 	# rotation_degrees.y = - value + 90
 	rotation_degrees.y = - value
+	Util.comet_inclination = - value
+	print("updated comet inc")
 	# rotate_object_local(Vector3.UP, deg_to_rad(-value + 90))
 	SaveManager.config.set_value("comet", "inclination", value)
 func update_jet_rate(value: float) -> void:
@@ -248,4 +261,13 @@ func update_num_rotation(value: float) -> void:
 	num_rotation = value
 func update_frequency(value: float) -> void:
 	frequency = value
+func update_albedo(value: float) -> void:
+	Util.albedo = value
+func update_particle_diameter(value: float) -> void:
+	Util.particle_diameter = value
+func update_particle_density(value: float) -> void:
+	Util.particle_density = value
+	print("updated density")
+func update_sun_comet_distance(value: float) -> void:
+	Util.sun_comet_distance = value
 #endregion Update methods
