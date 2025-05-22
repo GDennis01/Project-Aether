@@ -7,22 +7,16 @@ func _ready() -> void:
 	# $Control/JetRateEdit.set_value(5)
 	pass
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-# func _process(delta: float) -> void:
-# 	pass
-
+## Called by Navbar._on_file_explorer_file_selected()
+## Save the data into the SaveManager.config structure
 func save_data() -> void:
-	var freq := float($Control/FrequencyEdit.text)
-	var num_rots := float($Control/NumRotationEdit.text)
-	var jet_rate := float($Control/JetRateEdit.text)
-	SaveManager.config.set_value("simulation", "frequency", freq)
-	SaveManager.config.set_value("simulation", "num_rotations", num_rots)
-	SaveManager.config.set_value("simulation", "jet_rate", jet_rate)
+	SaveManager.config.set_value("simulation", "frequency", float($Control/FrequencyEdit.text))
+	SaveManager.config.set_value("simulation", "num_rotations", float($Control/NumRotationEdit.text))
+	SaveManager.config.set_value("simulation", "jet_rate", float($Control/JetRateEdit.text))
+	
+## Called by Navbar._on_file_explorer_file_selected()
+## Loads the data from the config file into the different element of the scene
 func load_data() -> void:
-	var freq: float = SaveManager.config.get_value("simulation", "frequency", 0)
-	var num_rots: float = SaveManager.config.get_value("simulation", "num_rotations", 0)
-	var jet_rate: float = SaveManager.config.get_value("simulation", "jet_rate", 0)
-	$Control/FrequencyEdit.set_value(freq)
-	$Control/NumRotationEdit.set_value(num_rots)
-	$Control/JetRateEdit.set_value(jet_rate)
+	$Control/FrequencyEdit.set_value(float(SaveManager.config.get_value("simulation", "frequency", 0)))
+	$Control/NumRotationEdit.set_value(float(SaveManager.config.get_value("simulation", "num_rotations", 0)))
+	$Control/JetRateEdit.set_value(float(SaveManager.config.get_value("simulation", "jet_rate", 0)))

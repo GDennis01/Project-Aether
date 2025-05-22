@@ -236,7 +236,6 @@ func update_radius(value: float) -> void:
 		z_axis.set_height(mesh.height)
 	# update position and size of sun axis
 	get_tree().call_group("sun", "update_sun_axis", value * 2)
-	SaveManager.config.set_value("comet", "radius", mesh.radius)
 	get_tree().call_group("emitter", "update_position", value)
 ## Deprecated
 func update_height(value: float) -> void:
@@ -245,7 +244,6 @@ func update_height(value: float) -> void:
 func update_direction_rotation(value: float) -> void:
 	rotation_degrees.z = value
 	Util.comet_direction = value
-	SaveManager.config.set_value("comet", "direction", value)
 func update_inclination_rotation(value: float) -> void:
 	#print_debug("[UPDATE INCLINATION]")
 	# rotation_degrees.y = - value + 90
@@ -253,7 +251,6 @@ func update_inclination_rotation(value: float) -> void:
 	Util.comet_inclination = - value
 	print("updated comet inc")
 	# rotate_object_local(Vector3.UP, deg_to_rad(-value + 90))
-	SaveManager.config.set_value("comet", "inclination", value)
 func update_jet_rate(value: float) -> void:
 	print("updated jetrate")
 	jet_rate = value

@@ -29,7 +29,9 @@ var diffusion: float = 0:
 	get:
 		return diffusion_edit.property_value
 var prev_diff: float = 0
-var color: Color = Color.WHITE
+var color: Color = Color.WHITE:
+	get:
+		return color_edit.color
 
 # emitter node
 var emitter: Emitter
@@ -75,23 +77,23 @@ func set_longitude(value: float) -> void:
 func set_diffusion(value: float) -> void:
 	diffusion = value
 	diffusion_edit.set_value(value)
+	print("DIFF")
 func set_color(value: Color) -> void:
 	color = value
 	color_edit.color = value
+	print("COLOR:" + str(value))
 
 	
 ###################################
 # Other buttons (toggle and remove)
 ###################################
-"""
-Calls JetTable.remove_jet_entry
-"""
+
+## Calls JetTable.remove_jet_entry
 func _on_remove_jet_btn_pressed() -> void:
 	get_tree().call_group("jet_table", "remove_jet_entry", self.get_instance_id())
 
-"""
-Calls JetTable.toggle_jet_entry
-"""
+
+## Calls JetTable.toggle_jet_entry
 func _on_toggle_jet_pressed() -> void:
 	get_tree().call_group("jet_table", "toggle_jet_entry", self.get_instance_id())
 

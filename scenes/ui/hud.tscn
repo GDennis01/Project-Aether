@@ -132,8 +132,7 @@ text = "Help"
 access = 2
 use_native_dialog = true
 
-[node name="CometTab" type="CanvasLayer" parent="Body" groups=["load"]]
-visible = false
+[node name="CometTab" type="CanvasLayer" parent="Body" groups=["load", "save"]]
 script = ExtResource("3_136eg")
 
 [node name="Control" type="Control" parent="Body/CometTab"]
@@ -228,6 +227,17 @@ maximum_value = 360.0
 starting_value = 0.0
 valid_zero = true
 metadata/_edit_use_anchors_ = true
+
+[node name="Slider" parent="Body/CometTab/Control/EditCometDir" index="0"]
+max_value = 360.0
+
+[node name="Label" parent="Body/CometTab/Control/EditCometDir" index="1"]
+text = "Dir. Rot."
+
+[node name="SanitizedEdit" parent="Body/CometTab/Control/EditCometDir" index="2"]
+text = "0.0"
+resize_type = &"direction_rotation"
+higher_bound = 360.0
 
 [node name="EditSunIncl" parent="Body/CometTab/Control" groups=["load"] instance=ExtResource("3_f5f8u")]
 layout_mode = 1
@@ -582,7 +592,7 @@ anchor_right = 1.231
 anchor_bottom = 9.455
 offset_left = 95.997
 offset_top = -8.00501
-offset_right = 127.997
+offset_right = 143.997
 offset_bottom = 22.995
 resize_type = &"frequency"
 lower_bound = 0.1
@@ -596,7 +606,7 @@ anchor_right = 1.231
 anchor_bottom = 13.091
 offset_left = 95.997
 offset_top = -8.00101
-offset_right = 127.997
+offset_right = 143.997
 offset_bottom = 22.999
 resize_type = &"num_rotation"
 lower_bound = 0.1
@@ -610,7 +620,7 @@ anchor_right = 1.231
 anchor_bottom = 16.727
 offset_left = 95.997
 offset_top = -7.99701
-offset_right = 127.997
+offset_right = 143.997
 offset_bottom = 23.003
 resize_type = &"jet_rate"
 lower_bound = 0.5
@@ -703,3 +713,5 @@ Alt while moving to move slower
 [connection signal="pressed" from="Body/JetsTab/Control/SpawnEmitter" to="Body" method="_on_spawn_emitter_pressed"]
 [connection signal="pressed" from="Body/JetsTab/Control/JetTable/AddJetEntryBtn" to="Body" method="_on_add_jet_entry_btn_pressed"]
 [connection signal="pressed" from="Body/JetsTab/Control/JetTable/AddJetEntryBtn" to="Body/JetsTab/Control/JetTable" method="_on_add_jet_entry_btn_pressed"]
+
+[editable path="Body/CometTab/Control/EditCometDir"]
