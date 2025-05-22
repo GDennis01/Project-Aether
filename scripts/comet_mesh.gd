@@ -113,7 +113,7 @@ func tick(n_iteration: int) -> void:
 	for emitter: Emitter in get_tree().get_nodes_in_group("emitter"):
 		# emitter.tick()
 		comet_rotation_angle = emitter.longitude + (2.0 * PI / frequency) * time_passed
-		emitter.tick_optimized(n_iteration, comet_rotation_angle)
+		emitter.tick_optimized(n_iteration)
 	animation_slider.tick()
 	rotate_object_local(Vector3.UP, deg_to_rad(angle_per_step))
 
@@ -257,17 +257,21 @@ func update_inclination_rotation(value: float) -> void:
 func update_jet_rate(value: float) -> void:
 	print("updated jetrate")
 	jet_rate = value
+	Util.jet_rate = value
 func update_num_rotation(value: float) -> void:
 	num_rotation = value
 func update_frequency(value: float) -> void:
 	frequency = value
 func update_albedo(value: float) -> void:
 	Util.albedo = value
+	get_tree().call_group("emitter", "update_acceleration")
 func update_particle_diameter(value: float) -> void:
 	Util.particle_diameter = value
+	get_tree().call_group("emitter", "update_acceleration")
 func update_particle_density(value: float) -> void:
 	Util.particle_density = value
-	print("updated density")
+	get_tree().call_group("emitter", "update_acceleration")
 func update_sun_comet_distance(value: float) -> void:
 	Util.sun_comet_distance = value
+	get_tree().call_group("emitter", "update_acceleration")
 #endregion Update methods

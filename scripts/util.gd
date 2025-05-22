@@ -10,6 +10,8 @@ var sun_direction: float = 0.0
 var comet_inclination: float = 0.0
 ## current direction angle of the comet
 var comet_direction: float = 0.0
+## jet rate in minutes
+var jet_rate: float = 0.0
 ## Sun-comet distance in AU
 var sun_comet_distance: float = 0.0
 

@@ -19,13 +19,14 @@ var diffusion: float
 var color: Color
 
 ## acceleration of a single particle
-@onready var a: float = compute_acceleration()
+var a: float = 0.0
 
 
 #multimesh
 var mm_emitter: MultiMeshInstance3D = MultiMeshInstance3D.new()
-var global_positions: Array[Vector3] # global position of the mm_emitter at each instance spawned
-var normal_dirs: Array[Vector3] # normal_dir of the mm_emitter at each instance spawned
+var global_positions: Array[Vector3] ## global position of the mm_emitter at each instance spawned
+var particle_speeds: Array[float] ## speeds of each particle
+var normal_dirs: Array[Vector3] ## normal_dir of the mm_emitter at each instance spawned
 
 #sim related
 var num_particles: int = 0
@@ -78,7 +79,8 @@ func _ready() -> void:
 	# mm_emitter.global_position = global_position
 	
 	# norm = norm.rotated(Vector3.RIGHT, deg_to_rad(longitude))
-	print("albedo:%f p:%f d:%f D:%f  a:%f" % [Util.albedo, Util.particle_density, Util.particle_diameter, Util.sun_comet_distance, a])
+	update_acceleration()
+	print("albedo:%f p:%f d:%f D:%f  a:%.10f" % [Util.albedo, Util.particle_density, Util.particle_diameter, Util.sun_comet_distance, a])
 
 func init_multimesh(multi_mesh_istance: MultiMeshInstance3D) -> void:
 	# init multimesh object
@@ -217,21 +219,22 @@ func tick() -> void:
 func set_number_particles(num: int) -> void:
 	num_particles = num
 	mm_emitter.multimesh.instance_count = num_particles
-func tick_optimized(_n_iteration: int, comet_rotation_angle: float) -> void:
-	# var mm_global_transform := mm_emitter.global_transform
-	# var mm_global_transform_inverse := mm_global_transform.affine_inverse()
-	# for top_level=true
-	# mm_emitter.global_position = global_position
-	# foreach to move each particle
+func tick_optimized(_n_iteration: int) -> void:
+	# moving each particle
 	for i in mm_emitter.multimesh.visible_instance_count:
 		# getting normal direction and converting it to vector3 since it's saved as a Color
 		var _normal_dir_as_color := mm_emitter.multimesh.get_instance_custom_data(i) as Color
 		var _normal_dir := Vector3(_normal_dir_as_color.r, _normal_dir_as_color.g, _normal_dir_as_color.b)
 		var local_transf := mm_emitter.multimesh.get_instance_transform(i)
 
+		# global_positions[i] = global_positions[i] + _normal_dir * particle_speeds[i]
 		global_positions[i] = global_positions[i] + _normal_dir * 0.01
 		local_transf.origin = to_local(global_positions[i])
 		mm_emitter.multimesh.set_instance_transform(i, local_transf)
+		# time passed in seconds ( jet_rate is in minutes) obtained by multiplying how many ticks have passed
+		var time_passed: float = _n_iteration * (Util.jet_rate * 60)
+		# Updating speed as V= V*t + 1/2*a*t^2 (classic form)
+		particle_speeds[i] = particle_speeds[i] * time_passed + 0.5 * a * (time_passed ** 2)
 
 	# these three lines make so that the is_lit property is not computed based on raycasting but rather on sheer math
 	# var _is_lit: bool = is_lit_math(Util.sun_inclination, Util.sun_direction, Util.comet_direction, comet_rotation_angle)
@@ -248,6 +251,7 @@ func tick_optimized(_n_iteration: int, comet_rotation_angle: float) -> void:
 		mm_emitter.multimesh.set_instance_custom_data(last_id - 1, Color(norm.x, norm.y, norm.z))
 		normal_dirs.append(norm)
 		global_positions.append(mm_emitter.global_position)
+		particle_speeds.append(speed)
 		# spawn new particle at origin
 		mm_emitter.multimesh.set_instance_transform(last_id - 1, Transform3D(Basis(), Vector3.ZERO))
 	update_norm()
@@ -257,14 +261,27 @@ func tick_optimized(_n_iteration: int, comet_rotation_angle: float) -> void:
 ## d, p and alpha are particle diameter, particle density and albedo
 ## P = eps \* (2-alpha) 	 and eps = I/c = L_sun/(4\*PI\*c\*D^2) is the pressure radiation
 ## D is the sun-comet distance and c is the light speed and L_sun is the sun luminosity (J/s)
-func compute_acceleration() -> float:
+func update_acceleration() -> void:
 	# Ls / 4PI * c *(AU*sun_comet_distance)^2
-	var eps: float = Util.SUN_LUMINOSITY / (4 * PI) * Util.LIGHT_SPEED * pow(Util.AU * Util.sun_comet_distance, 2)
+	var eps: float = Util.SUN_LUMINOSITY / ((4 * PI) * Util.LIGHT_SPEED * pow(Util.AU * Util.sun_comet_distance, 2))
 	var P: float = eps * (1 + Util.albedo)
-	# P * 3 / (4 * d/2 * p)
-	print("eps:%f P:%f" % [eps, P])
-	var _a: float = P * 3 / (4 * ((Util.particle_diameter / 1000) / 2) * (Util.particle_density * 1000))
-	return _a
+
+	# print("Ls:%f"%Util.SUN_LUMINOSITY)
+	# print("eps:%f P:%f c:%f" % [eps, P, Util.LIGHT_SPEED])
+	# print("4*PI:%f" % (4.0 * PI))
+	# print("Distance Squared:%f" % [pow(Util.AU * Util.sun_comet_distance, 2)])
+	# print("c * Distance Squared:%f" % [Util.LIGHT_SPEED * pow(Util.AU * Util.sun_comet_distance, 2)])
+	# print("Dividendo:%f " % ((4 * PI) * Util.LIGHT_SPEED * pow(Util.AU * Util.sun_comet_distance, 2)))
+
+	# # P * 3 / (4 * d/2 * p)
+	var _a: float = P * 3.0 / (4.0 * ((Util.particle_diameter / 1000.0) / 2.0) * (Util.particle_density * 1000.0))
+	self.a = _a
+
+## increment speed by a given acceleration according to the following formula
+## V = V*t + 1/2*a*t^2 where t is the time in seconds, a the acceleration in m/s^2 and v the speed in m/s
+func increment_speed(time: float) -> void:
+	var speed_t: float = speed * time + 0.5 * a * (time ** 2)
+
 func reset_particles() -> void:
 	for particle in particles_alive:
 		particle.queue_free()
@@ -274,6 +291,7 @@ func reset_multimesh() -> void:
 	mm_emitter.multimesh.visible_instance_count = 0
 	global_positions.clear()
 	normal_dirs.clear()
+	particle_speeds.clear()
 func destroy_multimesh() -> void:
 	mm_emitter.queue_free()
 #endregion Multimesh
