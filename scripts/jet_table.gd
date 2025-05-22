@@ -30,7 +30,8 @@ func _update_scroll_container_height() -> void:
 ## Save the jet table data into the config
 func save_data() -> void:
 	# first I erase the section jets
-	SaveManager.config.erase_section("jets")
+	if SaveManager.config.has_section("jets"):
+		SaveManager.config.erase_section("jets")
 	for entry: JetEntry in content_node.get_children():
 		SaveManager.config.set_value("jets", str(entry.jet_id), [entry.speed, entry.latitude, entry.longitude, entry.diffusion, entry.color])
 

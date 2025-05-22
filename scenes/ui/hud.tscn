@@ -325,10 +325,10 @@ metadata/_edit_use_anchors_ = true
 
 [node name="EditParticleDiameter" parent="Body/CometTab/Control" instance=ExtResource("6_oj5la")]
 layout_mode = 1
-anchor_left = 0.818678
-anchor_top = 0.842246
-anchor_right = 1.05929
-anchor_bottom = 0.951964
+anchor_left = 0.819588
+anchor_top = 0.840909
+anchor_right = 1.17875
+anchor_bottom = 0.950627
 offset_right = 8.32199
 offset_bottom = 5.03436
 grow_horizontal = 2
@@ -341,10 +341,10 @@ metadata/_edit_use_anchors_ = true
 
 [node name="EditParticleDensity" parent="Body/CometTab/Control" instance=ExtResource("6_oj5la")]
 layout_mode = 1
-anchor_left = 1.49788
-anchor_top = 0.842246
-anchor_right = 1.73849
-anchor_bottom = 0.951964
+anchor_left = 1.5
+anchor_top = 0.840909
+anchor_right = 1.85916
+anchor_bottom = 0.950627
 offset_right = 8.32199
 offset_bottom = 5.03436
 grow_horizontal = 2
@@ -381,7 +381,7 @@ offset_top = 178.824
 offset_right = 37.1176
 offset_bottom = 201.824
 scale = Vector2(0.85, 0.85)
-text = "Particle Radius"
+text = "Particle Diameter"
 
 [node name="ParticleDensityLabel" type="Label" parent="Body/CometTab/Control"]
 layout_mode = 1

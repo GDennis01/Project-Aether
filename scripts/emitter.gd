@@ -227,14 +227,18 @@ func tick_optimized(_n_iteration: int) -> void:
 		var _normal_dir := Vector3(_normal_dir_as_color.r, _normal_dir_as_color.g, _normal_dir_as_color.b)
 		var local_transf := mm_emitter.multimesh.get_instance_transform(i)
 
-		# global_positions[i] = global_positions[i] + _normal_dir * particle_speeds[i]
-		global_positions[i] = global_positions[i] + _normal_dir * 0.01
+		# uncomment this line to calculate the position based on speed/acceleration
+		global_positions[i] = global_positions[i] + _normal_dir * particle_speeds[i] * 0.001
+		# global_positions[i] = global_positions[i] + _normal_dir * 0.01
 		local_transf.origin = to_local(global_positions[i])
 		mm_emitter.multimesh.set_instance_transform(i, local_transf)
 		# time passed in seconds ( jet_rate is in minutes) obtained by multiplying how many ticks have passed
-		var time_passed: float = _n_iteration * (Util.jet_rate * 60)
-		# Updating speed as V= V*t + 1/2*a*t^2 (classic form)
-		particle_speeds[i] = particle_speeds[i] * time_passed + 0.5 * a * (time_passed ** 2)
+		var time_passed: float = _n_iteration * Util.jet_rate * 60.0
+		# Updating speed as V= V*t + 1/2*a*t^2 (classic form), a is negative since the acceleration is in the opposite direction(?)
+		particle_speeds[i] = (speed * time_passed + 0.5 * -a * (time_passed ** 2)) / 1000
+		if jet_id == 0 and i == 1:
+			print("i°:%f t°:%f a°:%f speed:%f  position:%s" % [_n_iteration, time_passed, -a, particle_speeds[i], str(global_positions[i])])
+		
 
 	# these three lines make so that the is_lit property is not computed based on raycasting but rather on sheer math
 	# var _is_lit: bool = is_lit_math(Util.sun_inclination, Util.sun_direction, Util.comet_direction, comet_rotation_angle)
@@ -277,10 +281,6 @@ func update_acceleration() -> void:
 	var _a: float = P * 3.0 / (4.0 * ((Util.particle_diameter / 1000.0) / 2.0) * (Util.particle_density * 1000.0))
 	self.a = _a
 
-## increment speed by a given acceleration according to the following formula
-## V = V*t + 1/2*a*t^2 where t is the time in seconds, a the acceleration in m/s^2 and v the speed in m/s
-func increment_speed(time: float) -> void:
-	var speed_t: float = speed * time + 0.5 * a * (time ** 2)
 
 func reset_particles() -> void:
 	for particle in particles_alive:

@@ -8,11 +8,12 @@ enum ANIMATION_STATE {
 	RESUMED,
 }
 
+# simulation related
 var animation_state: ANIMATION_STATE = ANIMATION_STATE.STOPPED
-var step_count: int = 0
 var n_steps: int = 0
-var angle_per_step: float = 0
+var step_counter: int = 0
 
+var angle_per_step: float = 0
 var jet_rate: float = 0
 var jet_rate_sped_up: float = 0
 var num_rotation: float = 0
@@ -83,20 +84,15 @@ func _process(_delta: float) -> void:
 	# print(Engine.get_frames_per_second())
 	match animation_state:
 		ANIMATION_STATE.STARTED, ANIMATION_STATE.RESUMED:
-			if n_steps == 0:
+			if n_steps < 0:
 				animation_state = ANIMATION_STATE.STOPPED
 			else:
 				for _i in speed_sim:
-					tick(_i)
+					tick(step_counter)
 					n_steps -= 1
+					step_counter += 1
+		ANIMATION_STATE.PAUSED, ANIMATION_STATE.STOPPED:
 			pass
-
-		ANIMATION_STATE.PAUSED:
-			pass
-		ANIMATION_STATE.STOPPED:
-			pass
-
-	pass
 
 
 #region Simulation related
@@ -113,6 +109,7 @@ func tick(n_iteration: int) -> void:
 	for emitter: Emitter in get_tree().get_nodes_in_group("emitter"):
 		# emitter.tick()
 		comet_rotation_angle = emitter.longitude + (2.0 * PI / frequency) * time_passed
+		# print("tick:%f"%n_iteration)
 		emitter.tick_optimized(n_iteration)
 	animation_slider.tick()
 	rotate_object_local(Vector3.UP, deg_to_rad(angle_per_step))
@@ -122,11 +119,9 @@ func tick(n_iteration: int) -> void:
 func instant_simulation() -> void:
 	for _i in range(n_steps):
 		tick(_i)
-		print(_i)
 	pass
 
 ## Called by play_animation_slider._on_play_btn_pressed
-var i: int = 0
 func animation_started() -> void:
 	match animation_state:
 		ANIMATION_STATE.PAUSED:
@@ -150,9 +145,7 @@ func animation_started() -> void:
 		# de-comment these lines to trigger instant simulation and disables per-tick simulation
 		# set_process(false)
 		# instant_simulation()
-		tick(i + 1)
-		i += 1
-	pass
+		tick(step_counter)
 
 
 ## Called by play_animation_slider._on_pause_btn_pressed
@@ -170,7 +163,7 @@ func animation_stopped() -> void:
 		emitter.update_norm()
 		emitter.reset_multimesh()
 	animation_slider.reset()
-
+	step_counter = 0
 
 ## Called by play_animation_slider._on_speed_up_btn_pressed
 func speed_up(value: int) -> void:
