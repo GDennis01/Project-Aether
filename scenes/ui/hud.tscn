@@ -27,6 +27,7 @@ offset_right = -0.00012207
 offset_bottom = 44.8
 grow_horizontal = 2
 mouse_filter = 2
+metadata/_edit_use_anchors_ = true
 
 [node name="ColorRect" type="ColorRect" parent="Body/TabButtons"]
 layout_mode = 1
@@ -41,6 +42,7 @@ offset_right = -0.1521
 offset_bottom = 47.995
 color = Color(0.1476, 0.31044, 0.36, 0.592157)
 metadata/_edit_group_ = true
+metadata/_edit_use_anchors_ = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Body/TabButtons/ColorRect"]
 layout_mode = 1
@@ -697,6 +699,42 @@ Ctrl+Weel Down to decrease movement speed
 Shift while moving to move faster
 Alt while moving to move slower
 "
+
+[node name="DebugPanel" type="CanvasLayer" parent="Body"]
+
+[node name="Control" type="Panel" parent="Body/DebugPanel"]
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 0.123457
+anchor_right = 1.0
+anchor_bottom = 0.284
+offset_left = -128.0
+offset_bottom = -0.032
+metadata/_edit_group_ = true
+metadata/_edit_use_anchors_ = true
+
+[node name="DebugContainer" type="VBoxContainer" parent="Body/DebugPanel/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 8
+size_flags_vertical = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="FPSLabel" type="Label" parent="Body/DebugPanel/Control/DebugContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "FPS:"
+
+[node name="StepsLabel" type="Label" parent="Body/DebugPanel/Control/DebugContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Steps:"
+
+[node name="SimTimeLabel" type="Label" parent="Body/DebugPanel/Control/DebugContainer"]
+layout_mode = 2
+text = "Time:"
 
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/CometBtn" to="Body" method="_on_cometbtn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/JetsBtn" to="Body" method="_on_jetsbtn_pressed"]

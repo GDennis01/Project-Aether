@@ -228,18 +228,18 @@ func tick_optimized(_n_iteration: int) -> void:
 		var local_transf := mm_emitter.multimesh.get_instance_transform(i)
 
 		# uncomment this line to calculate the position based on speed/acceleration
-		global_positions[i] = global_positions[i] + _normal_dir * particle_speeds[i] * 0.001
-		# global_positions[i] = global_positions[i] + _normal_dir * 0.01
+		# global_positions[i] = global_positions[i] + _normal_dir * particle_speeds[i] * 0.001
+		global_positions[i] = global_positions[i] + _normal_dir * 0.01
 		local_transf.origin = to_local(global_positions[i])
 		mm_emitter.multimesh.set_instance_transform(i, local_transf)
 		# time passed in seconds ( jet_rate is in minutes) obtained by multiplying how many ticks have passed
 		var time_passed: float = _n_iteration * Util.jet_rate * 60.0
 		# Updating speed as V= V*t + 1/2*a*t^2 (classic form), a is negative since the acceleration is in the opposite direction(?)
 		particle_speeds[i] = (speed * time_passed + 0.5 * -a * (time_passed ** 2)) / 1000
-		if jet_id == 0 and i == 1:
-			print("i°:%f t°:%f a°:%f speed:%f  position:%s" % [_n_iteration, time_passed, -a, particle_speeds[i], str(global_positions[i])])
+		# if jet_id == 0 and i == 1:
+		# 	print("i°:%f t°:%f a°:%f speed:%f  position:%s" % [_n_iteration, time_passed, -a, particle_speeds[i], str(global_positions[i])])
+			
 		
-
 	# these three lines make so that the is_lit property is not computed based on raycasting but rather on sheer math
 	# var _is_lit: bool = is_lit_math(Util.sun_inclination, Util.sun_direction, Util.comet_direction, comet_rotation_angle)
 	# if _is_lit:

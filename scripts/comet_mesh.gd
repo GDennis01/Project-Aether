@@ -8,6 +8,13 @@ enum ANIMATION_STATE {
 	RESUMED,
 }
 
+#debug/metrics related
+@onready var fps_label: Label = $"/root/Hud/Body/DebugPanel/Control/DebugContainer/FPSLabel"
+@onready var steps_label: Label = $"/root/Hud/Body/DebugPanel/Control/DebugContainer/StepsLabel"
+@onready var time_label: Label = $"/root/Hud/Body/DebugPanel/Control/DebugContainer/SimTimeLabel"
+var total_sim_time: float = 0.0
+
+
 # simulation related
 var animation_state: ANIMATION_STATE = ANIMATION_STATE.STOPPED
 var n_steps: int = 0
@@ -91,8 +98,14 @@ func _process(_delta: float) -> void:
 					tick(step_counter)
 					n_steps -= 1
 					step_counter += 1
+				total_sim_time += _delta
 		ANIMATION_STATE.PAUSED, ANIMATION_STATE.STOPPED:
 			pass
+
+	# Prints on the debug panel how many FPS and TPS (Tick Per Second)
+	fps_label.text = "FPS:" + str(Engine.get_frames_per_second())
+	steps_label.text = "Steps:%d/%d" % [step_counter, n_steps + step_counter + 1]
+	time_label.text = "Time: %.3f" % (total_sim_time)
 
 
 #region Simulation related
@@ -155,6 +168,7 @@ func animation_paused() -> void:
 
 ## Called by play_animation_slider._on_stop_btn_pressed
 func animation_stopped() -> void:
+	total_sim_time = 0
 	animation_state = ANIMATION_STATE.STOPPED
 	reset_rotation()
 	# delete all particles
@@ -164,6 +178,7 @@ func animation_stopped() -> void:
 		emitter.reset_multimesh()
 	animation_slider.reset()
 	step_counter = 0
+	n_steps = 0
 
 ## Called by play_animation_slider._on_speed_up_btn_pressed
 func speed_up(value: int) -> void:
