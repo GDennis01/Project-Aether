@@ -57,12 +57,11 @@ compositor = SubResource("Compositor_5tdcg")
 script = ExtResource("1_wu602")
 
 [node name="Sun" type="Node3D" parent="." groups=["sun", "sun_dir_rotation", "sun_inc_rotation"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.038, 0)
 script = ExtResource("2_i7141")
 
 [node name="SpotLight3D" type="SpotLight3D" parent="Sun"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 200, 0)
-light_energy = 2.616
+top_level = true
+light_energy = 2.444
 shadow_enabled = true
 shadow_bias = 10.0
 spot_range = 4096.0
@@ -78,7 +77,7 @@ mesh = SubResource("PlaneMesh_hg46x")
 surface_material_override/0 = SubResource("StandardMaterial3D_bjs0p")
 
 [node name="CometMesh" type="MeshInstance3D" parent="." node_paths=PackedStringArray("light_source", "comet_collider") groups=["albedo", "animation", "comet", "direction_rotation", "frequency", "height", "inclination_rotation", "jet_rate", "latitude", "longitude", "num_rotation", "particle_density", "particle_diameter", "radius", "reset_rotation", "sun_comet_distance", "trigger_rotation"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.03817, 0)
+layers = 31
 lod_bias = 0.001
 mesh = SubResource("SphereMesh_f4gce")
 surface_material_override/0 = SubResource("ShaderMaterial_7r4gi")
@@ -105,7 +104,9 @@ directional_shadow_mode = 0
 directional_shadow_fade_start = 0.843
 directional_shadow_max_distance = 85.5
 sky_mode = 1
-script = ExtResource("2_i7141")
 
 [node name="OccluderInstance3D" type="OccluderInstance3D" parent="."]
+visible = false
 occluder = SubResource("SphereOccluder3D_i7141")
+bake_mask = 4294967264
+bake_simplification_distance = 0.02

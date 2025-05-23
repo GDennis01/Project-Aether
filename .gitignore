@@ -6,3 +6,5 @@ comet-models/
 *.exe
 *.cfg
 *.txt
+config/
+build/

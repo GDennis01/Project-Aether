@@ -255,9 +255,8 @@ offset_bottom = 63.888
 scale = Vector2(0.85, 0.85)
 label = &"Sun Inc. Rot."
 resize_type = &"sun_inc_rotation"
-minimum_value = -90.0
-maximum_value = 90.0
-starting_value = 0.0
+maximum_value = 180.0
+starting_value = 90.0
 valid_zero = true
 metadata/_edit_use_anchors_ = true
 
@@ -701,6 +700,7 @@ Alt while moving to move slower
 "
 
 [node name="DebugPanel" type="CanvasLayer" parent="Body"]
+visible = false
 
 [node name="Control" type="Panel" parent="Body/DebugPanel"]
 anchors_preset = -1

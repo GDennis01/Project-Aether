@@ -103,9 +103,9 @@ func _process(_delta: float) -> void:
 			pass
 
 	# Prints on the debug panel how many FPS and TPS (Tick Per Second)
-	fps_label.text = "FPS:" + str(Engine.get_frames_per_second())
-	steps_label.text = "Steps:%d/%d" % [step_counter, n_steps + step_counter + 1]
-	time_label.text = "Time: %.3f" % (total_sim_time)
+	# fps_label.text = "FPS:" + str(Engine.get_frames_per_second())
+	# steps_label.text = "Steps:%d/%d" % [step_counter, n_steps + step_counter + 1]
+	# time_label.text = "Time: %.3f" % (total_sim_time)
 
 
 #region Simulation related

@@ -3,7 +3,7 @@ extends Node3D
 class_name AxisArrow
 @export var arrow_arm: MeshInstance3D
 @export var arrow_head: MeshInstance3D
-@export var height: float = 1.0: set = set_height
+@export var height: float = 1.0
 @export var color: Color
 
 var _original_arm_mesh_height: float = 1.0
@@ -43,14 +43,15 @@ func set_axis_type(type: AXIS_TYPE) -> void:
 			arrow_head.get_surface_override_material(0).albedo_color = Color(Color.BLUE, ALPHA)
 			pass
 		AXIS_TYPE.SUN:
-			rotation_degrees.x = -180
+			position.z -= 0.01
+			rotation_degrees.x = -90
 			# FIXME: fix position
 			position = Vector3(0, 0, 0)
 			arrow_arm.get_surface_override_material(0).albedo_color = Color(Color.YELLOW, ALPHA)
 			arrow_head.get_surface_override_material(0).albedo_color = Color(Color.YELLOW, ALPHA)
 			pass
 		
-func set_height(value: float) -> void:
+func set_height(value: float, distance: float = 0) -> void:
 	height = max(0.01, value)
 	if is_node_ready():
 		# scaling arrow arm
@@ -59,8 +60,10 @@ func set_height(value: float) -> void:
 		arrow_head.scale = Vector3(required_y_scale, required_y_scale, required_y_scale)
 		# offsetting by the original height(which is 2 so 2/4 = 0.5) so that the arm is centered in the center of the mesh
 		if axis_type == AXIS_TYPE.SUN:
-			arrow_arm.position.y = - height * 1.1 - Util.comet_radius
-			arrow_head.position.y = - height * 1.1
+			print(distance)
+			arrow_arm.position.y = distance - Util.comet_radius * 3.1
+			arrow_head.position.y = distance + height / 2 - Util.comet_radius * 3.1
+			# position.z = position.z - distance
 		else:
 			arrow_arm.position.y = height / 2 - _original_arm_mesh_height / 4
 			# positioning arrow heads
