@@ -23,7 +23,8 @@ vec3 hsv2rgb(vec3 c) {
 // Generates a rainbow-like color from index and count
 vec3 line_color(float index, float count) {
     float hue = mod(index / count, 1.0); // 0 to 1
-    return hsv2rgb(vec3(hue, 0.8, 0.9));
+    //return hsv2rgb(vec3(hue, 0.8, 0.9));
+	return vec3(0,0,0);
 }
 
 

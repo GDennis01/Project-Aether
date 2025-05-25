@@ -24,10 +24,10 @@ func set_axis_type(type: AXIS_TYPE) -> void:
 	axis_type = type
 	match axis_type:
 		AXIS_TYPE.X: # pitch axis
-			# rotation_degrees.z = -90
-			# position = Vector3(height / 2, 0, 0)
-			rotation_degrees.x = 90
-			position = Vector3(0, 0, height / 2)
+			rotation_degrees.z = -90
+			position = Vector3(height / 2, 0, 0)
+			# rotation_degrees.x = 90
+			# position = Vector3(0, 0, height / 2)
 
 			
 			arrow_arm.get_surface_override_material(0).albedo_color = Color(Color.RED, ALPHA)
@@ -40,10 +40,10 @@ func set_axis_type(type: AXIS_TYPE) -> void:
 			arrow_head.get_surface_override_material(0).albedo_color = Color(Color.GREEN, ALPHA)
 			pass
 		AXIS_TYPE.Z: # roll axis
-			# rotation_degrees.x = 90
-			# position = Vector3(0, 0, height / 2)
-			rotation_degrees.z = -90
-			position = Vector3(height / 2, 0, 0)
+			rotation_degrees.x = 90
+			position = Vector3(0, 0, height / 2)
+			# rotation_degrees.z = -90
+			# position = Vector3(height / 2, 0, 0)
 			arrow_arm.get_surface_override_material(0).albedo_color = Color(Color.BLUE, ALPHA)
 			arrow_head.get_surface_override_material(0).albedo_color = Color(Color.BLUE, ALPHA)
 			pass

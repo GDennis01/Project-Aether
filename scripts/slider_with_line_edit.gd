@@ -1,3 +1,4 @@
+@tool
 extends Control
 class_name SliderWithLineEdit
 @export var slider: HSlider
@@ -21,6 +22,9 @@ func _ready() -> void:
 	slider.min_value = minimum_value
 	slider.max_value = maximum_value
 	slider.set_value_no_signal(starting_value)
+	if reverse:
+		slider.scale.x = -1
+		slider.position.x += slider.size.x
 	line_edit.lower_bound = minimum_value
 	line_edit.higher_bound = maximum_value
 	line_edit.text = str(starting_value)
@@ -33,11 +37,8 @@ func _ready() -> void:
 
 
 func _on_slider_value_changed(value: float) -> void:
-	if reverse:
-		# string formatting to prevent a weird bug where it would show 6 decimal digits with a value of like -7.51
-		line_edit.text = "%.2f" % -value
-	else:
-		line_edit.text = str(value)
+	line_edit.text = "%.2f" % value
+
 	# print("Calling ")
 	get_tree().call_group(resize_type, "update_" + resize_type, value)
 
@@ -48,10 +49,7 @@ func set_value(value: float) -> void:
 	value = clampf(value, minimum_value, maximum_value)
 	# print(label + " clamped value between" + str(minimum_value) + " and maiximum value:" + str(maximum_value) + " is:" + str(value))
 	# this line of code triggers _on_slider_value_changed
-	if reverse:
-		slider.value = value
-	else:
-		slider.value = value
+	slider.value = value
 
 
 """

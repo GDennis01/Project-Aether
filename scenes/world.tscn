@@ -61,6 +61,7 @@ script = ExtResource("1_wu602")
 
 [node name="Sun" type="Node3D" parent="." groups=["sun", "sun_dir_rotation", "sun_inc_rotation"]]
 script = ExtResource("2_i7141")
+distance = 200.0
 
 [node name="SpotLight3D" type="SpotLight3D" parent="Sun"]
 transform = Transform3D(6.12323e-17, 1, 0, -1, 6.12323e-17, 6.12323e-17, 6.12323e-17, -3.7494e-33, 1, 0, 6.12323e-16, 10)
@@ -117,4 +118,5 @@ bake_mask = 4294967264
 bake_simplification_distance = 0.02
 
 [node name="DebugRotationSphere" type="MeshInstance3D" parent="."]
+visible = false
 mesh = SubResource("SphereMesh_4mrxx")

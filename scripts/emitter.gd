@@ -305,29 +305,27 @@ func update_position(radius: float) -> void:
 	var new_pos := Util.latlon_to_vector3(latitude, longitude + 90, radius)
 	position = new_pos
 func update_speed(_speed: float) -> void:
+	if Util.PRINT_UPDATE_METHOD: print("Updated speed:%f"%_speed)
 	speed = _speed
-	print("new__speed:" + str(_speed))
 	pass
 func update_lat(lat: float) -> void:
-	print("new_lat:" + str(lat))
-	print("new_long:" + str(longitude))
+	if Util.PRINT_UPDATE_METHOD: print("Updated lat:%f"%lat)
 	latitude = lat
 	var new_pos := Util.latlon_to_vector3(latitude, longitude, comet_radius)
 	position = new_pos
 	update_initial_norm(latitude, longitude)
 func update_long(long: float) -> void:
-	print("new_lat:" + str(latitude))
-	print("new_long:" + str(long))
+	if Util.PRINT_UPDATE_METHOD: print("Updated long:%f"%long)
 	longitude = long + 90
 	var new_pos := Util.latlon_to_vector3(latitude, longitude, comet_radius)
 	position = new_pos
 	update_initial_norm(latitude, longitude)
 func update_diff(_diffusion: float) -> void:
+	if Util.PRINT_UPDATE_METHOD: print("Updated diffusion:%f"%_diffusion)
 	diffusion = _diffusion
-	print("new_diff:" + str(_diffusion))
 	pass
 func update_color(_color: Color) -> void:
-	print("new_color:" + str(_color))
+	if Util.PRINT_UPDATE_METHOD: print("Updated albedo:%s"%str(_color))
 	color = _color
 
 func update_initial_norm(_lat: float, _long: float) -> void:

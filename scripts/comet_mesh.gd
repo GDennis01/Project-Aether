@@ -267,23 +267,54 @@ func update_inclination_rotation(value: float) -> void:
 ## Basically Node3D.look_at but instead of pointing towards -Z (forward) it points towards Y (up)
 ## target_position: where Y axis should point 
 # TODO: Weird bug when inclination is 0°: XZ plane changes direction weirdly
-func point_y_axis_toward(target_position: Vector3) -> void:
-	var direction := (target_position - global_transform.origin).normalized()
+# func point_y_axis_toward(target_position: Vector3) -> void:
+# 	var direction := (target_position - global_transform.origin).normalized()
 
-	var up := direction
-	var forward := Vector3.RIGHT
-	# print("Up" + str(direction))
-	if abs(up.dot(forward)) > 0.99:
-		# forward = Vector3.FORWARD
-		# print("h")
-		pass
-	var right := forward.cross(up).normalized()
-	# print("Forward x Up:" + str(right))
-	var new_forward := up.cross(right).normalized()
-	# print("Up x (Forward x Right):" + str(new_forward))
-	# print("--")
-	var _basis := Basis(right, up, new_forward)
-	global_transform.basis = _basis
+# 	var up := direction
+# 	var forward := Vector3.RIGHT
+
+# 	var right := forward.cross(up)
+# 	print("Forward:%s  Up:%s Right:%s" % [str(forward), str(up), str(right)])
+# 	if abs(up.dot(forward)) > 0.999:
+# 		forward = Vector3.FORWARD
+# 		if abs(up.dot(forward)) > 0.999:
+# 			forward = Vector3.UP # Final fallback
+
+# 	right = right.normalized()
+	
+# 	var new_forward := up.cross(right).normalized()
+# 	var _basis := Basis(right, up, new_forward)
+
+# 	print("Up:%s\nForward x Up:%s\nUp x (Forward x Up):%s\n" % [str(up), str(right), str(new_forward)])
+# 	print("BASIS:%s\n---"%str(_basis))
+# 	global_transform.basis = _basis
+
+func point_y_axis_toward(target_position: Vector3) -> void:
+	var current_origin := global_transform.origin
+	var direction := target_position - current_origin
+
+	if direction.length_squared() < 1e-12:
+		return
+
+	direction = direction.normalized()
+
+# We want the object's local Y-axis (Vector3.UP in its local untransformed space)
+# to align with the 'direction' vector (which is in global space).
+# The Quaternion(from_vector, to_vector) constructor creates a quaternion
+# that represents the shortest rotation from 'from_vector' to 'to_vector'.
+# Thanks Gemini 2.5
+	var target_orientation_quat := Quaternion(Vector3.UP, direction)
+
+# Set the object's orientation using this quaternion.
+# This directly sets the rotation part of the global_transform.
+	quaternion = target_orientation_quat
+
+# For debugging:
+# var final_basis = Basis(target_orientation_quat)
+# print("Target Y (World):%s" % str(final_basis.y)) # Should be 'direction'
+# print("New Basis X (World):%s" % str(final_basis.x))
+# print("New Basis Z (World):%s" % str(final_basis.z))
+# print("New Basis (World):%s\n---" % str(final_basis))
 
 func update_comet_orientation() -> void:
 	if not is_node_ready():
