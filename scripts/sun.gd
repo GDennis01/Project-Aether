@@ -1,4 +1,3 @@
-@tool
 extends Node3D
 
 var axis_scene := preload("res://scenes/axis_arrow.tscn")
@@ -21,17 +20,18 @@ func _ready() -> void:
 ## Updates the sun axis position and size	
 ## Called by Comet.update_radius
 func update_sun_axis(value: float) -> void:
-	print("UPDATE SUN")
 	if sun_axis:
 		sun_axis.set_height(value, distance)
 	pass
 func update_sun_dir_rotation(value: float) -> void:
+		if Util.PRINT_UPDATE_METHOD: print("Updated sun direction:%f"%value)
 		# rotation_degrees.x = value
 		sun_direction = value
 		Util.sun_direction = value
 		update_sun_orientation()
 	
 func update_sun_inc_rotation(value: float) -> void:
+		if Util.PRINT_UPDATE_METHOD: print("Updated sun inclination:%f"%value)
 		# rotation_degrees.x = - value + 90
 		sun_inclination = - value
 		Util.sun_inclination = value

@@ -209,24 +209,6 @@ starting_value = 0.0
 valid_zero = true
 metadata/_edit_use_anchors_ = true
 
-[node name="Slider" parent="Body/CometTab/Control/EditCometIncl" index="0"]
-offset_left = 179.1
-offset_top = 52.7336
-offset_right = 355.1
-offset_bottom = 75.7336
-scale = Vector2(-1, -1)
-min_value = -90.0
-max_value = 90.0
-
-[node name="Label" parent="Body/CometTab/Control/EditCometIncl" index="1"]
-text = "Inclin. Rot."
-
-[node name="SanitizedEdit" parent="Body/CometTab/Control/EditCometIncl" index="2"]
-text = "0.0"
-resize_type = &"inclination_rotation"
-lower_bound = -90.0
-higher_bound = 90.0
-
 [node name="EditCometDir" parent="Body/CometTab/Control" groups=["load", "reset_rotation"] instance=ExtResource("3_f5f8u")]
 layout_mode = 1
 anchors_preset = -1
@@ -331,6 +313,20 @@ resize_type = &"albedo"
 higher_bound = 1.0
 metadata/_edit_use_anchors_ = true
 
+[node name="AlbedoLabel" type="Label" parent="Body/CometTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.06125
+anchor_top = 0.0579323
+anchor_right = 1.06125
+anchor_bottom = 0.0579323
+offset_left = -178.824
+offset_top = 178.824
+offset_right = -75.8235
+offset_bottom = 201.824
+scale = Vector2(0.85, 0.85)
+text = "Albedo"
+
 [node name="EditParticleDiameter" parent="Body/CometTab/Control" instance=ExtResource("6_oj5la")]
 layout_mode = 1
 anchor_left = 0.819588
@@ -347,6 +343,20 @@ resize_type = &"particle_diameter"
 higher_bound = 1.0
 metadata/_edit_use_anchors_ = true
 
+[node name="ParticleDiameterLabel" type="Label" parent="Body/CometTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.06125
+anchor_top = 0.0579323
+anchor_right = 1.06125
+anchor_bottom = 0.0579323
+offset_left = -65.8824
+offset_top = 178.824
+offset_right = 69.1176
+offset_bottom = 201.824
+scale = Vector2(0.85, 0.85)
+text = "Particle Diameter"
+
 [node name="EditParticleDensity" parent="Body/CometTab/Control" instance=ExtResource("6_oj5la")]
 layout_mode = 1
 anchor_left = 1.5
@@ -362,34 +372,6 @@ text = "1.0"
 resize_type = &"particle_density"
 higher_bound = 2.0
 metadata/_edit_use_anchors_ = true
-
-[node name="AlbedoLabel" type="Label" parent="Body/CometTab/Control"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 1.06125
-anchor_top = 0.0579323
-anchor_right = 1.06125
-anchor_bottom = 0.0579323
-offset_left = -178.824
-offset_top = 178.824
-offset_right = -75.8235
-offset_bottom = 201.824
-scale = Vector2(0.85, 0.85)
-text = "Albedo"
-
-[node name="ParticleDiameterLabel" type="Label" parent="Body/CometTab/Control"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 1.06125
-anchor_top = 0.0579323
-anchor_right = 1.06125
-anchor_bottom = 0.0579323
-offset_left = -65.8824
-offset_top = 178.824
-offset_right = 37.1176
-offset_bottom = 201.824
-scale = Vector2(0.85, 0.85)
-text = "Particle Diameter"
 
 [node name="ParticleDensityLabel" type="Label" parent="Body/CometTab/Control"]
 layout_mode = 1
@@ -758,5 +740,3 @@ text = "Time:"
 [connection signal="pressed" from="Body/JetsTab/Control/SpawnEmitter" to="Body" method="_on_spawn_emitter_pressed"]
 [connection signal="pressed" from="Body/JetsTab/Control/JetTable/AddJetEntryBtn" to="Body" method="_on_add_jet_entry_btn_pressed"]
 [connection signal="pressed" from="Body/JetsTab/Control/JetTable/AddJetEntryBtn" to="Body/JetsTab/Control/JetTable" method="_on_add_jet_entry_btn_pressed"]
-
-[editable path="Body/CometTab/Control/EditCometIncl"]

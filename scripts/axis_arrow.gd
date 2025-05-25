@@ -1,4 +1,3 @@
-@tool
 extends Node3D
 class_name AxisArrow
 @export var arrow_arm: MeshInstance3D
@@ -25,8 +24,12 @@ func set_axis_type(type: AXIS_TYPE) -> void:
 	axis_type = type
 	match axis_type:
 		AXIS_TYPE.X: # pitch axis
-			rotation_degrees.z = -90
-			position = Vector3(height / 2, 0, 0)
+			# rotation_degrees.z = -90
+			# position = Vector3(height / 2, 0, 0)
+			rotation_degrees.x = 90
+			position = Vector3(0, 0, height / 2)
+
+			
 			arrow_arm.get_surface_override_material(0).albedo_color = Color(Color.RED, ALPHA)
 			arrow_head.get_surface_override_material(0).albedo_color = Color(Color.RED, ALPHA)
 			pass
@@ -37,8 +40,10 @@ func set_axis_type(type: AXIS_TYPE) -> void:
 			arrow_head.get_surface_override_material(0).albedo_color = Color(Color.GREEN, ALPHA)
 			pass
 		AXIS_TYPE.Z: # roll axis
-			rotation_degrees.x = 90
-			position = Vector3(0, 0, height / 2)
+			# rotation_degrees.x = 90
+			# position = Vector3(0, 0, height / 2)
+			rotation_degrees.z = -90
+			position = Vector3(height / 2, 0, 0)
 			arrow_arm.get_surface_override_material(0).albedo_color = Color(Color.BLUE, ALPHA)
 			arrow_head.get_surface_override_material(0).albedo_color = Color(Color.BLUE, ALPHA)
 			pass
@@ -60,7 +65,6 @@ func set_height(value: float, distance: float = 0) -> void:
 		arrow_head.scale = Vector3(required_y_scale, required_y_scale, required_y_scale)
 		# offsetting by the original height(which is 2 so 2/4 = 0.5) so that the arm is centered in the center of the mesh
 		if axis_type == AXIS_TYPE.SUN:
-			print(distance)
 			arrow_arm.position.y = distance - Util.comet_radius * 3.1
 			arrow_head.position.y = distance + height / 2 - Util.comet_radius * 3.1
 			# position.z = position.z - distance

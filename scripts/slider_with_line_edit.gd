@@ -1,4 +1,3 @@
-@tool
 extends Control
 class_name SliderWithLineEdit
 @export var slider: HSlider
@@ -28,8 +27,9 @@ func _ready() -> void:
 	line_edit.resize_type = resize_type
 	prev_value = line_edit.text
 	$Label.text = label
-	print_debug("[CALL] update_" + resize_type + "(" + str(starting_value) + ")")
-	get_tree().call_group(resize_type, "update_" + resize_type, starting_value)
+	if resize_type:
+		# print("[Slider w LineEdit] update_" + resize_type + "(" + str(starting_value) + ")")
+		get_tree().call_group(resize_type, "update_" + resize_type, starting_value)
 
 
 func _on_slider_value_changed(value: float) -> void:
@@ -38,6 +38,7 @@ func _on_slider_value_changed(value: float) -> void:
 		line_edit.text = "%.2f" % -value
 	else:
 		line_edit.text = str(value)
+	# print("Calling ")
 	get_tree().call_group(resize_type, "update_" + resize_type, value)
 
 """

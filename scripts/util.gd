@@ -1,5 +1,8 @@
 extends Node
 
+##Debug
+const PRINT_UPDATE_METHOD = false
+
 ## current radius of the comet
 var comet_radius: float = 0.0
 ## current inclination rotation angle of the sun

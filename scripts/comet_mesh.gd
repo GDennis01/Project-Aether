@@ -1,4 +1,3 @@
-@tool
 extends MeshInstance3D
 class_name Comet
 enum ANIMATION_STATE {
@@ -33,10 +32,13 @@ const EARTH_VIEW = Vector3(0.0, 0.0, 10.0)
 
 var axis_scene := preload("res://scenes/axis_arrow.tscn")
 var emitter_scene := preload("res://scenes/particle_emitter.tscn")
+
 @onready var x_axis: AxisArrow
 @onready var y_axis: AxisArrow
 @onready var z_axis: AxisArrow
+
 @onready var animation_slider: AnimationSlider = $"/root/Hud/Body/TabButtons/ColorRect/HBoxContainer/AnimationSlider"
+
 @export var light_source: Light3D
 @export var comet_collider: CollisionObject3D
 var rotation_enabled := false
@@ -62,7 +64,6 @@ func _ready() -> void:
 	var _z_axis := axis_scene.instantiate() as AxisArrow
 	add_child(_z_axis)
 	_z_axis.add_to_group("toggle_axis")
-	# calling after all axises are added to the scenetree and thus are _ready
 	_z_axis.set_axis_type(AxisArrow.AXIS_TYPE.Z)
 	_z_axis.set_height(mesh.height)
 	
@@ -81,7 +82,7 @@ func _ready() -> void:
 	Util.comet_radius = mesh.radius
 	# Hud.comet_collider = comet_collider
 	# Hud.light_source = light_source
-
+	update_comet_orientation()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
@@ -235,6 +236,7 @@ func reset_rotation() -> void:
 
 func update_radius(value: float) -> void:
 	#print_debug("[UPDATE RADIUS] Before:"+str(mesh.radius)+" After:"+str(value))
+	if Util.PRINT_UPDATE_METHOD: print("Updated comet radius:%f"%value)
 	Util.comet_radius = value
 	mesh.set_radius(value)
 	$CometArea/CometCollisionShape.shape.set_radius(value - 0.0001)
@@ -253,11 +255,11 @@ func update_height(value: float) -> void:
 	#print_debug("[UPDATE HEIGHT] Before:"+str(mesh.height)+" After:"+str(value))
 	mesh.set_height(value)
 func update_direction_rotation(value: float) -> void:
-	# rotation_degrees.z = value
+	if Util.PRINT_UPDATE_METHOD: print("Updated comet direction:%f"%value)
 	Util.comet_direction = value
 	update_comet_orientation()
 func update_inclination_rotation(value: float) -> void:
-	# rotation_degrees.y = - value
+	if Util.PRINT_UPDATE_METHOD: print("Updated comet inclination:%f"%value)
 	Util.comet_inclination = - value
 	update_comet_orientation()
 
@@ -270,10 +272,16 @@ func point_y_axis_toward(target_position: Vector3) -> void:
 
 	var up := direction
 	var forward := Vector3.RIGHT
+	# print("Up" + str(direction))
 	if abs(up.dot(forward)) > 0.99:
-		forward = Vector3.FORWARD
+		# forward = Vector3.FORWARD
+		# print("h")
+		pass
 	var right := forward.cross(up).normalized()
+	# print("Forward x Up:" + str(right))
 	var new_forward := up.cross(right).normalized()
+	# print("Up x (Forward x Right):" + str(new_forward))
+	# print("--")
 	var _basis := Basis(right, up, new_forward)
 	global_transform.basis = _basis
 
@@ -295,23 +303,29 @@ func update_comet_orientation() -> void:
 	point_y_axis_toward(global_transform.origin + direction)
 
 func update_jet_rate(value: float) -> void:
-	print("updated jetrate")
+	if Util.PRINT_UPDATE_METHOD: print("Updated jet_rate:%f"%value)
 	jet_rate = value
 	Util.jet_rate = value
 func update_num_rotation(value: float) -> void:
+	if Util.PRINT_UPDATE_METHOD: print("Updated num_rotation:%f"%value)
 	num_rotation = value
 func update_frequency(value: float) -> void:
+	if Util.PRINT_UPDATE_METHOD: print("Updated frequency:%f"%value)
 	frequency = value
 func update_albedo(value: float) -> void:
+	if Util.PRINT_UPDATE_METHOD: print("Updated albedo:%f"%value)
 	Util.albedo = value
 	get_tree().call_group("emitter", "update_acceleration")
 func update_particle_diameter(value: float) -> void:
+	if Util.PRINT_UPDATE_METHOD: print("Updated particle_diameter:%f"%value)
 	Util.particle_diameter = value
 	get_tree().call_group("emitter", "update_acceleration")
 func update_particle_density(value: float) -> void:
+	if Util.PRINT_UPDATE_METHOD: print("Updated particle_density:%f"%value)
 	Util.particle_density = value
 	get_tree().call_group("emitter", "update_acceleration")
 func update_sun_comet_distance(value: float) -> void:
+	if Util.PRINT_UPDATE_METHOD: print("Updated sun_comet_distance:%f"%value)
 	Util.sun_comet_distance = value
 	get_tree().call_group("emitter", "update_acceleration")
 #endregion Update methods
