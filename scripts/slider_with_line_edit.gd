@@ -8,6 +8,8 @@ var prev_value: StringName
 ## Name of the group on which to call the [code]update_resize_type[/code] function
 @export var resize_type: StringName
 
+@export var reverse: bool = false
+
 @export_group("Slider")
 @export var minimum_value: float
 @export var maximum_value: float
@@ -31,10 +33,11 @@ func _ready() -> void:
 
 
 func _on_slider_value_changed(value: float) -> void:
-	line_edit.text = str(value)
-	# if resize_type == "radius":
-	# 	Hud.current_radius = value
-	#print("entered slider","update_"+resize_type)
+	if reverse:
+		# string formatting to prevent a weird bug where it would show 6 decimal digits with a value of like -7.51
+		line_edit.text = "%.2f" % -value
+	else:
+		line_edit.text = str(value)
 	get_tree().call_group(resize_type, "update_" + resize_type, value)
 
 """
@@ -44,7 +47,10 @@ func set_value(value: float) -> void:
 	value = clampf(value, minimum_value, maximum_value)
 	# print(label + " clamped value between" + str(minimum_value) + " and maiximum value:" + str(maximum_value) + " is:" + str(value))
 	# this line of code triggers _on_slider_value_changed
-	slider.value = value
+	if reverse:
+		slider.value = value
+	else:
+		slider.value = value
 
 
 """

@@ -209,6 +209,24 @@ starting_value = 0.0
 valid_zero = true
 metadata/_edit_use_anchors_ = true
 
+[node name="Slider" parent="Body/CometTab/Control/EditCometIncl" index="0"]
+offset_left = 179.1
+offset_top = 52.7336
+offset_right = 355.1
+offset_bottom = 75.7336
+scale = Vector2(-1, -1)
+min_value = -90.0
+max_value = 90.0
+
+[node name="Label" parent="Body/CometTab/Control/EditCometIncl" index="1"]
+text = "Inclin. Rot."
+
+[node name="SanitizedEdit" parent="Body/CometTab/Control/EditCometIncl" index="2"]
+text = "0.0"
+resize_type = &"inclination_rotation"
+lower_bound = -90.0
+higher_bound = 90.0
+
 [node name="EditCometDir" parent="Body/CometTab/Control" groups=["load", "reset_rotation"] instance=ExtResource("3_f5f8u")]
 layout_mode = 1
 anchors_preset = -1
@@ -229,17 +247,6 @@ maximum_value = 360.0
 starting_value = 0.0
 valid_zero = true
 metadata/_edit_use_anchors_ = true
-
-[node name="Slider" parent="Body/CometTab/Control/EditCometDir" index="0"]
-max_value = 360.0
-
-[node name="Label" parent="Body/CometTab/Control/EditCometDir" index="1"]
-text = "Dir. Rot."
-
-[node name="SanitizedEdit" parent="Body/CometTab/Control/EditCometDir" index="2"]
-text = "0.0"
-resize_type = &"direction_rotation"
-higher_bound = 360.0
 
 [node name="EditSunIncl" parent="Body/CometTab/Control" groups=["load"] instance=ExtResource("3_f5f8u")]
 layout_mode = 1
@@ -752,4 +759,4 @@ text = "Time:"
 [connection signal="pressed" from="Body/JetsTab/Control/JetTable/AddJetEntryBtn" to="Body" method="_on_add_jet_entry_btn_pressed"]
 [connection signal="pressed" from="Body/JetsTab/Control/JetTable/AddJetEntryBtn" to="Body/JetsTab/Control/JetTable" method="_on_add_jet_entry_btn_pressed"]
 
-[editable path="Body/CometTab/Control/EditCometDir"]
+[editable path="Body/CometTab/Control/EditCometIncl"]

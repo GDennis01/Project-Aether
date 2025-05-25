@@ -1,9 +1,10 @@
+@tool
 extends Node3D
 
 var axis_scene := preload("res://scenes/axis_arrow.tscn")
 var sun_axis: AxisArrow
 @onready var light3d: SpotLight3D = $SpotLight3D
-@export var distance: float = 200.0
+@export var distance: float = 10.0
 var sun_direction: float = 0.0
 var sun_inclination: float = 0.0
 func _ready() -> void:

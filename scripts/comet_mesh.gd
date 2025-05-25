@@ -13,6 +13,7 @@ enum ANIMATION_STATE {
 @onready var steps_label: Label = $"/root/Hud/Body/DebugPanel/Control/DebugContainer/StepsLabel"
 @onready var time_label: Label = $"/root/Hud/Body/DebugPanel/Control/DebugContainer/SimTimeLabel"
 var total_sim_time: float = 0.0
+@onready var debug_sphere: MeshInstance3D = $"/root/World/DebugRotationSphere"
 
 
 # simulation related
@@ -26,6 +27,8 @@ var jet_rate_sped_up: float = 0
 var num_rotation: float = 0
 var frequency: float = 0
 var freq_sped_up: float = 0
+
+const EARTH_VIEW = Vector3(0.0, 0.0, 10.0)
 
 
 var axis_scene := preload("res://scenes/axis_arrow.tscn")
@@ -250,15 +253,47 @@ func update_height(value: float) -> void:
 	#print_debug("[UPDATE HEIGHT] Before:"+str(mesh.height)+" After:"+str(value))
 	mesh.set_height(value)
 func update_direction_rotation(value: float) -> void:
-	rotation_degrees.z = value
+	# rotation_degrees.z = value
 	Util.comet_direction = value
+	update_comet_orientation()
 func update_inclination_rotation(value: float) -> void:
-	#print_debug("[UPDATE INCLINATION]")
-	# rotation_degrees.y = - value + 90
-	rotation_degrees.y = - value
+	# rotation_degrees.y = - value
 	Util.comet_inclination = - value
-	print("updated comet inc")
-	# rotate_object_local(Vector3.UP, deg_to_rad(-value + 90))
+	update_comet_orientation()
+
+
+## Basically Node3D.look_at but instead of pointing towards -Z (forward) it points towards Y (up)
+## target_position: where Y axis should point 
+# TODO: Weird bug when inclination is 0°: XZ plane changes direction weirdly
+func point_y_axis_toward(target_position: Vector3) -> void:
+	var direction := (target_position - global_transform.origin).normalized()
+
+	var up := direction
+	var forward := Vector3.RIGHT
+	if abs(up.dot(forward)) > 0.99:
+		forward = Vector3.FORWARD
+	var right := forward.cross(up).normalized()
+	var new_forward := up.cross(right).normalized()
+	var _basis := Basis(right, up, new_forward)
+	global_transform.basis = _basis
+
+func update_comet_orientation() -> void:
+	if not is_node_ready():
+		return
+	# Convert to radians
+	var azimuth_rad := deg_to_rad(Util.comet_direction)
+	var inclination_rad := deg_to_rad(-Util.comet_inclination - 90)
+
+	# Spherical to Cartesian conversion
+	var x := sin(inclination_rad) * sin(azimuth_rad)
+	var y := cos(inclination_rad)
+	var z := sin(inclination_rad) * cos(azimuth_rad)
+
+	var direction := Vector3(x, y, z).normalized()
+	direction = direction.rotated(Vector3.LEFT, deg_to_rad(-90))
+	debug_sphere.global_position = global_transform.origin + direction * mesh.radius * 3
+	point_y_axis_toward(global_transform.origin + direction)
+
 func update_jet_rate(value: float) -> void:
 	print("updated jetrate")
 	jet_rate = value
