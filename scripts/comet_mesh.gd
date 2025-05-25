@@ -308,7 +308,7 @@ func point_y_axis_toward(target_position: Vector3) -> void:
 # Set the object's orientation using this quaternion.
 # This directly sets the rotation part of the global_transform.
 	quaternion = target_orientation_quat
-
+	
 # For debugging:
 # var final_basis = Basis(target_orientation_quat)
 # print("Target Y (World):%s" % str(final_basis.y)) # Should be 'direction'

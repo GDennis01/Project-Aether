@@ -75,11 +75,14 @@ func _ready() -> void:
 
 	init_multimesh(mm_emitter)
 	add_child(mm_emitter)
+	mm_emitter.global_position = Vector3(0, 0, 0)
 	# for top_level = true
 	# mm_emitter.global_position = global_position
 	
 	# norm = norm.rotated(Vector3.RIGHT, deg_to_rad(longitude))
 	update_acceleration()
+
+	get_parent().debug_sphere.global_position = global_transform.origin + norm * 0.5 * 3
 	print("albedo:%f p:%f d:%f D:%f  a:%.10f" % [Util.albedo, Util.particle_density, Util.particle_diameter, Util.sun_comet_distance, a])
 
 func init_multimesh(multi_mesh_istance: MultiMeshInstance3D) -> void:
@@ -96,7 +99,8 @@ func init_multimesh(multi_mesh_istance: MultiMeshInstance3D) -> void:
 	multi_mesh_istance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	multi_mesh_istance.gi_mode = GeometryInstance3D.GI_MODE_DISABLED
 	multi_mesh_istance.lod_bias = 0.0001
-	# mm_emitter.top_level = true
+	mm_emitter.top_level = true
+	# mm_emitter.global_position = Vector3(0, 0, 0)
 	
 func _physics_process(_delta: float) -> void:
 	if not visible:
@@ -221,17 +225,27 @@ func set_number_particles(num: int) -> void:
 	mm_emitter.multimesh.instance_count = num_particles
 func tick_optimized(_n_iteration: int) -> void:
 	# moving each particle
+	# mm_emitter.quaternion = get_parent().global_transform.basis.get_rotation_quaternion()
 	for i in mm_emitter.multimesh.visible_instance_count:
 		# getting normal direction and converting it to vector3 since it's saved as a Color
 		var _normal_dir_as_color := mm_emitter.multimesh.get_instance_custom_data(i) as Color
 		var _normal_dir := Vector3(_normal_dir_as_color.r, _normal_dir_as_color.g, _normal_dir_as_color.b)
+
+		#show a debug sphere in the direction of the normal
+		get_parent().debug_sphere.global_position = Vector3(0, 0, 0) + _normal_dir * 0.5 * 3
+
 		var local_transf := mm_emitter.multimesh.get_instance_transform(i)
 
 		# uncomment this line to calculate the position based on speed/acceleration
-		# global_positions[i] = global_positions[i] + _normal_dir * particle_speeds[i] * 0.001
-		global_positions[i] = global_positions[i] + _normal_dir * 0.01
-		local_transf.origin = to_local(global_positions[i])
-		mm_emitter.multimesh.set_instance_transform(i, local_transf)
+		global_positions[i] = global_positions[i] + _normal_dir * particle_speeds[i] * 1e-9
+		# global_positions[i] = global_positions[i] + _normal_dir * 0.01
+
+		# local_transf.origin = to_local(global_positions[i])
+		# mm_emitter.multimesh.set_instance_transform(i, local_transf)
+		var new_transf := Transform3D(Basis(), global_positions[i])
+		mm_emitter.multimesh.set_instance_transform(i, new_transf)
+		
+		# speed calculation
 		# time passed in seconds ( jet_rate is in minutes) obtained by multiplying how many ticks have passed
 		var time_passed: float = _n_iteration * Util.jet_rate * 60.0
 		# Updating speed as V= V*t + 1/2*a*t^2 (classic form), a is negative since the acceleration is in the opposite direction(?)
@@ -254,7 +268,7 @@ func tick_optimized(_n_iteration: int) -> void:
 		# assign the normal direction to the particle
 		mm_emitter.multimesh.set_instance_custom_data(last_id - 1, Color(norm.x, norm.y, norm.z))
 		normal_dirs.append(norm)
-		global_positions.append(mm_emitter.global_position)
+		global_positions.append(mm_emitter.global_position + norm * Util.comet_radius)
 		particle_speeds.append(speed)
 		# spawn new particle at origin
 		mm_emitter.multimesh.set_instance_transform(last_id - 1, Transform3D(Basis(), Vector3.ZERO))
@@ -314,12 +328,14 @@ func update_lat(lat: float) -> void:
 	var new_pos := Util.latlon_to_vector3(latitude, longitude, comet_radius)
 	position = new_pos
 	update_initial_norm(latitude, longitude)
+	get_parent().debug_sphere.global_position = global_transform.origin + norm * 0.5 * 3
 func update_long(long: float) -> void:
 	if Util.PRINT_UPDATE_METHOD: print("Updated long:%f"%long)
 	longitude = long + 90
 	var new_pos := Util.latlon_to_vector3(latitude, longitude, comet_radius)
 	position = new_pos
 	update_initial_norm(latitude, longitude)
+	get_parent().debug_sphere.global_position = global_transform.origin + norm * 0.5 * 3
 func update_diff(_diffusion: float) -> void:
 	if Util.PRINT_UPDATE_METHOD: print("Updated diffusion:%f"%_diffusion)
 	diffusion = _diffusion

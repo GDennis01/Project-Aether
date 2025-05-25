@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://bqxoxn8bpfcfa"]
+[gd_scene load_steps=19 format=3 uid="uid://bqxoxn8bpfcfa"]
 
 [ext_resource type="Texture2D" uid="uid://ci05lu7s7pmon" path="res://textures/rock_wall_13_diff_4k.png" id="1_gtgs4"]
 [ext_resource type="Script" uid="uid://dsimhylkxu4no" path="res://scripts/world_manager.gd" id="1_wu602"]
@@ -47,8 +47,6 @@ shader_parameter/line_thickness = 0.068
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_4mrxx"]
 
-[sub_resource type="SphereOccluder3D" id="SphereOccluder3D_i7141"]
-
 [sub_resource type="SphereMesh" id="SphereMesh_4mrxx"]
 radius = 0.1
 height = 0.2
@@ -60,6 +58,7 @@ compositor = SubResource("Compositor_5tdcg")
 script = ExtResource("1_wu602")
 
 [node name="Sun" type="Node3D" parent="." groups=["sun", "sun_dir_rotation", "sun_inc_rotation"]]
+rotation_edit_mode = 1
 script = ExtResource("2_i7141")
 distance = 200.0
 
@@ -110,12 +109,6 @@ directional_shadow_mode = 0
 directional_shadow_fade_start = 0.843
 directional_shadow_max_distance = 85.5
 sky_mode = 1
-
-[node name="OccluderInstance3D" type="OccluderInstance3D" parent="."]
-visible = false
-occluder = SubResource("SphereOccluder3D_i7141")
-bake_mask = 4294967264
-bake_simplification_distance = 0.02
 
 [node name="DebugRotationSphere" type="MeshInstance3D" parent="."]
 visible = false
