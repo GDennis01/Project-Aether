@@ -65,8 +65,8 @@ func set_height(value: float, distance: float = 0) -> void:
 		arrow_head.scale = Vector3(required_y_scale, required_y_scale, required_y_scale)
 		# offsetting by the original height(which is 2 so 2/4 = 0.5) so that the arm is centered in the center of the mesh
 		if axis_type == AXIS_TYPE.SUN:
-			arrow_arm.position.y = distance - Util.comet_radius * 3.1
-			arrow_head.position.y = distance + height / 2 - Util.comet_radius * 3.1
+			arrow_arm.position.y = distance - Util.comet_radius * 2.05
+			arrow_head.position.y = distance + height / 2 - Util.comet_radius * 2.05
 			# position.z = position.z - distance
 		else:
 			arrow_arm.position.y = height / 2 - _original_arm_mesh_height / 4

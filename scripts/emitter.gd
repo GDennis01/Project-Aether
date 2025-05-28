@@ -237,8 +237,8 @@ func tick_optimized(_n_iteration: int) -> void:
 		var local_transf := mm_emitter.multimesh.get_instance_transform(i)
 
 		# uncomment this line to calculate the position based on speed/acceleration
-		global_positions[i] = global_positions[i] + _normal_dir * particle_speeds[i] * 1e-9
-		# global_positions[i] = global_positions[i] + _normal_dir * 0.01
+		# global_positions[i] = global_positions[i] + _normal_dir * particle_speeds[i] * 1e-9
+		global_positions[i] = global_positions[i] + _normal_dir * 0.01
 
 		# local_transf.origin = to_local(global_positions[i])
 		# mm_emitter.multimesh.set_instance_transform(i, local_transf)
