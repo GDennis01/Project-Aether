@@ -1,7 +1,7 @@
 extends Node
 
 ##Debug
-const PRINT_UPDATE_METHOD = false
+const PRINT_UPDATE_METHOD = true
 
 ## current radius of the comet
 var comet_radius: float = 0.0

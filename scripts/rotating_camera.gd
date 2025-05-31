@@ -1,18 +1,20 @@
 extends Camera3D
-# class_name FlyCamera
+class_name RotatingCamera
 # Modifier keys' speed multiplier
 const SHIFT_MULTIPLIER = 2.5
 const ALT_MULTIPLIER = 1.0 / SHIFT_MULTIPLIER
-
 
 @export_range(0.0, 1.0) var sensitivity: float = 0.25
 
 @onready var starting_position := position
 @onready var starting_rotation := rotation
 @onready var starting_mouse_pos := Vector2(0.0, 0.0)
-@onready var sub_viewport: SubViewport = $"/root/Hud/Body/SubViewportContainer/SubViewport"
+# @onready var sub_viewport: SubViewport = $"/root/Hud/Body/SubViewportContainer/SubViewport"
+@onready var sub_viewport: SubViewport = $"/root/Hud/Viewport/SubViewportContainer/SubViewport"
 
 @export var enabled: bool = true
+
+@export var is_rotating_camera: bool = false
 
 # Mouse state
 var _mouse_position := Vector2(0.0, 0.0)
@@ -35,13 +37,12 @@ var _e := false
 var _shift := false
 var _alt := false
 
+
 func _ready() -> void:
-	clear_current()
-	pass
-func disable_camera() -> void:
-	print("DISABLED")
-	clear_current()
-	print($Camera3D.current)
+	print("ROT READY")
+	make_current()
+	# if FlyCamera:
+	# 	FlyCamera.disable_camera()
 func _input(event: InputEvent) -> void:
 	# Receives mouse motion
 	if event is InputEventMouseMotion:

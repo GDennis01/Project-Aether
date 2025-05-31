@@ -1,5 +1,9 @@
 extends CanvasLayer
 
+# @onready var rot_camera_viewport: SubViewport = $"/root/Hud/Body/SubViewportContainer/SubViewport"
+@onready var rot_camera_viewport: SubViewport = $"/root/Hud/Viewport/SubViewportContainer/SubViewport"
+var camera_position: Vector2
+
 ## Called when the node enters the scene tree for the first time.
 #func _ready() -> void:
 	#pass # Replace with function body.
@@ -97,3 +101,19 @@ func _on_file_explorer_file_selected(path: String) -> void:
 	if $TabButtons/ColorRect/HBoxContainer/FileExplorer.file_mode == FileDialog.FILE_MODE_OPEN_FILE:
 		SaveManager.load(path)
 		get_tree().call_group("load", "load_data")
+
+# TODO: fix this by making so that the container reposition itself based on the new size
+func _on_full_viewport_btn_pressed() -> void:
+	# if not rot_camera_viewport.size == get_window().size:
+	# 	rot_camera_viewport.size = get_window().size
+	# 	# rot_camera_viewport.get_parent().position =
+	# else:
+	# 	rot_camera_viewport.size = Vector2(800, 800)
+	if not rot_camera_viewport.size == Vector2i(800, 800):
+		# rot_camera_viewport.get_parent().position =
+		rot_camera_viewport.size = Vector2(800, 800)
+		rot_camera_viewport.get_parent().position = camera_position
+	else:
+		camera_position = rot_camera_viewport.get_parent().position
+		rot_camera_viewport.size = get_window().size
+		rot_camera_viewport.get_parent().position = Vector2(0, 0)

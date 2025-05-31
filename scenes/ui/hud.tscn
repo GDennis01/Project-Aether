@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bwt7dtbn7pn3c"]
+[gd_scene load_steps=10 format=3 uid="uid://bwt7dtbn7pn3c"]
 
 [ext_resource type="Script" uid="uid://bmle6k05e5fff" path="res://scripts/hud.gd" id="1_moku2"]
 [ext_resource type="Script" uid="uid://bwvqb33hu6cxk" path="res://scripts/navbar.gd" id="1_r4m0t"]
@@ -8,23 +8,37 @@
 [ext_resource type="Script" uid="uid://cpcxn2i4yw141" path="res://scripts/jet_table.gd" id="4_136eg"]
 [ext_resource type="PackedScene" uid="uid://b31lb3a4drve4" path="res://scenes/ui/sanitized_edit.tscn" id="6_oj5la"]
 [ext_resource type="Script" uid="uid://c3hrn6jcfsf4a" path="res://scripts/sim_tab.gd" id="7_h022r"]
+[ext_resource type="Script" uid="uid://bbucofc0qu6gp" path="res://scripts/rotating_camera.gd" id="9_4jqwt"]
 
 [node name="HUD" type="CanvasLayer"]
+layer = 0
 script = ExtResource("1_moku2")
 
+[node name="Background" type="ColorRect" parent="."]
+z_index = -2
+anchors_preset = -1
+anchor_right = 0.996
+anchor_bottom = 0.993
+offset_right = 5.12
+offset_bottom = 7.56
+focus_mode = 2
+color = Color(0, 0.210733, 0.213576, 1)
+
 [node name="Body" type="CanvasLayer" parent="."]
+layer = 3
 script = ExtResource("1_r4m0t")
 
 [node name="TabButtons" type="Control" parent="Body"]
+z_index = 2
 layout_mode = 3
 anchor_left = 0.001
 anchor_top = 0.025
 anchor_right = 1.0
-anchor_bottom = 0.025
+anchor_bottom = 0.069
 offset_left = -1.152
 offset_top = -0.200001
 offset_right = -0.00012207
-offset_bottom = 44.8
+offset_bottom = 1.68
 grow_horizontal = 2
 mouse_filter = 2
 metadata/_edit_use_anchors_ = true
@@ -32,14 +46,14 @@ metadata/_edit_use_anchors_ = true
 [node name="ColorRect" type="ColorRect" parent="Body/TabButtons"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.001
-anchor_top = -0.111
-anchor_right = 1.001
-anchor_bottom = -0.111
+anchor_left = 0.00090009
+anchor_top = -0.044
+anchor_right = 0.999734
+anchor_bottom = 0.804
 offset_left = -0.152
-offset_top = -3.005
-offset_right = -0.1521
-offset_bottom = 47.995
+offset_top = -6.02
+offset_right = 0.468497
+offset_bottom = 6.82
 color = Color(0.1476, 0.31044, 0.36, 0.592157)
 metadata/_edit_group_ = true
 metadata/_edit_use_anchors_ = true
@@ -94,6 +108,11 @@ layout_mode = 2
 focus_mode = 0
 text = "Reset Rotation"
 
+[node name="FullViewportBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+text = "FullViewport"
+
 [node name="ToggleSunBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 layout_mode = 2
 focus_mode = 0
@@ -135,6 +154,7 @@ access = 2
 use_native_dialog = true
 
 [node name="CometTab" type="CanvasLayer" parent="Body" groups=["load", "save"]]
+layer = 3
 script = ExtResource("3_136eg")
 
 [node name="Control" type="Control" parent="Body/CometTab"]
@@ -389,6 +409,7 @@ scale = Vector2(0.85, 0.85)
 text = "Particle density"
 
 [node name="JetsTab" type="CanvasLayer" parent="Body"]
+layer = 3
 visible = false
 
 [node name="Control" type="Control" parent="Body/JetsTab"]
@@ -565,6 +586,7 @@ focus_mode = 1
 text = "Add Jet Entry"
 
 [node name="SimTab" type="CanvasLayer" parent="Body" groups=["load", "save"]]
+layer = 3
 visible = false
 script = ExtResource("7_h022r")
 
@@ -672,6 +694,7 @@ text = "Jet Rate (min)"
 vertical_alignment = 1
 
 [node name="HelpPanel" type="CanvasLayer" parent="Body"]
+layer = 3
 visible = false
 
 [node name="BoxContainer" type="BoxContainer" parent="Body/HelpPanel"]
@@ -693,6 +716,7 @@ Alt while moving to move slower
 "
 
 [node name="DebugPanel" type="CanvasLayer" parent="Body"]
+layer = 3
 visible = false
 
 [node name="Control" type="Panel" parent="Body/DebugPanel"]
@@ -729,11 +753,39 @@ text = "Steps:"
 layout_mode = 2
 text = "Time:"
 
+[node name="Viewport" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="Viewport"]
+visibility_layer = 4
+z_index = -1
+anchors_preset = -1
+anchor_left = 0.589
+anchor_top = 0.531
+anchor_right = 0.589
+anchor_bottom = 0.531
+offset_left = -399.37
+offset_top = -392.38
+offset_right = 400.63
+offset_bottom = 407.62
+metadata/_edit_use_anchors_ = true
+
+[node name="SubViewport" type="SubViewport" parent="Viewport/SubViewportContainer"]
+handle_input_locally = false
+size = Vector2i(800, 800)
+render_target_update_mode = 4
+
+[node name="RotatingCamera" type="Camera3D" parent="Viewport/SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+visible = false
+script = ExtResource("9_4jqwt")
+
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/CometBtn" to="Body" method="_on_cometbtn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/JetsBtn" to="Body" method="_on_jetsbtn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/SimBtn" to="Body" method="_on_sim_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/TriggerRotBtn" to="Body" method="_on_trigger_rot_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ResetRotnBtn" to="Body" method="_on_reset_rotn_btn_pressed"]
+[connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/FullViewportBtn" to="Body" method="_on_full_viewport_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ToggleSunBtn" to="Body" method="_on_toggle_sun_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ToggleYBtn" to="Body" method="_on_toggle_y_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ToggleAxesBtn" to="Body" method="_on_toggle_axes_btn_pressed"]

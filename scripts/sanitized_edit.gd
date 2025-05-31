@@ -51,11 +51,11 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _on_editing_toggled(toggled_on: bool) -> void:
-	if toggled_on:
-		FlyCamera.set_process(false)
-	else:
-		FlyCamera.set_process(true)
-
+	# if toggled_on:
+	# 	FlyCamera.set_process(false)
+	# else:
+	# 	FlyCamera.set_process(true)
+	pass
 
 func _on_focus_exited() -> void:
 	# sanitize_field(lower_bound, higher_bound)
