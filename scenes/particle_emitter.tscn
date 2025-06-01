@@ -7,8 +7,8 @@ shading_mode = 0
 
 [sub_resource type="SphereMesh" id="SphereMesh_vd55s"]
 material = SubResource("StandardMaterial3D_7r4gi")
-radius = 0.01
-height = 0.02
+radius = 0.001
+height = 0.002
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_87byf"]
 resource_local_to_scene = true
@@ -26,6 +26,7 @@ particle_radius = 0.1
 
 [node name="Particle" type="MeshInstance3D" parent="."]
 cast_shadow = 0
+ignore_occlusion_culling = true
 mesh = SubResource("SphereMesh_vd55s")
 surface_material_override/0 = SubResource("StandardMaterial3D_87byf")
 

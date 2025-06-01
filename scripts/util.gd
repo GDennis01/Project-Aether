@@ -18,6 +18,9 @@ var jet_rate: float = 0.0
 ## Sun-comet distance in AU
 var sun_comet_distance: float = 0.0
 
+## Scale in km
+var scale: float = 0.0
+
 #particle properties
 var albedo: float = 0.0
 var particle_diameter: float = 0.0

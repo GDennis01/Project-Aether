@@ -343,6 +343,10 @@ func update_num_rotation(value: float) -> void:
 func update_frequency(value: float) -> void:
 	if Util.PRINT_UPDATE_METHOD: print("Updated frequency:%f"%value)
 	frequency = value
+func update_scale(value: float) -> void:
+	if Util.PRINT_UPDATE_METHOD: print("Updated scale:%f"%value)
+	Util.scale = value
+	print("scale:%f"%value)
 func update_albedo(value: float) -> void:
 	if Util.PRINT_UPDATE_METHOD: print("Updated albedo:%f"%value)
 	Util.albedo = value

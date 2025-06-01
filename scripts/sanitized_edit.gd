@@ -58,7 +58,7 @@ func _on_editing_toggled(toggled_on: bool) -> void:
 	pass
 
 func _on_focus_exited() -> void:
-	# sanitize_field(lower_bound, higher_bound)
+	sanitize_field(lower_bound, higher_bound)
 	sanitized_edit_focus_exited.emit(float(self.text))
 	if slider:
 		slider.set_value_no_signal(float(self.text))

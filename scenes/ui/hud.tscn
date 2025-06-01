@@ -155,6 +155,7 @@ use_native_dialog = true
 
 [node name="CometTab" type="CanvasLayer" parent="Body" groups=["load", "save"]]
 layer = 3
+visible = false
 script = ExtResource("3_136eg")
 
 [node name="Control" type="Control" parent="Body/CometTab"]
@@ -587,7 +588,6 @@ text = "Add Jet Entry"
 
 [node name="SimTab" type="CanvasLayer" parent="Body" groups=["load", "save"]]
 layer = 3
-visible = false
 script = ExtResource("7_h022r")
 
 [node name="Control" type="Control" parent="Body/SimTab"]
@@ -642,6 +642,21 @@ resize_type = &"jet_rate"
 lower_bound = 0.5
 higher_bound = -1.0
 
+[node name="KmScaleEdit" parent="Body/SimTab/Control" instance=ExtResource("6_oj5la")]
+layout_mode = 1
+anchor_left = 1.123
+anchor_top = 20.364
+anchor_right = 1.123
+anchor_bottom = 20.364
+offset_left = 59.401
+offset_top = -8.004
+offset_right = 146.401
+offset_bottom = 22.996
+text = "0.0"
+resize_type = &"scale"
+lower_bound = 1.0
+higher_bound = 1e+06
+
 [node name="FrequencyLabel" type="Label" parent="Body/SimTab/Control"]
 layout_mode = 1
 anchors_preset = -1
@@ -692,6 +707,20 @@ tooltip_text = "Jet emission rate in minutes"
 mouse_filter = 0
 text = "Jet Rate (min)"
 vertical_alignment = 1
+
+[node name="KmScaleLabel" type="Label" parent="Body/SimTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.123
+anchor_top = 19.636
+anchor_right = 1.123
+anchor_bottom = 19.636
+offset_left = 1.401
+offset_top = 8.004
+offset_right = 71.401
+offset_bottom = 31.004
+scale = Vector2(0.6, 0.6)
+text = "Scale (Km)"
 
 [node name="HelpPanel" type="CanvasLayer" parent="Body"]
 layer = 3

@@ -16,7 +16,7 @@ func save_data() -> void:
 	SaveManager.config.set_value("particle", "diameter", float($Control/EditParticleDiameter.text))
 	SaveManager.config.set_value("particle", "density", float($Control/EditParticleDensity.text))
 
-
+	
 ## Called by Navbar._on_file_explorer_file_selected()
 ## Loads the data from the config file into the different element of the scene
 func load_data() -> void:

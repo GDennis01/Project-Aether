@@ -34,7 +34,7 @@ var num_particles: int = 0
 var is_lit: bool = true
 @export var max_particles: int = 10
 @export var particle_per_second: int = 5
-@export var particle_radius: float = 0.5
+@export var particle_radius: float = 0.05
 @export var enabled: bool = true
 @export var light_source: Light3D
 @export var comet_collider: CollisionObject3D
@@ -99,6 +99,7 @@ func init_multimesh(multi_mesh_istance: MultiMeshInstance3D) -> void:
 	multi_mesh_istance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	multi_mesh_istance.gi_mode = GeometryInstance3D.GI_MODE_DISABLED
 	multi_mesh_istance.lod_bias = 0.0001
+	multi_mesh_istance.ignore_occlusion_culling = false
 	mm_emitter.top_level = true
 	# mm_emitter.global_position = Vector3(0, 0, 0)
 	
@@ -237,8 +238,10 @@ func tick_optimized(_n_iteration: int) -> void:
 		var local_transf := mm_emitter.multimesh.get_instance_transform(i)
 
 		# uncomment this line to calculate the position based on speed/acceleration
-		# global_positions[i] = global_positions[i] + _normal_dir * particle_speeds[i] * 1e-9
-		global_positions[i] = global_positions[i] + _normal_dir * 0.01
+		global_positions[i] = _normal_dir * particle_speeds[i] / (Util.scale)
+		# global_positions[i] = global_positions[i] + _normal_dir * particle_speeds[i] * 15e-6
+		# global_positions[i] = global_positions[i] + _normal_dir * particle_speeds[i] / Util.scale
+		# global_positions[i] = global_positions[i] + _normal_dir * 0.01
 
 		# local_transf.origin = to_local(global_positions[i])
 		# mm_emitter.multimesh.set_instance_transform(i, local_transf)
@@ -250,8 +253,8 @@ func tick_optimized(_n_iteration: int) -> void:
 		var time_passed: float = _n_iteration * Util.jet_rate * 60.0
 		# Updating speed as V= V*t + 1/2*a*t^2 (classic form), a is negative since the acceleration is in the opposite direction(?)
 		particle_speeds[i] = (speed * time_passed + 0.5 * -a * (time_passed ** 2)) / 1000
-		# if jet_id == 0 and i == 1:
-		# 	print("i°:%f t°:%f a°:%f speed:%f  position:%s" % [_n_iteration, time_passed, -a, particle_speeds[i], str(global_positions[i])])
+		# if jet_id == 0 and i == 1 and _n_iteration < 500:
+		# 	print("i°:%f t°:%f a°:%f speed:%f  position:%s magnitude:%s\n" % [_n_iteration, time_passed, -a, particle_speeds[i], str(global_positions[i]), global_positions[i].length()])
 			
 		
 	# these three lines make so that the is_lit property is not computed based on raycasting but rather on sheer math
