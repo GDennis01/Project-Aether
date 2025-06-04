@@ -238,8 +238,8 @@ func tick_optimized(_n_iteration: int) -> void:
 		var local_transf := mm_emitter.multimesh.get_instance_transform(i)
 
 		# uncomment this line to calculate the position based on speed/acceleration
-		global_positions[i] = _normal_dir * particle_speeds[i] / (Util.scale)
-		# global_positions[i] = global_positions[i] + _normal_dir * particle_speeds[i] * 15e-6
+		# global_positions[i] = _normal_dir * particle_speeds[i]
+		global_positions[i] = _normal_dir * particle_speeds[i] * 15e-10
 		# global_positions[i] = global_positions[i] + _normal_dir * particle_speeds[i] / Util.scale
 		# global_positions[i] = global_positions[i] + _normal_dir * 0.01
 
@@ -251,8 +251,8 @@ func tick_optimized(_n_iteration: int) -> void:
 		# speed calculation
 		# time passed in seconds ( jet_rate is in minutes) obtained by multiplying how many ticks have passed
 		var time_passed: float = _n_iteration * Util.jet_rate * 60.0
-		# Updating speed as V= V*t + 1/2*a*t^2 (classic form), a is negative since the acceleration is in the opposite direction(?)
-		particle_speeds[i] = (speed * time_passed + 0.5 * -a * (time_passed ** 2)) / 1000
+		# Updating speed as V= V*t + 1/2*a*t^2 (classic form), a is negative since the acceleration is in the opposite direction(?). It's in m(eters)
+		particle_speeds[i] = (speed * time_passed + 0.5 * -a * (time_passed ** 2))
 		# if jet_id == 0 and i == 1 and _n_iteration < 500:
 		# 	print("i°:%f t°:%f a°:%f speed:%f  position:%s magnitude:%s\n" % [_n_iteration, time_passed, -a, particle_speeds[i], str(global_positions[i]), global_positions[i].length()])
 			
