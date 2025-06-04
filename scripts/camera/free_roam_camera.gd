@@ -40,8 +40,8 @@ var _alt := false
 func _ready() -> void:
 	if enabled:
 		make_current()
-	# if FlyCamera:
-	# 	FlyCamera.disable_camera()
+		
+## Handles mouse and keyboard input for camera movement and rotation
 func _input(event: InputEvent) -> void:
 	if not enabled:
 		return # Ignore input if camera is not enabled
@@ -93,7 +93,7 @@ func _process(delta: float) -> void:
 	_update_mouselook()
 	_update_movement(delta)
 
-# Updates camera movement
+## Updates camera movement based on keyboard input
 func _update_movement(delta: float) -> void:
 	# Computes desired direction from key states
 	_direction = Vector3(
@@ -124,7 +124,7 @@ func _update_movement(delta: float) -> void:
 	
 		translate(_velocity * delta * speed_multi)
 
-# Updates mouse look 
+## Updates the camera's rotation based on mouse movement 
 func _update_mouselook() -> void:
 	# Only rotates mouse if the mouse is captured
 	if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
