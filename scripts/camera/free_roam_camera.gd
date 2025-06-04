@@ -6,16 +6,14 @@ const SHIFT_MULTIPLIER = 2.5
 const ALT_MULTIPLIER = 1.0 / SHIFT_MULTIPLIER
 
 @export_range(0.0, 1.0) var sensitivity: float = 0.25
+@export var enabled: bool = true
+
 
 @onready var starting_position := Vector3(0.0, 0.0, 10)
 @onready var starting_rotation := rotation
 @onready var starting_mouse_pos := Vector2(0.0, 0.0)
-# @onready var sub_viewport: SubViewport = $"/root/Hud/Body/SubViewportContainer/SubViewport"
 @onready var sub_viewport: SubViewport = $"/root/Hud/Viewport/SubViewportContainer/SubViewport"
 
-@export var enabled: bool = true
-
-@export var is_rotating_camera: bool = false
 
 # Mouse state
 var _mouse_position := Vector2(0.0, 0.0)
@@ -40,11 +38,13 @@ var _alt := false
 
 
 func _ready() -> void:
-	print("ROT READY")
-	make_current()
+	if enabled:
+		make_current()
 	# if FlyCamera:
 	# 	FlyCamera.disable_camera()
 func _input(event: InputEvent) -> void:
+	if not enabled:
+		return # Ignore input if camera is not enabled
 	# Receives mouse motion
 	if event is InputEventMouseMotion:
 		_mouse_position = event.relative
@@ -88,6 +88,8 @@ func _input(event: InputEvent) -> void:
 
 # Updates mouselook and movement every frame
 func _process(delta: float) -> void:
+	if not enabled:
+		return # Ignore input if camera is not enabled
 	_update_mouselook()
 	_update_movement(delta)
 

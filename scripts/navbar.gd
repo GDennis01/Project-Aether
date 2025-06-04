@@ -120,5 +120,4 @@ func _on_full_viewport_btn_pressed() -> void:
 
 
 func _on_change_camera_btn_pressed() -> void:
-	print("ciaooo")
 	get_tree().call_group("camera", "change_camera")
