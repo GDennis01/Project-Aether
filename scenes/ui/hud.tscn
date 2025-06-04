@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bwt7dtbn7pn3c"]
+[gd_scene load_steps=12 format=3 uid="uid://bwt7dtbn7pn3c"]
 
 [ext_resource type="Script" uid="uid://bmle6k05e5fff" path="res://scripts/hud.gd" id="1_moku2"]
 [ext_resource type="Script" uid="uid://bwvqb33hu6cxk" path="res://scripts/navbar.gd" id="1_r4m0t"]
@@ -9,6 +9,8 @@
 [ext_resource type="PackedScene" uid="uid://b31lb3a4drve4" path="res://scenes/ui/sanitized_edit.tscn" id="6_oj5la"]
 [ext_resource type="Script" uid="uid://c3hrn6jcfsf4a" path="res://scripts/sim_tab.gd" id="7_h022r"]
 [ext_resource type="Script" uid="uid://bbucofc0qu6gp" path="res://scripts/rotating_camera.gd" id="9_4jqwt"]
+[ext_resource type="Script" uid="uid://63e24w7mvbgt" path="res://scripts/camera_manager.gd" id="9_mj13f"]
+[ext_resource type="Script" uid="uid://3haie0cjf2n6" path="res://scripts/free_roam_camera.gd" id="10_kicr4"]
 
 [node name="HUD" type="CanvasLayer"]
 layer = 0
@@ -107,6 +109,11 @@ visible = false
 layout_mode = 2
 focus_mode = 0
 text = "Reset Rotation"
+
+[node name="ChangeCameraBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+text = "Change Camera"
 
 [node name="FullViewportBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 layout_mode = 2
@@ -799,21 +806,30 @@ offset_right = 400.63
 offset_bottom = 407.62
 metadata/_edit_use_anchors_ = true
 
-[node name="SubViewport" type="SubViewport" parent="Viewport/SubViewportContainer"]
+[node name="SubViewport" type="SubViewport" parent="Viewport/SubViewportContainer" node_paths=PackedStringArray("_fr_camera", "_rot_camera") groups=["camera"]]
 handle_input_locally = false
 size = Vector2i(800, 800)
 render_target_update_mode = 4
+script = ExtResource("9_mj13f")
+_fr_camera = NodePath("FreeRoamCamera")
+_rot_camera = NodePath("RotatingCamera")
 
-[node name="RotatingCamera" type="Camera3D" parent="Viewport/SubViewportContainer/SubViewport"]
+[node name="RotatingCamera" type="Camera3D" parent="Viewport/SubViewportContainer/SubViewport" groups=["camera"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
 visible = false
+current = true
 script = ExtResource("9_4jqwt")
+
+[node name="FreeRoamCamera" type="Camera3D" parent="Viewport/SubViewportContainer/SubViewport" groups=["camera"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+script = ExtResource("10_kicr4")
 
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/CometBtn" to="Body" method="_on_cometbtn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/JetsBtn" to="Body" method="_on_jetsbtn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/SimBtn" to="Body" method="_on_sim_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/TriggerRotBtn" to="Body" method="_on_trigger_rot_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ResetRotnBtn" to="Body" method="_on_reset_rotn_btn_pressed"]
+[connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ChangeCameraBtn" to="Body" method="_on_change_camera_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/FullViewportBtn" to="Body" method="_on_full_viewport_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ToggleSunBtn" to="Body" method="_on_toggle_sun_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ToggleYBtn" to="Body" method="_on_toggle_y_btn_pressed"]
