@@ -238,23 +238,20 @@ func tick_optimized(_n_iteration: int) -> void:
 		var local_transf := mm_emitter.multimesh.get_instance_transform(i)
 
 		# uncomment this line to calculate the position based on speed/acceleration
-		# global_positions[i] = _normal_dir * particle_speeds[i]
-		global_positions[i] = _normal_dir * particle_speeds[i] * 15e-10
-		# global_positions[i] = global_positions[i] + _normal_dir * particle_speeds[i] / Util.scale
+		global_positions[i] = _normal_dir * particle_speeds[i] * 1e-9
 		# global_positions[i] = global_positions[i] + _normal_dir * 0.01
 
-		# local_transf.origin = to_local(global_positions[i])
-		# mm_emitter.multimesh.set_instance_transform(i, local_transf)
 		var new_transf := Transform3D(Basis(), global_positions[i])
 		mm_emitter.multimesh.set_instance_transform(i, new_transf)
 		
 		# speed calculation
 		# time passed in seconds ( jet_rate is in minutes) obtained by multiplying how many ticks have passed
-		var time_passed: float = _n_iteration * Util.jet_rate * 60.0
+		var time_passed: float = (_n_iteration - i) * Util.jet_rate * 60.0
 		# Updating speed as V= V*t + 1/2*a*t^2 (classic form), a is negative since the acceleration is in the opposite direction(?). It's in m(eters)
 		particle_speeds[i] = (speed * time_passed + 0.5 * -a * (time_passed ** 2))
 		# if jet_id == 0 and i == 1 and _n_iteration < 500:
-		# 	print("i°:%f t°:%f a°:%f speed:%f  position:%s magnitude:%s\n" % [_n_iteration, time_passed, -a, particle_speeds[i], str(global_positions[i]), global_positions[i].length()])
+		if jet_id == 0 and _n_iteration == 5:
+			print("i°:%f t°:%f a°:%f speed:%f  position:%s magnitude:%s\n" % [_n_iteration, time_passed, -a, particle_speeds[i], str(global_positions[i]), global_positions[i].length()])
 			
 		
 	# these three lines make so that the is_lit property is not computed based on raycasting but rather on sheer math

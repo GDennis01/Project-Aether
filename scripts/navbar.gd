@@ -108,10 +108,10 @@ func _on_full_viewport_btn_pressed() -> void:
 	# 	rot_camera_viewport.size = get_window().size
 	# 	# rot_camera_viewport.get_parent().position =
 	# else:
-	# 	rot_camera_viewport.size = Vector2(800, 800)
-	if not rot_camera_viewport.size == Vector2i(800, 800):
+	# 	rot_camera_viewport.size = Vector2(900, 900)
+	if not rot_camera_viewport.size == Vector2i(900, 900):
 		# rot_camera_viewport.get_parent().position =
-		rot_camera_viewport.size = Vector2(800, 800)
+		rot_camera_viewport.size = Vector2(900, 900)
 		rot_camera_viewport.get_parent().position = camera_position
 	else:
 		camera_position = rot_camera_viewport.get_parent().position
