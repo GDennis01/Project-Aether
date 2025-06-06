@@ -57,7 +57,7 @@ func update_sun_orientation() -> void:
 	var direction: Vector3 = Vector3(x, y, z).normalized()
 	# this represents the sun direction vector in 3D space
 	Util.sun_direction_vector = direction
-	Util.sun_direction_vector = - direction.rotated(Vector3.LEFT, deg_to_rad(-90))
+	Util.sun_direction_vector = - direction.rotated(Vector3.LEFT, deg_to_rad(-90)).normalized()
 	_dir_debug = Util.sun_direction_vector
 
 	direction = direction.rotated(Vector3.LEFT, deg_to_rad(-90))
