@@ -82,7 +82,7 @@ func _ready() -> void:
 	# norm = norm.rotated(Vector3.RIGHT, deg_to_rad(longitude))
 	update_acceleration()
 
-	get_parent().debug_sphere.global_position = global_transform.origin + norm * 0.5 * 3
+	# get_parent().debug_sphere.global_position = global_transform.origin + norm * 0.5 * 3
 	print("albedo:%f p:%f d:%f D:%f  a:%.10f" % [Util.albedo, Util.particle_density, Util.particle_diameter, Util.sun_comet_distance, a])
 
 func init_multimesh(multi_mesh_istance: MultiMeshInstance3D) -> void:
@@ -233,12 +233,14 @@ func tick_optimized(_n_iteration: int) -> void:
 		var _normal_dir := Vector3(_normal_dir_as_color.r, _normal_dir_as_color.g, _normal_dir_as_color.b)
 
 		#show a debug sphere in the direction of the normal
-		get_parent().debug_sphere.global_position = Vector3(0, 0, 0) + _normal_dir * 0.5 * 3
+		# get_parent().debug_sphere.global_position = Vector3(0, 0, 0) + _normal_dir * 0.5 * 3
 
 		var local_transf := mm_emitter.multimesh.get_instance_transform(i)
 
 		# uncomment this line to calculate the position based on speed/acceleration
-		global_positions[i] = _normal_dir * particle_speeds[i] * 1e-9
+		# TODO: leggere il codice og per capire come applicare il vettore del sole
+		global_positions[i] = _normal_dir * (Util.sun_direction_vector * a) * particle_speeds[i] * 1e-7
+		# global_positions[i] = _normal_dir * particle_speeds[i] * 1e-9
 		# global_positions[i] = global_positions[i] + _normal_dir * 0.01
 
 		var new_transf := Transform3D(Basis(), global_positions[i])
@@ -295,6 +297,23 @@ func update_acceleration() -> void:
 	var _a: float = P * 3.0 / (4.0 * ((Util.particle_diameter / 1000.0) / 2.0) * (Util.particle_density * 1000.0))
 	self.a = _a
 
+func update_initial_norm(_lat: float, _long: float) -> void:
+	var lat_rad := deg_to_rad(_lat)
+	var lon_rad := deg_to_rad(_long)
+	initial_norm = Vector3(
+		cos(lat_rad) * cos(lon_rad) * 5,
+		sin(lat_rad) * 5,
+		cos(lat_rad) * sin(lon_rad) * 5
+	).normalized()
+	norm = initial_norm
+	update_norm()
+func update_norm() -> void:
+	# print(get_parent().rotation_angle)
+	var rotation_matrix: Basis = get_parent().global_transform.basis
+	norm = initial_norm * rotation_matrix.inverse()
+	norm = norm.normalized()
+	pass
+
 
 func reset_particles() -> void:
 	for particle in particles_alive:
@@ -328,14 +347,14 @@ func update_lat(lat: float) -> void:
 	var new_pos := Util.latlon_to_vector3(latitude, longitude, comet_radius)
 	position = new_pos
 	update_initial_norm(latitude, longitude)
-	get_parent().debug_sphere.global_position = global_transform.origin + norm * 0.5 * 3
+	# get_parent().debug_sphere.global_position = global_transform.origin + norm * 0.5 * 3
 func update_long(long: float) -> void:
 	if Util.PRINT_UPDATE_METHOD: print("Updated long:%f"%long)
 	longitude = long + 90
 	var new_pos := Util.latlon_to_vector3(latitude, longitude, comet_radius)
 	position = new_pos
 	update_initial_norm(latitude, longitude)
-	get_parent().debug_sphere.global_position = global_transform.origin + norm * 0.5 * 3
+	# get_parent().debug_sphere.global_position = global_transform.origin + norm * 0.5 * 3
 func update_diff(_diffusion: float) -> void:
 	if Util.PRINT_UPDATE_METHOD: print("Updated diffusion:%f"%_diffusion)
 	diffusion = _diffusion
@@ -343,21 +362,4 @@ func update_diff(_diffusion: float) -> void:
 func update_color(_color: Color) -> void:
 	if Util.PRINT_UPDATE_METHOD: print("Updated albedo:%s"%str(_color))
 	color = _color
-
-func update_initial_norm(_lat: float, _long: float) -> void:
-	var lat_rad := deg_to_rad(_lat)
-	var lon_rad := deg_to_rad(_long)
-	initial_norm = Vector3(
-		cos(lat_rad) * cos(lon_rad) * 5,
-		sin(lat_rad) * 5,
-		cos(lat_rad) * sin(lon_rad) * 5
-	).normalized()
-	norm = initial_norm
-	update_norm()
-func update_norm() -> void:
-	# print(get_parent().rotation_angle)
-	var rotation_matrix: Basis = get_parent().global_transform.basis
-	norm = initial_norm * rotation_matrix.inverse()
-	norm = norm.normalized()
-	pass
 #endregion update methods

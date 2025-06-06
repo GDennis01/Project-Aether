@@ -4,8 +4,10 @@ var axis_scene := preload("res://scenes/axis_arrow.tscn")
 var sun_axis: AxisArrow
 @onready var light3d: SpotLight3D = $SpotLight3D
 @export var distance: float = 10.0
+@onready var debug_sphere: MeshInstance3D = $"/root/World/DebugRotationSphere"
 var sun_direction: float = 0.0
 var sun_inclination: float = 0.0
+var _dir_debug: Vector3 = Vector3(1, 1, 1)
 func _ready() -> void:
 	sun_axis = axis_scene.instantiate() as AxisArrow
 	light3d.add_child(sun_axis)
@@ -13,10 +15,12 @@ func _ready() -> void:
 	sun_axis.set_axis_type(AxisArrow.AXIS_TYPE.SUN)
 	sun_axis.set_height(1, distance)
 	# sun.axis.global_position = global_position - distance
-
+	_dir_debug = Vector3(1, 1, 1)
+	debug_sphere.global_position = global_transform.origin + _dir_debug * 3
 	update_sun_orientation()
 	pass
-
+func _process(_delta: float) -> void:
+	debug_sphere.global_position = global_transform.origin + _dir_debug * 1
 ## Updates the sun axis position and size	
 ## Called by Comet.update_radius
 func update_sun_axis(value: float) -> void:
@@ -51,7 +55,13 @@ func update_sun_orientation() -> void:
 	var z: float = sin(inclination_rad) * cos(azimuth_rad)
 	
 	var direction: Vector3 = Vector3(x, y, z).normalized()
+	# this represents the sun direction vector in 3D space
+	Util.sun_direction_vector = direction
+	Util.sun_direction_vector = - direction.rotated(Vector3.LEFT, deg_to_rad(-90))
+	_dir_debug = Util.sun_direction_vector
+
 	direction = direction.rotated(Vector3.LEFT, deg_to_rad(-90))
+
 
 	light3d.global_position = global_position + direction * distance
 	var up_vector: Vector3 = - Vector3.LEFT

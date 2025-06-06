@@ -330,7 +330,7 @@ func update_comet_orientation() -> void:
 
 	var direction := Vector3(x, y, z).normalized()
 	direction = direction.rotated(Vector3.LEFT, deg_to_rad(-90))
-	debug_sphere.global_position = global_transform.origin + direction * mesh.radius * 3
+	# debug_sphere.global_position = global_transform.origin + direction * mesh.radius * 3
 	point_y_axis_toward(global_transform.origin + direction)
 
 func update_jet_rate(value: float) -> void:

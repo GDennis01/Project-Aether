@@ -17,6 +17,8 @@ var comet_direction: float = 0.0
 var jet_rate: float = 0.0
 ## Sun-comet distance in AU
 var sun_comet_distance: float = 0.0
+## Sun direction vector in the 3D space
+var sun_direction_vector: Vector3 = Vector3.ZERO
 
 ## Scale in km
 var scale: float = 0.0
