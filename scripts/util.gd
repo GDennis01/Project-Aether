@@ -20,8 +20,18 @@ var sun_comet_distance: float = 0.0
 ## Sun direction vector in the 3D space
 var sun_direction_vector: Vector3 = Vector3.ZERO
 
-## Scale in km
+
+# Scale related properties
+## Scale in km(Deprecated)
 var scale: float = 0.0
+## Telescope resolution in arcsec/pixel
+var tel_resolution: float = 0.0
+## Telescope image size in pixels
+var tel_image_size: float = 0.0
+## Window field of view in meters
+var window_fov: float = 0.0
+## Window size in pixels
+var window_size: float = 0.0
 
 #particle properties
 var albedo: float = 0.0

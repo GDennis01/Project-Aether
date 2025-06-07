@@ -111,4 +111,5 @@ directional_shadow_max_distance = 85.5
 sky_mode = 1
 
 [node name="DebugRotationSphere" type="MeshInstance3D" parent="."]
+visible = false
 mesh = SubResource("SphereMesh_4mrxx")

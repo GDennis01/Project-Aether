@@ -23,6 +23,8 @@ func _on_cometbtn_pressed() -> void:
 		$SimTab.visible = false
 	if $HelpPanel.visible:
 		$HelpPanel.visible = false
+	if $ScaleTab.visible:
+		$ScaleTab.visible = false
 	$CometTab.visible = not $CometTab.visible
 
 ## Toggle JetsTab and hides all other tabs
@@ -33,6 +35,8 @@ func _on_jetsbtn_pressed() -> void:
 		$SimTab.visible = false
 	if $HelpPanel.visible:
 		$HelpPanel.visible = false
+	if $ScaleTab.visible:
+		$ScaleTab.visible = false
 	$JetsTab.visible = not $JetsTab.visible
 
 ## Toggle SimTab and hides all other tabs
@@ -43,6 +47,8 @@ func _on_sim_btn_pressed() -> void:
 		$JetsTab.visible = false
 	if $HelpPanel.visible:
 		$HelpPanel.visible = false
+	if $ScaleTab.visible:
+		$ScaleTab.visible = false
 	$SimTab.visible = not $SimTab.visible
 
 ## Toggle HelpTab and hides all other tabs
@@ -53,9 +59,22 @@ func _on_help_btn_pressed() -> void:
 		$JetsTab.visible = false
 	if $SimTab.visible:
 		$SimTab.visible = false
+	if $ScaleTab.visible:
+		$ScaleTab.visible = false
 	$HelpPanel.visible = not $HelpPanel.visible
-		
 
+func _on_scale_btn_pressed() -> void:
+	if $CometTab.visible:
+		$CometTab.visible = false
+	if $JetsTab.visible:
+		$JetsTab.visible = false
+	if $SimTab.visible:
+		$SimTab.visible = false
+	if $HelpPanel.visible:
+		$HelpPanel.visible = false
+	$ScaleTab.visible = not $ScaleTab.visible
+
+		
 # Maybe make a scene button that automatically on pressed trigger this function?
 func _on_trigger_rot_btn_pressed() -> void:
 	get_tree().call_group("trigger_rotation", "trigger_rotation")

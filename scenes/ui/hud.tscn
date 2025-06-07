@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bwt7dtbn7pn3c"]
+[gd_scene load_steps=13 format=3 uid="uid://bwt7dtbn7pn3c"]
 
 [ext_resource type="Script" uid="uid://bmle6k05e5fff" path="res://scripts/hud.gd" id="1_moku2"]
 [ext_resource type="Script" uid="uid://bwvqb33hu6cxk" path="res://scripts/navbar.gd" id="1_r4m0t"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://cpcxn2i4yw141" path="res://scripts/jet_table.gd" id="4_136eg"]
 [ext_resource type="PackedScene" uid="uid://b31lb3a4drve4" path="res://scenes/ui/sanitized_edit.tscn" id="6_oj5la"]
 [ext_resource type="Script" uid="uid://c3hrn6jcfsf4a" path="res://scripts/sim_tab.gd" id="7_h022r"]
+[ext_resource type="Script" uid="uid://cwr53alhuqvvs" path="res://scripts/scale_tab.gd" id="9_0h1do"]
 [ext_resource type="Script" uid="uid://cck1k6upmhp3a" path="res://scripts/camera/camera_manager.gd" id="9_4jqwt"]
 [ext_resource type="Script" uid="uid://c40guo1rckn11" path="res://scripts/camera/rotating_camera.gd" id="10_mj13f"]
 [ext_resource type="Script" uid="uid://ctb74i43u0sru" path="res://scripts/camera/free_roam_camera.gd" id="11_0h1do"]
@@ -85,6 +86,11 @@ layout_mode = 2
 focus_mode = 0
 text = "Simulation
 "
+
+[node name="ScaleBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+text = "Scale"
 
 [node name="Spacer2" type="Control" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 layout_direction = 2
@@ -169,10 +175,9 @@ script = ExtResource("3_136eg")
 layout_mode = 3
 anchor_top = 0.148
 anchor_bottom = 0.148
-offset_left = 1.0
-offset_top = -4.904
-offset_right = 195.0
-offset_bottom = 259.096
+offset_top = -49.04
+offset_right = 194.0
+offset_bottom = 214.96
 scale = Vector2(0.85, 0.85)
 size_flags_horizontal = 0
 mouse_filter = 2
@@ -325,6 +330,7 @@ offset_right = 40.0
 offset_bottom = 13.5882
 scale = Vector2(0.85, 0.85)
 text = "A.U. Distance"
+metadata/_edit_use_anchors_ = true
 
 [node name="EditAlbedo" parent="Body/CometTab/Control" instance=ExtResource("6_oj5la")]
 layout_mode = 1
@@ -355,6 +361,7 @@ offset_right = -75.8235
 offset_bottom = 201.824
 scale = Vector2(0.85, 0.85)
 text = "Albedo"
+metadata/_edit_use_anchors_ = true
 
 [node name="EditParticleDiameter" parent="Body/CometTab/Control" instance=ExtResource("6_oj5la")]
 layout_mode = 1
@@ -385,6 +392,7 @@ offset_right = 69.1176
 offset_bottom = 201.824
 scale = Vector2(0.85, 0.85)
 text = "Particle Diameter"
+metadata/_edit_use_anchors_ = true
 
 [node name="EditParticleDensity" parent="Body/CometTab/Control" instance=ExtResource("6_oj5la")]
 layout_mode = 1
@@ -415,6 +423,7 @@ offset_right = 168.882
 offset_bottom = 201.824
 scale = Vector2(0.85, 0.85)
 text = "Particle density"
+metadata/_edit_use_anchors_ = true
 
 [node name="JetsTab" type="CanvasLayer" parent="Body"]
 layer = 3
@@ -595,6 +604,7 @@ text = "Add Jet Entry"
 
 [node name="SimTab" type="CanvasLayer" parent="Body" groups=["load", "save"]]
 layer = 3
+visible = false
 script = ExtResource("7_h022r")
 
 [node name="Control" type="Control" parent="Body/SimTab"]
@@ -729,6 +739,156 @@ offset_bottom = 31.004
 scale = Vector2(0.6, 0.6)
 text = "Scale (Km)"
 
+[node name="ScaleTab" type="CanvasLayer" parent="Body" groups=["load", "save", "tel_image_size", "tel_resolution", "window_fov", "window_size"]]
+layer = 3
+script = ExtResource("9_0h1do")
+
+[node name="Control" type="Control" parent="Body/ScaleTab"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TelResolutionlabel" type="Label" parent="Body/ScaleTab/Control"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 96.0
+offset_right = 138.0
+offset_bottom = 119.0
+scale = Vector2(0.7, 0.7)
+tooltip_text = "arcsec/pixel"
+mouse_filter = 0
+text = "Tel. Resolution :"
+
+[node name="TelResolutionEdit" parent="Body/ScaleTab/Control" instance=ExtResource("6_oj5la")]
+layout_mode = 1
+offset_left = 128.0
+offset_top = 88.0
+offset_right = 179.56
+offset_bottom = 115.04
+text = "0.0"
+resize_type = &"tel_resolution"
+higher_bound = 1000.0
+
+[node name="TelImageSizeLabel" type="Label" parent="Body/ScaleTab/Control"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 136.0
+offset_right = 133.0
+offset_bottom = 159.0
+scale = Vector2(0.7, 0.7)
+tooltip_text = "Telescope image size in pixels"
+mouse_filter = 0
+text = "Tel. Image size:"
+
+[node name="TelImageSizeEdit" parent="Body/ScaleTab/Control" instance=ExtResource("6_oj5la")]
+layout_mode = 1
+offset_left = 128.0
+offset_top = 128.0
+offset_right = 179.56
+offset_bottom = 155.04
+text = "0.0"
+resize_type = &"tel_image_size"
+lower_bound = 100.0
+higher_bound = 5000.0
+
+[node name="WindowFOVLabel" type="Label" parent="Body/ScaleTab/Control"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 176.0
+offset_right = 123.0
+offset_bottom = 199.0
+scale = Vector2(0.7, 0.7)
+tooltip_text = "meters"
+mouse_filter = 0
+text = "Window FOV: "
+
+[node name="WindowFOVEdit" parent="Body/ScaleTab/Control" instance=ExtResource("6_oj5la")]
+layout_mode = 1
+offset_left = 128.0
+offset_top = 168.0
+offset_right = 179.56
+offset_bottom = 195.04
+text = "0.0"
+resize_type = &"window_fov"
+lower_bound = 1.0
+higher_bound = 1000.0
+
+[node name="WindowSizeLabel" type="Label" parent="Body/ScaleTab/Control"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 216.0
+offset_right = 117.0
+offset_bottom = 239.0
+scale = Vector2(0.7, 0.7)
+tooltip_text = "pixels"
+mouse_filter = 0
+text = "Window size:"
+
+[node name="WindowSizeEdit" parent="Body/ScaleTab/Control" instance=ExtResource("6_oj5la")]
+layout_mode = 1
+offset_left = 128.0
+offset_top = 208.0
+offset_right = 179.56
+offset_bottom = 235.04
+text = "0.0"
+resize_type = &"window_size"
+lower_bound = 100.0
+higher_bound = 5000.0
+
+[node name="TelResKmPixelLabel" type="Label" parent="Body/ScaleTab/Control"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 272.0
+offset_right = 157.0
+offset_bottom = 295.0
+scale = Vector2(0.7, 0.7)
+text = "Tel. Res. Km/Pixel:"
+
+[node name="TelResLineEdit" type="LineEdit" parent="Body/ScaleTab/Control"]
+layout_mode = 0
+offset_left = 128.0
+offset_top = 264.0
+offset_right = 184.0
+offset_bottom = 295.0
+theme_override_constants/minimum_character_width = 0
+editable = false
+
+[node name="FOVArcminLabel" type="Label" parent="Body/ScaleTab/Control"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 304.0
+offset_right = 107.0
+offset_bottom = 327.0
+scale = Vector2(0.7, 0.7)
+text = "FOV Arcmin:"
+
+[node name="FOVArcmin" type="LineEdit" parent="Body/ScaleTab/Control"]
+layout_mode = 0
+offset_left = 128.0
+offset_top = 296.0
+offset_right = 184.0
+offset_bottom = 327.0
+theme_override_constants/minimum_character_width = 0
+editable = false
+
+[node name="FOVKmLabel" type="Label" parent="Body/ScaleTab/Control"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 336.0
+offset_right = 56.0
+offset_bottom = 359.0
+scale = Vector2(0.7, 0.7)
+text = "FOV Km:"
+
+[node name="FOVKm" type="LineEdit" parent="Body/ScaleTab/Control"]
+offset_left = 128.0
+offset_top = 328.0
+offset_right = 184.0
+offset_bottom = 359.0
+theme_override_constants/minimum_character_width = 0
+editable = false
+
 [node name="HelpPanel" type="CanvasLayer" parent="Body"]
 layer = 3
 visible = false
@@ -800,9 +960,9 @@ anchor_left = 0.589
 anchor_top = 0.531
 anchor_right = 0.589
 anchor_bottom = 0.531
-offset_left = -504.37
+offset_left = -399.37
 offset_top = -448.38
-offset_right = 395.63
+offset_right = 500.63
 offset_bottom = 451.62
 metadata/_edit_use_anchors_ = true
 
@@ -829,6 +989,7 @@ script = ExtResource("11_0h1do")
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/CometBtn" to="Body" method="_on_cometbtn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/JetsBtn" to="Body" method="_on_jetsbtn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/SimBtn" to="Body" method="_on_sim_btn_pressed"]
+[connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ScaleBtn" to="Body" method="_on_scale_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/TriggerRotBtn" to="Body" method="_on_trigger_rot_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ResetRotnBtn" to="Body" method="_on_reset_rotn_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ChangeCameraBtn" to="Body" method="_on_change_camera_btn_pressed"]

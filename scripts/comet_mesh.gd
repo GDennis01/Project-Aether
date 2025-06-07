@@ -231,8 +231,8 @@ func reset_rotation() -> void:
 	#rotation.y = starting_rotation.y
 	rotation = starting_rotation
 
-#region Update methods
 ## These methods are called by SanitizedEdit through call_group() mechanism
+#region Update methods
 
 func update_radius(value: float) -> void:
 	#print_debug("[UPDATE RADIUS] Before:"+str(mesh.radius)+" After:"+str(value))
@@ -263,31 +263,42 @@ func update_inclination_rotation(value: float) -> void:
 	Util.comet_inclination = - value
 	update_comet_orientation()
 
+#jets related
+func update_jet_rate(value: float) -> void:
+	if Util.PRINT_UPDATE_METHOD: print("Updated jet_rate:%f"%value)
+	jet_rate = value
+	Util.jet_rate = value
+func update_num_rotation(value: float) -> void:
+	if Util.PRINT_UPDATE_METHOD: print("Updated num_rotation:%f"%value)
+	num_rotation = value
+func update_frequency(value: float) -> void:
+	if Util.PRINT_UPDATE_METHOD: print("Updated frequency:%f"%value)
+	frequency = value
+func update_scale(value: float) -> void:
+	if Util.PRINT_UPDATE_METHOD: print("Updated scale:%f"%value)
+	Util.scale = value
+	print("scale:%f"%value)
 
-## Basically Node3D.look_at but instead of pointing towards -Z (forward) it points towards Y (up)
-## target_position: where Y axis should point 
-# TODO: Weird bug when inclination is 0°: XZ plane changes direction weirdly
-# func point_y_axis_toward(target_position: Vector3) -> void:
-# 	var direction := (target_position - global_transform.origin).normalized()
+# simulation related
+func update_albedo(value: float) -> void:
+	if Util.PRINT_UPDATE_METHOD: print("Updated albedo:%f"%value)
+	Util.albedo = value
+	get_tree().call_group("emitter", "update_acceleration")
+func update_particle_diameter(value: float) -> void:
+	if Util.PRINT_UPDATE_METHOD: print("Updated particle_diameter:%f"%value)
+	Util.particle_diameter = value
+	get_tree().call_group("emitter", "update_acceleration")
+func update_particle_density(value: float) -> void:
+	if Util.PRINT_UPDATE_METHOD: print("Updated particle_density:%f"%value)
+	Util.particle_density = value
+	get_tree().call_group("emitter", "update_acceleration")
+func update_sun_comet_distance(value: float) -> void:
+	if Util.PRINT_UPDATE_METHOD: print("Updated sun_comet_distance:%f"%value)
+	Util.sun_comet_distance = value
+	get_tree().call_group("emitter", "update_acceleration")
 
-# 	var up := direction
-# 	var forward := Vector3.RIGHT
+#endregion Update methods
 
-# 	var right := forward.cross(up)
-# 	print("Forward:%s  Up:%s Right:%s" % [str(forward), str(up), str(right)])
-# 	if abs(up.dot(forward)) > 0.999:
-# 		forward = Vector3.FORWARD
-# 		if abs(up.dot(forward)) > 0.999:
-# 			forward = Vector3.UP # Final fallback
-
-# 	right = right.normalized()
-	
-# 	var new_forward := up.cross(right).normalized()
-# 	var _basis := Basis(right, up, new_forward)
-
-# 	print("Up:%s\nForward x Up:%s\nUp x (Forward x Up):%s\n" % [str(up), str(right), str(new_forward)])
-# 	print("BASIS:%s\n---"%str(_basis))
-# 	global_transform.basis = _basis
 
 func point_y_axis_toward(target_position: Vector3) -> void:
 	var current_origin := global_transform.origin
@@ -332,35 +343,3 @@ func update_comet_orientation() -> void:
 	direction = direction.rotated(Vector3.LEFT, deg_to_rad(-90))
 	# debug_sphere.global_position = global_transform.origin + direction * mesh.radius * 3
 	point_y_axis_toward(global_transform.origin + direction)
-
-func update_jet_rate(value: float) -> void:
-	if Util.PRINT_UPDATE_METHOD: print("Updated jet_rate:%f"%value)
-	jet_rate = value
-	Util.jet_rate = value
-func update_num_rotation(value: float) -> void:
-	if Util.PRINT_UPDATE_METHOD: print("Updated num_rotation:%f"%value)
-	num_rotation = value
-func update_frequency(value: float) -> void:
-	if Util.PRINT_UPDATE_METHOD: print("Updated frequency:%f"%value)
-	frequency = value
-func update_scale(value: float) -> void:
-	if Util.PRINT_UPDATE_METHOD: print("Updated scale:%f"%value)
-	Util.scale = value
-	print("scale:%f"%value)
-func update_albedo(value: float) -> void:
-	if Util.PRINT_UPDATE_METHOD: print("Updated albedo:%f"%value)
-	Util.albedo = value
-	get_tree().call_group("emitter", "update_acceleration")
-func update_particle_diameter(value: float) -> void:
-	if Util.PRINT_UPDATE_METHOD: print("Updated particle_diameter:%f"%value)
-	Util.particle_diameter = value
-	get_tree().call_group("emitter", "update_acceleration")
-func update_particle_density(value: float) -> void:
-	if Util.PRINT_UPDATE_METHOD: print("Updated particle_density:%f"%value)
-	Util.particle_density = value
-	get_tree().call_group("emitter", "update_acceleration")
-func update_sun_comet_distance(value: float) -> void:
-	if Util.PRINT_UPDATE_METHOD: print("Updated sun_comet_distance:%f"%value)
-	Util.sun_comet_distance = value
-	get_tree().call_group("emitter", "update_acceleration")
-#endregion Update methods

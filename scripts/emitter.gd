@@ -239,7 +239,8 @@ func tick_optimized(_n_iteration: int) -> void:
 
 		# uncomment this line to calculate the position based on speed/acceleration
 		# TODO: leggere il codice og per capire come applicare il vettore del sole
-		global_positions[i] = _normal_dir * (Util.sun_direction_vector * a) * particle_speeds[i] * 1e-7
+		# global_positions[i] = _normal_dir * (Util.sun_direction_vector * -a) * particle_speeds[i] * 1.16e-9
+		global_positions[i] = _normal_dir * (Util.sun_direction_vector) * particle_speeds[i] * 1.16e-9
 		# global_positions[i] = _normal_dir * particle_speeds[i] * 1e-9
 		# global_positions[i] = global_positions[i] + _normal_dir * 0.01
 
@@ -251,6 +252,7 @@ func tick_optimized(_n_iteration: int) -> void:
 		var time_passed: float = (_n_iteration - i) * Util.jet_rate * 60.0
 		# Updating speed as V= V*t + 1/2*a*t^2 (classic form), a is negative since the acceleration is in the opposite direction(?). It's in m(eters)
 		particle_speeds[i] = (speed * time_passed + 0.5 * -a * (time_passed ** 2))
+		# particle_speeds[i] = (speed * time_passed + 0.5 * (time_passed ** 2))
 		# if jet_id == 0 and i == 1 and _n_iteration < 500:
 		if jet_id == 0 and _n_iteration == 5:
 			print("i°:%f t°:%f a°:%f speed:%f  position:%s magnitude:%s\n" % [_n_iteration, time_passed, -a, particle_speeds[i], str(global_positions[i]), global_positions[i].length()])
