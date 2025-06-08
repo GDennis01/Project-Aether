@@ -604,6 +604,7 @@ text = "Add Jet Entry"
 
 [node name="SimTab" type="CanvasLayer" parent="Body" groups=["load", "save"]]
 layer = 3
+visible = false
 script = ExtResource("7_h022r")
 
 [node name="Control" type="Control" parent="Body/SimTab"]
