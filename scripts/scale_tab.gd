@@ -1,5 +1,9 @@
 extends CanvasLayer
 
+@onready var tel_res_km_pixel: LineEdit = $Control/TelResLineEdit
+@onready var fov_arcmin: LineEdit = $Control/FOVArcminLineEdit
+@onready var fov_km: LineEdit = $Control/FOVKmLineEdit
+@onready var scale_factor: LineEdit = $Control/ScaleFactorLineEdit
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -27,12 +31,50 @@ func load_data() -> void:
 func update_tel_resolution(value: float) -> void:
 	if Util.PRINT_UPDATE_METHOD: print("Updated tel_resolution:%f"%value)
 	Util.tel_resolution = value
+	update_tel_res_km_pixel()
+	update_fov_arcmin()
+	update_scale_factor()
+
 func update_tel_image_size(value: float) -> void:
 	if Util.PRINT_UPDATE_METHOD: print("Updated tel_image_size:%f"%value)
 	Util.tel_image_size = value
+	update_fov_km()
+	update_fov_arcmin()
+
 func update_window_fov(value: float) -> void:
 	if Util.PRINT_UPDATE_METHOD: print("Updated window_fov:%f"%value)
 	Util.window_fov = value
+	update_scale_factor()
+
 func update_window_size(value: float) -> void:
 	if Util.PRINT_UPDATE_METHOD: print("Updated window_size:%f"%value)
 	Util.window_size = value
+	update_scale_factor()
+
+
+func update_tel_res_km_pixel() -> void:
+	Util.tel_res_km_pixel = sin(Util.tel_resolution / 206265) * Util.sun_comet_distance * (Util.AU / 1000)
+	if tel_res_km_pixel:
+		tel_res_km_pixel.text = str(Util.tel_res_km_pixel)
+	update_fov_km()
+	update_fov_arcmin()
+	update_scale_factor()
+
+func update_fov_arcmin() -> void:
+	Util.fov_arcmin = Util.tel_resolution * Util.tel_image_size / 60
+	if fov_arcmin:
+		fov_arcmin.text = str(Util.fov_arcmin)
+
+func update_fov_km() -> void:
+	Util.fov_km = Util.tel_image_size * Util.tel_res_km_pixel
+	if fov_km:
+		fov_km.text = str(Util.fov_km)
+
+func update_scale_factor() -> void:
+	var window_image_scale_factor: float = Util.tel_image_size / Util.window_size
+	var fov_full_zoom: float = Util.window_fov / 1000 * window_image_scale_factor
+	var pixel_resolution_full_zoom: float = fov_full_zoom / Util.window_size
+	Util.scale = Util.tel_res_km_pixel / pixel_resolution_full_zoom * window_image_scale_factor * 1000
+	print("Scale factor: %f"%Util.scale)
+	if scale_factor:
+		scale_factor.text = str(Util.scale / 1000)

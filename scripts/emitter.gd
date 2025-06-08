@@ -240,7 +240,8 @@ func tick_optimized(_n_iteration: int) -> void:
 		# uncomment this line to calculate the position based on speed/acceleration
 		# TODO: leggere il codice og per capire come applicare il vettore del sole
 		# global_positions[i] = _normal_dir * (Util.sun_direction_vector * -a) * particle_speeds[i] * 1.16e-9
-		global_positions[i] = _normal_dir * (Util.sun_direction_vector) * particle_speeds[i] * 1.16e-9
+		global_positions[i] = _normal_dir * (Util.sun_direction_vector) * particle_speeds[i] / Util.scale
+		# global_positions[i] = _normal_dir * particle_speeds[i] / Util.scale
 		# global_positions[i] = _normal_dir * particle_speeds[i] * 1e-9
 		# global_positions[i] = global_positions[i] + _normal_dir * 0.01
 

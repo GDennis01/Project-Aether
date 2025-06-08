@@ -26,12 +26,18 @@ var sun_direction_vector: Vector3 = Vector3.ZERO
 var scale: float = 0.0
 ## Telescope resolution in arcsec/pixel
 var tel_resolution: float = 0.0
+## Telescope resolution in km/pixel
+var tel_res_km_pixel: float = 0.0
 ## Telescope image size in pixels
 var tel_image_size: float = 0.0
 ## Window field of view in meters
 var window_fov: float = 0.0
 ## Window size in pixels
 var window_size: float = 0.0
+## FOV in arcmin
+var fov_arcmin: float = 0.0
+## FOV in km
+var fov_km: float = 0.0
 
 #particle properties
 var albedo: float = 0.0
@@ -39,7 +45,7 @@ var particle_diameter: float = 0.0
 var particle_density: float = 0.0
 
 #constants
-const AU: float = 1.496e11 ## AU. Astronomical Unit expressed in Meters
+const AU: float = 149597870700 ## AU. Astronomical Unit expressed in Meters
 const GRAVITATIONAL_CONSTANT: float = 6.674e-11 ## G. Gravitational Constant expressed in MKS
 const SUN_MASS: float = 1.98892e30 ## Ms. Sun mass expressed in Kg
 const SUN_LUMINOSITY: float = 3.828e26 ## Ls. Sun Luminosity expressed in J/s

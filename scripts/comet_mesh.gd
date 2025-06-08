@@ -296,6 +296,8 @@ func update_sun_comet_distance(value: float) -> void:
 	if Util.PRINT_UPDATE_METHOD: print("Updated sun_comet_distance:%f"%value)
 	Util.sun_comet_distance = value
 	get_tree().call_group("emitter", "update_acceleration")
+	get_tree().call_group("tel_resolution", "update_tel_res_km_pixel")
+	get_tree().call_group("tel_resolution", "update_scale_factor")
 
 #endregion Update methods
 
