@@ -3,7 +3,7 @@ class_name RotatingCamera
 
 
 @export var target_node_path: NodePath ## Path to the node we want to orbit
-@export var starting_distance: float = 5.0 ## Initial distance from the target
+@export var starting_distance: float ## Initial distance from the target
 @export var min_distance: float = 1.0
 @export var max_distance: float = 20.0
 @export var sensitivity: float = 0.005 ## Mouse sensitivity for rotation

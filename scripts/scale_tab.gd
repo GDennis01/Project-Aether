@@ -13,6 +13,7 @@ func _ready() -> void:
 ## Called by Navbar._on_file_explorer_file_selected()
 ## Save the data into the SaveManager.config structure
 func save_data() -> void:
+	SaveManager.config.set_value("scale", "delta_au", float($Control/DeltaAUEdit.text))
 	SaveManager.config.set_value("scale", "tel_res", float($Control/TelResolutionEdit.text))
 	SaveManager.config.set_value("scale", "tel_img_size", float($Control/TelImageSizeEdit.text))
 	SaveManager.config.set_value("scale", "window_fov", float($Control/WindowFOVEdit.text))
@@ -20,6 +21,7 @@ func save_data() -> void:
 ## Called by Navbar._on_file_explorer_file_selected()
 ## Loads the data from the config file into the different element of the scene
 func load_data() -> void:
+	$Control/DeltaAUEdit.set_value(float(SaveManager.config.get_value("scale", "delta_au", 0)))
 	$Control/TelResolutionEdit.set_value(float(SaveManager.config.get_value("scale", "tel_res", 0)))
 	$Control/TelImageSizeEdit.set_value(float(SaveManager.config.get_value("scale", "tel_img_size", 0)))
 	$Control/WindowFOVEdit.set_value(float(SaveManager.config.get_value("scale", "window_fov", 0)))
@@ -27,6 +29,12 @@ func load_data() -> void:
 
 
 ## These methods are called by SanitizedEdit through call_group() mechanism
+
+func update_delta_au(value: float) -> void:
+	if Util.PRINT_UPDATE_METHOD: print("Updated delta_au:%f"%value)
+	Util.earth_comet_delta = value
+	update_tel_res_km_pixel()
+	# update_scale_factor()
 
 func update_tel_resolution(value: float) -> void:
 	if Util.PRINT_UPDATE_METHOD: print("Updated tel_resolution:%f"%value)
@@ -53,7 +61,7 @@ func update_window_size(value: float) -> void:
 
 
 func update_tel_res_km_pixel() -> void:
-	Util.tel_res_km_pixel = sin(Util.tel_resolution / 206265) * Util.sun_comet_distance * (Util.AU / 1000)
+	Util.tel_res_km_pixel = sin(Util.tel_resolution / 206265) * Util.earth_comet_delta * (Util.AU / 1000)
 	if tel_res_km_pixel:
 		tel_res_km_pixel.text = str(Util.tel_res_km_pixel)
 	update_fov_km()

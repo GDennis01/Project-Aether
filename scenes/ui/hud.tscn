@@ -747,9 +747,8 @@ offset_bottom = 31.004
 scale = Vector2(0.6, 0.6)
 text = "Scale (Km)"
 
-[node name="ScaleTab" type="CanvasLayer" parent="Body" groups=["load", "save", "tel_image_size", "tel_resolution", "window_fov", "window_size"]]
+[node name="ScaleTab" type="CanvasLayer" parent="Body" groups=["delta_au", "load", "save", "tel_image_size", "tel_resolution", "window_fov", "window_size"]]
 layer = 3
-visible = false
 script = ExtResource("9_0h1do")
 
 [node name="Control" type="Control" parent="Body/ScaleTab"]
@@ -758,12 +757,32 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
+[node name="DeltaAULabel" type="Label" parent="Body/ScaleTab/Control"]
+offset_left = 16.0
+offset_top = 104.0
+offset_right = 139.0
+offset_bottom = 127.0
+scale = Vector2(0.7, 0.7)
+tooltip_text = "arcsec/pixel"
+mouse_filter = 0
+text = "Delta AU :"
+
+[node name="DeltaAUEdit" parent="Body/ScaleTab/Control" instance=ExtResource("6_oj5la")]
+layout_mode = 1
+offset_left = 128.0
+offset_top = 96.0
+offset_right = 179.56
+offset_bottom = 123.04
+text = "0.0"
+resize_type = &"delta_au"
+higher_bound = 1000.0
+
 [node name="TelResolutionlabel" type="Label" parent="Body/ScaleTab/Control"]
 layout_mode = 0
 offset_left = 16.0
-offset_top = 96.0
-offset_right = 138.0
-offset_bottom = 119.0
+offset_top = 136.0
+offset_right = 139.0
+offset_bottom = 159.0
 scale = Vector2(0.7, 0.7)
 tooltip_text = "arcsec/pixel"
 mouse_filter = 0
@@ -772,9 +791,9 @@ text = "Tel. Resolution :"
 [node name="TelResolutionEdit" parent="Body/ScaleTab/Control" instance=ExtResource("6_oj5la")]
 layout_mode = 1
 offset_left = 128.0
-offset_top = 88.0
+offset_top = 128.0
 offset_right = 179.56
-offset_bottom = 115.04
+offset_bottom = 155.04
 text = "0.0"
 resize_type = &"tel_resolution"
 higher_bound = 1000.0
@@ -782,9 +801,9 @@ higher_bound = 1000.0
 [node name="TelImageSizeLabel" type="Label" parent="Body/ScaleTab/Control"]
 layout_mode = 0
 offset_left = 16.0
-offset_top = 136.0
+offset_top = 176.0
 offset_right = 133.0
-offset_bottom = 159.0
+offset_bottom = 199.0
 scale = Vector2(0.7, 0.7)
 tooltip_text = "Telescope image size in pixels"
 mouse_filter = 0
@@ -793,9 +812,9 @@ text = "Tel. Image size:"
 [node name="TelImageSizeEdit" parent="Body/ScaleTab/Control" instance=ExtResource("6_oj5la")]
 layout_mode = 1
 offset_left = 128.0
-offset_top = 128.0
+offset_top = 168.0
 offset_right = 179.56
-offset_bottom = 155.04
+offset_bottom = 195.04
 text = "0.0"
 resize_type = &"tel_image_size"
 lower_bound = 100.0
@@ -804,9 +823,9 @@ higher_bound = 5000.0
 [node name="WindowFOVLabel" type="Label" parent="Body/ScaleTab/Control"]
 layout_mode = 0
 offset_left = 16.0
-offset_top = 176.0
+offset_top = 216.0
 offset_right = 123.0
-offset_bottom = 199.0
+offset_bottom = 239.0
 scale = Vector2(0.7, 0.7)
 tooltip_text = "meters"
 mouse_filter = 0
@@ -815,9 +834,9 @@ text = "Window FOV: "
 [node name="WindowFOVEdit" parent="Body/ScaleTab/Control" instance=ExtResource("6_oj5la")]
 layout_mode = 1
 offset_left = 128.0
-offset_top = 168.0
+offset_top = 208.0
 offset_right = 179.56
-offset_bottom = 195.04
+offset_bottom = 235.04
 text = "0.0"
 resize_type = &"window_fov"
 lower_bound = 1.0
@@ -826,9 +845,9 @@ higher_bound = 1000.0
 [node name="WindowSizeLabel" type="Label" parent="Body/ScaleTab/Control"]
 layout_mode = 0
 offset_left = 16.0
-offset_top = 216.0
+offset_top = 256.0
 offset_right = 117.0
-offset_bottom = 239.0
+offset_bottom = 279.0
 scale = Vector2(0.7, 0.7)
 tooltip_text = "pixels"
 mouse_filter = 0
@@ -837,9 +856,9 @@ text = "Window size:"
 [node name="WindowSizeEdit" parent="Body/ScaleTab/Control" instance=ExtResource("6_oj5la")]
 layout_mode = 1
 offset_left = 128.0
-offset_top = 208.0
+offset_top = 248.0
 offset_right = 179.56
-offset_bottom = 235.04
+offset_bottom = 275.04
 text = "0.0"
 resize_type = &"window_size"
 lower_bound = 100.0
@@ -848,18 +867,18 @@ higher_bound = 5000.0
 [node name="TelResKmPixelLabel" type="Label" parent="Body/ScaleTab/Control"]
 layout_mode = 0
 offset_left = 16.0
-offset_top = 272.0
-offset_right = 157.0
-offset_bottom = 295.0
+offset_top = 312.0
+offset_right = 167.0
+offset_bottom = 335.0
 scale = Vector2(0.7, 0.7)
 text = "Tel. Res. (Km/Pixel):"
 
 [node name="TelResLineEdit" type="LineEdit" parent="Body/ScaleTab/Control"]
 layout_mode = 0
 offset_left = 128.0
-offset_top = 264.0
+offset_top = 304.0
 offset_right = 232.0
-offset_bottom = 295.0
+offset_bottom = 335.0
 focus_mode = 0
 theme_override_constants/minimum_character_width = 0
 editable = false
@@ -867,18 +886,18 @@ editable = false
 [node name="FOVArcminLabel" type="Label" parent="Body/ScaleTab/Control"]
 layout_mode = 0
 offset_left = 16.0
-offset_top = 304.0
-offset_right = 107.0
-offset_bottom = 327.0
+offset_top = 344.0
+offset_right = 122.0
+offset_bottom = 367.0
 scale = Vector2(0.7, 0.7)
 text = "FOV (Arcmin):"
 
 [node name="FOVArcminLineEdit" type="LineEdit" parent="Body/ScaleTab/Control"]
 layout_mode = 0
 offset_left = 128.0
-offset_top = 296.0
+offset_top = 336.0
 offset_right = 232.0
-offset_bottom = 327.0
+offset_bottom = 367.0
 focus_mode = 0
 theme_override_constants/minimum_character_width = 0
 editable = false
@@ -886,18 +905,18 @@ editable = false
 [node name="FOVKmLabel" type="Label" parent="Body/ScaleTab/Control"]
 layout_mode = 0
 offset_left = 16.0
-offset_top = 336.0
-offset_right = 56.0
-offset_bottom = 359.0
+offset_top = 376.0
+offset_right = 92.0
+offset_bottom = 399.0
 scale = Vector2(0.7, 0.7)
 text = "FOV (Km):"
 
 [node name="FOVKmLineEdit" type="LineEdit" parent="Body/ScaleTab/Control"]
 layout_mode = 0
 offset_left = 128.0
-offset_top = 328.0
+offset_top = 368.0
 offset_right = 232.0
-offset_bottom = 359.0
+offset_bottom = 399.0
 focus_mode = 0
 theme_override_constants/minimum_character_width = 0
 editable = false
@@ -905,18 +924,18 @@ editable = false
 [node name="ScaleFactorLabel" type="Label" parent="Body/ScaleTab/Control"]
 layout_mode = 0
 offset_left = 16.0
-offset_top = 368.0
-offset_right = 56.0
-offset_bottom = 391.0
+offset_top = 408.0
+offset_right = 153.0
+offset_bottom = 431.0
 scale = Vector2(0.7, 0.7)
 text = "Scale Factor (Km):"
 
 [node name="ScaleFactorLineEdit" type="LineEdit" parent="Body/ScaleTab/Control"]
 layout_mode = 0
 offset_left = 128.0
-offset_top = 360.0
+offset_top = 400.0
 offset_right = 232.0
-offset_bottom = 391.0
+offset_bottom = 431.0
 focus_mode = 0
 theme_override_constants/minimum_character_width = 0
 editable = false

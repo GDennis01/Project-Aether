@@ -19,10 +19,11 @@ var jet_rate: float = 0.0
 var sun_comet_distance: float = 0.0
 ## Sun direction vector in the 3D space
 var sun_direction_vector: Vector3 = Vector3.ZERO
-
+## Eart-comet delta in AU
+var earth_comet_delta: float = 0.0
 
 # Scale related properties
-## Scale in km(Deprecated)
+## Scale in meters/pixel
 var scale: float = 0.0
 ## Telescope resolution in arcsec/pixel
 var tel_resolution: float = 0.0

@@ -16,12 +16,12 @@ func _ready() -> void:
 	sun_axis.set_height(1, distance)
 	# sun.axis.global_position = global_position - distance
 	_dir_debug = Vector3(1, 1, 1)
-	debug_sphere.global_position = global_transform.origin + _dir_debug * 3
+	# debug_sphere.global_position = global_transform.origin + _dir_debug * 3
 	update_sun_orientation()
 	pass
-func _process(_delta: float) -> void:
-	debug_sphere.global_position = global_transform.origin + _dir_debug * 1
-## Updates the sun axis position and size	
+# func _process(_delta: float) -> void:
+	# debug_sphere.global_position = global_transform.origin + _dir_debug * 1
+# Updates the sun axis position and size	
 ## Called by Comet.update_radius
 func update_sun_axis(value: float) -> void:
 	if sun_axis:

@@ -239,11 +239,10 @@ func tick_optimized(_n_iteration: int) -> void:
 
 		# uncomment this line to calculate the position based on speed/acceleration
 		# TODO: leggere il codice og per capire come applicare il vettore del sole
-		# global_positions[i] = _normal_dir * (Util.sun_direction_vector * -a) * particle_speeds[i] * 1.16e-9
-		global_positions[i] = _normal_dir * (Util.sun_direction_vector) * particle_speeds[i] / Util.scale
-		# global_positions[i] = _normal_dir * particle_speeds[i] / Util.scale
-		# global_positions[i] = _normal_dir * particle_speeds[i] * 1e-9
-		# global_positions[i] = global_positions[i] + _normal_dir * 0.01
+		# TODO: capire come calcolare la forza del sole in base al tempo passato
+
+		global_positions[i] = (_normal_dir + Util.sun_direction_vector).normalized() * particle_speeds[i] / (Util.scale)
+	
 
 		var new_transf := Transform3D(Basis(), global_positions[i])
 		mm_emitter.multimesh.set_instance_transform(i, new_transf)
@@ -252,11 +251,12 @@ func tick_optimized(_n_iteration: int) -> void:
 		# time passed in seconds ( jet_rate is in minutes) obtained by multiplying how many ticks have passed
 		var time_passed: float = (_n_iteration - i) * Util.jet_rate * 60.0
 		# Updating speed as V= V*t + 1/2*a*t^2 (classic form), a is negative since the acceleration is in the opposite direction(?). It's in m(eters)
-		particle_speeds[i] = (speed * time_passed + 0.5 * -a * (time_passed ** 2))
+		particle_speeds[i] = (speed * time_passed + 0.5 * a * (time_passed ** 2))
 		# particle_speeds[i] = (speed * time_passed + 0.5 * (time_passed ** 2))
-		# if jet_id == 0 and i == 1 and _n_iteration < 500:
-		if jet_id == 0 and _n_iteration == 5:
-			print("i°:%f t°:%f a°:%f speed:%f  position:%s magnitude:%s\n" % [_n_iteration, time_passed, -a, particle_speeds[i], str(global_positions[i]), global_positions[i].length()])
+		# get_parent().debug_sphere.global_position = global_transform.origin + (_normal_dir + Util.sun_direction_vector).normalized() * 0.5 * 3
+		if jet_id == 0 and i == 1 and _n_iteration < 500:
+		# if jet_id == 0 and _n_iteration == 5:
+			print("i°:%f t°:%f a°:%f speed:%f  position:%s magnitude:%s  scale:%f\n" % [_n_iteration, time_passed, -a, particle_speeds[i], str(global_positions[i]), global_positions[i].length(), Util.scale])
 			
 		
 	# these three lines make so that the is_lit property is not computed based on raycasting but rather on sheer math
@@ -279,7 +279,7 @@ func tick_optimized(_n_iteration: int) -> void:
 		mm_emitter.multimesh.set_instance_transform(last_id - 1, Transform3D(Basis(), Vector3.ZERO))
 	update_norm()
 
-## Computes acceleration based on particle density, particle radius, particle albedo, solar pressure etc
+## Computes acceleration(in m/s^2) based on particle density, particle radius, particle albedo, solar pressure etc
 ## It uses the following formula: a = 3\*P/(4\*d/2\*p) where
 ## d, p and alpha are particle diameter, particle density and albedo
 ## P = eps \* (2-alpha) 	 and eps = I/c = L_sun/(4\*PI\*c\*D^2) is the pressure radiation
