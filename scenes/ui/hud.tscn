@@ -96,7 +96,7 @@ text = "Scale"
 layout_direction = 2
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.24
+size_flags_stretch_ratio = 0.1
 
 [node name="AnimationSlider" parent="Body/TabButtons/ColorRect/HBoxContainer" instance=ExtResource("3_gss2c")]
 layout_mode = 2
@@ -115,6 +115,11 @@ visible = false
 layout_mode = 2
 focus_mode = 0
 text = "Reset Rotation"
+
+[node name="ScreenshotBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+text = "Screenshot"
 
 [node name="ChangeCameraBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 layout_mode = 2
@@ -165,6 +170,7 @@ text = "Help"
 [node name="FileExplorer" type="FileDialog" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 access = 2
 use_native_dialog = true
+metadata/is_screenshot = false
 
 [node name="CometTab" type="CanvasLayer" parent="Body" groups=["load", "save"]]
 layer = 3
@@ -906,6 +912,7 @@ scale = Vector2(0.7, 0.7)
 text = "Scale Factor (Km):"
 
 [node name="ScaleFactorLineEdit" type="LineEdit" parent="Body/ScaleTab/Control"]
+layout_mode = 0
 offset_left = 128.0
 offset_top = 360.0
 offset_right = 232.0
@@ -1017,6 +1024,7 @@ script = ExtResource("11_0h1do")
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ScaleBtn" to="Body" method="_on_scale_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/TriggerRotBtn" to="Body" method="_on_trigger_rot_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ResetRotnBtn" to="Body" method="_on_reset_rotn_btn_pressed"]
+[connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ScreenshotBtn" to="Body" method="_on_screenshot_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ChangeCameraBtn" to="Body" method="_on_change_camera_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/FullViewportBtn" to="Body" method="_on_full_viewport_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ToggleSunBtn" to="Body" method="_on_toggle_sun_btn_pressed"]

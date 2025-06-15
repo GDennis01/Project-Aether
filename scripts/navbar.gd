@@ -2,6 +2,7 @@ extends CanvasLayer
 
 # @onready var rot_camera_viewport: SubViewport = $"/root/Hud/Body/SubViewportContainer/SubViewport"
 @onready var rot_camera_viewport: SubViewport = $"/root/Hud/Viewport/SubViewportContainer/SubViewport"
+@onready var file_explorer: FileDialog = $TabButtons/ColorRect/HBoxContainer/FileExplorer
 var camera_position: Vector2
 
 ## Called when the node enters the scene tree for the first time.
@@ -104,22 +105,48 @@ func _on_spawn_emitter_pressed() -> void:
 ## Opens the OS Native file explorer to save the current configuration in a file
 func _on_save_btn_pressed() -> void:
 	print(OS.get_data_dir())
-	$TabButtons/ColorRect/HBoxContainer/FileExplorer.file_mode = FileDialog.FILE_MODE_SAVE_FILE
-	$TabButtons/ColorRect/HBoxContainer/FileExplorer.visible = true
+	file_explorer.file_mode = FileDialog.FILE_MODE_SAVE_FILE
+	file_explorer.filters = ["*.txt;Configuration File"]
+	file_explorer.set_meta("is_screenshot", false)
+	file_explorer.popup_centered()
+	file_explorer.current_file = "config"
+	
+	file_explorer.visible = true
 ## Opens the OS Native file explorer to load a configuration from a chosen file
 func _on_load_btn_pressed() -> void:
-	$TabButtons/ColorRect/HBoxContainer/FileExplorer.file_mode = FileDialog.FILE_MODE_OPEN_FILE
-	$TabButtons/ColorRect/HBoxContainer/FileExplorer.visible = true
+	file_explorer.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+	file_explorer.filters = ["*.txt;Configuration File"]
+	file_explorer.set_meta("is_screenshot", false)
+	file_explorer.popup_centered()
+	
+	file_explorer.visible = true
+
+func _on_screenshot_btn_pressed() -> void:
+	file_explorer.file_mode = FileDialog.FILE_MODE_SAVE_FILE
+	file_explorer.filters = ["*.png;Image File"]
+	file_explorer.set_meta("is_screenshot", true)
+	file_explorer.popup_centered()
+	file_explorer.current_file = "screenshot"
+	
+	file_explorer.visible = true
+
 
 ## Called when a file, either through the save or load methods, is selected.
 ## Saves/Loads a configuration
 func _on_file_explorer_file_selected(path: String) -> void:
-	if $TabButtons/ColorRect/HBoxContainer/FileExplorer.file_mode == FileDialog.FILE_MODE_SAVE_FILE:
-		get_tree().call_group("save", "save_data")
-		SaveManager.save(path)
-	if $TabButtons/ColorRect/HBoxContainer/FileExplorer.file_mode == FileDialog.FILE_MODE_OPEN_FILE:
+	if file_explorer.file_mode == FileDialog.FILE_MODE_SAVE_FILE:
+		if file_explorer.get_meta("is_screenshot", false):
+			var img := rot_camera_viewport.get_texture().get_image()
+			img.resize(1200, 1200)
+			img.save_png(path)
+			print("Screenshot saved to: ", path)
+		else:
+			get_tree().call_group("save", "save_data")
+			SaveManager.save(path)
+	if file_explorer.file_mode == FileDialog.FILE_MODE_OPEN_FILE:
 		SaveManager.load(path)
 		get_tree().call_group("load", "load_data")
+
 
 # TODO: fix this by making so that the container reposition itself based on the new size
 func _on_full_viewport_btn_pressed() -> void:
