@@ -232,21 +232,9 @@ func tick_optimized(_n_iteration: int) -> void:
 		var _normal_dir_as_color := mm_emitter.multimesh.get_instance_custom_data(i) as Color
 		var _normal_dir := Vector3(_normal_dir_as_color.r, _normal_dir_as_color.g, _normal_dir_as_color.b)
 
-		#show a debug sphere in the direction of the normal
-		# get_parent().debug_sphere.global_position = Vector3(0, 0, 0) + _normal_dir * 0.5 * 3
-
-		var local_transf := mm_emitter.multimesh.get_instance_transform(i)
-
 		# uncomment this line to calculate the position based on speed/acceleration
 		# TODO: leggere il codice og per capire come applicare il vettore del sole
 		# TODO: capire come calcolare la forza del sole in base al tempo passato
-
-		global_positions[i] = (_normal_dir + Util.sun_direction_vector).normalized() * particle_speeds[i] / (Util.scale)
-	
-
-		var new_transf := Transform3D(Basis(), global_positions[i])
-		mm_emitter.multimesh.set_instance_transform(i, new_transf)
-		
 		# speed calculation
 		# time passed in seconds ( jet_rate is in minutes) obtained by multiplying how many ticks have passed
 		var time_passed: float = (_n_iteration - i) * Util.jet_rate * 60.0
@@ -254,6 +242,13 @@ func tick_optimized(_n_iteration: int) -> void:
 		particle_speeds[i] = (speed * time_passed + 0.5 * a * (time_passed ** 2))
 		# particle_speeds[i] = (speed * time_passed + 0.5 * (time_passed ** 2))
 		# get_parent().debug_sphere.global_position = global_transform.origin + (_normal_dir + Util.sun_direction_vector).normalized() * 0.5 * 3
+		global_positions[i] = (_normal_dir + Util.sun_direction_vector).normalized() * particle_speeds[i] / (Util.scale)
+	
+
+		var new_transf := Transform3D(Basis(), global_positions[i])
+		mm_emitter.multimesh.set_instance_transform(i, new_transf)
+		
+
 		if jet_id == 0 and i == 1 and _n_iteration < 500:
 		# if jet_id == 0 and _n_iteration == 5:
 			print("i°:%f t°:%f a°:%f speed:%f  position:%s magnitude:%s  scale:%f\n" % [_n_iteration, time_passed, -a, particle_speeds[i], str(global_positions[i]), global_positions[i].length(), Util.scale])
