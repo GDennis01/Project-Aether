@@ -40,6 +40,11 @@ var fov_arcmin: float = 0.0
 ## FOV in km
 var fov_km: float = 0.0
 
+# I, Phi and True Anomaly
+var i: float = 0.0 # angle between rotationa xis and the orbital plane in degrees
+var phi: float = 0.0 # angle between projection of axis direction and sun direction at perihelion in degrees
+var true_anomaly: float = 0.0 # angular position of the comet in its orbit in degrees
+
 #particle properties
 var albedo: float = 0.0
 var particle_diameter: float = 0.0
@@ -78,3 +83,25 @@ func latlon_to_vector3(latitude: float, longitude: float, radius: float) -> Vect
 	var z: float = xz_radius * sin(lon_rad) # sin for Z as Lon increases towards +Z
 
 	return Vector3(x, y, z)
+## Convert coordinate from equatorial plane to orbital plane by applying a transformation as following:
+## This transformation is done by rotating the frame around the axis Y with an angle
+## (90◦ − I) and around the axis Z with an angle −(Φ +ν).
+func equatorial_to_orbital(coords: Vector3) -> Vector3:
+	var rot_mat1: Basis = Basis()
+	rot_mat1.x = Vector3(cos(deg_to_rad(Util.phi + Util.true_anomaly)), sin(deg_to_rad(Util.phi + Util.true_anomaly)), 0)
+	rot_mat1.y = Vector3(-sin(deg_to_rad(Util.phi + Util.true_anomaly)), cos(deg_to_rad(Util.phi + Util.true_anomaly)), 0)
+	rot_mat1.z = Vector3(0, 0, 1)
+
+	var rot_mat2: Basis = Basis()
+	rot_mat2.x = Vector3(sin(deg_to_rad(Util.i)), 0, -cos(deg_to_rad(Util.i)))
+	rot_mat2.y = Vector3(0, 1, 0)
+	rot_mat2.z = Vector3(cos(deg_to_rad(Util.i)), 0, sin(deg_to_rad(Util.i)))
+
+
+	var result := rot_mat1 * rot_mat2 * coords
+	# swap y and z to match Godot's coordinate system
+	var tmp := result.y
+	result.y = result.z
+	result.z = tmp
+	# print("@@@@@@@@@@@@Result: " + str(result))
+	return result

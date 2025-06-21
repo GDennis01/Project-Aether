@@ -608,9 +608,8 @@ size_flags_stretch_ratio = 3.62
 focus_mode = 1
 text = "Add Jet Entry"
 
-[node name="SimTab" type="CanvasLayer" parent="Body" groups=["load", "save"]]
+[node name="SimTab" type="CanvasLayer" parent="Body" groups=["i", "load", "phi", "save", "true_anomaly"]]
 layer = 3
-visible = false
 script = ExtResource("7_h022r")
 
 [node name="Control" type="Control" parent="Body/SimTab"]
@@ -681,6 +680,51 @@ resize_type = &"_scale"
 lower_bound = 1.0
 higher_bound = 1e+06
 
+[node name="IEdit" parent="Body/SimTab/Control" instance=ExtResource("6_oj5la")]
+layout_mode = 1
+anchor_left = 1.231
+anchor_top = 19.636
+anchor_right = 1.231
+anchor_bottom = 19.636
+offset_left = 95.997
+offset_top = 0.004
+offset_right = 167.997
+offset_bottom = 31.004
+text = "0.0"
+resize_type = &"i"
+lower_bound = 0.1
+higher_bound = -1.0
+
+[node name="PhiEdit" parent="Body/SimTab/Control" instance=ExtResource("6_oj5la")]
+layout_mode = 1
+anchor_left = 1.231
+anchor_top = 23.273
+anchor_right = 1.231
+anchor_bottom = 23.273
+offset_left = 95.997
+offset_top = -0.003
+offset_right = 167.997
+offset_bottom = 30.997
+text = "0.0"
+resize_type = &"phi"
+lower_bound = 0.1
+higher_bound = -1.0
+
+[node name="TrueAnomalyEdit" parent="Body/SimTab/Control" instance=ExtResource("6_oj5la")]
+layout_mode = 1
+anchor_left = 1.231
+anchor_top = 26.909
+anchor_right = 1.231
+anchor_bottom = 26.909
+offset_left = 95.997
+offset_top = 0.001
+offset_right = 167.997
+offset_bottom = 31.001
+text = "0.0"
+resize_type = &"true_anomaly"
+lower_bound = 0.1
+higher_bound = -1.0
+
 [node name="FrequencyLabel" type="Label" parent="Body/SimTab/Control"]
 layout_mode = 1
 anchors_preset = -1
@@ -747,8 +791,60 @@ offset_bottom = 31.004
 scale = Vector2(0.6, 0.6)
 text = "Scale (Km)"
 
+[node name="ILabel" type="Label" parent="Body/SimTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.231
+anchor_top = 19.636
+anchor_right = 1.231
+anchor_bottom = 19.636
+offset_left = -0.003
+offset_top = 0.004
+offset_right = 109.997
+offset_bottom = 40.004
+scale = Vector2(0.6, 0.6)
+tooltip_text = "Frequency of rotation in hours"
+mouse_filter = 0
+text = "I"
+vertical_alignment = 1
+
+[node name="PhiLabel" type="Label" parent="Body/SimTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 24.0
+anchor_right = 1.0
+anchor_bottom = 24.0
+offset_left = 3.0
+offset_top = -8.0
+offset_right = 113.0
+offset_bottom = 32.0
+scale = Vector2(0.6, 0.6)
+tooltip_text = "Frequency of rotation in hours"
+mouse_filter = 0
+text = "Phi"
+vertical_alignment = 1
+
+[node name="PhiLabel2" type="Label" parent="Body/SimTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 26.909
+anchor_right = 1.0
+anchor_bottom = 26.909
+offset_left = 3.0
+offset_top = 0.001
+offset_right = 113.0
+offset_bottom = 40.001
+scale = Vector2(0.6, 0.6)
+tooltip_text = "Frequency of rotation in hours"
+mouse_filter = 0
+text = "True Anomaly"
+vertical_alignment = 1
+
 [node name="ScaleTab" type="CanvasLayer" parent="Body" groups=["delta_au", "load", "save", "tel_image_size", "tel_resolution", "window_fov", "window_size"]]
 layer = 3
+visible = false
 script = ExtResource("9_0h1do")
 
 [node name="Control" type="Control" parent="Body/ScaleTab"]
