@@ -103,5 +103,29 @@ func equatorial_to_orbital(coords: Vector3) -> Vector3:
 	var tmp := result.y
 	result.y = result.z
 	result.z = tmp
-	# print("@@@@@@@@@@@@Result: " + str(result))
+	return result
+
+## Convert coordinate from orbital plane to geocentric frame by applying rotations.
+## TODO: figure out the correct rotation angles (5 which is PsAng and 7 which is theta)
+func orbital_to_geocentric(coords: Vector3) -> Vector3:
+	var rot_mat1: Basis = Basis()
+	rot_mat1.x = Vector3(1, 0, 0)
+	rot_mat1.y = Vector3(0, -sin(deg_to_rad(5)), cos(deg_to_rad(5)))
+	rot_mat1.z = Vector3(0, -cos(deg_to_rad(5)), -sin(deg_to_rad(5)))
+
+
+	var rot_mat2: Basis = Basis()
+	rot_mat2.x = Vector3(cos(deg_to_rad(Util.sun_inclination)), sin(deg_to_rad(Util.sun_inclination)), 0)
+	rot_mat2.y = Vector3(-sin(deg_to_rad(Util.sun_inclination)), cos(deg_to_rad(Util.sun_inclination)), 0)
+	rot_mat2.z = Vector3(0, 0, 1)
+
+	var rot_mat3: Basis = Basis()
+	rot_mat3.x = Vector3(1, 0, 0)
+	rot_mat3.y = Vector3(0, cos(deg_to_rad(7)), sin(deg_to_rad(7)))
+	rot_mat3.z = Vector3(0, -sin(deg_to_rad(7)), cos(deg_to_rad(7)))
+	var result := rot_mat1 * rot_mat2 * rot_mat3 * coords
+	# swap y and z to match Godot's coordinate system
+	var tmp := result.y
+	result.y = result.z
+	result.z = tmp
 	return result
