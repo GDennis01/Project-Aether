@@ -19,8 +19,8 @@ shading_mode = 0
 
 [sub_resource type="SphereMesh" id="SphereMesh_i7141"]
 material = SubResource("StandardMaterial3D_w7kh3")
-radius = 0.1
-height = 0.2
+radius = 0.001
+height = 0.002
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_hg46x"]
 size = Vector2(60, 60)
@@ -111,4 +111,5 @@ directional_shadow_max_distance = 85.5
 sky_mode = 1
 
 [node name="DebugRotationSphere" type="MeshInstance3D" parent="."]
+visible = false
 mesh = SubResource("SphereMesh_4mrxx")

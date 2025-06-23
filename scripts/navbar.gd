@@ -3,6 +3,9 @@ extends CanvasLayer
 # @onready var rot_camera_viewport: SubViewport = $"/root/Hud/Body/SubViewportContainer/SubViewport"
 @onready var rot_camera_viewport: SubViewport = $"/root/Hud/Viewport/SubViewportContainer/SubViewport"
 @onready var file_explorer: FileDialog = $TabButtons/ColorRect/HBoxContainer/FileExplorer
+# @onready var plane: MeshInstance3D = $"/root/World/Plane"
+@onready var comet: MeshInstance3D = $"/root/World/CometMesh"
+# @onready var comet2: MeshInstance3D = $"/root/World/CometMesh2"
 var camera_position: Vector2
 
 ## Called when the node enters the scene tree for the first time.
@@ -155,6 +158,43 @@ func _on_full_viewport_btn_pressed() -> void:
 	# 	# rot_camera_viewport.get_parent().position =
 	# else:
 	# 	rot_camera_viewport.size = Vector2(900, 900)
+	## Prova plane
+	# plane.global_rotation_degrees = comet.global_rotation_degrees
+	# plane.transform.basis = comet.transform.basis * Basis(Vector3(1, 0, 0), deg_to_rad(-90))
+	# plane.rotate(plane.transform.basis.z, deg_to_rad(90 - Util.i))
+	# plane.rotate(plane.transform.basis.y, deg_to_rad(- (Util.phi + Util.true_anomaly)))
+	# plane.global_position.y = 0
+	# plane.rotate(Vector3.FORWARD, deg_to_rad(90 - Util.i))
+	# plane.rotate(Vector3.UP, deg_to_rad(- (Util.phi + Util.true_anomaly)))
+	# plane.global_rotation_degrees = comet.global_rotation_degrees
+	## Prova degrees
+	# comet.transform.basis = comet2.transform.basis
+	# comet.transform.basis = Util.get_equatorial_to_orbital_basis() * comet.transform.basis
+	## Prova lookat
+	# var tmp := comet.transform
+	comet.look_at(Util.sun_direction_vector, Vector3.UP)
+	comet.rotate(comet.transform.basis.y, deg_to_rad(-90))
+	Util.orbital_basis = comet.transform.basis
+	Util.orbital_transformation = comet.transform
+	# comet.transform = tmp
+	# comet.transform.basis = comet.transform.basis * Basis(Vector3(1, 0, 0), deg_to_rad(-90))
+	# comet.rotate(comet.transform.basis.z, deg_to_rad(90 - Util.i))
+	# comet.rotate(comet.transform.basis.y, deg_to_rad(- (Util.phi + Util.true_anomaly)))
+
+	## Prova quaternion
+	# var quat1: Quaternion = Quaternion(comet.transform.basis.z, deg_to_rad(90 - Util.i))
+	# var quat2: Quaternion = Quaternion(comet.transform.basis.y, deg_to_rad(- (Util.phi + Util.true_anomaly)))
+	# var tot_quat := quat1 * quat2
+	# tot_quat = tot_quat.normalized()
+	# comet.quaternion = tot_quat
+
+	# # print("TEST::	")
+	# print(Util.convert_equatorial_to_orbital(Vector3(1, 1, 1)))
+	# plane.global_position = Vector3(1, 1, 1)
+	# var plane_coords := plane.global_position
+	# var new_plane_coords := Util.convert_equatorial_to_orbital(plane_coords)
+	# plane.global_position = new_plane_coords
+	return
 	if not rot_camera_viewport.size == Vector2i(900, 900):
 		# rot_camera_viewport.get_parent().position =
 		rot_camera_viewport.size = Vector2(900, 900)
