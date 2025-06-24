@@ -69,6 +69,7 @@ offset_left = 8.0
 offset_top = 6.0
 offset_right = 0.0639648
 offset_bottom = 46.0
+focus_mode = 2
 
 [node name="CometBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 z_index = 1
@@ -127,6 +128,7 @@ focus_mode = 0
 text = "Change Camera"
 
 [node name="FullViewportBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
+visible = false
 layout_mode = 2
 focus_mode = 0
 text = "FullViewport"
@@ -167,6 +169,12 @@ layout_mode = 2
 focus_mode = 0
 text = "Help"
 
+[node name="QuitBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
+visible = false
+layout_mode = 2
+focus_mode = 0
+text = "Quit"
+
 [node name="FileExplorer" type="FileDialog" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 access = 2
 use_native_dialog = true
@@ -179,15 +187,14 @@ script = ExtResource("3_136eg")
 
 [node name="Control" type="Control" parent="Body/CometTab"]
 layout_mode = 3
-anchor_top = 0.148
-anchor_bottom = 0.148
-offset_top = -49.04
+anchor_top = 0.098
+anchor_bottom = 0.098
+offset_top = -0.04
 offset_right = 194.0
-offset_bottom = 214.96
+offset_bottom = 263.96
 scale = Vector2(0.85, 0.85)
 size_flags_horizontal = 0
 mouse_filter = 2
-metadata/_edit_use_anchors_ = true
 
 [node name="EditRadius" parent="Body/CometTab/Control" groups=["load"] instance=ExtResource("3_f5f8u")]
 layout_mode = 1
@@ -629,7 +636,7 @@ offset_left = 95.997
 offset_top = -8.00501
 offset_right = 143.997
 offset_bottom = 22.995
-text = "0.0"
+text = "1.0"
 resize_type = &"frequency"
 lower_bound = 0.1
 higher_bound = -1.0
@@ -644,7 +651,7 @@ offset_left = 95.997
 offset_top = -8.00101
 offset_right = 143.997
 offset_bottom = 22.999
-text = "0.0"
+text = "1.0"
 resize_type = &"num_rotation"
 lower_bound = 0.1
 higher_bound = -1.0
@@ -659,7 +666,7 @@ offset_left = 95.997
 offset_top = -7.99701
 offset_right = 143.997
 offset_bottom = 23.003
-text = "0.0"
+text = "1.0"
 resize_type = &"jet_rate"
 lower_bound = 0.5
 higher_bound = -1.0
@@ -675,12 +682,12 @@ offset_left = 59.401
 offset_top = -8.004
 offset_right = 146.401
 offset_bottom = 22.996
-text = "0.0"
 resize_type = &"_scale"
 lower_bound = 1.0
 higher_bound = 1e+06
 
 [node name="IEdit" parent="Body/SimTab/Control" instance=ExtResource("6_oj5la")]
+visible = false
 layout_mode = 1
 anchor_left = 1.231
 anchor_top = 19.636
@@ -690,12 +697,12 @@ offset_left = 95.997
 offset_top = 0.004
 offset_right = 167.997
 offset_bottom = 31.004
-text = "0.0"
 resize_type = &"i"
 lower_bound = 0.1
 higher_bound = -1.0
 
 [node name="PhiEdit" parent="Body/SimTab/Control" instance=ExtResource("6_oj5la")]
+visible = false
 layout_mode = 1
 anchor_left = 1.231
 anchor_top = 23.273
@@ -705,12 +712,12 @@ offset_left = 95.997
 offset_top = -0.003
 offset_right = 167.997
 offset_bottom = 30.997
-text = "0.0"
 resize_type = &"phi"
 lower_bound = 0.1
 higher_bound = -1.0
 
 [node name="TrueAnomalyEdit" parent="Body/SimTab/Control" instance=ExtResource("6_oj5la")]
+visible = false
 layout_mode = 1
 anchor_left = 1.231
 anchor_top = 26.909
@@ -720,7 +727,6 @@ offset_left = 95.997
 offset_top = 0.001
 offset_right = 167.997
 offset_bottom = 31.001
-text = "0.0"
 resize_type = &"true_anomaly"
 lower_bound = 0.1
 higher_bound = -1.0
@@ -792,6 +798,7 @@ scale = Vector2(0.6, 0.6)
 text = "Scale (Km)"
 
 [node name="ILabel" type="Label" parent="Body/SimTab/Control"]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 1.231
@@ -809,6 +816,7 @@ text = "I"
 vertical_alignment = 1
 
 [node name="PhiLabel" type="Label" parent="Body/SimTab/Control"]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 1.0
@@ -826,6 +834,7 @@ text = "Phi"
 vertical_alignment = 1
 
 [node name="PhiLabel2" type="Label" parent="Body/SimTab/Control"]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 1.0
@@ -870,7 +879,6 @@ offset_left = 128.0
 offset_top = 96.0
 offset_right = 179.56
 offset_bottom = 123.04
-text = "0.0"
 resize_type = &"delta_au"
 higher_bound = 1000.0
 
@@ -891,7 +899,6 @@ offset_left = 128.0
 offset_top = 128.0
 offset_right = 179.56
 offset_bottom = 155.04
-text = "0.0"
 resize_type = &"tel_resolution"
 higher_bound = 1000.0
 
@@ -912,7 +919,6 @@ offset_left = 128.0
 offset_top = 168.0
 offset_right = 179.56
 offset_bottom = 195.04
-text = "0.0"
 resize_type = &"tel_image_size"
 lower_bound = 100.0
 higher_bound = 5000.0
@@ -934,7 +940,6 @@ offset_left = 128.0
 offset_top = 208.0
 offset_right = 179.56
 offset_bottom = 235.04
-text = "0.0"
 resize_type = &"window_fov"
 lower_bound = 1.0
 higher_bound = 1000.0
@@ -956,7 +961,6 @@ offset_left = 128.0
 offset_top = 248.0
 offset_right = 179.56
 offset_bottom = 275.04
-text = "0.0"
 resize_type = &"window_size"
 lower_bound = 100.0
 higher_bound = 5000.0
@@ -1149,6 +1153,7 @@ script = ExtResource("11_0h1do")
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/SaveBtn" to="Body" method="_on_save_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/LoadBtn" to="Body" method="_on_load_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/HelpBtn" to="Body" method="_on_help_btn_pressed"]
+[connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/QuitBtn" to="Body" method="_on_quit_btn_pressed"]
 [connection signal="file_selected" from="Body/TabButtons/ColorRect/HBoxContainer/FileExplorer" to="Body" method="_on_file_explorer_file_selected"]
 [connection signal="pressed" from="Body/JetsTab/Control/SpawnEmitter" to="Body" method="_on_spawn_emitter_pressed"]
 [connection signal="pressed" from="Body/JetsTab/Control/JetTable/AddJetEntryBtn" to="Body" method="_on_add_jet_entry_btn_pressed"]

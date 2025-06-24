@@ -97,6 +97,8 @@ func _process(_delta: float) -> void:
 		ANIMATION_STATE.STARTED, ANIMATION_STATE.RESUMED:
 			if n_steps < 0:
 				animation_state = ANIMATION_STATE.STOPPED
+				if Util.equatorial_rotation:
+					quaternion = Util.equatorial_rotation
 			else:
 				for _i in speed_sim:
 					tick(step_counter)
@@ -228,7 +230,7 @@ func spawn_emitter_at(latitude: float, longitude: float, emitter: Emitter) -> vo
 func remove_emitter(emitter_id: int) -> void:
 	var emitter: Emitter = instance_from_id(emitter_id)
 	emitter.remove_from_group("emitter")
-	print(emitter)
+	# print(emitter)
 	# remove_child(emitter)
 	emitter.destroy_multimesh()
 	emitter.queue_free()
@@ -293,7 +295,6 @@ func update_frequency(value: float) -> void:
 func update_scale(value: float) -> void:
 	if Util.PRINT_UPDATE_METHOD: print("Updated scale:%f"%value)
 	Util.scale = value
-	print("scale:%f"%value)
 
 # simulation related
 func update_albedo(value: float) -> void:

@@ -10,6 +10,7 @@ offset_right = 0.127991
 offset_bottom = -0.152008
 focus_mode = 1
 theme_override_constants/minimum_character_width = 0
+text = "0.0"
 script = ExtResource("1_httd2")
 
 [connection signal="editing_toggled" from="." to="." method="_on_editing_toggled"]

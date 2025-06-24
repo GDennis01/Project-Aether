@@ -206,3 +206,7 @@ func _on_full_viewport_btn_pressed() -> void:
 
 func _on_change_camera_btn_pressed() -> void:
 	get_tree().call_group("camera", "change_camera")
+
+
+func _on_quit_btn_pressed() -> void:
+	get_tree().quit()
