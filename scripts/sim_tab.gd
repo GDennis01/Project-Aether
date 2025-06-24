@@ -20,6 +20,14 @@ func save_data() -> void:
 ## Called by Navbar._on_file_explorer_file_selected()
 ## Loads the data from the config file into the different element of the scene
 func load_data() -> void:
+	# set block signals for the sanitized edits
+	# $Control/FrequencyEdit.set_block_signals(true)
+	# $Control/NumRotationEdit.set_block_signals(true)
+	# $Control/JetRateEdit.set_block_signals(true)
+	# $Control/KmScaleEdit.set_block_signals(true)
+	# $Control/IEdit.set_block_signals(true)
+	# $Control/PhiEdit.set_block_signals(true)
+	# $Control/TrueAnomalyEdit.set_block_signals(true)
 	$Control/FrequencyEdit.set_value(float(SaveManager.config.get_value("simulation", "frequency", 0)))
 	$Control/NumRotationEdit.set_value(float(SaveManager.config.get_value("simulation", "num_rotations", 0)))
 	$Control/JetRateEdit.set_value(float(SaveManager.config.get_value("simulation", "jet_rate", 0)))
@@ -27,6 +35,15 @@ func load_data() -> void:
 	$Control/IEdit.set_value(float(SaveManager.config.get_value("simulation", "i", 0)))
 	$Control/PhiEdit.set_value(float(SaveManager.config.get_value("simulation", "phi", 0)))
 	$Control/TrueAnomalyEdit.set_value(float(SaveManager.config.get_value("simulation", "true_anomaly", 0)))
+
+	# set block signals for the sanitized edits
+	# $Control/FrequencyEdit.set_block_signals(false)
+	# $Control/NumRotationEdit.set_block_signals(false)
+	# $Control/JetRateEdit.set_block_signals(false)
+	# $Control/KmScaleEdit.set_block_signals(false)
+	# $Control/IEdit.set_block_signals(false)
+	# $Control/PhiEdit.set_block_signals(false)
+	# $Control/TrueAnomalyEdit.set_block_signals(false)
 
 
 func update_i(value: float) -> void:

@@ -21,11 +21,24 @@ func save_data() -> void:
 ## Called by Navbar._on_file_explorer_file_selected()
 ## Loads the data from the config file into the different element of the scene
 func load_data() -> void:
+	# set block signals to true to avoid triggering update methods
+	# $Control/DeltaAUEdit.set_block_signals(true)
+	# $Control/TelResolutionEdit.set_block_signals(true)
+	# $Control/TelImageSizeEdit.set_block_signals(true)
+	# $Control/WindowFOVEdit.set_block_signals(true)
+	# $Control/WindowSizeEdit.set_block_signals(true)
 	$Control/DeltaAUEdit.set_value(float(SaveManager.config.get_value("scale", "delta_au", 0)))
 	$Control/TelResolutionEdit.set_value(float(SaveManager.config.get_value("scale", "tel_res", 0)))
 	$Control/TelImageSizeEdit.set_value(float(SaveManager.config.get_value("scale", "tel_img_size", 0)))
 	$Control/WindowFOVEdit.set_value(float(SaveManager.config.get_value("scale", "window_fov", 0)))
 	$Control/WindowSizeEdit.set_value(float(SaveManager.config.get_value("scale", "window_size", 0)))
+
+	# set block signals to false to allow triggering update methods
+	# $Control/DeltaAUEdit.set_block_signals(false)
+	# $Control/TelResolutionEdit.set_block_signals(false)
+	# $Control/TelImageSizeEdit.set_block_signals(false)
+	# $Control/WindowFOVEdit.set_block_signals(false)
+	# $Control/WindowSizeEdit.set_block_signals(false)
 
 
 ## These methods are called by SanitizedEdit through call_group() mechanism

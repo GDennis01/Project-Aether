@@ -84,6 +84,17 @@ func _ready() -> void:
 	# Hud.light_source = light_source
 	update_comet_orientation()
 
+# func _notification(what: int) -> void:
+# 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+# 		for emitter: Emitter in get_tree().get_nodes_in_group("emitter"):
+# 			emitter.remove_from_group("emitter")
+# 			emitter.destroy_multimesh()
+# 			emitter.queue_free()
+# 			await get_tree().process_frame
+# 		await get_tree().process_frame
+# 		SaveManager.cleanup()
+# 		get_tree().quit()
+		
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	# if rotation_enabled:

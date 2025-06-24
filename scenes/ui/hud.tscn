@@ -177,7 +177,6 @@ text = "Quit"
 
 [node name="FileExplorer" type="FileDialog" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 access = 2
-use_native_dialog = true
 metadata/is_screenshot = false
 
 [node name="CometTab" type="CanvasLayer" parent="Body" groups=["load", "save"]]
