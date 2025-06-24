@@ -8,6 +8,5 @@ func _ready() -> void:
 func save(filename: StringName) -> void:
 	config.save(filename)
 func load(filename: StringName) -> void:
-	print("erasing config")
 	config = ConfigFile.new()
 	config.load(filename)

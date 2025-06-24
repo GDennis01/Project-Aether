@@ -1,7 +1,7 @@
 extends Node
 
 ##Debug
-const PRINT_UPDATE_METHOD = true
+const PRINT_UPDATE_METHOD = false
 
 ## current radius of the comet
 var comet_radius: float = 0.0
@@ -45,6 +45,10 @@ var orbital_basis: Basis = Basis() ## Orbital basis of the comet in the 3D space
 
 ## Orbital transformation 
 var orbital_transformation: Transform3D = Transform3D() ## Orbital transformation of the comet in the 3D space
+
+## Equatorial transformation
+var equatorial_transformation: Transform3D = Transform3D() ## Equatorial transformation of the comet in the 3D space
+var equatorial_rotation: Quaternion = Quaternion() ## Equatorial rotation of the comet in the 3D space
 
 # I, Phi and True Anomaly
 var i: float = 0.0 ## angle between rotationa xis and the orbital plane in degrees

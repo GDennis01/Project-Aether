@@ -77,11 +77,9 @@ func set_longitude(value: float) -> void:
 func set_diffusion(value: float) -> void:
 	diffusion = value
 	diffusion_edit.set_value(value)
-	print("DIFF")
 func set_color(value: Color) -> void:
 	color = value
 	color_edit.color = value
-	print("COLOR:" + str(value))
 
 	
 ###################################

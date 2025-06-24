@@ -83,6 +83,6 @@ func update_scale_factor() -> void:
 	var fov_full_zoom: float = Util.window_fov / 1000 * window_image_scale_factor
 	var pixel_resolution_full_zoom: float = fov_full_zoom / Util.window_size
 	Util.scale = Util.tel_res_km_pixel / pixel_resolution_full_zoom * window_image_scale_factor * 1000
-	print("Scale factor: %f"%Util.scale)
+	# print("Scale factor: %f"%Util.scale)
 	if scale_factor:
 		scale_factor.text = str(Util.scale / 1000)
