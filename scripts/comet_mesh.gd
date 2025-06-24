@@ -150,6 +150,20 @@ func animation_started() -> void:
 			pass
 			
 	if animation_state == ANIMATION_STATE.STARTED:
+		# changing from equatorial to orbital system
+		Util.equatorial_rotation = quaternion
+
+		look_at(Util.sun_direction_vector, Vector3.UP)
+		rotate(transform.basis.y, deg_to_rad(-90))
+
+
+		# used by emitters to convert from equatorial to orbital system
+		Util.orbital_basis = transform.basis
+		Util.orbital_transformation = transform
+
+		# resuming the rotation
+		# quaternion = Util.equatorial_rotation
+		
 		starting_rotation = rotation
 		n_steps = int(num_rotation * frequency * 60 / jet_rate)
 		for emitter: Emitter in get_tree().get_nodes_in_group("emitter"):
@@ -183,6 +197,8 @@ func animation_stopped() -> void:
 	animation_slider.reset()
 	step_counter = 0
 	n_steps = 0
+
+	quaternion = Util.equatorial_rotation
 
 ## Called by play_animation_slider._on_speed_up_btn_pressed
 func speed_up(value: int) -> void:

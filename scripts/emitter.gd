@@ -4,7 +4,7 @@ const RAY_LENGHT = 1000000
 
 var particle_scene := preload("res://scenes/particle.tscn")
 
-@onready var comet: MeshInstance3D = $"/root/World/CometMesh"
+# @onready var comet: MeshInstance3D = $"/root/World/CometMesh"
 
 var particles_alive: Array[Particle]
 var time_start: float
@@ -88,7 +88,7 @@ func _ready() -> void:
 	update_acceleration()
 
 	# get_parent().debug_sphere.global_position = global_transform.origin + norm * 0.5 * 3
-	print("albedo:%f p:%f d:%f D:%f  a:%.10f" % [Util.albedo, Util.particle_density, Util.particle_diameter, Util.sun_comet_distance, a])
+	# print("albedo:%f p:%f d:%f D:%f  a:%.10f" % [Util.albedo, Util.particle_density, Util.particle_diameter, Util.sun_comet_distance, a])
 
 func init_multimesh(multi_mesh_istance: MultiMeshInstance3D) -> void:
 	# init multimesh object
@@ -263,13 +263,12 @@ func tick_optimized(_n_iteration: int) -> void:
 		var parent_transform: Transform3D = Util.orbital_transformation
 		var new_transf := Transform3D(Basis(), global_positions[i])
 		# apply local transform to the multimesh instance
-		# print(Util.orbital_basis)
 		# mm_emitter.multimesh.set_instance_transform(i, new_transf)
 		mm_emitter.multimesh.set_instance_transform(i, parent_transform * new_transf)
 		
-		if _n_iteration == 0:
+		# if _n_iteration == 0:
 			# print("n_iter°:%f i:%f t°:%f a°:%f initialvelocity:%s  position:%s initialposition:%s\n" % [_n_iteration, i, time_passed, -a, str(initial_velocity_orb), str(global_positions[i]), str(initial_position_orb)])
-			print("n_iter°:%f i:%f t°:%f a°:%f  position:%s initialvelocity:%s initialposition:%s\n" % [_n_iteration, i, time_passed, -a, str(global_positions[i]), str(initial_velocity_orb), str(initial_position_orb)])
+			# print("n_iter°:%f i:%f t°:%f a°:%f  position:%s initialvelocity:%s initialposition:%s\n" % [_n_iteration, i, time_passed, -a, str(global_positions[i]), str(initial_velocity_orb), str(initial_position_orb)])
 		# if jet_id == 0 and i == mm_emitter.multimesh.visible_instance_count - 1 and _n_iteration < 500:
 		# if jet_id == 0 and _n_iteration == 5:
 		# 	# print("n_iter°:%f i:%f t°:%f a°:%f initialvelocity:%s  position:%s initialposition:%s\n" % [_n_iteration, i, time_passed, -a, str(initial_velocity_orb), str(global_positions[i]), str(initial_position_orb)])
@@ -294,8 +293,8 @@ func tick_optimized(_n_iteration: int) -> void:
 		global_positions.append(global_position)
 		initial_positions.append(global_position)
 		time_alive.append(0) # time alive is 0 at the beginning
-		if last_id - 1 == 0:
-			print("Global pos: %s Norm: %s Radius: %f\n" % [str(global_positions[last_id - 1]), str(norm), Util.comet_radius])
+		# if last_id - 1 == 0:
+		# 	print("Global pos: %s Norm: %s Radius: %f\n" % [str(global_positions[last_id - 1]), str(norm), Util.comet_radius])
 		particle_speeds.append(speed)
 		# spawn new particle at origin
 		# mm_emitter.multimesh.set_instance_transform(last_id - 1, Transform3D(Basis(), Vector3.ZERO))
