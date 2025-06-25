@@ -141,12 +141,12 @@ text = "Toggle Sun Axis"
 [node name="ToggleYBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 layout_mode = 2
 focus_mode = 0
-text = "Toggle Y"
+text = "Toggle Z"
 
 [node name="ToggleAxesBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 layout_mode = 2
 focus_mode = 0
-text = "Toggle X/Z"
+text = "Toggle X/Y"
 
 [node name="Spacer" type="Control" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 visible = false
@@ -1052,14 +1052,11 @@ offset_bottom = 220.0
 
 [node name="Label" type="Label" parent="Body/HelpPanel/BoxContainer"]
 layout_mode = 2
-text = "Right Click to rotate the view
-W/A/S/D to move around
-Q/E to go up/down
+text = "Right Click to rotate around the comet
 R to reset position to earth's view
-Ctrl+Wheel Up to increase movement speed
-Ctrl+Weel Down to decrease movement speed
+Ctrl+Wheel Up to increase zoom
+Ctrl+Weel Down to decrease zoom
 Shift while moving to move faster
-Alt while moving to move slower
 "
 
 [node name="DebugPanel" type="CanvasLayer" parent="Body"]
@@ -1127,15 +1124,17 @@ _rot_camera = NodePath("FreeRoamCamera")
 
 [node name="RotatingCamera" type="Camera3D" parent="Viewport/SubViewportContainer/SubViewport" groups=["camera"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
-visible = false
 current = true
 script = ExtResource("10_mj13f")
 starting_distance = 10.0
 max_distance = 50.0
+enabled = true
 
 [node name="FreeRoamCamera" type="Camera3D" parent="Viewport/SubViewportContainer/SubViewport" groups=["camera"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+visible = false
 script = ExtResource("11_0h1do")
+enabled = false
 
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/CometBtn" to="Body" method="_on_cometbtn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/JetsBtn" to="Body" method="_on_jetsbtn_pressed"]
