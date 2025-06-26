@@ -124,6 +124,21 @@ func _on_load_btn_pressed() -> void:
 	
 	file_explorer.visible = true
 
+func disable_btn(btn_name: String) -> void:
+	var btn := $TabButtons/ColorRect/HBoxContainer.get_node(btn_name)
+	if btn:
+		btn.disabled = true
+		btn.modulate = Color(0.5, 0.5, 0.5, 1)
+	else:
+		print("Button not found: ", name)
+func enable_btn(btn_name: String) -> void:
+	var btn := $TabButtons/ColorRect/HBoxContainer.get_node(btn_name)
+	if btn:
+		btn.disabled = false
+		btn.modulate = Color(1, 1, 1, 1)
+	else:
+		print("Button not found: ", name)
+
 func _on_screenshot_btn_pressed() -> void:
 	file_explorer.file_mode = FileDialog.FILE_MODE_SAVE_FILE
 	file_explorer.filters = ["*.png;Image File"]

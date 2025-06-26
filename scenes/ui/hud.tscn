@@ -27,7 +27,7 @@ offset_bottom = 0.7
 focus_mode = 2
 color = Color(0, 0.210733, 0.213576, 1)
 
-[node name="Body" type="CanvasLayer" parent="."]
+[node name="Body" type="CanvasLayer" parent="." groups=["disable", "enable"]]
 layer = 3
 script = ExtResource("1_r4m0t")
 

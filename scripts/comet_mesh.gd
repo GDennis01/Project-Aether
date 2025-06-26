@@ -162,6 +162,7 @@ func animation_started() -> void:
 			pass
 			
 	if animation_state == ANIMATION_STATE.STARTED:
+		get_tree().call_group("disable", "disable_btn", "LoadBtn")
 		# changing from equatorial to orbital system
 		Util.equatorial_rotation = quaternion
 
@@ -198,19 +199,22 @@ func animation_paused() -> void:
 
 ## Called by play_animation_slider._on_stop_btn_pressed
 func animation_stopped() -> void:
-	total_sim_time = 0
 	animation_state = ANIMATION_STATE.STOPPED
+
 	reset_rotation()
 	# delete all particles
 	for emitter: Emitter in get_tree().get_nodes_in_group("emitter"):
 		emitter.reset_particles()
 		emitter.update_norm()
 		emitter.reset_multimesh()
+
 	animation_slider.reset()
 	step_counter = 0
 	n_steps = 0
+	total_sim_time = 0
 
 	quaternion = Util.equatorial_rotation
+	get_tree().call_group("enable", "enable_btn", "LoadBtn")
 
 ## Called by play_animation_slider._on_speed_up_btn_pressed
 func speed_up(value: int) -> void:
