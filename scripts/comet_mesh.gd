@@ -174,7 +174,7 @@ func animation_started() -> void:
 		Util.orbital_transformation = transform
 
 		# resuming the rotation
-		# quaternion = Util.equatorial_rotation
+		quaternion = Util.equatorial_rotation
 		
 		starting_rotation = rotation
 		n_steps = int(num_rotation * frequency * 60 / jet_rate)

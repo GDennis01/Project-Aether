@@ -239,27 +239,29 @@ func tick_optimized(_n_iteration: int) -> void:
 			# TODO: capire come calcolare la forza del sole in base al tempo passato
 		# initial velocity of the particle which is equal to the normal direction multiplied by the speed
 		var initial_velocity: Vector3 = _normal_dir * speed
-		# var initial_velocity_orb: Vector3 = Util.convert_equatorial_to_orbital(initial_velocity)
 		var initial_velocity_orb: Vector3 = initial_velocity
-		
-		# var initial_position_orb: Vector3 = Util.convert_equatorial_to_orbital(initial_positions[i])
 		var initial_position_orb: Vector3 = initial_positions[i]
 		# time passed in seconds ( jet_rate is in minutes) obtained by multiplying how many ticks have passed
-		# var time_passed: float = (_n_iteration - i) * Util.jet_rate * 60.0
 		var time_passed: float = time_alive[i] * Util.jet_rate * 60.0
 		time_alive[i] += 1 # incrementing time alive of the particle
 
 		# Updating speed as V= V*t + 1/2*a*t^2 (classic form), a is negative since the acceleration is in the opposite direction(?). It's in m(eters)
-		# particle_speeds[i] = (speed * time_passed + 0.5 * a * (time_passed ** 2))
-		# # get_parent().debug_sphere.global_position = global_transform.origin + (_normal_dir + Util.sun_direction_vector).normalized() * 0.5 * 3
-		# global_positions[i] = initial_positions[i] + (_normal_dir + Util.sun_direction_vector).normalized() * particle_speeds[i] / (Util.scale / 1000)
-		global_positions[i].x = initial_position_orb.x + (initial_velocity_orb.x * time_passed) - (0.5 * a * (time_passed ** 2))
+		var sun_accel := 0.5 * a * (time_passed ** 2)
+		# sun_accel = 0
+		global_positions[i].x = initial_position_orb.x + (initial_velocity_orb.x * time_passed) - sun_accel
 		global_positions[i].y = initial_position_orb.y + (initial_velocity_orb.y * time_passed)
 		global_positions[i].z = initial_position_orb.z + (initial_velocity_orb.z * time_passed)
+		# if i == 0:
+		# 	print("t:%f a:%f speed:%s accel:%s" % [time_alive[i], a, str(initial_velocity_orb.x * time_passed), str(sun_accel)])
 		global_positions[i] = global_positions[i] / (Util.scale / 500) # scaling down
 		# global_positions[i] = Util.convert_orbital_to_geocentric(global_positions[i]) # converting to equatorial coordinates
 
 		# var new_transf := Transform3D(Util.orbital_basis, global_positions[i])
+		var new_basis := Basis()
+		new_basis.x = Vector3(0, 1, 0)
+		new_basis.y = Vector3(-1, 0, 0)
+		new_basis.z = Vector3(0, 0, 1)
+		var new_transf := Transform3D(new_basis, global_positions[i])
 		var parent_transform: Transform3D = Util.orbital_transformation
 		var new_transf := Transform3D(Basis(), global_positions[i])
 		# apply local transform to the multimesh instance
@@ -273,7 +275,7 @@ func tick_optimized(_n_iteration: int) -> void:
 		# if jet_id == 0 and _n_iteration == 5:
 		# 	# print("n_iter°:%f i:%f t°:%f a°:%f initialvelocity:%s  position:%s initialposition:%s\n" % [_n_iteration, i, time_passed, -a, str(initial_velocity_orb), str(global_positions[i]), str(initial_position_orb)])
 		# 	print("n_iter°:%f i:%f t°:%f a°:%f  position:%s\n" % [_n_iteration, i, time_passed, -a, str(global_positions[i])])
-			
+		
 		
 	# these three lines make so that the is_lit property is not computed based on raycasting but rather on sheer math
 	# var _is_lit: bool = is_lit_math(Util.sun_inclination, Util.sun_direction, Util.comet_direction, comet_rotation_angle)
@@ -289,9 +291,12 @@ func tick_optimized(_n_iteration: int) -> void:
 		# assign the normal direction to the particle
 		mm_emitter.multimesh.set_instance_custom_data(last_id - 1, Color(norm.x, norm.y, norm.z))
 		normal_dirs.append(norm)
+		var _initial_position := mm_emitter.global_position + norm * Util.comet_radius
+		# var _initial_position = global_position
 		# global_positions.append(mm_emitter.global_position + norm * Util.comet_radius)
 		global_positions.append(global_position)
-		initial_positions.append(global_position)
+		# initial_positions.append(global_position)
+		initial_positions.append(_initial_position)
 		time_alive.append(0) # time alive is 0 at the beginning
 		# if last_id - 1 == 0:
 		# 	print("Global pos: %s Norm: %s Radius: %f\n" % [str(global_positions[last_id - 1]), str(norm), Util.comet_radius])
