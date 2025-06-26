@@ -108,8 +108,7 @@ func _process(_delta: float) -> void:
 		ANIMATION_STATE.STARTED, ANIMATION_STATE.RESUMED:
 			if n_steps < 0:
 				animation_state = ANIMATION_STATE.STOPPED
-				if Util.equatorial_rotation:
-					quaternion = Util.equatorial_rotation
+				quaternion = Util.equatorial_rotation
 			else:
 				for _i in speed_sim:
 					tick(step_counter)
