@@ -285,13 +285,15 @@ func tick_optimized(_n_iteration: int) -> void:
 		var sun_accel_magnitude: float = 0.5 * a * (time_passed ** 2)
 		# --- 3. Change of Basis ---
 		var local_velocity := global_initial_velocity * new_basis
+		# var local_velocity = new_basis * global_initial_velocity
 		# --- 4. Calculate Displacement in the new space  ---
 		# X = V * t - 1/2 * a * t^2 	Y= V * t 	Z= V * t
 		var local_displacement := Vector3(local_velocity * time_passed)
 		local_displacement.x -= sun_accel_magnitude
 		# --- 5. Convert Local Displacement back to a Global Vector ---
 		# This gives us a single displacement vector in the main world space.
-		var global_displacement: Vector3 = new_basis * local_displacement
+		# .transposed() is used to convert the local displacement back to the global space.
+		var global_displacement: Vector3 = local_displacement * new_basis.transposed()
 		# --- 6. Calculate Final Global Position ---
 		var final_global_position: Vector3 = initial_positions[i] + global_displacement
 		# Apply your scaling factor
