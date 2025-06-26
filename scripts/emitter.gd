@@ -80,7 +80,7 @@ func _ready() -> void:
 	init_multimesh(mm_emitter)
 	add_child(mm_emitter)
 	mm_emitter.global_position = Vector3(0, 0, 0)
-	mm_emitter.basis = Util.orbital_basis
+	# mm_emitter.basis = Util.orbital_basis
 	# for top_level = true
 	# mm_emitter.global_position = global_position
 	
@@ -232,49 +232,79 @@ func set_number_particles(num: int) -> void:
 func tick_optimized(_n_iteration: int) -> void:
 	# moving each particle
 	# mm_emitter.quaternion = get_parent().global_transform.basis.get_rotation_quaternion()
+	var mm_global_inverse: Transform3D = mm_emitter.global_transform.affine_inverse()
 	for i in mm_emitter.multimesh.visible_instance_count:
-		# getting normal direction and converting it to vector3 since it's saved as a Color
+		#region old code
+		# # getting normal direction and converting it to vector3 since it's saved as a Color
+		# var _normal_dir_as_color := mm_emitter.multimesh.get_instance_custom_data(i) as Color
+		# var _normal_dir := Vector3(_normal_dir_as_color.r, _normal_dir_as_color.g, _normal_dir_as_color.b)
+		# var instance_transform := mm_emitter.multimesh.get_instance_transform(i)
+		# 	# TODO: capire come calcolare la forza del sole in base al tempo passato
+		# # initial velocity of the particle which is equal to the normal direction multiplied by the speed
+		# var initial_velocity: Vector3 = _normal_dir * speed
+		# var initial_velocity_orb: Vector3 = initial_velocity
+		# var initial_position_orb: Vector3 = initial_positions[i]
+		# var new_basis := Basis(Vector3(0, 1, 0), Vector3(-1, 0, 0), Vector3(0, 0, 1))
+		# # time passed in seconds ( jet_rate is in minutes) obtained by multiplying how many ticks have passed
+		# var time_passed: float = time_alive[i] * Util.jet_rate * 60.0
+		# time_alive[i] += 1 # incrementing time alive of the particle
+		# # Updating speed as V= V*t + 1/2*a*t^2 (classic form), a is negative since the acceleration is in the opposite direction(?). It's in m(eters)
+		# var sun_accel := 0.5 * a * (time_passed ** 2)
+		# # sun_accel = 0
+		# var new_pos: Vector3 = Vector3.ZERO
+		# new_pos.x = initial_position_orb.x + (initial_velocity_orb.x * time_passed) - sun_accel
+		# new_pos.y = initial_position_orb.y + (initial_velocity_orb.y * time_passed)
+		# new_pos.z = initial_position_orb.z + (initial_velocity_orb.z * time_passed)
+		# new_pos = new_pos / (Util.scale / 500) # scaling down
+		# new_pos = new_pos * new_basis # applying the new basis to the position
+		# var delta: Vector3 = new_pos - instance_transform.origin
+		# # istance_transform.
+		# # global_positions[i].x = initial_position_orb.x + (initial_velocity_orb.x * time_passed) - sun_accel
+		# # global_positions[i].y = initial_position_orb.y + (initial_velocity_orb.y * time_passed)
+		# # global_positions[i].z = initial_position_orb.z + (initial_velocity_orb.z * time_passed)
+		# # global_positions[i] = global_positions[i] / (Util.scale / 500) # scaling down
+		# # var new_transf := Transform3D(Util.orbital_basis, global_positions[i])
+		# instance_transform.origin += delta # updating the position of the particle
+		# var new_transf := Transform3D(new_basis, global_positions[i])
+		# var parent_transform: Transform3D = Util.orbital_transformation
+		# # var new_transf := Transform3D(Basis(), global_positions[i])
+		# # apply local transform to the multimesh instance
+		# # mm_emitter.multimesh.set_instance_transform(i, new_transf)
+		# mm_emitter.multimesh.set_instance_transform(i, instance_transform)
+		# # mm_emitter.multimesh.set_instance_transform(i, parent_transform * new_transf)
+		#endregion old code
+		# --- 1. Get Particle-Specific Data ---
 		var _normal_dir_as_color := mm_emitter.multimesh.get_instance_custom_data(i) as Color
 		var _normal_dir := Vector3(_normal_dir_as_color.r, _normal_dir_as_color.g, _normal_dir_as_color.b)
-			# TODO: capire come calcolare la forza del sole in base al tempo passato
-		# initial velocity of the particle which is equal to the normal direction multiplied by the speed
-		var initial_velocity: Vector3 = _normal_dir * speed
-		var initial_velocity_orb: Vector3 = initial_velocity
-		var initial_position_orb: Vector3 = initial_positions[i]
-		# time passed in seconds ( jet_rate is in minutes) obtained by multiplying how many ticks have passed
+		var new_basis := Basis(Vector3(0, 1, 0), Vector3(-1, 0, 0), Vector3(0, 0, 1))
+		new_basis = Util.orbital_basis
 		var time_passed: float = time_alive[i] * Util.jet_rate * 60.0
-		time_alive[i] += 1 # incrementing time alive of the particle
+		time_alive[i] += 1
+		# --- 2. Calculate Initial Global Velocity and Acceleration Term  in the global space ---
+		var global_initial_velocity: Vector3 = _normal_dir * speed
+		var sun_accel_magnitude: float = 0.5 * a * (time_passed ** 2)
+		# --- 3. Change of Basis ---
+		var local_velocity := global_initial_velocity * new_basis
+		# --- 4. Calculate Displacement in the new space  ---
+		# X = V * t - 1/2 * a * t^2 	Y= V * t 	Z= V * t
+		var local_displacement := Vector3(local_velocity * time_passed)
+		local_displacement.x -= sun_accel_magnitude
+		# --- 5. Convert Local Displacement back to a Global Vector ---
+		# This gives us a single displacement vector in the main world space.
+		var global_displacement: Vector3 = new_basis * local_displacement
+		# --- 6. Calculate Final Global Position ---
+		var final_global_position: Vector3 = initial_positions[i] + global_displacement
+		# Apply your scaling factor
+		var scaled_final_pos := final_global_position / (Util.scale / 500)
+		# --- 7. Create the Final Transform and Set it ---
+		var final_global_transform := Transform3D(new_basis, scaled_final_pos)
 
-		# Updating speed as V= V*t + 1/2*a*t^2 (classic form), a is negative since the acceleration is in the opposite direction(?). It's in m(eters)
-		var sun_accel := 0.5 * a * (time_passed ** 2)
-		# sun_accel = 0
-		global_positions[i].x = initial_position_orb.x + (initial_velocity_orb.x * time_passed) - sun_accel
-		global_positions[i].y = initial_position_orb.y + (initial_velocity_orb.y * time_passed)
-		global_positions[i].z = initial_position_orb.z + (initial_velocity_orb.z * time_passed)
-		# if i == 0:
-		# 	print("t:%f a:%f speed:%s accel:%s" % [time_alive[i], a, str(initial_velocity_orb.x * time_passed), str(sun_accel)])
-		global_positions[i] = global_positions[i] / (Util.scale / 500) # scaling down
-		# global_positions[i] = Util.convert_orbital_to_geocentric(global_positions[i]) # converting to equatorial coordinates
-
-		# var new_transf := Transform3D(Util.orbital_basis, global_positions[i])
-		var new_basis := Basis()
-		new_basis.x = Vector3(0, 1, 0)
-		new_basis.y = Vector3(-1, 0, 0)
-		new_basis.z = Vector3(0, 0, 1)
-		var new_transf := Transform3D(new_basis, global_positions[i])
-		var parent_transform: Transform3D = Util.orbital_transformation
-		var new_transf := Transform3D(Basis(), global_positions[i])
-		# apply local transform to the multimesh instance
-		# mm_emitter.multimesh.set_instance_transform(i, new_transf)
-		mm_emitter.multimesh.set_instance_transform(i, parent_transform * new_transf)
+		# `set_instance_transform` requires the transform to be LOCAL to the MultiMeshInstance3D node.
+		# We convert our desired global transform into a local one.
+		# var instance_local_transform := mm_global_inverse * final_global_transform
+		var instance_local_transform := final_global_transform
 		
-		# if _n_iteration == 0:
-			# print("n_iter°:%f i:%f t°:%f a°:%f initialvelocity:%s  position:%s initialposition:%s\n" % [_n_iteration, i, time_passed, -a, str(initial_velocity_orb), str(global_positions[i]), str(initial_position_orb)])
-			# print("n_iter°:%f i:%f t°:%f a°:%f  position:%s initialvelocity:%s initialposition:%s\n" % [_n_iteration, i, time_passed, -a, str(global_positions[i]), str(initial_velocity_orb), str(initial_position_orb)])
-		# if jet_id == 0 and i == mm_emitter.multimesh.visible_instance_count - 1 and _n_iteration < 500:
-		# if jet_id == 0 and _n_iteration == 5:
-		# 	# print("n_iter°:%f i:%f t°:%f a°:%f initialvelocity:%s  position:%s initialposition:%s\n" % [_n_iteration, i, time_passed, -a, str(initial_velocity_orb), str(global_positions[i]), str(initial_position_orb)])
-		# 	print("n_iter°:%f i:%f t°:%f a°:%f  position:%s\n" % [_n_iteration, i, time_passed, -a, str(global_positions[i])])
+		mm_emitter.multimesh.set_instance_transform(i, instance_local_transform)
 		
 		
 	# these three lines make so that the is_lit property is not computed based on raycasting but rather on sheer math
@@ -302,8 +332,8 @@ func tick_optimized(_n_iteration: int) -> void:
 		# 	print("Global pos: %s Norm: %s Radius: %f\n" % [str(global_positions[last_id - 1]), str(norm), Util.comet_radius])
 		particle_speeds.append(speed)
 		# spawn new particle at origin
-		# mm_emitter.multimesh.set_instance_transform(last_id - 1, Transform3D(Basis(), Vector3.ZERO))
-		mm_emitter.multimesh.set_instance_transform(last_id - 1, Transform3D(Util.orbital_basis, global_positions[last_id - 1]))
+		mm_emitter.multimesh.set_instance_transform(last_id - 1, Transform3D(Basis(Vector3.UP, Vector3.LEFT, Vector3.FORWARD), Vector3.ZERO))
+		# mm_emitter.multimesh.set_instance_transform(last_id - 1, Transform3D(Util.orbital_basis, global_positions[last_id - 1]))
 	update_norm()
 
 ## Computes acceleration(in m/s^2) based on particle density, particle radius, particle albedo, solar pressure etc
