@@ -128,7 +128,6 @@ focus_mode = 0
 text = "Change Camera"
 
 [node name="FullViewportBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
-visible = false
 layout_mode = 2
 focus_mode = 0
 text = "FullViewport"
@@ -1124,6 +1123,7 @@ _rot_camera = NodePath("FreeRoamCamera")
 
 [node name="RotatingCamera" type="Camera3D" parent="Viewport/SubViewportContainer/SubViewport" groups=["camera"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+keep_aspect = 0
 current = true
 script = ExtResource("10_mj13f")
 starting_distance = 10.0
