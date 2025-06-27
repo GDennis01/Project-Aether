@@ -104,7 +104,7 @@ func init_multimesh(multi_mesh_istance: MultiMeshInstance3D) -> void:
 	multi_mesh_istance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	multi_mesh_istance.gi_mode = GeometryInstance3D.GI_MODE_DISABLED
 	multi_mesh_istance.lod_bias = 0.0001
-	multi_mesh_istance.ignore_occlusion_culling = false
+	multi_mesh_istance.ignore_occlusion_culling = true
 	mm_emitter.top_level = true
 	# mm_emitter.global_position = Vector3(0, 0, 0)
 	
