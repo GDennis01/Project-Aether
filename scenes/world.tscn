@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bqxoxn8bpfcfa"]
+[gd_scene load_steps=21 format=3 uid="uid://bqxoxn8bpfcfa"]
 
 [ext_resource type="Texture2D" uid="uid://ci05lu7s7pmon" path="res://textures/rock_wall_13_diff_4k.png" id="1_gtgs4"]
 [ext_resource type="Script" uid="uid://dsimhylkxu4no" path="res://scripts/world_manager.gd" id="1_wu602"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://cen3wnntogdjt" path="res://textures/rock_wall_13_rough_4k.png" id="3_kdodi"]
 [ext_resource type="Script" uid="uid://cdbhqjf33rsg1" path="res://scripts/comet_mesh.gd" id="4_yu4gv"]
 [ext_resource type="Shader" uid="uid://ccpharluyb1qa" path="res://shaders/sphere.gdshader" id="6_4mrxx"]
+[ext_resource type="Script" uid="uid://cpk1wpjbu8gth" path="res://scripts/arrow_drawer.gd" id="8_4mrxx"]
 
 [sub_resource type="Environment" id="Environment_7r4gi"]
 
@@ -50,6 +51,8 @@ shader_parameter/line_thickness = 0.068
 [sub_resource type="SphereMesh" id="SphereMesh_4mrxx"]
 radius = 0.1
 height = 0.2
+
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_7r4gi"]
 
 [node name="World" type="WorldEnvironment"]
 environment = SubResource("Environment_7r4gi")
@@ -113,3 +116,7 @@ sky_mode = 1
 [node name="DebugRotationSphere" type="MeshInstance3D" parent="."]
 visible = false
 mesh = SubResource("SphereMesh_4mrxx")
+
+[node name="ArrowDrawer" type="MeshInstance3D" parent="."]
+mesh = SubResource("ImmediateMesh_7r4gi")
+script = ExtResource("8_4mrxx")

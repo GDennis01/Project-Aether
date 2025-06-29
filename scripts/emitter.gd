@@ -10,7 +10,6 @@ var particles_alive: Array[Particle]
 var time_start: float
 var time_now: float
 var _sphere_mesh: SphereMesh
-var comet_radius: float
 
 # properties of emitter/jet_entry
 var jet_id: int
@@ -138,18 +137,25 @@ func _physics_process(_delta: float) -> void:
 	# Così almeno non si bugga all'inizio alla prima iterazione
 	# Oppure convertire tutto sto processo in un metodo e richiamarlo al ready per settare
 	# lo stato iniziale di is_lit
-	if not is_lit and result.is_empty():
-		#enabled = true
-		#print("LIT\n")
-		is_lit = true
+	## Raycasting-based solution
+	# if not is_lit and result.is_empty():
+	# 	#enabled = true
+	# 	#print("LIT\n")
+	# 	is_lit = true
+	# 	$Particle.get_surface_override_material(0).albedo_color = Color.WHITE
+	# elif is_lit and not result.is_empty():
+	# 	is_lit = false
+	# 	#print("NOT LIT\n"+str(result))
+	# 	$Particle.get_surface_override_material(0).albedo_color = Color.RED
+
+	## Dotproduct-based solution
+	is_lit = is_lit_math()
+	if is_lit:
 		$Particle.get_surface_override_material(0).albedo_color = Color.WHITE
-	elif is_lit and not result.is_empty():
-		is_lit = false
-		#print("NOT LIT\n"+str(result))
+	else:
 		$Particle.get_surface_override_material(0).albedo_color = Color.RED
-	#else:
-	#print(result)
-		#enabled = false
+
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 
 ## Get the longitudinal angle given the angle between the comet inclination rotation angle and the sun inclination angle
@@ -190,20 +196,16 @@ func _get_longitude_angle(sun_comet_angle: float) -> float:
 ## Returns whether the emitter is lit by the sun or not, 
 ## based on sun inclination and direction angle, comet inclination and comet current rotation angle
 ## FIXME: probably this doesn't work properly
-func is_lit_math(sun_incl: float, sun_dir: float, comet_dir: float, comet_rotation_angle: float) -> bool:
-	# var sun_comet_angle: float = absf(sun_dir - comet_dir)
-	var sun_comet_angle: float = absf(fmod(comet_dir - sun_dir, 180.0))
-	var longitude_angle: float = _get_longitude_angle(sun_comet_angle)
-
-
-	var angle_comet_sun: float = absf(comet_rotation_angle - sun_dir)
-	print("sun_comet_angle %f Longitude angle %f Angle comet sun %f" % [sun_comet_angle, longitude_angle, angle_comet_sun])
-	print("Comet rotation angle:%s Comet direction:%s Sun inclination:%s Sun dir:%s" % [str(comet_rotation_angle), str(comet_dir), str(sun_incl), str(sun_dir)])
-	print()
-	if angle_comet_sun <= (90 + longitude_angle) or angle_comet_sun >= 180 - (90 + longitude_angle):
-		return true
-	else:
-		return false
+func is_lit_math() -> bool:
+	var comet_basis: Basis = get_parent().global_transform.basis
+	var global_space_normal: Vector3 = comet_basis * norm
+	# var global_space_normal: Vector3 = comet_basis * norm
+	global_space_normal = global_space_normal.normalized().rotated(Vector3.LEFT, deg_to_rad(Util.sun_direction + 90))
+	var result: float = (Util.sun_direction_vector).dot(global_space_normal)
+	# print("Result: %f Result<0: %s" % [result, str(result > 0)])
+	result = (-Util.sun_direction_vector).dot(norm)
+	is_lit = result > 0
+	return is_lit
 
 func tick() -> void:
 	# trigger tick() on every particles alive
@@ -313,7 +315,7 @@ func tick_optimized(_n_iteration: int) -> void:
 	# var _is_lit: bool = is_lit_math(Util.sun_inclination, Util.sun_direction, Util.comet_direction, comet_rotation_angle)
 	# if _is_lit:
 	# whether to spawn a new particle or not
-	if is_lit:
+	if is_lit_math():
 		# incrementing number of maximum drawn particles (to simulate spawning them)
 		var last_id := mm_emitter.multimesh.visible_instance_count + 1
 		if last_id < mm_emitter.multimesh.instance_count:
@@ -399,7 +401,7 @@ func destroy_multimesh() -> void:
 ###################################################################################
 #region update methods
 func update_position(radius: float) -> void:
-	var new_pos := Util.latlon_to_vector3(latitude, longitude + 90, radius)
+	var new_pos := Util.latlon_to_vector3(latitude, longitude, radius)
 	position = new_pos
 func update_speed(_speed: float) -> void:
 	if Util.PRINT_UPDATE_METHOD: print("Updated speed:%f"%_speed)
@@ -408,14 +410,14 @@ func update_speed(_speed: float) -> void:
 func update_lat(lat: float) -> void:
 	if Util.PRINT_UPDATE_METHOD: print("Updated lat:%f"%lat)
 	latitude = lat
-	var new_pos := Util.latlon_to_vector3(latitude, longitude, comet_radius)
+	var new_pos := Util.latlon_to_vector3(latitude, longitude, Util.comet_radius)
 	position = new_pos
 	update_initial_norm(latitude, longitude)
 	# get_parent().debug_sphere.global_position = global_transform.origin + norm * 0.5 * 3
 func update_long(long: float) -> void:
 	if Util.PRINT_UPDATE_METHOD: print("Updated long:%f"%long)
 	longitude = long + 90
-	var new_pos := Util.latlon_to_vector3(latitude, longitude, comet_radius)
+	var new_pos := Util.latlon_to_vector3(latitude, longitude, Util.comet_radius)
 	position = new_pos
 	update_initial_norm(latitude, longitude)
 	# get_parent().debug_sphere.global_position = global_transform.origin + norm * 0.5 * 3
