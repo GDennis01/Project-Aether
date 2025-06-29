@@ -234,7 +234,6 @@ func spawn_emitter_at(latitude: float, longitude: float, emitter: Emitter) -> vo
 	emitter.position = emitter_pos
 	emitter.enabled = rotation_enabled
 	emitter.comet_collider = comet_collider
-	emitter.comet_radius = mesh.radius
 	emitter.light_source = light_source
 	emitter.add_to_group("emitter")
 	add_child(emitter)
@@ -281,6 +280,7 @@ func update_radius(value: float) -> void:
 		z_axis.set_height(mesh.height)
 	# update position and size of sun axis
 	get_tree().call_group("sun", "update_sun_axis", value * 2)
+	print("calling update_position on emitter")
 	get_tree().call_group("emitter", "update_position", value)
 ## Deprecated
 func update_height(value: float) -> void:
@@ -376,3 +376,4 @@ func update_comet_orientation() -> void:
 	direction = direction.rotated(Vector3.LEFT, deg_to_rad(-90))
 	# debug_sphere.global_position = global_transform.origin + direction * mesh.radius * 3
 	point_y_axis_toward(global_transform.origin + direction)
+	get_tree().call_group("emitter", "update_norm")
