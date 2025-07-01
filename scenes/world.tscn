@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bqxoxn8bpfcfa"]
+[gd_scene load_steps=20 format=3 uid="uid://bqxoxn8bpfcfa"]
 
 [ext_resource type="Texture2D" uid="uid://ci05lu7s7pmon" path="res://textures/rock_wall_13_diff_4k.png" id="1_gtgs4"]
 [ext_resource type="Script" uid="uid://dsimhylkxu4no" path="res://scripts/world_manager.gd" id="1_wu602"]
@@ -9,6 +9,7 @@
 [ext_resource type="Shader" uid="uid://ccpharluyb1qa" path="res://shaders/sphere.gdshader" id="6_4mrxx"]
 
 [sub_resource type="Environment" id="Environment_7r4gi"]
+background_mode = 1
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_t5g0g"]
 
@@ -51,6 +52,8 @@ shader_parameter/line_thickness = 0.068
 radius = 0.1
 height = 0.2
 
+[sub_resource type="PointMesh" id="PointMesh_i7141"]
+
 [node name="World" type="WorldEnvironment"]
 environment = SubResource("Environment_7r4gi")
 camera_attributes = SubResource("CameraAttributesPractical_t5g0g")
@@ -77,6 +80,7 @@ mesh = SubResource("SphereMesh_i7141")
 
 [node name="Ground" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -16.47, 0)
+visible = false
 mesh = SubResource("PlaneMesh_hg46x")
 surface_material_override/0 = SubResource("StandardMaterial3D_bjs0p")
 
@@ -113,3 +117,8 @@ sky_mode = 1
 [node name="DebugRotationSphere" type="MeshInstance3D" parent="."]
 visible = false
 mesh = SubResource("SphereMesh_4mrxx")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.797422, 7.27555)
+visible = false
+mesh = SubResource("PointMesh_i7141")

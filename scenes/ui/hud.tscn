@@ -323,7 +323,6 @@ scale = Vector2(0.85, 0.85)
 text = "1.0"
 resize_type = &"sun_comet_distance"
 higher_bound = 10.0
-no_decimal = false
 metadata/_edit_use_anchors_ = true
 
 [node name="SunCometDistLabel" type="Label" parent="Body/CometTab/Control"]
@@ -354,7 +353,6 @@ scale = Vector2(0.85, 0.85)
 text = "1.0"
 resize_type = &"albedo"
 higher_bound = 1.0
-no_decimal = false
 metadata/_edit_use_anchors_ = true
 
 [node name="AlbedoLabel" type="Label" parent="Body/CometTab/Control"]
@@ -384,7 +382,6 @@ scale = Vector2(0.85, 0.85)
 text = "1.0"
 resize_type = &"particle_diameter"
 higher_bound = 1.0
-no_decimal = false
 metadata/_edit_use_anchors_ = true
 
 [node name="ParticleDiameterLabel" type="Label" parent="Body/CometTab/Control"]
@@ -414,7 +411,6 @@ scale = Vector2(0.85, 0.85)
 text = "1.0"
 resize_type = &"particle_density"
 higher_bound = 2.0
-no_decimal = false
 metadata/_edit_use_anchors_ = true
 
 [node name="ParticleDensityLabel" type="Label" parent="Body/CometTab/Control"]
@@ -625,7 +621,6 @@ text = "1.0"
 resize_type = &"frequency"
 lower_bound = 0.1
 higher_bound = -1.0
-no_decimal = false
 
 [node name="NumRotationEdit" parent="Body/SimTab/Control" instance=ExtResource("6_oj5la")]
 layout_mode = 1
@@ -641,7 +636,6 @@ text = "1.0"
 resize_type = &"num_rotation"
 lower_bound = 0.1
 higher_bound = -1.0
-no_decimal = false
 
 [node name="JetRateEdit" parent="Body/SimTab/Control" instance=ExtResource("6_oj5la")]
 layout_mode = 1
@@ -657,7 +651,6 @@ text = "1.0"
 resize_type = &"jet_rate"
 lower_bound = 0.5
 higher_bound = -1.0
-no_decimal = false
 
 [node name="KmScaleEdit" parent="Body/SimTab/Control" instance=ExtResource("6_oj5la")]
 visible = false
@@ -673,7 +666,6 @@ offset_bottom = 22.996
 resize_type = &"_scale"
 lower_bound = 1.0
 higher_bound = 1e+06
-no_decimal = false
 
 [node name="IEdit" parent="Body/SimTab/Control" instance=ExtResource("6_oj5la")]
 visible = false
@@ -689,7 +681,6 @@ offset_bottom = 31.004
 resize_type = &"i"
 lower_bound = 0.1
 higher_bound = -1.0
-no_decimal = false
 
 [node name="PhiEdit" parent="Body/SimTab/Control" instance=ExtResource("6_oj5la")]
 visible = false
@@ -705,7 +696,6 @@ offset_bottom = 30.997
 resize_type = &"phi"
 lower_bound = 0.1
 higher_bound = -1.0
-no_decimal = false
 
 [node name="TrueAnomalyEdit" parent="Body/SimTab/Control" instance=ExtResource("6_oj5la")]
 visible = false
@@ -721,7 +711,6 @@ offset_bottom = 31.001
 resize_type = &"true_anomaly"
 lower_bound = 0.1
 higher_bound = -1.0
-no_decimal = false
 
 [node name="FrequencyLabel" type="Label" parent="Body/SimTab/Control"]
 layout_mode = 1
@@ -873,7 +862,6 @@ offset_right = 243.56
 offset_bottom = 123.04
 resize_type = &"delta_au"
 higher_bound = 1000.0
-no_decimal = false
 
 [node name="TelResolutionlabel" type="Label" parent="Body/ScaleTab/Control"]
 layout_mode = 0
@@ -894,7 +882,6 @@ offset_right = 243.56
 offset_bottom = 163.04
 resize_type = &"tel_resolution"
 higher_bound = 1000.0
-no_decimal = false
 
 [node name="TelImageSizeLabel" type="Label" parent="Body/ScaleTab/Control"]
 layout_mode = 0
@@ -942,7 +929,6 @@ text = "14.4"
 resize_type = &"window_fov"
 lower_bound = 1.0
 higher_bound = 1000.0
-no_decimal = false
 
 [node name="WindowSizeLabel" type="Label" parent="Body/ScaleTab/Control"]
 visible = false

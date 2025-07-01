@@ -1,6 +1,8 @@
 extends Node3D
 class_name Emitter
 const RAY_LENGHT = 1000000
+# const N_POINTS = 50
+const N_POINTS = 0
 
 var particle_scene := preload("res://scenes/particle.tscn")
 
@@ -10,6 +12,8 @@ var particles_alive: Array[Particle]
 var time_start: float
 var time_now: float
 var _sphere_mesh: SphereMesh
+# var _box_mesh: BoxMesh
+var _point_mesh: PointMesh
 
 # properties of emitter/jet_entry
 var jet_id: int
@@ -63,6 +67,17 @@ func _ready() -> void:
 	_sphere_mesh.radial_segments = 4
 	_sphere_mesh.rings = 2
 
+	_point_mesh = PointMesh.new()
+	unshaded_material.use_point_size = true
+	unshaded_material.point_size = particle_radius / 2
+	
+	_point_mesh.surface_set_material(0, unshaded_material)
+	
+	# _box_mesh = BoxMesh.new()
+	# _box_mesh.size = Vector3(particle_radius, particle_radius, particle_radius)
+	# _box_mesh.surface_set_material(0, unshaded_material)
+	# to reduce the polygons
+
 	longitude += 90 # longitude is shifted by 90°
 
 	var lat_rad := deg_to_rad(latitude)
@@ -99,7 +114,10 @@ func init_multimesh(multi_mesh_istance: MultiMeshInstance3D) -> void:
 	multi_mesh_istance.multimesh.instance_count = 1000
 	multi_mesh_istance.multimesh.visible_instance_count = 0 # 0 so no particles are shown at the beginning
 	# setting particle radius
-	multi_mesh_istance.multimesh.mesh = _sphere_mesh
+	multi_mesh_istance.multimesh.mesh = _point_mesh
+	# multi_mesh_istance.multimesh.mesh = _sphere_mesh
+	# multi_mesh_istance.multimesh.mesh = _box_mesh
+
 	multi_mesh_istance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	multi_mesh_istance.gi_mode = GeometryInstance3D.GI_MODE_DISABLED
 	multi_mesh_istance.lod_bias = 0.0001
@@ -229,116 +247,101 @@ func tick() -> void:
 
 #region Multimesh related
 func set_number_particles(num: int) -> void:
-	num_particles = num
+	if N_POINTS > 0:
+		num_particles = num * N_POINTS
+	else:
+		num_particles = num
 	mm_emitter.multimesh.instance_count = num_particles
 func tick_optimized(_n_iteration: int) -> void:
 	# moving each particle
-	# mm_emitter.quaternion = get_parent().global_transform.basis.get_rotation_quaternion()
-	var mm_global_inverse: Transform3D = mm_emitter.global_transform.affine_inverse()
 	for i in mm_emitter.multimesh.visible_instance_count:
-		#region old code
-		# # getting normal direction and converting it to vector3 since it's saved as a Color
-		# var _normal_dir_as_color := mm_emitter.multimesh.get_instance_custom_data(i) as Color
-		# var _normal_dir := Vector3(_normal_dir_as_color.r, _normal_dir_as_color.g, _normal_dir_as_color.b)
-		# var instance_transform := mm_emitter.multimesh.get_instance_transform(i)
-		# 	# TODO: capire come calcolare la forza del sole in base al tempo passato
-		# # initial velocity of the particle which is equal to the normal direction multiplied by the speed
-		# var initial_velocity: Vector3 = _normal_dir * speed
-		# var initial_velocity_orb: Vector3 = initial_velocity
-		# var initial_position_orb: Vector3 = initial_positions[i]
-		# var new_basis := Basis(Vector3(0, 1, 0), Vector3(-1, 0, 0), Vector3(0, 0, 1))
-		# # time passed in seconds ( jet_rate is in minutes) obtained by multiplying how many ticks have passed
-		# var time_passed: float = time_alive[i] * Util.jet_rate * 60.0
-		# time_alive[i] += 1 # incrementing time alive of the particle
-		# # Updating speed as V= V*t + 1/2*a*t^2 (classic form), a is negative since the acceleration is in the opposite direction(?). It's in m(eters)
-		# var sun_accel := 0.5 * a * (time_passed ** 2)
-		# # sun_accel = 0
-		# var new_pos: Vector3 = Vector3.ZERO
-		# new_pos.x = initial_position_orb.x + (initial_velocity_orb.x * time_passed) - sun_accel
-		# new_pos.y = initial_position_orb.y + (initial_velocity_orb.y * time_passed)
-		# new_pos.z = initial_position_orb.z + (initial_velocity_orb.z * time_passed)
-		# new_pos = new_pos / (Util.scale / 500) # scaling down
-		# new_pos = new_pos * new_basis # applying the new basis to the position
-		# var delta: Vector3 = new_pos - instance_transform.origin
-		# # istance_transform.
-		# # global_positions[i].x = initial_position_orb.x + (initial_velocity_orb.x * time_passed) - sun_accel
-		# # global_positions[i].y = initial_position_orb.y + (initial_velocity_orb.y * time_passed)
-		# # global_positions[i].z = initial_position_orb.z + (initial_velocity_orb.z * time_passed)
-		# # global_positions[i] = global_positions[i] / (Util.scale / 500) # scaling down
-		# # var new_transf := Transform3D(Util.orbital_basis, global_positions[i])
-		# instance_transform.origin += delta # updating the position of the particle
-		# var new_transf := Transform3D(new_basis, global_positions[i])
-		# var parent_transform: Transform3D = Util.orbital_transformation
-		# # var new_transf := Transform3D(Basis(), global_positions[i])
-		# # apply local transform to the multimesh instance
-		# # mm_emitter.multimesh.set_instance_transform(i, new_transf)
-		# mm_emitter.multimesh.set_instance_transform(i, instance_transform)
-		# # mm_emitter.multimesh.set_instance_transform(i, parent_transform * new_transf)
-		#endregion old code
-		# --- 1. Get Particle-Specific Data ---
-		var _normal_dir_as_color := mm_emitter.multimesh.get_instance_custom_data(i) as Color
-		var _normal_dir := Vector3(_normal_dir_as_color.r, _normal_dir_as_color.g, _normal_dir_as_color.b)
-		var new_basis := Basis(Vector3(0, 1, 0), Vector3(-1, 0, 0), Vector3(0, 0, 1))
-		new_basis = Util.orbital_basis
-		var time_passed: float = time_alive[i] * Util.jet_rate * 60.0
-		time_alive[i] += 1
-		# --- 2. Calculate Initial Global Velocity and Acceleration Term  in the global space ---
-		var global_initial_velocity: Vector3 = _normal_dir * speed
-		var sun_accel_magnitude: float = 0.5 * a * (time_passed ** 2)
-		# --- 3. Change of Basis ---
-		var local_velocity := global_initial_velocity * new_basis
-		# var local_velocity = new_basis * global_initial_velocity
-		# --- 4. Calculate Displacement in the new space  ---
-		# X = V * t - 1/2 * a * t^2 	Y= V * t 	Z= V * t
-		var local_displacement := Vector3(local_velocity * time_passed)
-		local_displacement.x -= sun_accel_magnitude
-		# --- 5. Convert Local Displacement back to a Global Vector ---
-		# This gives us a single displacement vector in the main world space.
-		# .transposed() is used to convert the local displacement back to the global space.
-		var global_displacement: Vector3 = local_displacement * new_basis.transposed()
-		# --- 6. Calculate Final Global Position ---
-		var final_global_position: Vector3 = initial_positions[i] + global_displacement
-		# Apply your scaling factor
-		var scaled_final_pos := final_global_position / (Util.scale / 500)
-		# --- 7. Create the Final Transform and Set it ---
-		var final_global_transform := Transform3D(new_basis, scaled_final_pos)
+		# print("Visible Instance Count: %d" % mm_emitter.multimesh.visible_instance_count)
+		## accelerating only main particles, so every N_POINTS-th particle
+		_accelerate_particle(i + N_POINTS)
+		# _generate_diffusion_particles(i)
 
-		# `set_instance_transform` requires the transform to be LOCAL to the MultiMeshInstance3D node.
-		# We convert our desired global transform into a local one.
-		# var instance_local_transform := mm_global_inverse * final_global_transform
-		var instance_local_transform := final_global_transform
-		
-		mm_emitter.multimesh.set_instance_transform(i, instance_local_transform)
-		
-		
-	# these three lines make so that the is_lit property is not computed based on raycasting but rather on sheer math
-	# var _is_lit: bool = is_lit_math(Util.sun_inclination, Util.sun_direction, Util.comet_direction, comet_rotation_angle)
 	# if _is_lit:
 	# whether to spawn a new particle or not
 	if is_lit_math():
+		# print("Entered here")
 		# incrementing number of maximum drawn particles (to simulate spawning them)
-		var last_id := mm_emitter.multimesh.visible_instance_count + 1
+		var last_id := mm_emitter.multimesh.visible_instance_count + 1 + N_POINTS
 		if last_id < mm_emitter.multimesh.instance_count:
 			mm_emitter.multimesh.visible_instance_count = last_id
-		# change color of particle based on emitter color
-		mm_emitter.multimesh.set_instance_color(last_id - 1, color)
-		# assign the normal direction to the particle
-		mm_emitter.multimesh.set_instance_custom_data(last_id - 1, Color(norm.x, norm.y, norm.z))
-		normal_dirs.append(norm)
-		var _initial_position := mm_emitter.global_position + norm * Util.comet_radius
-		# var _initial_position = global_position
-		# global_positions.append(mm_emitter.global_position + norm * Util.comet_radius)
-		global_positions.append(global_position)
-		# initial_positions.append(global_position)
-		initial_positions.append(_initial_position)
-		time_alive.append(0) # time alive is 0 at the beginning
-		# if last_id - 1 == 0:
-		# 	print("Global pos: %s Norm: %s Radius: %f\n" % [str(global_positions[last_id - 1]), str(norm), Util.comet_radius])
-		particle_speeds.append(speed)
-		# spawn new particle at origin
-		mm_emitter.multimesh.set_instance_transform(last_id - 1, Transform3D(Basis(Vector3.UP, Vector3.LEFT, Vector3.FORWARD), Vector3.ZERO))
-		# mm_emitter.multimesh.set_instance_transform(last_id - 1, Transform3D(Util.orbital_basis, global_positions[last_id - 1]))
+		_spawn_particle(last_id)
 	update_norm()
+
+func _accelerate_particle(i: int) -> void:
+	# --- 1. Get Particle-Specific Data ---
+	var _normal_dir_as_color := mm_emitter.multimesh.get_instance_custom_data(i) as Color
+	var _normal_dir := Vector3(_normal_dir_as_color.r, _normal_dir_as_color.g, _normal_dir_as_color.b)
+	var new_basis := Basis(Vector3(0, 1, 0), Vector3(-1, 0, 0), Vector3(0, 0, 1))
+	new_basis = Util.orbital_basis
+	var time_passed: float = time_alive[i] * Util.jet_rate * 60.0
+	time_alive[i] += 1
+	# --- 2. Calculate Initial Global Velocity and Acceleration Term  in the global space ---
+	var global_initial_velocity: Vector3 = _normal_dir * speed
+	var sun_accel_magnitude: float = 0.5 * a * (time_passed ** 2)
+	# --- 3. Change of Basis ---
+	var local_velocity := global_initial_velocity * new_basis
+	# --- 4. Calculate Displacement in the new space  ---
+	# X = V * t - 1/2 * a * t^2 	Y= V * t 	Z= V * t
+	var local_displacement := Vector3(local_velocity * time_passed)
+	local_displacement.x -= sun_accel_magnitude
+	# --- 5. Convert Local Displacement back to a Global Vector ---
+	# This gives us a single displacement vector in the main world space.
+	# .transposed() is used to convert the local displacement back to the global space.
+	var global_displacement: Vector3 = local_displacement * new_basis.transposed()
+	# --- 6. Calculate Final Global Position ---
+	var final_global_position: Vector3 = initial_positions[i] + global_displacement
+	# Apply your scaling factor
+	var scaled_final_pos := final_global_position / (Util.scale / 500)
+	# --- 7. Create the Final Transform and Set it ---
+	var final_global_transform := Transform3D(new_basis, scaled_final_pos)
+
+	# `set_instance_transform` requires the transform to be LOCAL to the MultiMeshInstance3D node.
+	# We convert our desired global transform into a local one.
+	# var instance_local_transform := mm_global_inverse * final_global_transform
+	var instance_local_transform := final_global_transform
+	mm_emitter.multimesh.set_instance_transform(i, instance_local_transform)
+
+## Generate N_POINTS diffusion particles around the current particle 
+func _generate_diffusion_particles(i: int) -> void:
+	var _normal_dir_as_color := mm_emitter.multimesh.get_instance_custom_data(i) as Color
+	var _normal_dir := Vector3(_normal_dir_as_color.r, _normal_dir_as_color.g, _normal_dir_as_color.b)
+	var new_basis := Util.orbital_basis
+	var center_particle := mm_emitter.multimesh.get_instance_transform(i)
+	var center_particle_color := mm_emitter.multimesh.get_instance_color(i)
+	for j in range(N_POINTS):
+		# generating a random position around the particle
+		var new_pos := Util.generate_gaussian_vector(0, 1, 0.5)
+		mm_emitter.multimesh.visible_instance_count += 1
+		mm_emitter.multimesh.set_instance_transform(i + j, Transform3D(new_basis, center_particle.origin + new_pos))
+		mm_emitter.multimesh.set_instance_color(i + j, center_particle_color)
+	
+	# mm_emitter.multimesh.visible_instance_count += N_POINTS
+func _spawn_particle(last_id: int) -> void:
+	# change color of particle based on emitter color
+	mm_emitter.multimesh.set_instance_color(last_id - 1, color)
+	# assign the normal direction to the particle
+	mm_emitter.multimesh.set_instance_custom_data(last_id - 1, Color(norm.x, norm.y, norm.z))
+	normal_dirs.append(norm)
+	var _initial_position := mm_emitter.global_position + norm * Util.comet_radius
+	# global_positions.append(mm_emitter.global_position + norm * Util.comet_radius)
+	global_positions.append(global_position)
+	# initial_positions.append(global_position)
+	initial_positions.append(_initial_position)
+	time_alive.append(0) # time alive is 0 at the beginning
+	particle_speeds.append(speed)
+	for i in range(N_POINTS):
+		time_alive.append(0) # time alive is 0 at the beginning for each diffusion particle
+		global_positions.append(global_position)
+		initial_positions.append(_initial_position)
+		normal_dirs.append(norm)
+		particle_speeds.append(speed)
+	# spawn new particle at origin
+	mm_emitter.multimesh.set_instance_transform(last_id - 1, Transform3D(Basis(Vector3.UP, Vector3.LEFT, Vector3.FORWARD), Vector3.ZERO))
+
 
 ## Computes acceleration(in m/s^2) based on particle density, particle radius, particle albedo, solar pressure etc
 ## It uses the following formula: a = 3\*P/(4\*d/2\*p) where

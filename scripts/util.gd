@@ -185,3 +185,18 @@ func convert_orbital_to_equatorial(coords: Vector3) -> Vector3:
 func convert_orbital_to_geocentric(coords: Vector3) -> Vector3:
 	var result := get_orbital_to_geocentric_basis() * coords
 	return result
+
+
+## Generates a random point inside a sphere with radius _radius from a Gaussian distribution with given mean and standard deviation.
+## The point is uniformly distributed inside the sphere.
+func generate_gaussian_vector(mean: float, stddev: float, _radius: float) -> Vector3:
+	var x := randfn(mean, stddev)
+	var y := randfn(mean, stddev)
+	var z := randfn(mean, stddev)
+	# direction normalize so that the point is on the surface of a sphere
+	var direction := Vector3(x, y, z).normalized()
+	# cuberoot to ensure uniform distribution in a sphere
+	var length := _radius * randf() ** (1.0 / 3.0)
+	# scale the direction by the length to get a point inside the sphere
+	var point := direction * length
+	return point
