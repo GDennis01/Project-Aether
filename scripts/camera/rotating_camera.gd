@@ -87,4 +87,6 @@ func _update_camera_transform() -> void:
 	# Make the camera look at the target
 	look_at(_target_position, Vector3.UP)
 
+	get_tree().call_group("camera", "update_mini_camera", transform)
+
 	# force_update_transform() # Generally not needed, but good to know.

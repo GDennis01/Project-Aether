@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://bqxoxn8bpfcfa"]
+[gd_scene load_steps=19 format=3 uid="uid://bqxoxn8bpfcfa"]
 
 [ext_resource type="Texture2D" uid="uid://ci05lu7s7pmon" path="res://textures/rock_wall_13_diff_4k.png" id="1_gtgs4"]
 [ext_resource type="Script" uid="uid://dsimhylkxu4no" path="res://scripts/world_manager.gd" id="1_wu602"]
@@ -51,8 +51,6 @@ shader_parameter/line_thickness = 0.068
 [sub_resource type="SphereMesh" id="SphereMesh_4mrxx"]
 radius = 0.1
 height = 0.2
-
-[sub_resource type="PointMesh" id="PointMesh_i7141"]
 
 [node name="World" type="WorldEnvironment"]
 environment = SubResource("Environment_7r4gi")
@@ -118,7 +116,4 @@ sky_mode = 1
 visible = false
 mesh = SubResource("SphereMesh_4mrxx")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.797422, 7.27555)
-visible = false
-mesh = SubResource("PointMesh_i7141")
+[node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="."]
