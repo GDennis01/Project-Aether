@@ -8,8 +8,8 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -1152.0
-offset_bottom = -648.0
+offset_right = -1010.0
+offset_bottom = -932.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_nm6q3")
@@ -30,15 +30,16 @@ step = 0.01
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
-offset_right = 54.0
+offset_right = 38.0
 offset_bottom = 31.0
+scale = Vector2(0.85, 0.85)
 text = "Ciao"
 
 [node name="SanitizedEdit" parent="." node_paths=PackedStringArray("slider") instance=ExtResource("2_1k185")]
 layout_mode = 1
-offset_left = 107.0
-offset_right = 168.0
-offset_bottom = 31.0
+offset_left = 136.0
+offset_right = 188.48
+offset_bottom = 27.248
 text = "2.0"
 slider = NodePath("../Slider")
 
