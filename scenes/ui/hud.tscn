@@ -180,15 +180,15 @@ metadata/is_screenshot = false
 
 [node name="CometTab" type="CanvasLayer" parent="Body" groups=["load", "save"]]
 layer = 3
-visible = false
 script = ExtResource("3_136eg")
 
 [node name="Control" type="Control" parent="Body/CometTab"]
 layout_mode = 3
 anchor_top = 0.098
 anchor_bottom = 0.098
+offset_left = 3.0
 offset_top = -0.04
-offset_right = 194.0
+offset_right = 197.0
 offset_bottom = 263.96
 scale = Vector2(0.85, 0.85)
 size_flags_horizontal = 0
@@ -235,9 +235,9 @@ starting_value = 1.0
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.049
-anchor_top = 0.285
+anchor_top = 0.300152
 anchor_right = 0.049
-anchor_bottom = 0.285
+anchor_bottom = 0.300152
 offset_left = -0.0942353
 offset_top = -3.9459
 offset_right = 198.906
@@ -845,6 +845,7 @@ vertical_alignment = 1
 
 [node name="ScaleTab" type="CanvasLayer" parent="Body" groups=["delta_au", "load", "save", "tel_image_size", "tel_resolution", "window_fov", "window_size"]]
 layer = 3
+visible = false
 script = ExtResource("9_0h1do")
 
 [node name="Control" type="Control" parent="Body/ScaleTab"]
