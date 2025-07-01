@@ -1,15 +1,6 @@
 extends Camera3D
 
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
 func update_radius(value: float) -> void:
 	# 4 because radius*2 is the diameter, and the axis is 2 units long, so 4 in total
 	size = value * 4

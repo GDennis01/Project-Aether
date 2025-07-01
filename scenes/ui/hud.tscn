@@ -23,8 +23,10 @@ z_index = -2
 anchors_preset = -1
 anchor_right = 1.005
 anchor_bottom = 1.0
-offset_right = -6.65
-offset_bottom = 4.0
+offset_left = -64.0
+offset_top = -40.0
+offset_right = 55.35
+offset_bottom = 68.0
 focus_mode = 2
 color = Color(0, 0.210733, 0.213576, 1)
 
@@ -1137,10 +1139,17 @@ script = ExtResource("11_0h1do")
 enabled = false
 
 [node name="MiniViewportContainer" type="SubViewportContainer" parent="Viewport"]
-offset_left = 120.0
-offset_top = 696.0
-offset_right = 360.0
-offset_bottom = 936.0
+anchors_preset = -1
+anchor_left = 0.271
+anchor_top = 0.743
+anchor_right = 0.271
+anchor_bottom = 0.988
+offset_left = -232.43
+offset_top = -0.14
+offset_right = 7.57
+offset_bottom = -0.24
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
 [node name="SubViewport" type="SubViewport" parent="Viewport/MiniViewportContainer"]
 handle_input_locally = false
@@ -1149,6 +1158,7 @@ render_target_update_mode = 4
 
 [node name="MiniCamera" type="Camera3D" parent="Viewport/MiniViewportContainer/SubViewport" groups=["camera", "radius"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 11.8985)
+cull_mask = 1048573
 projection = 1
 size = 2.031
 script = ExtResource("13_4d46k")
