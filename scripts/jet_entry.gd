@@ -40,10 +40,10 @@ var emitter: Emitter
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# Debug only
-	$SpeedEdit.text = str(0.0)
+	$SpeedEdit.text = str(0)
 	$LatitudeEdit.text = str(0.0)
 	$LongitudeEdit.text = str(0.0)
-	$DiffusionEdit.text = str(0.0)
+	$DiffusionEdit.text = str(0)
 	$ColorPickerButton.color = Color(randf(), randf(), randf())
 	color = $ColorPickerButton.color
 

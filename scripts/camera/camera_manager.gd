@@ -12,6 +12,7 @@ func change_camera() -> void:
 		# disable input for the free roam camera and enable the rotating camera
 		_rot_camera.enabled = true
 		_fr_camera.enabled = false
+		Util.current_camera_label.text = "Rotating Camera"
 	else:
 		# sets the current camera to the free roam camera
 		_fr_camera.current = true
@@ -19,3 +20,4 @@ func change_camera() -> void:
 		# disable input for the rotating camera and enable the free roam camera
 		_fr_camera.enabled = true
 		_rot_camera.enabled = false
+		Util.current_camera_label.text = "Free Roam Camera"

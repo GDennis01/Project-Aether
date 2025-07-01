@@ -8,18 +8,23 @@ var previous_value: float
 @export var slider: Slider
 @export var lower_bound: float = 0
 @export var higher_bound: float = 0
+@export var no_decimal: bool = false
 
 signal sanitized_edit_focus_exited
 
 # Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	set_value(float(self.text))
+# func _ready() -> void:
+# 	set_value(float(self.text))
 
 func set_value(_value: float) -> void:
-	self.text = str(_value)
+	if no_decimal:
+			self.text = str(int(_value))
+	else:
+		self.text = str(_value)
 	var tmp := property_value
 	previous_value = tmp
 	property_value = _value
+	
 	if resize_type:
 		# print("[Sanitized Edit] Calling update_%s" % resize_type)
 		get_tree().call_group(resize_type, "update_" + resize_type, property_value)
@@ -31,23 +36,23 @@ func sanitize_field(low: float, high: float) -> void:
 		var new_val := clampf(float(self.text), low, high)
 		property_value = new_val
 		previous_value = new_val
-		self.text = str(new_val)
+		if no_decimal:
+			print("[Sanitized Edit sf] Sanitized value to %s" % str(int(new_val)))
+			self.text = str(int(new_val))
+		else:
+			self.text = str(new_val)
 	else:
-		self.text = str(previous_value)
+		if no_decimal:
+			print("[Sanitized Edit sf] Invalid float, setting to previous value %s" % str(int(previous_value)))
+			self.text = str(int(previous_value))
+		else:
+			self.text = str(previous_value)
 ## Makes you release focus when you click outside a LineEdit. In this way, the _on_focus_exited method is triggered
 func _unhandled_input(event: InputEvent) -> void:
 	if self and self.has_focus():
 			if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
 				self.release_focus()
 				sanitize_field(lower_bound, higher_bound)
-				# sanitized_edit_focus_exited.emit(float(self.text))
-				# if slider:
-				# 	slider.set_value_no_signal(float(self.text))
-				# 	print("a")
-				# 	return
-				# if resize_type:
-				# 	print("Unh")
-				# 	get_tree().call_group(resize_type, "update_" + resize_type, float(self.text))
 
 
 func _on_editing_toggled(toggled_on: bool) -> void:

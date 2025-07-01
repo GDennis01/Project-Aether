@@ -23,6 +23,7 @@ var sun_direction_vector: Vector3 = Vector3.ZERO
 var earth_comet_delta: float = 0.0
 
 # Scale related properties
+#region Scale
 ## Scale in meters/pixel
 var scale: float = 0.0
 ## Telescope resolution in arcsec/pixel
@@ -39,6 +40,7 @@ var window_size: float = 0.0
 var fov_arcmin: float = 0.0
 ## FOV in km
 var fov_km: float = 0.0
+#endregion Scale
 
 ## Orbital comet basis
 var orbital_basis: Basis = Basis() ## Orbital basis of the comet in the 3D space
@@ -66,6 +68,10 @@ const GRAVITATIONAL_CONSTANT: float = 6.674e-11 ## G. Gravitational Constant exp
 const SUN_MASS: float = 1.98892e30 ## Ms. Sun mass expressed in Kg
 const SUN_LUMINOSITY: float = 3.828e26 ## Ls. Sun Luminosity expressed in J/s
 const LIGHT_SPEED: float = 2.99792458e8 ## c. Speed of light Expressed in m/s
+
+
+# Labels
+@onready var current_camera_label: Label = $"/root/Hud/Viewport/SubViewportContainer/CurrCameraLabel"
 
 
 ## Converts Latitude/Longitude (in degrees) to a local 3D position

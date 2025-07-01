@@ -76,7 +76,7 @@ func update_window_size(value: float) -> void:
 func update_tel_res_km_pixel() -> void:
 	Util.tel_res_km_pixel = sin(Util.tel_resolution / 206265) * Util.earth_comet_delta * (Util.AU / 1000)
 	if tel_res_km_pixel:
-		tel_res_km_pixel.text = str(Util.tel_res_km_pixel)
+		tel_res_km_pixel.text = str(int(Util.tel_res_km_pixel))
 	update_fov_km()
 	update_fov_arcmin()
 	update_scale_factor()
@@ -89,7 +89,7 @@ func update_fov_arcmin() -> void:
 func update_fov_km() -> void:
 	Util.fov_km = Util.tel_image_size * Util.tel_res_km_pixel
 	if fov_km:
-		fov_km.text = str(Util.fov_km)
+		fov_km.text = str(int(Util.fov_km))
 
 func update_scale_factor() -> void:
 	var window_image_scale_factor: float = Util.tel_image_size / Util.window_size

@@ -42,6 +42,7 @@ offset_right = 188.48
 offset_bottom = 27.248
 text = "2.0"
 slider = NodePath("../Slider")
+no_decimal = null
 
 [connection signal="value_changed" from="Slider" to="." method="_on_slider_value_changed"]
 [connection signal="text_changed" from="SanitizedEdit" to="." method="_on_sanitized_edit_text_changed"]

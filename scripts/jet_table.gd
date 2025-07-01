@@ -88,6 +88,7 @@ func _on_add_jet_entry_btn_pressed() -> void:
 	var entries := get_tree().get_nodes_in_group("jet_entry")
 	var max_id := entries.size()
 	new_entry.set_id_label(max_id)
+	# new_entry.set_speed(0.0)
 
 	# adding the entry to the vertical container
 	content_node.add_child(new_entry)

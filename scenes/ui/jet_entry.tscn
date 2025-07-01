@@ -42,6 +42,7 @@ offset_top = 16.99
 offset_right = 115.0
 offset_bottom = 47.99
 higher_bound = 10000.0
+no_decimal = true
 
 [node name="LatitudeEdit" parent="." instance=ExtResource("2_65ngw")]
 layout_mode = 1
@@ -54,6 +55,7 @@ offset_right = 184.0
 offset_bottom = 47.99
 lower_bound = -90.0
 higher_bound = 90.0
+no_decimal = null
 
 [node name="LongitudeEdit" parent="." instance=ExtResource("2_65ngw")]
 layout_mode = 1
@@ -65,6 +67,7 @@ offset_top = 15.99
 offset_right = 256.96
 offset_bottom = 46.99
 higher_bound = 360.0
+no_decimal = null
 
 [node name="DiffusionEdit" parent="." instance=ExtResource("2_65ngw")]
 layout_mode = 1
@@ -76,6 +79,7 @@ offset_top = 15.99
 offset_right = 328.96
 offset_bottom = 46.99
 higher_bound = 100.0
+no_decimal = true
 
 [node name="ColorPickerButton" type="ColorPickerButton" parent="."]
 layout_mode = 1
