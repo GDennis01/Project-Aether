@@ -1,11 +1,10 @@
 extends Node3D
 class_name Emitter
 const RAY_LENGHT = 1000000
-# const N_POINTS = 50
-const N_POINTS = 0
+const N_POINTS = 5
+# const N_POINTS = 0
 
 var particle_scene := preload("res://scenes/particle.tscn")
-
 # @onready var comet: MeshInstance3D = $"/root/World/CometMesh"
 
 var particles_alive: Array[Particle]
@@ -34,6 +33,7 @@ var initial_positions: Array[Vector3] ## initial position of the mm_emitter at e
 var particle_speeds: Array[float] ## speeds of each particle
 var normal_dirs: Array[Vector3] ## normal_dir of the mm_emitter at each instance spawned
 var time_alive: Array[int] = [] # number of ticks each particle has been alive
+var total_space: Array[float] = [] # total space travelled by the particles
 
 #sim related
 var num_particles: int = 0
@@ -177,43 +177,6 @@ func _physics_process(_delta: float) -> void:
 		$Particle.get_surface_override_material(0).albedo_color = Color.RED
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-
-## Get the longitudinal angle given the angle between the comet inclination rotation angle and the sun inclination angle
-func _get_longitude_angle(sun_comet_angle: float) -> float:
-	var longitude_angle: float = 0.0
-	match sun_comet_angle:
-		0:
-			if latitude < 0:
-				longitude_angle = -90
-			else:
-				longitude_angle = 90
-		var x when x < 90: # 0<x<90
-			if latitude >= sun_comet_angle:
-				longitude_angle = 90
-			elif latitude <= -sun_comet_angle:
-				longitude_angle = -90
-			else:
-				longitude_angle = 90.0 * latitude / sun_comet_angle # linear formula
-		90:
-			longitude_angle = 0
-		var x when x < 180: # 90<x<180
-			if latitude >= (180 - sun_comet_angle): # never
-				longitude_angle = -90 #
-				printerr("Error in 90<\"sun_comet_angle\"<180 branch")
-			elif latitude <= (180 - sun_comet_angle):
-				longitude_angle = 90
-			else:
-				longitude_angle = -90.0 * latitude / (180.0 - sun_comet_angle)
-
-		180:
-			if latitude > 0:
-				longitude_angle = -90
-			else:
-				longitude_angle = 90
-		_:
-			printerr("Error: sun_comet_angle is greater than 180°")
-	return longitude_angle
 ## Returns whether the emitter is lit by the sun or not, 
 ## based on sun inclination and direction angle, comet inclination and comet current rotation angle
 ## FIXME: probably this doesn't work properly
@@ -251,29 +214,48 @@ func tick() -> void:
 #region Multimesh related
 func set_number_particles(num: int) -> void:
 	if N_POINTS > 0:
-		num_particles = num * N_POINTS
+		num_particles = num * (N_POINTS + 1)
 	else:
 		num_particles = num
 	mm_emitter.multimesh.instance_count = num_particles
 func tick_optimized(_n_iteration: int) -> void:
 	# moving each particle
-	for i in mm_emitter.multimesh.visible_instance_count:
-		# print("Visible Instance Count: %d" % mm_emitter.multimesh.visible_instance_count)
+	# print("Iteration: %d" % _n_iteration)
+	# print_global_array_size()
+	for i in range(0, mm_emitter.multimesh.visible_instance_count, N_POINTS + 1):
 		## accelerating only main particles, so every N_POINTS-th particle
-		_accelerate_particle(i + N_POINTS)
-		# _generate_diffusion_particles(i)
-
+		# print("Accelerating particle %d" % i)
+		_accelerate_particle(i)
+		# print("Generating diffusion particles for particle %d" % i)
+		_generate_diffusion_particles(i)
+		
 	# if _is_lit:
 	# whether to spawn a new particle or not
 	if is_lit_math():
-		# print("Entered here")
+		# print("Entered here at iteration %d" % _n_iteration)
 		# incrementing number of maximum drawn particles (to simulate spawning them)
-		var last_id := mm_emitter.multimesh.visible_instance_count + 1 + N_POINTS
+		var last_id := mm_emitter.multimesh.visible_instance_count + 1
 		if last_id < mm_emitter.multimesh.instance_count:
-			mm_emitter.multimesh.visible_instance_count = last_id
+			mm_emitter.multimesh.visible_instance_count = last_id + N_POINTS
 		_spawn_particle(last_id)
+		# print("Spawned particle at id %d" % (last_id - 1))
 	update_norm()
+	# print(_n_iteration)
+	# print(mm_emitter.multimesh.instance_count)
+	# print(mm_emitter.multimesh.visible_instance_count)
+	# print("--")
 
+func print_global_array_size() -> void:
+	# print("Global Positions Size: %d" % global_positions.size())
+	# print("Initial Positions Size: %d" % initial_positions.size())
+	# print("Normal Directions Size: %d" % normal_dirs.size())
+	# print("Particle Speeds Size: %d" % particle_speeds.size())
+	# print("Time Alive Size: %d" % time_alive.size())
+	print("MM Emitter Instance Count: %d" % mm_emitter.multimesh.instance_count)
+	print("MM Emitter Visible Instance Count: %d" % mm_emitter.multimesh.visible_instance_count)
+## Update the position of the i-th particle in the multimesh by accelerating it according to the formula in the Vincent's paper.
+## The formula is: X = V * t - 1/2 * a * t
+## Y= V * t 	Z= V * t
 func _accelerate_particle(i: int) -> void:
 	# --- 1. Get Particle-Specific Data ---
 	var _normal_dir_as_color := mm_emitter.multimesh.get_instance_custom_data(i) as Color
@@ -299,6 +281,10 @@ func _accelerate_particle(i: int) -> void:
 	var final_global_position: Vector3 = initial_positions[i] + global_displacement
 	# Apply your scaling factor
 	var scaled_final_pos := final_global_position / (Util.scale / 500)
+	total_space[i] += (scaled_final_pos - global_positions[i]).length() # update total space travelled by the particle
+	global_positions[i] = scaled_final_pos
+	# add to the total space only the delta travelled by the particle
+	# total_space[i] += (global_displacement.length() / (Util.scale / 500)) # update total space travelled by the particle
 	# --- 7. Create the Final Transform and Set it ---
 	var final_global_transform := Transform3D(new_basis, scaled_final_pos)
 
@@ -309,20 +295,27 @@ func _accelerate_particle(i: int) -> void:
 	mm_emitter.multimesh.set_instance_transform(i, instance_local_transform)
 
 ## Generate N_POINTS diffusion particles around the current particle 
+## It doesn't update multimesh.visible_instance_count!
 func _generate_diffusion_particles(i: int) -> void:
 	var _normal_dir_as_color := mm_emitter.multimesh.get_instance_custom_data(i) as Color
 	var _normal_dir := Vector3(_normal_dir_as_color.r, _normal_dir_as_color.g, _normal_dir_as_color.b)
 	var new_basis := Util.orbital_basis
 	var center_particle := mm_emitter.multimesh.get_instance_transform(i)
 	var center_particle_color := mm_emitter.multimesh.get_instance_color(i)
-	for j in range(N_POINTS):
+	var pc_radius := total_space[i] * (diffusion / 100) * randf() # pointcloud radius based on total space travelled by the particle and diffusion factor
+	# TODO: maybe use compute shader to generate the particles around the center particle
+	for j in range(1, N_POINTS + 1):
 		# generating a random position around the particle
-		var new_pos := Util.generate_gaussian_vector(0, 1, 0.5)
-		mm_emitter.multimesh.visible_instance_count += 1
-		mm_emitter.multimesh.set_instance_transform(i + j, Transform3D(new_basis, center_particle.origin + new_pos))
+		var new_pos := Util.generate_gaussian_vector(0, 1, pc_radius)
+		# mm_emitter.multimesh.visible_instance_count += 1
+		mm_emitter.multimesh.set_instance_transform(i + j, Transform3D(Basis(), center_particle.origin + new_pos))
+		# mm_emitter.multimesh.set_instance_color(i + j, Color.YELLOW)
 		mm_emitter.multimesh.set_instance_color(i + j, center_particle_color)
 	
 	# mm_emitter.multimesh.visible_instance_count += N_POINTS
+## Spawns a new particle in the multimesh at the current position of the emitter. 
+## The id of the particle is the last id -1  of the multimesh.
+## It doesn't update multimesh.visible_instance_count!
 func _spawn_particle(last_id: int) -> void:
 	# change color of particle based on emitter color
 	mm_emitter.multimesh.set_instance_color(last_id - 1, color)
@@ -336,12 +329,14 @@ func _spawn_particle(last_id: int) -> void:
 	initial_positions.append(_initial_position)
 	time_alive.append(0) # time alive is 0 at the beginning
 	particle_speeds.append(speed)
+	total_space.append(0) # total space travelled is 0 at the beginning
 	for i in range(N_POINTS):
 		time_alive.append(0) # time alive is 0 at the beginning for each diffusion particle
 		global_positions.append(global_position)
 		initial_positions.append(_initial_position)
 		normal_dirs.append(norm)
 		particle_speeds.append(speed)
+		total_space.append(0) # total space travelled is 0 at the beginning for each diffusion particle
 	# spawn new particle at origin
 	mm_emitter.multimesh.set_instance_transform(last_id - 1, Transform3D(Basis(Vector3.UP, Vector3.LEFT, Vector3.FORWARD), Vector3.ZERO))
 
@@ -392,6 +387,7 @@ func reset_particles() -> void:
 func reset_multimesh() -> void:
 	mm_emitter.multimesh.instance_count = 0
 	mm_emitter.multimesh.visible_instance_count = 0
+	total_space.clear()
 	global_positions.clear()
 	initial_positions.clear()
 	normal_dirs.clear()

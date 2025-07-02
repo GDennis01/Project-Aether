@@ -106,7 +106,7 @@ func _process(_delta: float) -> void:
 	# print(Engine.get_frames_per_second())
 	match animation_state:
 		ANIMATION_STATE.STARTED, ANIMATION_STATE.RESUMED:
-			if n_steps < 0:
+			if n_steps <= 0:
 				animation_state = ANIMATION_STATE.STOPPED
 				quaternion = Util.equatorial_rotation
 			else:
@@ -129,15 +129,9 @@ func _process(_delta: float) -> void:
 ## Single elaboration step of the simulation.
 ## Each tick spawn a new particle from the jet
 func tick(n_iteration: int) -> void:
-	# TODO: fix this
-	# dTempo = (lPasso - 1) / (60 / Cometa.Intervallo)
-	# Getto(iGetto).Longitudine + (2 * 3.1415927 / Cometa.Periodo) * dTempo
-	# comet_rotation_angle = longitude + (2*PI/frequency) * dTempo
-	var comet_rotation_angle: float
-	var time_passed: float = (n_iteration - 1) / (60 / jet_rate)
+	# var time_passed: float = (n_iteration - 1) / (60 / jet_rate)
 	for emitter: Emitter in get_tree().get_nodes_in_group("emitter"):
 		# emitter.tick()
-		comet_rotation_angle = emitter.longitude + (2.0 * PI / frequency) * time_passed
 		# print("tick:%f"%n_iteration)
 		emitter.tick_optimized(n_iteration)
 	animation_slider.tick()
@@ -179,6 +173,7 @@ func animation_started() -> void:
 		
 		starting_rotation = rotation
 		n_steps = int(num_rotation * frequency * 60 / jet_rate)
+		print("@@@ n_steps:%d" % n_steps)
 		for emitter: Emitter in get_tree().get_nodes_in_group("emitter"):
 			emitter.set_number_particles(n_steps)
 		# if I have a rotation period of 360 minutes and a jet_rate of 1 min, it means I have 1 angle per tick()
@@ -190,6 +185,8 @@ func animation_started() -> void:
 		# set_process(false)
 		# instant_simulation()
 		tick(step_counter)
+		step_counter += 1
+		n_steps -= 1
 
 
 ## Called by play_animation_slider._on_pause_btn_pressed
@@ -280,7 +277,7 @@ func update_radius(value: float) -> void:
 		z_axis.set_height(mesh.height)
 	# update position and size of sun axis
 	get_tree().call_group("sun", "update_sun_axis", value * 2)
-	print("calling update_position on emitter")
+	print("calling update_position on emitter\n")
 	get_tree().call_group("emitter", "update_position", value)
 ## Deprecated
 func update_height(value: float) -> void:
