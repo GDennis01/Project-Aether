@@ -135,17 +135,37 @@ func tick(n_iteration: int) -> void:
 		# print("tick:%f"%n_iteration)
 		emitter.tick_optimized(n_iteration)
 	animation_slider.tick()
+	var _bas := transform.basis
+	# print("R0tated Basis:%s" % str(_bas * Basis(Vector3.UP, deg_to_rad(angle_per_step))))
 	rotate_object_local(Vector3.UP, deg_to_rad(angle_per_step))
+	# print("Rotated Basis:%s" % str(transform.basis))
+	# print("--")
 
-## Instant simulation.
-## TODO: put a loading screen maybe?
+## Instant simulation. Basically it spawns all particles at once, without any delay.
+## Then it computes the final position of each particle
 func instant_simulation() -> void:
-	for _i in range(n_steps):
-		tick(_i)
-	pass
+	Util.equatorial_rotation = quaternion
+	look_at(Util.sun_direction_vector, Vector3.UP)
+	rotate(transform.basis.y, deg_to_rad(-90))
+	# used by emitters to convert from equatorial to orbital system
+	Util.orbital_basis = transform.basis
+	Util.orbital_transformation = transform
+	# resuming the rotation
+	quaternion = Util.equatorial_rotation
+	
+	starting_rotation = rotation
+	n_steps = int(num_rotation * frequency * 60 / jet_rate)
+	angle_per_step = 1.0 / (frequency * 60.0 / jet_rate) * 360.0
+	animation_slider.set_step_rate(100.0 / n_steps)
+	for emitter: Emitter in get_tree().get_nodes_in_group("emitter"):
+		# emitter.set_number_particles(n_steps)
+		emitter.instant_simulation(n_steps, angle_per_step)
+	animation_slider.instant_simulation()
 
 ## Called by play_animation_slider._on_play_btn_pressed
 func animation_started() -> void:
+	instant_simulation()
+	return
 	match animation_state:
 		ANIMATION_STATE.PAUSED:
 			animation_state = ANIMATION_STATE.RESUMED
@@ -173,7 +193,6 @@ func animation_started() -> void:
 		
 		starting_rotation = rotation
 		n_steps = int(num_rotation * frequency * 60 / jet_rate)
-		print("@@@ n_steps:%d" % n_steps)
 		for emitter: Emitter in get_tree().get_nodes_in_group("emitter"):
 			emitter.set_number_particles(n_steps)
 		# if I have a rotation period of 360 minutes and a jet_rate of 1 min, it means I have 1 angle per tick()

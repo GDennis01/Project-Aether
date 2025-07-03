@@ -50,3 +50,10 @@ func _on_speed_up_btn_pressed() -> void:
 			$SpeedUpBtn.text = "Speed Up"
 			speed_up = 1
 	get_tree().call_group("animation", "speed_up", speed_up)
+
+func instant_simulation() -> void:
+	$Slider.value = num_steps
+	$PlayBtn.disabled = true
+	$PauseBtn.disabled = true
+	$StopBtn.disabled = false
+	$Slider.value = num_steps

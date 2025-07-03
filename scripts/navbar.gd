@@ -192,8 +192,8 @@ func _on_full_viewport_btn_pressed() -> void:
 	## Prova lookat
 	#region lookat
 	# var tmp := comet.transform
-	comet.look_at(Util.sun_direction_vector, Vector3.UP)
-	comet.rotate(comet.transform.basis.y, deg_to_rad(-90))
+	# comet.look_at(Util.sun_direction_vector, Vector3.UP)
+	# comet.rotate(comet.transform.basis.y, deg_to_rad(-90))
 	# comet.transform = tmp
 	#endregion lookat
 	## Prova quaternion
