@@ -32,21 +32,13 @@ var prev_diff: float = 0
 var color: Color = Color.WHITE:
 	get:
 		return color_edit.color
-
+	
 # emitter node
 var emitter: Emitter
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	# Debug only
-	$SpeedEdit.text = str(0)
-	$LatitudeEdit.text = str(0.0)
-	$LongitudeEdit.text = str(0.0)
-	$DiffusionEdit.text = str(0)
-	$ColorPickerButton.color = Color(randf(), randf(), randf())
-	color = $ColorPickerButton.color
-
 	# setting nodes
 	speed_edit = $SpeedEdit
 	latitude_edit = $LatitudeEdit
@@ -61,6 +53,14 @@ func _ready() -> void:
 	color_picker.picker_shape = ColorPicker.SHAPE_VHS_CIRCLE
 	color_picker.color_modes_visible = false
 	color_picker.sampler_visible = false
+
+	# Debug only
+	$SpeedEdit.text = str(0)
+	$LatitudeEdit.text = str(0.0)
+	$LongitudeEdit.text = str(0.0)
+	$DiffusionEdit.text = str(0)
+	$ColorPickerButton.color = Color(randf(), randf(), randf())
+	
 
 func set_id_label(value: int) -> void:
 	jet_id = value

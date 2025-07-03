@@ -105,6 +105,8 @@ func _on_add_jet_entry_btn_pressed() -> void:
 	new_entry.longitude_edit.sanitized_edit_focus_exited.connect(emitter.update_long)
 	new_entry.diffusion_edit.sanitized_edit_focus_exited.connect(emitter.update_diff)
 	new_entry.color_edit.color_changed.connect(emitter.update_color)
+	# updating color
+	emitter.update_color(new_entry.color)
 
 	# Saving (jet_entry,emitter) to a dictionary so that later on I can remove both entry(HUD) and the emitter node
 	entry_emitter_dict.set(new_entry.get_instance_id(), emitter.get_instance_id())
