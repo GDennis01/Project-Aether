@@ -135,7 +135,7 @@ func tick(n_iteration: int) -> void:
 		# print("tick:%f"%n_iteration)
 		emitter.tick_optimized(n_iteration)
 	animation_slider.tick()
-	rotate_object_local(Vector3.UP, deg_to_rad(-angle_per_step))
+	rotate_object_local(Vector3.UP, deg_to_rad(angle_per_step))
 
 ## Instant simulation.
 ## TODO: put a loading screen maybe?
