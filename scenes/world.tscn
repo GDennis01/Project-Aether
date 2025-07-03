@@ -1,10 +1,7 @@
-[gd_scene load_steps=19 format=3 uid="uid://bqxoxn8bpfcfa"]
+[gd_scene load_steps=14 format=3 uid="uid://bqxoxn8bpfcfa"]
 
-[ext_resource type="Texture2D" uid="uid://ci05lu7s7pmon" path="res://textures/rock_wall_13_diff_4k.png" id="1_gtgs4"]
 [ext_resource type="Script" uid="uid://dsimhylkxu4no" path="res://scripts/world_manager.gd" id="1_wu602"]
 [ext_resource type="Script" uid="uid://d1gcq008ypdlq" path="res://scripts/sun.gd" id="2_i7141"]
-[ext_resource type="Texture2D" uid="uid://buvd5p6wefg1o" path="res://textures/rock_wall_13_nor_gl_4k.png" id="2_m7tiq"]
-[ext_resource type="Texture2D" uid="uid://cen3wnntogdjt" path="res://textures/rock_wall_13_rough_4k.png" id="3_kdodi"]
 [ext_resource type="Script" uid="uid://cdbhqjf33rsg1" path="res://scripts/comet_mesh.gd" id="4_yu4gv"]
 [ext_resource type="Shader" uid="uid://ccpharluyb1qa" path="res://shaders/sphere.gdshader" id="6_4mrxx"]
 
@@ -22,17 +19,6 @@ shading_mode = 0
 material = SubResource("StandardMaterial3D_w7kh3")
 radius = 0.001
 height = 0.002
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_hg46x"]
-size = Vector2(60, 60)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bjs0p"]
-albedo_texture = ExtResource("1_gtgs4")
-roughness_texture = ExtResource("3_kdodi")
-normal_enabled = true
-normal_scale = 3.87
-normal_texture = ExtResource("2_m7tiq")
-uv1_scale = Vector3(60, 60, 60)
 
 [sub_resource type="SphereMesh" id="SphereMesh_f4gce"]
 radius = 5.0
@@ -75,12 +61,6 @@ spot_angle = 10.45
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Sun/SpotLight3D"]
 mesh = SubResource("SphereMesh_i7141")
-
-[node name="Ground" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -16.47, 0)
-visible = false
-mesh = SubResource("PlaneMesh_hg46x")
-surface_material_override/0 = SubResource("StandardMaterial3D_bjs0p")
 
 [node name="CometMesh" type="MeshInstance3D" parent="." node_paths=PackedStringArray("light_source", "comet_collider") groups=["albedo", "animation", "comet", "direction_rotation", "frequency", "height", "inclination_rotation", "jet_rate", "latitude", "longitude", "num_rotation", "particle_density", "particle_diameter", "radius", "reset_rotation", "scale", "sun_comet_distance", "trigger_rotation"]]
 transform = Transform3D(1, 0, 0, 0, 6.12323e-17, 1, 0, -1, 6.12323e-17, 0, 0, 0)
