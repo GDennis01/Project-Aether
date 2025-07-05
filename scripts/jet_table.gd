@@ -72,6 +72,7 @@ func load_data() -> void:
 			emitter.longitude = new_entry.longitude
 			emitter.diffusion = new_entry.diffusion
 			emitter.color = new_entry.color
+			emitter.jet_id = new_entry.jet_id
 
 			# Saving (jet_entry,emitter) to a dictionary so that later on I can remove both entry(HUD) and the emitter node
 			entry_emitter_dict.set(new_entry.get_instance_id(), emitter.get_instance_id())

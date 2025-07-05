@@ -144,9 +144,12 @@ func tick(n_iteration: int) -> void:
 ## Instant simulation. Basically it spawns all particles at once, without any delay.
 ## Then it computes the final position of each particle
 func instant_simulation() -> void:
+	get_tree().call_group("disable", "disable_btn", "LoadBtn")
 	Util.equatorial_rotation = quaternion
 	look_at(Util.sun_direction_vector, Vector3.UP)
 	rotate(transform.basis.y, deg_to_rad(-90))
+	# normalizing the basis
+	transform.basis = transform.basis.orthonormalized()
 	# used by emitters to convert from equatorial to orbital system
 	Util.orbital_basis = transform.basis
 	Util.orbital_transformation = transform
@@ -157,6 +160,7 @@ func instant_simulation() -> void:
 	n_steps = int(num_rotation * frequency * 60 / jet_rate)
 	angle_per_step = 1.0 / (frequency * 60.0 / jet_rate) * 360.0
 	animation_slider.set_step_rate(100.0 / n_steps)
+	print("Instant simulation with n_steps:%d and angle_per_step:%f" % [n_steps, angle_per_step])
 	for emitter: Emitter in get_tree().get_nodes_in_group("emitter"):
 		# emitter.set_number_particles(n_steps)
 		emitter.instant_simulation(n_steps, angle_per_step)
