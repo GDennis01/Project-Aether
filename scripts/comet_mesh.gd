@@ -80,30 +80,11 @@ func _ready() -> void:
 	get_tree().call_group("sun", "update_sun_axis", mesh.height)
 	
 	Util.comet_radius = mesh.radius
-	# Hud.comet_collider = comet_collider
-	# Hud.light_source = light_source
 	update_comet_orientation()
 
-# func _notification(what: int) -> void:
-# 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
-# 		for emitter: Emitter in get_tree().get_nodes_in_group("emitter"):
-# 			emitter.remove_from_group("emitter")
-# 			emitter.destroy_multimesh()
-# 			emitter.queue_free()
-# 			await get_tree().process_frame
-# 		await get_tree().process_frame
-# 		SaveManager.cleanup()
-# 		get_tree().quit()
 		
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	# if rotation_enabled:
-	# 	# TODO: emit a signal whenever rotation_angle is changed 
-	# 	rotation_angle = fmod(rotation_angle + delta, 2 * PI)
-	# 	rotate_object_local(Vector3.UP, 1 * delta)
-	# 	# TODO: understand how to make precession motion
-	# 	# rotate_object_local(Vector3.FORWARD, 0.1 * delta)
-	# print(Engine.get_frames_per_second())
 	match animation_state:
 		ANIMATION_STATE.STARTED, ANIMATION_STATE.RESUMED:
 			if n_steps <= 0:
@@ -136,22 +117,15 @@ func tick(n_iteration: int) -> void:
 		emitter.tick_optimized(n_iteration)
 	animation_slider.tick()
 	var _bas := transform.basis
-	# print("R0tated Basis:%s" % str(_bas * Basis(Vector3.UP, deg_to_rad(angle_per_step))))
 	rotate_object_local(Vector3.UP, deg_to_rad(angle_per_step))
-	# print("Rotated Basis:%s" % str(transform.basis))
-	# print("--")
+
 
 ## Instant simulation. Basically it spawns all particles at once, without any delay.
 ## Then it computes the final position of each particle
 func instant_simulation() -> void:
 	simulation_setup()
-
-	n_steps = int(num_rotation * frequency * 60 / jet_rate)
-	angle_per_step = 1.0 / (frequency * 60.0 / jet_rate) * 360.0
-	animation_slider.set_step_rate(100.0 / n_steps)
 	print("Instant simulation with n_steps:%d and angle_per_step:%f" % [n_steps, angle_per_step])
 	for emitter: Emitter in get_tree().get_nodes_in_group("emitter"):
-		# emitter.set_number_particles(n_steps)
 		emitter.instant_simulation(n_steps, angle_per_step)
 	animation_slider.instant_simulation()
 
@@ -168,6 +142,10 @@ func simulation_setup() -> void:
 	# resuming the rotation
 	quaternion = Util.equatorial_rotation
 	starting_rotation = rotation
+
+	n_steps = int(num_rotation * frequency * 60 / jet_rate)
+	angle_per_step = 1.0 / (frequency * 60.0 / jet_rate) * 360.0
+	animation_slider.set_step_rate(100.0 / n_steps)
 	
 ## Called by play_animation_slider._on_play_btn_pressed
 func animation_started() -> void:
@@ -180,23 +158,15 @@ func animation_started() -> void:
 		ANIMATION_STATE.STOPPED:
 			animation_state = ANIMATION_STATE.STARTED
 		_:
-			# print("From RESUME to STARTED should never happen")
+			print("From RESUME to STARTED should never happen")
 			pass
 			
 	if animation_state == ANIMATION_STATE.STARTED:
 		simulation_setup()
 
-		n_steps = int(num_rotation * frequency * 60 / jet_rate)
 		for emitter: Emitter in get_tree().get_nodes_in_group("emitter"):
 			emitter.set_number_particles(n_steps)
-		# if I have a rotation period of 360 minutes and a jet_rate of 1 min, it means I have 1 angle per tick()
-		# TODO: maybe this is wrong??
-		angle_per_step = 1.0 / (frequency * 60.0 / jet_rate) * 360.0
-		animation_slider.set_step_rate(100.0 / n_steps)
-
-		# de-comment these lines to trigger instant simulation and disables per-tick simulation
-		# set_process(false)
-		# instant_simulation()
+	
 		tick(step_counter)
 		step_counter += 1
 		n_steps -= 1
@@ -253,8 +223,6 @@ func spawn_emitter_at(latitude: float, longitude: float, emitter: Emitter) -> vo
 func remove_emitter(emitter_id: int) -> void:
 	var emitter: Emitter = instance_from_id(emitter_id)
 	emitter.remove_from_group("emitter")
-	# print(emitter)
-	# remove_child(emitter)
 	emitter.destroy_multimesh()
 	emitter.queue_free()
 	pass
@@ -269,7 +237,6 @@ func reset_rotation() -> void:
 	rotation_enabled = false
 	for emitter in get_tree().get_nodes_in_group("emitter"):
 		emitter.enabled = rotation_enabled
-	#rotation.y = starting_rotation.y
 	rotation = starting_rotation
 
 ## These methods are called by SanitizedEdit through call_group() mechanism
@@ -337,8 +304,6 @@ func update_sun_comet_distance(value: float) -> void:
 	if Util.PRINT_UPDATE_METHOD: print("Updated sun_comet_distance:%f"%value)
 	Util.sun_comet_distance = value
 	get_tree().call_group("emitter", "update_acceleration")
-	# get_tree().call_group("tel_resolution", "update_tel_res_km_pixel")
-	# get_tree().call_group("tel_resolution", "update_scale_factor")
 
 #endregion Update methods
 

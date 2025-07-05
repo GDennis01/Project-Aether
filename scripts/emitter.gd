@@ -128,34 +128,14 @@ func init_multimesh(multi_mesh_istance: MultiMeshInstance3D) -> void:
 func _physics_process(_delta: float) -> void:
 	if not visible:
 		return
-	var space_state := get_world_3d().direct_space_state
-	# var has_line_of_sight: bool
-	
-	#var ray_origin = global_position
-	#var light_dir_vector = light_source.global_transform.basis.z.normalized()
-	#var ray_end = ray_origin+light_dir_vector*RAY_LENGHT
-	#DebugLine.DrawLine(ray_origin,ray_end,Color(0,255,0))
-
-	#var query = PhysicsRayQueryParameters3D.create(ray_origin,ray_end)
-	var light_pos := light_source.global_position
-	# var light_dir_vector := light_source.global_transform.basis.z.normalized()
-	var emitter_pos := global_position
-
-
-	# DebugLine.DrawLine(light_pos, emitter_pos, Color(0, 255, 0))
-
-	var query := PhysicsRayQueryParameters3D.create(light_pos, emitter_pos)
-	query.collide_with_areas = true
-	#query.collide_with_bodies = true
-	
-	query.exclude = [$Particle/ParticleArea.get_rid()]
-	var _result := space_state.intersect_ray(query)
-
-	# TODO: fare in modo che is_lit venga settato da una state machine o roba simile.
-	# Così almeno non si bugga all'inizio alla prima iterazione
-	# Oppure convertire tutto sto processo in un metodo e richiamarlo al ready per settare
-	# lo stato iniziale di is_lit
 	## Raycasting-based solution
+	# var space_state := get_world_3d().direct_space_state
+	# var light_pos := light_source.global_position
+	# var emitter_pos := global_position
+	# var query := PhysicsRayQueryParameters3D.create(light_pos, emitter_pos)
+	# query.collide_with_areas = true	
+	# query.exclude = [$Particle/ParticleArea.get_rid()]
+	# var _result := space_state.intersect_ray(query)
 	# if not is_lit and result.is_empty():
 	# 	#enabled = true
 	# 	#print("LIT\n")
@@ -180,10 +160,8 @@ func _physics_process(_delta: float) -> void:
 func is_lit_math() -> bool:
 	var comet_basis: Basis = get_parent().global_transform.basis
 	var global_space_normal: Vector3 = comet_basis * norm
-	# var global_space_normal: Vector3 = comet_basis * norm
 	global_space_normal = global_space_normal.normalized().rotated(Vector3.LEFT, deg_to_rad(Util.sun_direction + 90))
 	var result: float = (Util.sun_direction_vector).dot(global_space_normal)
-	# print("Result: %f Result<0: %s" % [result, str(result > 0)])
 	result = (-Util.sun_direction_vector).dot(norm)
 	is_lit = result > 0
 	return is_lit
@@ -191,11 +169,8 @@ func is_lit_math() -> bool:
 func is_lit_math2(_n_step: int, _angle_per_step: float, _normal: Vector3) -> bool:
 	var comet_basis: Basis = get_parent().global_transform.basis
 	comet_basis = comet_basis * comet_basis.rotated(Vector3.UP, deg_to_rad(_n_step * _angle_per_step))
-	# var comet_basis: Basis = get_parent().global_transform.basis
-	# var global_space_normal: Vector3 = comet_basis * norm
 	var global_space_normal: Vector3 = _normal.normalized().rotated(Vector3.LEFT, deg_to_rad(Util.sun_direction + 90))
 	var result: float = (Util.sun_direction_vector).dot(global_space_normal)
-	# print("Result: %f Result<0: %s" % [result, str(result > 0)])
 	result = (-Util.sun_direction_vector).dot(_normal)
 	is_lit = result > 0
 	return is_lit
@@ -331,28 +306,20 @@ func _append_data_to_mm_buffer(buffer: PackedFloat32Array, transf: Transform3D, 
 	buffer.append(_color.a)
 func tick_optimized(_n_iteration: int) -> void:
 	# moving each particle
-	# print("Iteration: %d" % _n_iteration)
-	# print_global_array_size()
 	for i in range(0, mm_emitter.multimesh.visible_instance_count, N_POINTS + 1):
 		## accelerating only main particles, so every N_POINTS-th particle
-		# print("Accelerating particle %d" % i)
 		_accelerate_particle(i)
-		# print("Generating diffusion particles for particle %d" % i)
 		_generate_diffusion_particles(i)
 		
 	# if _is_lit:
 	# whether to spawn a new particle or not
 	if is_lit_math():
-		# print("Entered here at iteration %d" % _n_iteration)
 		# incrementing number of maximum drawn particles (to simulate spawning them)
 		var last_id := mm_emitter.multimesh.visible_instance_count + 1
 		if last_id < mm_emitter.multimesh.instance_count:
 			mm_emitter.multimesh.visible_instance_count = last_id + N_POINTS
 		_spawn_particle(last_id)
-		# print("Spawned particle at id %d" % (last_id - 1))
 	update_norm()
-	# print("buffer size: %d" % mm_emitter.multimesh.get_buffer().size())
-## Prints the size of the global positions, initial positions, normal directions, particle speeds, time alive and total space arrays
 
 
 ## Update the position of the i-th particle in the multimesh by accelerating it according to the formula in the Vincent's paper.
@@ -384,8 +351,6 @@ func _accelerate_particle(i: int) -> void:
 	# Apply your scaling factor
 	var scaled_final_pos := final_global_position / (Util.scale / 500)
 	total_space[i] += (scaled_final_pos - global_positions[i]).length() # update total space travelled by the particle
-	# if i == 0:
-	# 	print("%s - %s = %s" % [scaled_final_pos, global_positions[i], (scaled_final_pos - global_positions[i])])
 	global_positions[i] = scaled_final_pos
 	# add to the total space only the delta travelled by the particle
 	# total_space[i] += (global_displacement.length() / (Util.scale / 500)) # update total space travelled by the particle
@@ -404,8 +369,6 @@ func _accelerate_particle(i: int) -> void:
 func _generate_diffusion_particles(i: int) -> void:
 	if N_POINTS <= 0:
 		return # no diffusion particles to generate
-	# var _normal_dir_as_color := mm_emitter.multimesh.get_instance_custom_data(i) as Color
-	# var _normal_dir := Vector3(_normal_dir_as_color.r, _normal_dir_as_color.g, _normal_dir_as_color.b)
 	var center_particle := mm_emitter.multimesh.get_instance_transform(i)
 	var center_particle_color := mm_emitter.multimesh.get_instance_color(i)
 	var pc_radius := total_space[i] * (diffusion / 100) * 1 # pointcloud radius based on total space travelled by the particle and diffusion factor
@@ -413,9 +376,7 @@ func _generate_diffusion_particles(i: int) -> void:
 	for j in range(1, N_POINTS + 1):
 		# generating a random position around the particle
 		var new_pos := Util.generate_gaussian_vector(0, 1, pc_radius)
-		# mm_emitter.multimesh.visible_instance_count += 1
 		mm_emitter.multimesh.set_instance_transform(i + j, Transform3D(Basis(), center_particle.origin + new_pos))
-		# mm_emitter.multimesh.set_instance_color(i + j, Color.YELLOW)
 		mm_emitter.multimesh.set_instance_color(i + j, center_particle_color)
 
 	# mm_emitter.multimesh.visible_instance_count += N_POINTS
@@ -471,7 +432,6 @@ func update_initial_norm(_lat: float, _long: float) -> void:
 	norm = initial_norm
 	update_norm()
 func update_norm() -> void:
-	# print(get_parent().rotation_angle)
 	var rotation_matrix: Basis = get_parent().global_transform.basis
 	norm = initial_norm * rotation_matrix.inverse()
 	norm = norm.normalized()
