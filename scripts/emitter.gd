@@ -1,7 +1,7 @@
 extends Node3D
 class_name Emitter
 const RAY_LENGHT = 1000000
-const N_POINTS = 50
+const N_POINTS = 10
 # const N_POINTS = 0
 
 var particle_scene := preload("res://scenes/particle.tscn")
@@ -249,7 +249,7 @@ func instant_simulation(_n_steps: int, _angle_per_step: float) -> void:
 	# numerical integration to reconstruct diffusion particles
 	if diffusion > 0:
 		@warning_ignore("integer_division")
-		var SUBSTEPS: int = clamp(_n_steps / 10, 10, 150)
+		var SUBSTEPS: int = clamp(_n_steps / 10, 10, 25)
 		for idx in range(particle_transforms.size()):
 			var final_t := particle_transforms[idx]
 			var age := _n_steps - time_alive2[idx] # however you tracked “time_alive2” per particle

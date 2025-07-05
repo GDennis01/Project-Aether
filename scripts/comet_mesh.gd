@@ -144,6 +144,18 @@ func tick(n_iteration: int) -> void:
 ## Instant simulation. Basically it spawns all particles at once, without any delay.
 ## Then it computes the final position of each particle
 func instant_simulation() -> void:
+	simulation_setup()
+
+	n_steps = int(num_rotation * frequency * 60 / jet_rate)
+	angle_per_step = 1.0 / (frequency * 60.0 / jet_rate) * 360.0
+	animation_slider.set_step_rate(100.0 / n_steps)
+	print("Instant simulation with n_steps:%d and angle_per_step:%f" % [n_steps, angle_per_step])
+	for emitter: Emitter in get_tree().get_nodes_in_group("emitter"):
+		# emitter.set_number_particles(n_steps)
+		emitter.instant_simulation(n_steps, angle_per_step)
+	animation_slider.instant_simulation()
+
+func simulation_setup() -> void:
 	get_tree().call_group("disable", "disable_btn", "LoadBtn")
 	Util.equatorial_rotation = quaternion
 	look_at(Util.sun_direction_vector, Vector3.UP)
@@ -155,21 +167,13 @@ func instant_simulation() -> void:
 	Util.orbital_transformation = transform
 	# resuming the rotation
 	quaternion = Util.equatorial_rotation
-	
 	starting_rotation = rotation
-	n_steps = int(num_rotation * frequency * 60 / jet_rate)
-	angle_per_step = 1.0 / (frequency * 60.0 / jet_rate) * 360.0
-	animation_slider.set_step_rate(100.0 / n_steps)
-	print("Instant simulation with n_steps:%d and angle_per_step:%f" % [n_steps, angle_per_step])
-	for emitter: Emitter in get_tree().get_nodes_in_group("emitter"):
-		# emitter.set_number_particles(n_steps)
-		emitter.instant_simulation(n_steps, angle_per_step)
-	animation_slider.instant_simulation()
-
+	
 ## Called by play_animation_slider._on_play_btn_pressed
 func animation_started() -> void:
-	instant_simulation()
-	return
+	if not Util.is_simulation:
+		instant_simulation()
+		return
 	match animation_state:
 		ANIMATION_STATE.PAUSED:
 			animation_state = ANIMATION_STATE.RESUMED
@@ -180,22 +184,8 @@ func animation_started() -> void:
 			pass
 			
 	if animation_state == ANIMATION_STATE.STARTED:
-		get_tree().call_group("disable", "disable_btn", "LoadBtn")
-		# changing from equatorial to orbital system
-		Util.equatorial_rotation = quaternion
+		simulation_setup()
 
-		look_at(Util.sun_direction_vector, Vector3.UP)
-		rotate(transform.basis.y, deg_to_rad(-90))
-
-
-		# used by emitters to convert from equatorial to orbital system
-		Util.orbital_basis = transform.basis
-		Util.orbital_transformation = transform
-
-		# resuming the rotation
-		quaternion = Util.equatorial_rotation
-		
-		starting_rotation = rotation
 		n_steps = int(num_rotation * frequency * 60 / jet_rate)
 		for emitter: Emitter in get_tree().get_nodes_in_group("emitter"):
 			emitter.set_number_particles(n_steps)

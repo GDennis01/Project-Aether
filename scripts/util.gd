@@ -69,6 +69,8 @@ const SUN_MASS: float = 1.98892e30 ## Ms. Sun mass expressed in Kg
 const SUN_LUMINOSITY: float = 3.828e26 ## Ls. Sun Luminosity expressed in J/s
 const LIGHT_SPEED: float = 2.99792458e8 ## c. Speed of light Expressed in m/s
 
+var is_simulation: bool = true ## True: simulation enabled, False: instant simulation enabled
+
 
 # Labels
 @onready var current_camera_label: Label = $"/root/Hud/Viewport/SubViewportContainer/CurrCameraLabel"

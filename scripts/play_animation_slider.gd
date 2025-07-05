@@ -17,11 +17,18 @@ func tick() -> void:
 func reset() -> void:
 	$Slider.value = 0
 func _on_play_btn_pressed() -> void:
-	# animation_state = ANIMATION_STATE.STARTED
-	# animation_started.emit()
-	# print("ciao")
+	Util.is_simulation = true
 	get_tree().call_group("animation", "animation_started")
 	$PlayBtn.disabled = true
+	$PlayInstantBtn.disabled = true
+	$PauseBtn.disabled = false
+	$StopBtn.disabled = false
+
+func _on_play_instant_btn_pressed() -> void:
+	Util.is_simulation = false
+	get_tree().call_group("animation", "animation_started")
+	$PlayBtn.disabled = true
+	$PlayInstantBtn.disabled = true
 	$PauseBtn.disabled = false
 	$StopBtn.disabled = false
 func _on_pause_btn_pressed() -> void:
@@ -36,6 +43,7 @@ func _on_stop_btn_pressed() -> void:
 	# animation_stopped.emit()
 	get_tree().call_group("animation", "animation_stopped")
 	$PlayBtn.disabled = false
+	$PlayInstantBtn.disabled = false
 	$PauseBtn.disabled = true
 	$StopBtn.disabled = true
 func _on_speed_up_btn_pressed() -> void:
@@ -54,6 +62,7 @@ func _on_speed_up_btn_pressed() -> void:
 func instant_simulation() -> void:
 	$Slider.value = num_steps
 	$PlayBtn.disabled = true
+	$PlayInstantBtn.disabled = true
 	$PauseBtn.disabled = true
 	$StopBtn.disabled = false
 	$Slider.value = num_steps
