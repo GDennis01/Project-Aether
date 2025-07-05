@@ -1,15 +1,14 @@
 extends Node3D
 class_name Emitter
 const RAY_LENGHT = 1000000
-# const N_POINTS = 5
-const N_POINTS = 0
+const N_POINTS = 50
+# const N_POINTS = 0
 
 var particle_scene := preload("res://scenes/particle.tscn")
 # @onready var comet: MeshInstance3D = $"/root/World/CometMesh"
 
 var particles_alive: Array[Particle]
-var time_start: float
-var time_now: float
+
 var _sphere_mesh: SphereMesh
 # var _box_mesh: BoxMesh
 var _point_mesh: PointMesh
@@ -49,8 +48,6 @@ var norm: Vector3 = Vector3(0, 1, 0)
 var initial_norm: Vector3 = Vector3(0, 1, 0)
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	time_start = Time.get_ticks_msec()
-	
 	var unshaded_material := StandardMaterial3D.new()
 	unshaded_material.shading_mode = StandardMaterial3D.SHADING_MODE_UNSHADED
 	# unshaded_material.albedo_color = Color.WHITE
@@ -152,7 +149,7 @@ func _physics_process(_delta: float) -> void:
 	#query.collide_with_bodies = true
 	
 	query.exclude = [$Particle/ParticleArea.get_rid()]
-	var result := space_state.intersect_ray(query)
+	var _result := space_state.intersect_ray(query)
 
 	# TODO: fare in modo che is_lit venga settato da una state machine o roba simile.
 	# Così almeno non si bugga all'inizio alla prima iterazione
@@ -203,34 +200,8 @@ func is_lit_math2(_n_step: int, _angle_per_step: float, _normal: Vector3) -> boo
 	is_lit = result > 0
 	return is_lit
 
-func tick() -> void:
-	# trigger tick() on every particles alive
-	for particle in particles_alive:
-		particle.tick()
-	# then spawn a new particle if needed
-	if is_lit and particles_alive.size() < max_particles:
-		var particle := particle_scene.instantiate() as Particle
-		# particle.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-		particle.top_level = true
-		particle.normal_direction = norm
-		particle.enabled = true
-		particle.time_to_live = 10
-		particle.color = color
-		add_child(particle)
-		particle.global_position = self.global_position
-		particle.add_to_group("particle")
-		particles_alive.append(particle)
-	update_norm()
-
 
 #region Simulation related
-func set_number_particles(num: int) -> void:
-	if N_POINTS > 0:
-		num_particles = num * (N_POINTS + 1)
-	else:
-		num_particles = num
-	mm_emitter.multimesh.instance_count = num_particles
-
 ## Instant simulation of n_steps with angle_per_step each step.
 ## First, it computes when each particle spawns, then based on that it computes the final position of each particle.
 func instant_simulation(_n_steps: int, _angle_per_step: float) -> void:
@@ -238,44 +209,107 @@ func instant_simulation(_n_steps: int, _angle_per_step: float) -> void:
 	mm_emitter.multimesh.use_colors = true
 	mm_emitter.multimesh.use_custom_data = false
 
-
-	var i_time_alive: Array[int] = []
-	var i_global_positions: Array[Transform3D] = []
-	var i_initial_positions: Array[Vector3] = []
-	var i_normal_dirs: Array[Vector3] = []
+	var particle_transforms: Array[Transform3D] = []
+	var _normal_dirs: Array[Vector3] = []
+	var time_alive2: Array[int] = []
 	var mm_buffer: PackedFloat32Array = PackedFloat32Array()
-	print("_nsteps: %d" % _n_steps)
-	print("_angle_per_step: %f" % _angle_per_step)
-	print("start basis: %s" % str(get_parent().global_transform.basis))
-	# for each steps, compute global transform of the particle 
+	# var total_space_cumulative: Array[float] = []
+	# for each steps i, compute position of ith particle (if it's spawned)
+	# ie: at step 40(out of 100) the emitter is lit and thus spawns a particle -> compute that particle position at the end of simulation (step 100)
 	for i in range(_n_steps):
-		# print(i)
 		var comet_basis: Basis = get_parent().global_transform.basis
 		comet_basis = comet_basis * Basis(Vector3.UP, deg_to_rad((i + 1) * _angle_per_step))
-		# print("basis: %s" % str(comet_basis))
 		var _normal := update_norm2(initial_norm, comet_basis)
+		_normal_dirs.append(_normal)
+		# continue to next 
+		if not is_lit_math2(i, _angle_per_step, _normal):
+			continue
+		time_alive2.append(i) # time alive is the number of steps left until the end of simulation
 
-		if is_lit_math2(i, _angle_per_step, _normal):
-			i_time_alive.append(i)
-			i_initial_positions.append(Vector3.ZERO)
-			i_normal_dirs.append(_normal)
-			var ith_transform := _accelerate_particle2(i, _normal)
-			i_global_positions.append(ith_transform)
-			_append_data_to_mm_buffer(mm_buffer, ith_transform, color)
-		if i >= _n_steps - 1:
-			print("final basis: %s" % str(comet_basis))
-	print("Buffer size: %d" % mm_buffer.size())
+		# _n_steps - i so that it correctly defines the time the ith particle has been alive (ie: i=0, nsteps=100 -> particle alive for 100)
+		# just i would've worked just fine but it wasn't logically correct
+		var ith_transform := _accelerate_particle2(_n_steps - i, _normal)
+		particle_transforms.append(ith_transform)
+		_append_data_to_mm_buffer(mm_buffer, ith_transform, color)
+	# if diffusion > 0:
+	# 	var total_space_cumulative := 0.0
+	# 	for i in range(particle_transforms.size()):
+	# 		if i > 0:
+	# 			var delta = (particle_transforms[i].origin
+	# 					- particle_transforms[i - 1].origin).length()
+	# 			total_space_cumulative += delta
+	# 		# now use the cumulative path-length as the radius:
+	# 		var diff_cloud = _generate_diffusion_particles2(
+	# 			total_space_cumulative,
+	# 			particle_transforms[i].origin
+	# 		)
+	# 		for p in diff_cloud:
+	# 			_append_data_to_mm_buffer(mm_buffer, p, Color.YELLOW)
+
+	# numerical integration to reconstruct diffusion particles
+	if diffusion > 0:
+		@warning_ignore("integer_division")
+		var SUBSTEPS: int = clamp(_n_steps / 10, 10, 150)
+		for idx in range(particle_transforms.size()):
+			var final_t := particle_transforms[idx]
+			var age := _n_steps - time_alive2[idx] # however you tracked “time_alive2” per particle
+			var normal := _normal_dirs[idx] # same for your _normal passed in
+
+			# approximate arc‐length via sampling:
+			var travelled_space := 0.0
+			var prev_pos := Vector3.ZERO
+			for s in range(1, SUBSTEPS + 1):
+				@warning_ignore("integer_division")
+				var sub_age := int(age * s / SUBSTEPS)
+				var sub_t := _accelerate_particle2(sub_age, normal)
+				var pos := sub_t.origin
+				travelled_space += (pos - prev_pos).length()
+				prev_pos = pos
+
+			# now generate small cloud around the *true* path‐length:
+			var cloud := _generate_diffusion_particles2(travelled_space, final_t.origin)
+			for p in cloud:
+				_append_data_to_mm_buffer(mm_buffer, p, color)
 	@warning_ignore("integer_division")
 	mm_emitter.multimesh.instance_count = mm_buffer.size() / 16 # 16 is the number of floats per instance (12 for transform, 4 for color)
+	print("Emitter %d multimesh instance count: %d" % [jet_id, mm_emitter.multimesh.instance_count])
 	mm_emitter.multimesh.visible_instance_count = -1
 	mm_emitter.multimesh.set_buffer(mm_buffer)
+func _accelerate_particle2(time_alive2: int, _normal_dir: Vector3) -> Transform3D:
+	# --- 1. Get Particle-Specific Data ---
+	var new_basis := Util.orbital_basis
+	var time_passed: float = time_alive2 * Util.jet_rate * 60.0
+	# --- 2. Calculate Initial Global Velocity and Acceleration Term  in the global space ---
+	var global_initial_velocity: Vector3 = _normal_dir * speed
+	var sun_accel_magnitude: float = 0.5 * a * (time_passed ** 2)
+	# --- 3. Change of Basis ---
+	var local_velocity := global_initial_velocity * new_basis
+	# --- 4. Calculate Displacement in the new space  ---
+	var local_displacement := Vector3(local_velocity * time_passed)
+	local_displacement.x -= sun_accel_magnitude
+	# --- 5. Convert Local Displacement back to a Global Vector ---
+	var global_displacement: Vector3 = local_displacement * new_basis.transposed()
+	# --- 6. Calculate Final Global Position ---
+	var final_global_position: Vector3 = Vector3.ZERO + global_displacement
+	var scaled_final_pos := final_global_position / (Util.scale / 500)
+	global_positions.append(scaled_final_pos)
+	# total_space[i] += (scaled_final_pos - global_positions[i]).length() # update total space travelled by the particle
+	# --- 7. Create the Final Transform and Set it ---
+	var final_global_transform := Transform3D(new_basis, scaled_final_pos)
+	return final_global_transform
+func _generate_diffusion_particles2(travelled_space: float, particle_origin: Vector3) -> Array[Transform3D]:
+	if N_POINTS <= 0:
+		# return # no diffusion particles to generate
+		return []
+	var diffusion_particles: Array[Transform3D] = []
+	var pc_radius := travelled_space * (diffusion / 100) * 1 # pointcloud radius based on total space travelled by the particle and diffusion factor
+	# print("Radius:%f" % pc_radius)
+	for i in range(N_POINTS):
+		# generating a random position around the particle
+		var new_pos := Util.generate_gaussian_vector(0, 1, pc_radius)
+		diffusion_particles.append(Transform3D(Basis(), particle_origin + new_pos))
+	return diffusion_particles
 
-
-	# mm_emitter.multimesh.instance_count = 0
-	# mm_emitter.multimesh.use_colors = true
-	# mm_emitter.multimesh.use_custom_data = true
-
-	pass
 ## Append data to a multimesh buffer. https://docs.godotengine.org/en/stable/classes/class_renderingserver.html#class-renderingserver-method-multimesh-set-buffer
 func _append_data_to_mm_buffer(buffer: PackedFloat32Array, transf: Transform3D, _color: Color) -> void:
 	# basis.x.x, basis.y.x, basis.z.x, origin.x, basis.x.y, basis.y.y, basis.z.y, origin.y, basis.x.z, basis.y.z, basis.z.z, origin.z).
@@ -304,7 +338,7 @@ func tick_optimized(_n_iteration: int) -> void:
 		# print("Accelerating particle %d" % i)
 		_accelerate_particle(i)
 		# print("Generating diffusion particles for particle %d" % i)
-		# _generate_diffusion_particles(i)
+		_generate_diffusion_particles(i)
 		
 	# if _is_lit:
 	# whether to spawn a new particle or not
@@ -350,6 +384,8 @@ func _accelerate_particle(i: int) -> void:
 	# Apply your scaling factor
 	var scaled_final_pos := final_global_position / (Util.scale / 500)
 	total_space[i] += (scaled_final_pos - global_positions[i]).length() # update total space travelled by the particle
+	# if i == 0:
+	# 	print("%s - %s = %s" % [scaled_final_pos, global_positions[i], (scaled_final_pos - global_positions[i])])
 	global_positions[i] = scaled_final_pos
 	# add to the total space only the delta travelled by the particle
 	# total_space[i] += (global_displacement.length() / (Util.scale / 500)) # update total space travelled by the particle
@@ -361,37 +397,18 @@ func _accelerate_particle(i: int) -> void:
 	# var instance_local_transform := mm_global_inverse * final_global_transform
 	var instance_local_transform := final_global_transform
 	mm_emitter.multimesh.set_instance_transform(i, instance_local_transform)
-func _accelerate_particle2(spawned_time: int, _normal_dir: Vector3) -> Transform3D:
-	# --- 1. Get Particle-Specific Data ---
-	var new_basis := Util.orbital_basis
-	var time_passed: float = spawned_time * Util.jet_rate * 60.0
-	# --- 2. Calculate Initial Global Velocity and Acceleration Term  in the global space ---
-	var global_initial_velocity: Vector3 = _normal_dir * speed
-	var sun_accel_magnitude: float = 0.5 * a * (time_passed ** 2)
-	# --- 3. Change of Basis ---
-	var local_velocity := global_initial_velocity * new_basis
-	# --- 4. Calculate Displacement in the new space  ---
-	var local_displacement := Vector3(local_velocity * time_passed)
-	local_displacement.x -= sun_accel_magnitude
-	# --- 5. Convert Local Displacement back to a Global Vector ---
-	var global_displacement: Vector3 = local_displacement * new_basis.transposed()
-	# --- 6. Calculate Final Global Position ---
-	var final_global_position: Vector3 = Vector3.ZERO + global_displacement
-	var scaled_final_pos := final_global_position / (Util.scale / 500)
-	# total_space[i] += (scaled_final_pos - global_positions[i]).length() # update total space travelled by the particle
-	# --- 7. Create the Final Transform and Set it ---
-	var final_global_transform := Transform3D(new_basis, scaled_final_pos)
-	return final_global_transform
+## TODO: refactor so that there's only one function that accelerates the particle
+
 ## Generate N_POINTS diffusion particles around the current particle 
 ## It doesn't update multimesh.visible_instance_count!
 func _generate_diffusion_particles(i: int) -> void:
 	if N_POINTS <= 0:
 		return # no diffusion particles to generate
-	var _normal_dir_as_color := mm_emitter.multimesh.get_instance_custom_data(i) as Color
-	var _normal_dir := Vector3(_normal_dir_as_color.r, _normal_dir_as_color.g, _normal_dir_as_color.b)
+	# var _normal_dir_as_color := mm_emitter.multimesh.get_instance_custom_data(i) as Color
+	# var _normal_dir := Vector3(_normal_dir_as_color.r, _normal_dir_as_color.g, _normal_dir_as_color.b)
 	var center_particle := mm_emitter.multimesh.get_instance_transform(i)
 	var center_particle_color := mm_emitter.multimesh.get_instance_color(i)
-	var pc_radius := total_space[i] * (diffusion / 100) * randf() # pointcloud radius based on total space travelled by the particle and diffusion factor
+	var pc_radius := total_space[i] * (diffusion / 100) * 1 # pointcloud radius based on total space travelled by the particle and diffusion factor
 	# TODO: maybe use compute shader to generate the particles around the center particle
 	for j in range(1, N_POINTS + 1):
 		# generating a random position around the particle
@@ -400,7 +417,7 @@ func _generate_diffusion_particles(i: int) -> void:
 		mm_emitter.multimesh.set_instance_transform(i + j, Transform3D(Basis(), center_particle.origin + new_pos))
 		# mm_emitter.multimesh.set_instance_color(i + j, Color.YELLOW)
 		mm_emitter.multimesh.set_instance_color(i + j, center_particle_color)
-	
+
 	# mm_emitter.multimesh.visible_instance_count += N_POINTS
 ## Spawns a new particle in the multimesh at the current position of the emitter. 
 ## The id of the particle is the last id -1  of the multimesh.
@@ -439,14 +456,6 @@ func update_acceleration() -> void:
 	# Ls / 4PI * c *(AU*sun_comet_distance)^2
 	var eps: float = Util.SUN_LUMINOSITY / ((4 * PI) * Util.LIGHT_SPEED * pow(Util.AU * Util.sun_comet_distance, 2))
 	var P: float = eps * (1 + Util.albedo)
-
-	# print("Ls:%f"%Util.SUN_LUMINOSITY)
-	# print("eps:%f P:%f c:%f" % [eps, P, Util.LIGHT_SPEED])
-	# print("4*PI:%f" % (4.0 * PI))
-	# print("Distance Squared:%f" % [pow(Util.AU * Util.sun_comet_distance, 2)])
-	# print("c * Distance Squared:%f" % [Util.LIGHT_SPEED * pow(Util.AU * Util.sun_comet_distance, 2)])
-	# print("Dividendo:%f " % ((4 * PI) * Util.LIGHT_SPEED * pow(Util.AU * Util.sun_comet_distance, 2)))
-
 	# # P * 3 / (4 * d/2 * p)
 	var _a: float = P * 3.0 / (4.0 * ((Util.particle_diameter / 1000.0) / 2.0) * (Util.particle_density * 1000.0))
 	self.a = _a
@@ -473,6 +482,13 @@ func update_norm2(v: Vector3, b: Basis) -> Vector3:
 	var result := (v * b.inverse())
 	return result.normalized()
 
+func set_number_particles(num: int) -> void:
+	if N_POINTS > 0:
+		num_particles = num * (N_POINTS + 1)
+	else:
+		num_particles = num
+	mm_emitter.multimesh.instance_count = num_particles
+
 # Cleanup methods
 func reset_particles() -> void:
 	for particle in particles_alive:
@@ -491,7 +507,7 @@ func reset_multimesh() -> void:
 	time_alive.clear()
 func destroy_multimesh() -> void:
 	mm_emitter.queue_free()
-#endregion Multimesh
+#endregion Simulation related
 
 ###################################################################################
 # Update methods called when sanitized_edit.sanitized_edit_focus_exited is emitted
@@ -527,3 +543,23 @@ func update_color(_color: Color) -> void:
 	if Util.PRINT_UPDATE_METHOD: print("Updated albedo:%s"%str(_color))
 	color = _color
 #endregion update methods
+
+
+func tick() -> void:
+	# trigger tick() on every particles alive
+	for particle in particles_alive:
+		particle.tick()
+	# then spawn a new particle if needed
+	if is_lit and particles_alive.size() < max_particles:
+		var particle := particle_scene.instantiate() as Particle
+		# particle.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		particle.top_level = true
+		particle.normal_direction = norm
+		particle.enabled = true
+		particle.time_to_live = 10
+		particle.color = color
+		add_child(particle)
+		particle.global_position = self.global_position
+		particle.add_to_group("particle")
+		particles_alive.append(particle)
+	update_norm()
