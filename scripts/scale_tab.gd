@@ -42,7 +42,7 @@ func load_data() -> void:
 
 
 ## These methods are called by SanitizedEdit through call_group() mechanism
-
+# TODO: some methods are called twice upon updating a field
 func update_delta_au(value: float) -> void:
 	if Util.PRINT_UPDATE_METHOD: print("Updated delta_au:%f"%value)
 	Util.earth_comet_delta = value
@@ -94,7 +94,8 @@ func update_fov_km() -> void:
 
 func update_scale_factor() -> void:
 	var window_image_scale_factor: float = Util.tel_image_size / Util.window_size
-	var fov_full_zoom: float = Util.window_fov / 1000 * window_image_scale_factor
+	# var fov_full_zoom: float = Util.window_fov / 1000 * window_image_scale_factor
+	var fov_full_zoom: float = Util.visible_area / 1000 * window_image_scale_factor
 	var pixel_resolution_full_zoom: float = fov_full_zoom / Util.window_size
 	Util.scale = Util.tel_res_km_pixel / pixel_resolution_full_zoom * window_image_scale_factor * 1000
 	# print("Scale factor: %f"%Util.scale)

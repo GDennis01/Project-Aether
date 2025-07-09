@@ -1150,7 +1150,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
 keep_aspect = 0
 current = true
 script = ExtResource("10_mj13f")
-starting_distance = 1.0
+starting_distance = 5.0
 max_distance = 50.0
 enabled = true
 

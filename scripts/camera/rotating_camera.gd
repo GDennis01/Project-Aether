@@ -26,6 +26,10 @@ var _is_dragging: bool = false
 func _ready() -> void:
 	if enabled:
 		make_current() # Make this camera the current one
+		size = starting_distance
+		starting_size = size
+		Util.starting_distance = starting_distance
+		Util.visible_area = get_visible_area_at_distance(starting_distance).width # Store the visible area at the starting distance
 		_update_camera_transform() # Set initial position and orientation
 
 func _unhandled_key_input(event: InputEvent) -> void:
@@ -63,11 +67,11 @@ func _input(event: InputEvent) -> void:
 
 		elif event.button_index == MOUSE_BUTTON_WHEEL_UP:
 			distance = clamp(distance - zoom_sensitivity, min_distance, max_distance)
-			size = clamp(size - zoom_sensitivity - 0.5, 1, 1000) # Adjust size for orthographic projection
+			size = clamp(size - zoom_sensitivity * 2, 1, 1000) # Adjust size for orthographic projection
 			_update_camera_transform()
 		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 			distance = clamp(distance + zoom_sensitivity, min_distance, max_distance)
-			size = clamp(size + zoom_sensitivity + 0.5, 1, 1000) # Adjust size for orthographic projection
+			size = clamp(size + zoom_sensitivity * 2, 1, 1000) # Adjust size for orthographic projection
 			_update_camera_transform()
 
 	elif event is InputEventMouseMotion and _is_dragging:
@@ -105,3 +109,18 @@ func _update_camera_transform() -> void:
 	get_tree().call_group("camera", "update_mini_camera", transform)
 
 	# force_update_transform() # Generally not needed, but good to know.
+
+## Returns how much of the scene, in terms of meters, is visible at a given distance from the camera.
+## This is useful to compute the scale factor during the simulation
+func get_visible_area_at_distance(dist: float) -> Dictionary:
+	var vertical_fov := fov
+	var viewport_size := get_viewport().get_visible_rect().size
+	var aspect_ratio := viewport_size.x / viewport_size.y
+	var visible_height := 2.0 * dist * tan(deg_to_rad(vertical_fov / 2.0))
+	var visible_width := visible_height * aspect_ratio
+	print("Calculating visible area at distance: ", dist)
+	print("Viewport Size: ", viewport_size)
+	print("Aspect Ratio: ", aspect_ratio)
+	print("Visible Width: ", visible_width, " Visible Height: ", visible_height)
+	print("------")
+	return {"width": visible_width, "height": visible_height}
