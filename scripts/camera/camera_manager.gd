@@ -12,7 +12,10 @@ func change_camera() -> void:
 		# disable input for the free roam camera and enable the rotating camera
 		_rot_camera.enabled = true
 		_fr_camera.enabled = false
-		Util.current_camera_label.text = "Rotating Camera"
+		if _rot_camera.projection == Camera3D.PROJECTION_PERSPECTIVE:
+			Util.current_camera_label.text = "Rotating Camera (Perspective)"
+		else:
+			Util.current_camera_label.text = "Rotating Camera (Orthographic)"
 	else:
 		# sets the current camera to the free roam camera
 		_fr_camera.current = true

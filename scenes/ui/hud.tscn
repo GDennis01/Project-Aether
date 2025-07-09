@@ -131,6 +131,7 @@ focus_mode = 0
 text = "Change Camera"
 
 [node name="FullViewportBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
+visible = false
 layout_mode = 2
 focus_mode = 0
 text = "FullViewport"
@@ -1112,7 +1113,7 @@ metadata/_edit_use_anchors_ = true
 
 [node name="CurrCameraLabel" type="Label" parent="Viewport/SubViewportContainer"]
 layout_mode = 2
-text = "Rotating Camera"
+text = "Rotating Camera (Perspective)"
 metadata/_edit_use_anchors_ = true
 
 [node name="SubViewport" type="SubViewport" parent="Viewport/SubViewportContainer" node_paths=PackedStringArray("_fr_camera", "_rot_camera") groups=["camera"]]
@@ -1124,11 +1125,11 @@ _fr_camera = NodePath("FreeRoamCamera")
 _rot_camera = NodePath("RotatingCamera")
 
 [node name="RotatingCamera" type="Camera3D" parent="Viewport/SubViewportContainer/SubViewport" groups=["camera"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
 keep_aspect = 0
 current = true
 script = ExtResource("10_mj13f")
-starting_distance = 10.0
+starting_distance = 1.0
 max_distance = 50.0
 enabled = true
 

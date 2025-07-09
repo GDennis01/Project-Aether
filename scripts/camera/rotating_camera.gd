@@ -16,6 +16,7 @@ class_name RotatingCamera
 
 # State variables 
 @onready var distance := starting_distance # Distance from the target node
+@onready var starting_size := size
 var _target_position: Vector3 = Vector3.ZERO # Where the camera looks
 var _yaw: float = 0.0 # Rotation around Y-axis (horizontal)
 var _pitch: float = 0.0 # Rotation around X-axis (vertical)
@@ -27,19 +28,31 @@ func _ready() -> void:
 		make_current() # Make this camera the current one
 		_update_camera_transform() # Set initial position and orientation
 
+func _unhandled_key_input(event: InputEvent) -> void:
+	if not enabled:
+		return # Ignore input if camera is not enabled
+	if event is InputEventKey and event.is_pressed() and not event.is_echo():
+		match event.keycode:
+			KEY_R: # Reset camera to default position and rotation
+				_yaw = 0.0
+				_pitch = 0.0
+				distance = starting_distance
+				size = starting_size
+				_update_camera_transform()
+			KEY_P: # Toggle perspective/orthographic mode
+				if projection == PROJECTION_PERSPECTIVE:
+					projection = PROJECTION_ORTHOGONAL
+					Util.current_camera_label.text = "Rotating Camera (Orthographic)"
+				else:
+					projection = Camera3D.PROJECTION_PERSPECTIVE
+					Util.current_camera_label.text = "Rotating Camera (Perspective)"
+				_update_camera_transform() # Update transform after changing mode
 ## R to reset position
 ## Mouse wheel to zoom in/out
 ## Right mouse button to drag and rotate the camera
 func _input(event: InputEvent) -> void:
 	if not enabled:
 		return # Ignore input if camera is not enabled
-	if event is InputEventKey:
-		match event.keycode:
-			KEY_R: # Reset camera to default position and rotation
-				_yaw = 0.0
-				_pitch = 0.0
-				distance = starting_distance
-				_update_camera_transform()
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_RIGHT:
 			_is_dragging = event.is_pressed()
@@ -50,9 +63,11 @@ func _input(event: InputEvent) -> void:
 
 		elif event.button_index == MOUSE_BUTTON_WHEEL_UP:
 			distance = clamp(distance - zoom_sensitivity, min_distance, max_distance)
+			size = clamp(size - zoom_sensitivity - 0.5, 1, 1000) # Adjust size for orthographic projection
 			_update_camera_transform()
 		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 			distance = clamp(distance + zoom_sensitivity, min_distance, max_distance)
+			size = clamp(size + zoom_sensitivity + 0.5, 1, 1000) # Adjust size for orthographic projection
 			_update_camera_transform()
 
 	elif event is InputEventMouseMotion and _is_dragging:
