@@ -90,6 +90,7 @@ func update_fov_km() -> void:
 	Util.fov_km = Util.tel_image_size * Util.tel_res_km_pixel
 	if fov_km:
 		fov_km.text = str(int(Util.fov_km))
+		Util.current_fov_label.text = "%s Km" % fov_km.text
 
 func update_scale_factor() -> void:
 	var window_image_scale_factor: float = Util.tel_image_size / Util.window_size

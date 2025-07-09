@@ -2,6 +2,7 @@ extends CanvasLayer
 
 # @onready var rot_camera_viewport: SubViewport = $"/root/Hud/Body/SubViewportContainer/SubViewport"
 @onready var rot_camera_viewport: SubViewport = $"/root/Hud/Viewport/SubViewportContainer/SubViewport"
+@onready var cam: Camera3D = $"/root/Hud/Viewport/SubViewportContainer/SubViewport/RotatingCamera"
 @onready var file_explorer: FileDialog = $TabButtons/ColorRect/HBoxContainer/FileExplorer
 # @onready var plane: MeshInstance3D = $"/root/World/Plane"
 @onready var comet: MeshInstance3D = $"/root/World/CometMesh"
@@ -165,9 +166,23 @@ func _on_file_explorer_file_selected(path: String) -> void:
 		SaveManager.load(path)
 		get_tree().call_group("load", "load_data")
 
-
+## Returns how much of the scene, in terms of meters, is visible at a given distance from the camera.
+## This is useful to compute the scale factor during the simulation
+func get_visible_area_at_distance(distance: float) -> Dictionary:
+	var vertical_fov := cam.fov
+	var viewport_size := rot_camera_viewport.get_viewport().get_visible_rect().size
+	var aspect_ratio := viewport_size.x / viewport_size.y
+	var visible_height := 2.0 * distance * tan(deg_to_rad(vertical_fov / 2.0))
+	var visible_width := visible_height * aspect_ratio
+	print("Calculating visible area at distance: ", distance)
+	print("Viewport Size: ", viewport_size)
+	print("Aspect Ratio: ", aspect_ratio)
+	print("Visible Width: ", visible_width, " Visible Height: ", visible_height)
+	print("------")
+	return {"width": visible_width, "height": visible_height}
 ## Now is used as a button for debugging purposes
 func _on_full_viewport_btn_pressed() -> void:
+	get_visible_area_at_distance(42)
 	## Prova plane
 	#region plane
 	# plane.global_rotation_degrees = comet.global_rotation_degrees

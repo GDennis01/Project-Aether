@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://bwt7dtbn7pn3c"]
+[gd_scene load_steps=15 format=3 uid="uid://bwt7dtbn7pn3c"]
 
 [ext_resource type="Script" uid="uid://bmle6k05e5fff" path="res://scripts/hud.gd" id="1_moku2"]
 [ext_resource type="Script" uid="uid://bwvqb33hu6cxk" path="res://scripts/navbar.gd" id="1_r4m0t"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://c3hrn6jcfsf4a" path="res://scripts/sim_tab.gd" id="7_h022r"]
 [ext_resource type="Script" uid="uid://cwr53alhuqvvs" path="res://scripts/scale_tab.gd" id="9_0h1do"]
 [ext_resource type="Script" uid="uid://cck1k6upmhp3a" path="res://scripts/camera/camera_manager.gd" id="9_4jqwt"]
+[ext_resource type="Texture2D" uid="uid://dcr7agojr5xh8" path="res://scale.png" id="10_erw67"]
 [ext_resource type="Script" uid="uid://c40guo1rckn11" path="res://scripts/camera/rotating_camera.gd" id="10_mj13f"]
 [ext_resource type="Script" uid="uid://ctb74i43u0sru" path="res://scripts/camera/free_roam_camera.gd" id="11_0h1do"]
 [ext_resource type="Script" uid="uid://cxp45je7onc6p" path="res://scripts/camera/mini_camera.gd" id="13_4d46k"]
@@ -130,11 +131,10 @@ layout_mode = 2
 focus_mode = 0
 text = "Change Camera"
 
-[node name="FullViewportBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
-visible = false
+[node name="DebugBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 layout_mode = 2
 focus_mode = 0
-text = "FullViewport"
+text = "Debug"
 
 [node name="ToggleSunBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 layout_mode = 2
@@ -1101,14 +1101,16 @@ layer = 2
 visibility_layer = 4
 z_index = -1
 anchors_preset = -1
-anchor_left = 0.589
-anchor_top = 0.531
-anchor_right = 0.589
-anchor_bottom = 0.531
-offset_left = -399.37
-offset_top = -447.38
-offset_right = 500.63
-offset_bottom = 452.62
+anchor_left = 0.627
+anchor_top = 0.534
+anchor_right = 0.627
+anchor_bottom = 0.534
+offset_left = -449.91
+offset_top = -450.32
+offset_right = 450.09
+offset_bottom = 449.68
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.55
 metadata/_edit_use_anchors_ = true
 
 [node name="CurrCameraLabel" type="Label" parent="Viewport/SubViewportContainer"]
@@ -1123,6 +1125,25 @@ render_target_update_mode = 4
 script = ExtResource("9_4jqwt")
 _fr_camera = NodePath("FreeRoamCamera")
 _rot_camera = NodePath("RotatingCamera")
+
+[node name="CenterContainer" type="CenterContainer" parent="Viewport/SubViewportContainer/SubViewport"]
+anchors_preset = -1
+anchor_left = 0.811111
+anchor_top = 0.928889
+anchor_right = 0.984444
+anchor_bottom = 0.954444
+metadata/_edit_use_anchors_ = true
+
+[node name="ScaleLabel" type="Label" parent="Viewport/SubViewportContainer/SubViewport/CenterContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="Scale" type="Sprite2D" parent="Viewport/SubViewportContainer/SubViewport"]
+position = Vector2(808, 879)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("10_erw67")
 
 [node name="RotatingCamera" type="Camera3D" parent="Viewport/SubViewportContainer/SubViewport" groups=["camera"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
@@ -1172,7 +1193,7 @@ script = ExtResource("13_4d46k")
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ResetRotnBtn" to="Body" method="_on_reset_rotn_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ScreenshotBtn" to="Body" method="_on_screenshot_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ChangeCameraBtn" to="Body" method="_on_change_camera_btn_pressed"]
-[connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/FullViewportBtn" to="Body" method="_on_full_viewport_btn_pressed"]
+[connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/DebugBtn" to="Body" method="_on_full_viewport_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ToggleSunBtn" to="Body" method="_on_toggle_sun_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ToggleYBtn" to="Body" method="_on_toggle_y_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ToggleAxesBtn" to="Body" method="_on_toggle_axes_btn_pressed"]
