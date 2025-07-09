@@ -1,7 +1,7 @@
 extends Node3D
 class_name Emitter
 const RAY_LENGHT = 1000000
-const N_POINTS = 10
+const N_POINTS = 35
 # const N_POINTS = 0
 
 var particle_scene := preload("res://scenes/particle.tscn")
@@ -277,7 +277,7 @@ func _generate_diffusion_particles2(travelled_space: float, particle_origin: Vec
 		# return # no diffusion particles to generate
 		return []
 	var diffusion_particles: Array[Transform3D] = []
-	var pc_radius := travelled_space * (diffusion / 100) * 1 # pointcloud radius based on total space travelled by the particle and diffusion factor
+	var pc_radius := travelled_space * (diffusion / 100) * randf() # pointcloud radius based on total space travelled by the particle and diffusion factor
 	# print("Radius:%f" % pc_radius)
 	for i in range(N_POINTS):
 		# generating a random position around the particle
@@ -371,7 +371,7 @@ func _generate_diffusion_particles(i: int) -> void:
 		return # no diffusion particles to generate
 	var center_particle := mm_emitter.multimesh.get_instance_transform(i)
 	var center_particle_color := mm_emitter.multimesh.get_instance_color(i)
-	var pc_radius := total_space[i] * (diffusion / 100) * 1 # pointcloud radius based on total space travelled by the particle and diffusion factor
+	var pc_radius := total_space[i] * (diffusion / 100) * randf() # pointcloud radius based on total space travelled by the particle and diffusion factor
 	# TODO: maybe use compute shader to generate the particles around the center particle
 	for j in range(1, N_POINTS + 1):
 		# generating a random position around the particle
