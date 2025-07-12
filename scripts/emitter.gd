@@ -1,7 +1,7 @@
 extends Node3D
 class_name Emitter
 const RAY_LENGHT = 1000000
-const N_POINTS = 35
+const N_POINTS = 5
 # const N_POINTS = 0
 
 var particle_scene := preload("res://scenes/particle.tscn")
@@ -205,7 +205,9 @@ func instant_simulation(_n_steps: int, _angle_per_step: float) -> void:
 		# just i would've worked just fine but it wasn't logically correct
 		var ith_transform := _accelerate_particle2(_n_steps - i, _normal)
 		particle_transforms.append(ith_transform)
-		_append_data_to_mm_buffer(mm_buffer, ith_transform, color)
+		# this is to avoid showing particles inside the diffusion cloud sphere
+		if diffusion < 0:
+			_append_data_to_mm_buffer(mm_buffer, ith_transform, color)
 	# if diffusion > 0:
 	# 	var total_space_cumulative := 0.0
 	# 	for i in range(particle_transforms.size()):
