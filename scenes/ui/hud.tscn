@@ -184,7 +184,6 @@ metadata/is_screenshot = false
 
 [node name="CometTab" type="CanvasLayer" parent="Body" groups=["load", "save"]]
 layer = 3
-visible = false
 script = ExtResource("3_136eg")
 
 [node name="Control" type="Control" parent="Body/CometTab"]
@@ -386,7 +385,7 @@ grow_vertical = 2
 scale = Vector2(0.85, 0.85)
 text = "1.0"
 resize_type = &"particle_diameter"
-higher_bound = 1.0
+higher_bound = 15.0
 metadata/_edit_use_anchors_ = true
 
 [node name="ParticleDiameterLabel" type="Label" parent="Body/CometTab/Control"]
@@ -415,7 +414,7 @@ grow_vertical = 2
 scale = Vector2(0.85, 0.85)
 text = "1.0"
 resize_type = &"particle_density"
-higher_bound = 2.0
+higher_bound = 5.0
 metadata/_edit_use_anchors_ = true
 
 [node name="ParticleDensityLabel" type="Label" parent="Body/CometTab/Control"]
@@ -610,6 +609,7 @@ text = "Add Jet Entry"
 
 [node name="SimTab" type="CanvasLayer" parent="Body" groups=["i", "load", "n_points", "phi", "save", "true_anomaly"]]
 layer = 3
+visible = false
 script = ExtResource("7_h022r")
 
 [node name="Control" type="Control" parent="Body/SimTab"]
