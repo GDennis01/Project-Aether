@@ -1,7 +1,8 @@
-[gd_scene load_steps=14 format=3 uid="uid://bqxoxn8bpfcfa"]
+[gd_scene load_steps=16 format=3 uid="uid://bqxoxn8bpfcfa"]
 
 [ext_resource type="Script" uid="uid://dsimhylkxu4no" path="res://scripts/world_manager.gd" id="1_wu602"]
 [ext_resource type="Script" uid="uid://d1gcq008ypdlq" path="res://scripts/sun.gd" id="2_i7141"]
+[ext_resource type="Texture2D" uid="uid://bipq3vjm1ku1g" path="res://asset/texture3.jpg" id="4_71j4m"]
 [ext_resource type="Script" uid="uid://cdbhqjf33rsg1" path="res://scripts/comet_mesh.gd" id="4_yu4gv"]
 [ext_resource type="Shader" uid="uid://ccpharluyb1qa" path="res://shaders/sphere.gdshader" id="6_4mrxx"]
 
@@ -24,17 +25,21 @@ material = SubResource("StandardMaterial3D_w7kh3")
 radius = 0.001
 height = 0.002
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_71j4m"]
+
 [sub_resource type="SphereMesh" id="SphereMesh_f4gce"]
+material = SubResource("StandardMaterial3D_71j4m")
 radius = 5.0
 height = 10.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7r4gi"]
 render_priority = 0
 shader = ExtResource("6_4mrxx")
-shader_parameter/base_color = Color(0.23831, 0.819307, 0.837305, 1)
+shader_parameter/comet_texture = ExtResource("4_71j4m")
 shader_parameter/latitude_lines = 12.0
 shader_parameter/longitude_lines = 24.0
-shader_parameter/line_thickness = 0.068
+shader_parameter/line_thickness = 0.053
+shader_parameter/border_thickness = 0.038
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_4mrxx"]
 
