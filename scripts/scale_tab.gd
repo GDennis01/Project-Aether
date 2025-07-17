@@ -13,11 +13,11 @@ func _ready() -> void:
 ## Called by Navbar._on_file_explorer_file_selected()
 ## Save the data into the SaveManager.config structure
 func save_data() -> void:
+	SaveManager.config.set_value("scale", "window_size", float($Control/WindowSizeEdit.text))
 	SaveManager.config.set_value("scale", "delta_au", float($Control/DeltaAUEdit.text))
 	SaveManager.config.set_value("scale", "tel_res", float($Control/TelResolutionEdit.text))
 	SaveManager.config.set_value("scale", "tel_img_size", float($Control/TelImageSizeEdit.text))
 	SaveManager.config.set_value("scale", "window_fov", float($Control/WindowFOVEdit.text))
-	SaveManager.config.set_value("scale", "window_size", float($Control/WindowSizeEdit.text))
 ## Called by Navbar._on_file_explorer_file_selected()
 ## Loads the data from the config file into the different element of the scene
 func load_data() -> void:
@@ -27,11 +27,11 @@ func load_data() -> void:
 	# $Control/TelImageSizeEdit.set_block_signals(true)
 	# $Control/WindowFOVEdit.set_block_signals(true)
 	# $Control/WindowSizeEdit.set_block_signals(true)
+	$Control/WindowSizeEdit.set_value(float(SaveManager.config.get_value("scale", "window_size", 900)))
 	$Control/DeltaAUEdit.set_value(float(SaveManager.config.get_value("scale", "delta_au", 0)))
 	$Control/TelResolutionEdit.set_value(float(SaveManager.config.get_value("scale", "tel_res", 0)))
 	$Control/TelImageSizeEdit.set_value(float(SaveManager.config.get_value("scale", "tel_img_size", 0)))
 	$Control/WindowFOVEdit.set_value(float(SaveManager.config.get_value("scale", "window_fov", 0)))
-	$Control/WindowSizeEdit.set_value(float(SaveManager.config.get_value("scale", "window_size", 0)))
 
 	# set block signals to false to allow triggering update methods
 	# $Control/DeltaAUEdit.set_block_signals(false)
@@ -68,7 +68,7 @@ func update_window_fov(value: float) -> void:
 	update_scale_factor()
 
 func update_window_size(value: float) -> void:
-	if Util.PRINT_UPDATE_METHOD: print("Updated window_size:%f"%value)
+	if Util.PRINT_UPDATE_METHOD or true: print("Updated window_size:%f"%value)
 	Util.window_size = value
 	update_scale_factor()
 
@@ -90,7 +90,10 @@ func update_fov_km() -> void:
 	Util.fov_km = Util.tel_image_size * Util.tel_res_km_pixel
 	if fov_km:
 		fov_km.text = str(int(Util.fov_km))
-		Util.current_fov_label.text = "%s Km" % fov_km.text
+		# 150 is the length of the ruler in pixels
+		var fov_km_ruler: float = Util.fov_km / Util.window_size * 150
+		print("Fov_km: %f Window size: %f Fov km ruler: %f" % [Util.fov_km, Util.window_size, fov_km_ruler])
+		Util.current_fov_label.text = "%s Km" % int(fov_km_ruler)
 
 func update_scale_factor() -> void:
 	var window_image_scale_factor: float = Util.tel_image_size / Util.window_size

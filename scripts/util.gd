@@ -35,7 +35,7 @@ var tel_image_size: float = 0.0
 ## Window field of view in meters
 var window_fov: float = 0.0
 ## Window size in pixels
-var window_size: float = 0.0
+var window_size: float = 900.0
 ## FOV in arcmin
 var fov_arcmin: float = 0.0
 ## FOV in km

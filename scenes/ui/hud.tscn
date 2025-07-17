@@ -1167,11 +1167,12 @@ metadata/_edit_use_anchors_ = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+text = "0 Km"
 metadata/_edit_use_anchors_ = true
 
 [node name="Scale" type="Sprite2D" parent="Viewport/SubViewportContainer/SubViewport"]
 position = Vector2(808, 879)
-scale = Vector2(0.5, 0.5)
+scale = Vector2(0.473, 0.473)
 texture = ExtResource("10_erw67")
 
 [node name="RotatingCamera" type="Camera3D" parent="Viewport/SubViewportContainer/SubViewport" groups=["camera"]]
