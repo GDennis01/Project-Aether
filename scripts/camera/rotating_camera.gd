@@ -28,8 +28,10 @@ func _ready() -> void:
 		make_current() # Make this camera the current one
 		size = starting_distance
 		starting_size = size
-		Util.starting_distance = starting_distance
 		Util.visible_area = get_visible_area_at_distance(starting_distance).width # Store the visible area at the starting distance
+		# Util.starting_distance = starting_distance
+		Util.starting_distance = Util.visible_area / 2
+		starting_distance = Util.starting_distance
 		_update_camera_transform() # Set initial position and orientation
 
 func _unhandled_key_input(event: InputEvent) -> void:
