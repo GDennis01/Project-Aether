@@ -56,10 +56,11 @@ var orbital_transformation: Transform3D = Transform3D() ## Orbital transformatio
 var equatorial_transformation: Transform3D = Transform3D() ## Equatorial transformation of the comet in the 3D space
 var equatorial_rotation: Quaternion ## Equatorial rotation of the comet in the 3D space
 
-# I, Phi and True Anomaly
+# Simulation related properties
 var i: float = 0.0 ## angle between rotationa xis and the orbital plane in degrees
 var phi: float = 0.0 ## angle between projection of axis direction and sun direction at perihelion in degrees
 var true_anomaly: float = 0.0 ## angular position of the comet in its orbit in degrees
+var n_points: int = 1 ## number of points in the orbit
 
 #particle properties
 var albedo: float = 0.0

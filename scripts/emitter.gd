@@ -1,7 +1,7 @@
 extends Node3D
 class_name Emitter
 const RAY_LENGHT = 1000000
-const N_POINTS = 5
+# const N_POINTS = 5
 # const N_POINTS = 0
 
 var particle_scene := preload("res://scenes/particle.tscn")
@@ -202,7 +202,7 @@ func instant_simulation(_n_steps: int, _angle_per_step: float) -> void:
 		time_alive2.append(i) # time alive is the number of steps left until the end of simulation
 
 		# _n_steps - i so that it correctly defines the time the ith particle has been alive (ie: i=0, nsteps=100 -> particle alive for 100)
-		# just i would've worked just fine but it wasn't logically correct
+		# just "i" would've worked just fine but it wasn't logically correct
 		var ith_transform := _accelerate_particle2(_n_steps - i, _normal)
 		particle_transforms.append(ith_transform)
 		# this is to avoid showing particles inside the diffusion cloud sphere
@@ -275,13 +275,13 @@ func _accelerate_particle2(time_alive2: int, _normal_dir: Vector3) -> Transform3
 	var final_global_transform := Transform3D(new_basis, scaled_final_pos)
 	return final_global_transform
 func _generate_diffusion_particles2(travelled_space: float, particle_origin: Vector3) -> Array[Transform3D]:
-	if N_POINTS <= 0:
+	if Util.n_points <= 0:
 		# return # no diffusion particles to generate
 		return []
 	var diffusion_particles: Array[Transform3D] = []
 	var pc_radius := travelled_space * (diffusion / 100) * randf() # pointcloud radius based on total space travelled by the particle and diffusion factor
 	# print("Radius:%f" % pc_radius)
-	for i in range(N_POINTS):
+	for i in range(Util.n_points):
 		# generating a random position around the particle
 		var new_pos := Util.generate_gaussian_vector(0, 1, pc_radius)
 		diffusion_particles.append(Transform3D(Basis(), particle_origin + new_pos))
@@ -308,8 +308,8 @@ func _append_data_to_mm_buffer(buffer: PackedFloat32Array, transf: Transform3D, 
 	buffer.append(_color.a)
 func tick_optimized(_n_iteration: int) -> void:
 	# moving each particle
-	for i in range(0, mm_emitter.multimesh.visible_instance_count, N_POINTS + 1):
-		## accelerating only main particles, so every N_POINTS-th particle
+	for i in range(0, mm_emitter.multimesh.visible_instance_count, Util.n_points + 1):
+		## accelerating only main particles, so every Util.n_points-th particle
 		_accelerate_particle(i)
 		_generate_diffusion_particles(i)
 		
@@ -319,7 +319,7 @@ func tick_optimized(_n_iteration: int) -> void:
 		# incrementing number of maximum drawn particles (to simulate spawning them)
 		var last_id := mm_emitter.multimesh.visible_instance_count + 1
 		if last_id < mm_emitter.multimesh.instance_count:
-			mm_emitter.multimesh.visible_instance_count = last_id + N_POINTS
+			mm_emitter.multimesh.visible_instance_count = last_id + Util.n_points
 		_spawn_particle(last_id)
 	update_norm()
 
@@ -366,22 +366,22 @@ func _accelerate_particle(i: int) -> void:
 	mm_emitter.multimesh.set_instance_transform(i, instance_local_transform)
 ## TODO: refactor so that there's only one function that accelerates the particle
 
-## Generate N_POINTS diffusion particles around the current particle 
+## Generate Util.n_points diffusion particles around the current particle 
 ## It doesn't update multimesh.visible_instance_count!
 func _generate_diffusion_particles(i: int) -> void:
-	if N_POINTS <= 0:
+	if Util.Util.n_points <= 0:
 		return # no diffusion particles to generate
 	var center_particle := mm_emitter.multimesh.get_instance_transform(i)
 	var center_particle_color := mm_emitter.multimesh.get_instance_color(i)
 	var pc_radius := total_space[i] * (diffusion / 100) * randf() # pointcloud radius based on total space travelled by the particle and diffusion factor
 	# TODO: maybe use compute shader to generate the particles around the center particle
-	for j in range(1, N_POINTS + 1):
+	for j in range(1, Util.n_points + 1):
 		# generating a random position around the particle
 		var new_pos := Util.generate_gaussian_vector(0, 1, pc_radius)
 		mm_emitter.multimesh.set_instance_transform(i + j, Transform3D(Basis(), center_particle.origin + new_pos))
 		mm_emitter.multimesh.set_instance_color(i + j, center_particle_color)
 
-	# mm_emitter.multimesh.visible_instance_count += N_POINTS
+	# mm_emitter.multimesh.visible_instance_count += Util.n_points
 ## Spawns a new particle in the multimesh at the current position of the emitter. 
 ## The id of the particle is the last id -1  of the multimesh.
 ## It doesn't update multimesh.visible_instance_count!
@@ -399,7 +399,7 @@ func _spawn_particle(last_id: int) -> void:
 	time_alive.append(0) # time alive is 0 at the beginning
 	particle_speeds.append(speed)
 	total_space.append(0) # total space travelled is 0 at the beginning
-	for i in range(N_POINTS):
+	for i in range(Util.n_points):
 		time_alive.append(0) # time alive is 0 at the beginning for each diffusion particle
 		global_positions.append(global_position)
 		initial_positions.append(_initial_position)
@@ -445,8 +445,8 @@ func update_norm2(v: Vector3, b: Basis) -> Vector3:
 	return result.normalized()
 
 func set_number_particles(num: int) -> void:
-	if N_POINTS > 0:
-		num_particles = num * (N_POINTS + 1)
+	if Util.n_points > 0:
+		num_particles = num * (Util.n_points + 1)
 	else:
 		num_particles = num
 	mm_emitter.multimesh.instance_count = num_particles

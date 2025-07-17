@@ -24,9 +24,9 @@ z_index = -2
 anchors_preset = -1
 anchor_right = 1.005
 anchor_bottom = 1.0
-offset_left = -64.0
+offset_left = -96.0
 offset_top = -40.0
-offset_right = 55.35
+offset_right = 23.35
 offset_bottom = 68.0
 focus_mode = 2
 color = Color(0, 0.210733, 0.213576, 1)
@@ -184,6 +184,7 @@ metadata/is_screenshot = false
 
 [node name="CometTab" type="CanvasLayer" parent="Body" groups=["load", "save"]]
 layer = 3
+visible = false
 script = ExtResource("3_136eg")
 
 [node name="Control" type="Control" parent="Body/CometTab"]
@@ -607,9 +608,8 @@ size_flags_stretch_ratio = 3.62
 focus_mode = 1
 text = "Add Jet Entry"
 
-[node name="SimTab" type="CanvasLayer" parent="Body" groups=["i", "load", "phi", "save", "true_anomaly"]]
+[node name="SimTab" type="CanvasLayer" parent="Body" groups=["i", "load", "n_points", "phi", "save", "true_anomaly"]]
 layer = 3
-visible = false
 script = ExtResource("7_h022r")
 
 [node name="Control" type="Control" parent="Body/SimTab"]
@@ -664,65 +664,17 @@ resize_type = &"jet_rate"
 lower_bound = 0.5
 higher_bound = -1.0
 
-[node name="KmScaleEdit" parent="Body/SimTab/Control" instance=ExtResource("6_oj5la")]
-visible = false
+[node name="NPointsEdit" parent="Body/SimTab/Control" instance=ExtResource("6_oj5la")]
 layout_mode = 1
-anchor_left = 1.123
-anchor_top = 20.364
-anchor_right = 1.123
-anchor_bottom = 20.364
-offset_left = 59.401
-offset_top = -8.004
-offset_right = 146.401
-offset_bottom = 22.996
-resize_type = &"_scale"
+offset_left = 120.0
+offset_top = 216.0
+offset_right = 166.557
+offset_bottom = 245.911
+text = "1"
+resize_type = &"n_points"
 lower_bound = 1.0
-higher_bound = 1e+06
-
-[node name="IEdit" parent="Body/SimTab/Control" instance=ExtResource("6_oj5la")]
-visible = false
-layout_mode = 1
-anchor_left = 1.231
-anchor_top = 19.636
-anchor_right = 1.231
-anchor_bottom = 19.636
-offset_left = 95.997
-offset_top = 0.004
-offset_right = 167.997
-offset_bottom = 31.004
-resize_type = &"i"
-lower_bound = 0.1
-higher_bound = -1.0
-
-[node name="PhiEdit" parent="Body/SimTab/Control" instance=ExtResource("6_oj5la")]
-visible = false
-layout_mode = 1
-anchor_left = 1.231
-anchor_top = 23.273
-anchor_right = 1.231
-anchor_bottom = 23.273
-offset_left = 95.997
-offset_top = -0.003
-offset_right = 167.997
-offset_bottom = 30.997
-resize_type = &"phi"
-lower_bound = 0.1
-higher_bound = -1.0
-
-[node name="TrueAnomalyEdit" parent="Body/SimTab/Control" instance=ExtResource("6_oj5la")]
-visible = false
-layout_mode = 1
-anchor_left = 1.231
-anchor_top = 26.909
-anchor_right = 1.231
-anchor_bottom = 26.909
-offset_left = 95.997
-offset_top = 0.001
-offset_right = 167.997
-offset_bottom = 31.001
-resize_type = &"true_anomaly"
-lower_bound = 0.1
-higher_bound = -1.0
+higher_bound = 35.0
+no_decimal = true
 
 [node name="FrequencyLabel" type="Label" parent="Body/SimTab/Control"]
 layout_mode = 1
@@ -775,6 +727,75 @@ mouse_filter = 0
 text = "Emission Rate (min)"
 vertical_alignment = 1
 
+[node name="NPointsLabel" type="Label" parent="Body/SimTab/Control"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 221.0
+offset_right = 170.0
+offset_bottom = 244.0
+scale = Vector2(0.6, 0.6)
+text = "N. Points (Diffusion)"
+
+[node name="KmScaleEdit" parent="Body/SimTab/Control" instance=ExtResource("6_oj5la")]
+visible = false
+layout_mode = 1
+anchor_left = 1.123
+anchor_top = 20.364
+anchor_right = 1.123
+anchor_bottom = 20.364
+offset_left = 97.401
+offset_top = 65.996
+offset_right = 184.401
+offset_bottom = 96.996
+resize_type = &"_scale"
+lower_bound = 1.0
+higher_bound = 1e+06
+
+[node name="IEdit" parent="Body/SimTab/Control" instance=ExtResource("6_oj5la")]
+visible = false
+layout_mode = 1
+anchor_left = 1.231
+anchor_top = 19.636
+anchor_right = 1.231
+anchor_bottom = 19.636
+offset_left = 95.997
+offset_top = 190.004
+offset_right = 167.997
+offset_bottom = 221.004
+resize_type = &"i"
+lower_bound = 0.1
+higher_bound = -1.0
+
+[node name="PhiEdit" parent="Body/SimTab/Control" instance=ExtResource("6_oj5la")]
+visible = false
+layout_mode = 1
+anchor_left = 1.231
+anchor_top = 23.273
+anchor_right = 1.231
+anchor_bottom = 23.273
+offset_left = 95.997
+offset_top = 73.997
+offset_right = 167.997
+offset_bottom = 104.997
+resize_type = &"phi"
+lower_bound = 0.1
+higher_bound = -1.0
+
+[node name="TrueAnomalyEdit" parent="Body/SimTab/Control" instance=ExtResource("6_oj5la")]
+visible = false
+layout_mode = 1
+anchor_left = 1.231
+anchor_top = 26.909
+anchor_right = 1.231
+anchor_bottom = 26.909
+offset_left = 95.997
+offset_top = 74.001
+offset_right = 167.997
+offset_bottom = 105.001
+resize_type = &"true_anomaly"
+lower_bound = 0.1
+higher_bound = -1.0
+
 [node name="KmScaleLabel" type="Label" parent="Body/SimTab/Control"]
 visible = false
 layout_mode = 1
@@ -784,29 +805,11 @@ anchor_top = 19.636
 anchor_right = 1.123
 anchor_bottom = 19.636
 offset_left = 1.401
-offset_top = 8.004
-offset_right = 71.401
-offset_bottom = 31.004
+offset_top = 82.004
+offset_right = 81.401
+offset_bottom = 105.004
 scale = Vector2(0.6, 0.6)
 text = "Scale (Km)"
-
-[node name="ILabel" type="Label" parent="Body/SimTab/Control"]
-visible = false
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 1.231
-anchor_top = 19.636
-anchor_right = 1.231
-anchor_bottom = 19.636
-offset_left = -0.003
-offset_top = 0.004
-offset_right = 109.997
-offset_bottom = 40.004
-scale = Vector2(0.6, 0.6)
-tooltip_text = "Frequency of rotation in hours"
-mouse_filter = 0
-text = "I"
-vertical_alignment = 1
 
 [node name="PhiLabel" type="Label" parent="Body/SimTab/Control"]
 visible = false
@@ -817,13 +820,31 @@ anchor_top = 24.0
 anchor_right = 1.0
 anchor_bottom = 24.0
 offset_left = 3.0
-offset_top = -8.0
+offset_top = 66.0
 offset_right = 113.0
-offset_bottom = 32.0
+offset_bottom = 106.0
 scale = Vector2(0.6, 0.6)
 tooltip_text = "Frequency of rotation in hours"
 mouse_filter = 0
 text = "Phi"
+vertical_alignment = 1
+
+[node name="ILabel" type="Label" parent="Body/SimTab/Control"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.231
+anchor_top = 19.636
+anchor_right = 1.231
+anchor_bottom = 19.636
+offset_left = -0.003
+offset_top = 192.004
+offset_right = 109.997
+offset_bottom = 232.004
+scale = Vector2(0.6, 0.6)
+tooltip_text = "Frequency of rotation in hours"
+mouse_filter = 0
+text = "I"
 vertical_alignment = 1
 
 [node name="PhiLabel2" type="Label" parent="Body/SimTab/Control"]
@@ -835,9 +856,9 @@ anchor_top = 26.909
 anchor_right = 1.0
 anchor_bottom = 26.909
 offset_left = 3.0
-offset_top = 0.001
+offset_top = 74.001
 offset_right = 113.0
-offset_bottom = 40.001
+offset_bottom = 114.001
 scale = Vector2(0.6, 0.6)
 tooltip_text = "Frequency of rotation in hours"
 mouse_filter = 0

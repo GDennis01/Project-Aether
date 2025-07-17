@@ -17,6 +17,7 @@ func save_data() -> void:
 	SaveManager.config.set_value("simulation", "i", float($Control/IEdit.text))
 	SaveManager.config.set_value("simulation", "phi", float($Control/PhiEdit.text))
 	SaveManager.config.set_value("simulation", "true_anomaly", float($Control/TrueAnomalyEdit.text))
+	SaveManager.config.set_value("simulation", "n_points", int($Control/NPointsEdit.text))
 ## Called by Navbar._on_file_explorer_file_selected()
 ## Loads the data from the config file into the different element of the scene
 func load_data() -> void:
@@ -35,6 +36,7 @@ func load_data() -> void:
 	$Control/IEdit.set_value(float(SaveManager.config.get_value("simulation", "i", 0)))
 	$Control/PhiEdit.set_value(float(SaveManager.config.get_value("simulation", "phi", 0)))
 	$Control/TrueAnomalyEdit.set_value(float(SaveManager.config.get_value("simulation", "true_anomaly", 0)))
+	$Control/NPointsEdit.set_value(int(SaveManager.config.get_value("simulation", "n_points", 1)))
 
 	# set block signals for the sanitized edits
 	# $Control/FrequencyEdit.set_block_signals(false)
@@ -57,3 +59,7 @@ func update_phi(value: float) -> void:
 func update_true_anomaly(value: float) -> void:
 	if Util.PRINT_UPDATE_METHOD: print("Updated true_anomaly:%f"%value)
 	Util.true_anomaly = value
+
+func update_n_points(value: float) -> void:
+	if Util.PRINT_UPDATE_METHOD or true: print("Updated n_points:%f"%value)
+	Util.n_points = int(value)
