@@ -36,6 +36,7 @@ var emitter_scene := preload("res://scenes/particle_emitter.tscn")
 @onready var x_axis: AxisArrow
 @onready var y_axis: AxisArrow
 @onready var z_axis: AxisArrow
+@onready var reverse_y_axis: AxisArrow
 
 @onready var animation_slider: AnimationSlider = $"/root/Hud/Body/TabButtons/ColorRect/HBoxContainer/AnimationSlider"
 
@@ -66,10 +67,19 @@ func _ready() -> void:
 	_z_axis.add_to_group("toggle_axis")
 	_z_axis.set_axis_type(AxisArrow.AXIS_TYPE.Z)
 	_z_axis.set_height(mesh.height)
+
+	var _reverse_y_axis := axis_scene.instantiate() as AxisArrow
+	# delete arrow head
+	
+	add_child(_reverse_y_axis)
+	_reverse_y_axis.add_to_group("toggle_axis")
+	_reverse_y_axis.set_axis_type(AxisArrow.AXIS_TYPE.REVERSE_Y)
+	_reverse_y_axis.set_height(mesh.height)
 	
 	x_axis = _x_axis
 	y_axis = _y_axis
 	z_axis = _z_axis
+	reverse_y_axis = _reverse_y_axis
 
 	# disabled by default
 	x_axis.visible = false
@@ -255,6 +265,8 @@ func update_radius(value: float) -> void:
 		y_axis.set_height(mesh.height)
 	if z_axis:
 		z_axis.set_height(mesh.height)
+	if reverse_y_axis:
+		reverse_y_axis.set_height(mesh.height)
 	# update position and size of sun axis
 	get_tree().call_group("sun", "update_sun_axis", value * 2)
 	print("calling update_position on emitter\n")

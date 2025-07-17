@@ -8,7 +8,7 @@ class_name AxisArrow
 var _original_arm_mesh_height: float = 1.0
 var _original_arm_mesh_scale: Vector3 = Vector3.ONE
 
-enum AXIS_TYPE {X, Y, Z, SUN}
+enum AXIS_TYPE {X, Y, Z, SUN, REVERSE_Y}
 var axis_type: AXIS_TYPE
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -39,6 +39,12 @@ func set_axis_type(type: AXIS_TYPE) -> void:
 			arrow_arm.get_surface_override_material(0).albedo_color = Color(Color.GREEN, ALPHA)
 			arrow_head.get_surface_override_material(0).albedo_color = Color(Color.GREEN, ALPHA)
 			pass
+		AXIS_TYPE.REVERSE_Y:
+			rotation_degrees.y = 180
+			position = Vector3(0, -height / 8, 0)
+			arrow_arm.get_surface_override_material(0).albedo_color = Color(Color.GREEN, ALPHA)
+			arrow_head.get_surface_override_material(0).albedo_color = Color(Color.GREEN, ALPHA)
+			pass
 		AXIS_TYPE.Z: # roll axis
 			rotation_degrees.x = 90
 			position = Vector3(0, 0, height / 2)
@@ -64,14 +70,21 @@ func set_height(value: float, distance: float = 0) -> void:
 		arrow_arm.scale = Vector3(required_y_scale, required_y_scale, required_y_scale)
 		arrow_head.scale = Vector3(required_y_scale, required_y_scale, required_y_scale)
 		# offsetting by the original height(which is 2 so 2/4 = 0.5) so that the arm is centered in the center of the mesh
-		if axis_type == AXIS_TYPE.SUN:
-			arrow_arm.position.y = distance - Util.comet_radius * 2.05
-			arrow_head.position.y = distance + height / 2 - Util.comet_radius * 2.05
-			# position.z = position.z - distance
-		else:
-			arrow_arm.position.y = height / 2 - _original_arm_mesh_height / 4
-			# positioning arrow heads
-			arrow_head.position.y = height - _original_arm_mesh_height / 4
+		match axis_type:
+			AXIS_TYPE.SUN:
+				arrow_arm.position.y = distance - Util.comet_radius * 2.05
+				arrow_head.position.y = distance + height / 2 - Util.comet_radius * 2.05
+				# position.z = position.z - distance
+			AXIS_TYPE.REVERSE_Y:
+				print("Setting reverse Y axis height: ", height)
+				arrow_head.scale = Vector3.ZERO
+				arrow_arm.scale = arrow_arm.scale * 0.9
+				arrow_arm.position.y = - height / 8 + _original_arm_mesh_height / 16
+				
+			_:
+				arrow_arm.position.y = height / 2 - _original_arm_mesh_height / 4
+				# positioning arrow heads
+				arrow_head.position.y = height - _original_arm_mesh_height / 4
 
 
 func toggle_axis(type: AXIS_TYPE) -> void:
