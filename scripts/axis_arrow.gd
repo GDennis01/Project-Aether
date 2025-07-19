@@ -41,7 +41,7 @@ func set_axis_type(type: AXIS_TYPE) -> void:
 			pass
 		AXIS_TYPE.REVERSE_Y:
 			rotation_degrees.y = 180
-			position = Vector3(0, -height / 8, 0)
+			position = Vector3(0, -height / 4, 0)
 			arrow_arm.get_surface_override_material(0).albedo_color = Color(Color.GREEN, ALPHA)
 			arrow_head.get_surface_override_material(0).albedo_color = Color(Color.GREEN, ALPHA)
 			pass
@@ -78,7 +78,7 @@ func set_height(value: float, distance: float = 0) -> void:
 			AXIS_TYPE.REVERSE_Y:
 				arrow_head.scale = Vector3.ZERO
 				arrow_arm.scale = arrow_arm.scale * 0.9
-				arrow_arm.position.y = - height / 8 + _original_arm_mesh_height / 16
+				arrow_arm.position.y = - height / 4 + _original_arm_mesh_height / 8
 				
 			_:
 				arrow_arm.position.y = height / 2 - _original_arm_mesh_height / 4

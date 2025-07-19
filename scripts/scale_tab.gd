@@ -77,7 +77,7 @@ func update_window_size(value: float) -> void:
 func update_tel_res_km_pixel() -> void:
 	Util.tel_res_km_pixel = sin(Util.tel_resolution / 206265) * Util.earth_comet_delta * (Util.AU / 1000)
 	if tel_res_km_pixel:
-		tel_res_km_pixel.text = str(int(Util.tel_res_km_pixel))
+		tel_res_km_pixel.text = str(int(round(Util.tel_res_km_pixel)))
 	update_fov_km()
 	update_fov_arcmin()
 	update_scale_factor()
@@ -90,11 +90,11 @@ func update_fov_arcmin() -> void:
 func update_fov_km() -> void:
 	Util.fov_km = Util.tel_image_size * Util.tel_res_km_pixel
 	if fov_km:
-		fov_km.text = str(int(Util.fov_km))
+		fov_km.text = str(int(round(Util.fov_km)))
 		# 150 is the length of the ruler in pixels
 		var fov_km_ruler: float = Util.fov_km / Util.window_size * 150
 		print("Image_size:%f ResKmPix:%f Fov_km: %f Window size: %f Fov km ruler: %f" % [Util.tel_image_size, Util.tel_res_km_pixel, Util.fov_km, Util.window_size, fov_km_ruler])
-		Util.current_fov_label.text = "%s Km" % int(fov_km_ruler)
+		Util.current_fov_label.text = "%s Km" % int(round(fov_km_ruler))
 
 func update_scale_factor() -> void:
 	var window_image_scale_factor: float = Util.tel_image_size / Util.window_size

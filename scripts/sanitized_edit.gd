@@ -37,14 +37,12 @@ func sanitize_field(low: float, high: float) -> void:
 		property_value = new_val
 		previous_value = new_val
 		if no_decimal:
-			print("[Sanitized Edit sf] Sanitized value to %s" % str(int(new_val)))
-			self.text = str(int(new_val))
+			self.text = str(int(round(new_val)))
 		else:
 			self.text = str(new_val)
 	else:
 		if no_decimal:
-			print("[Sanitized Edit sf] Invalid float, setting to previous value %s" % str(int(previous_value)))
-			self.text = str(int(previous_value))
+			self.text = str(int(round(previous_value)))
 		else:
 			self.text = str(previous_value)
 ## Makes you release focus when you click outside a LineEdit. In this way, the _on_focus_exited method is triggered

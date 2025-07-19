@@ -11,7 +11,7 @@ background_mode = 1
 background_energy_multiplier = 0.0
 ambient_light_source = 2
 ambient_light_color = Color(0.336608, 0.336608, 0.336607, 1)
-ambient_light_energy = 0.15
+ambient_light_energy = 0.6
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_t5g0g"]
 
