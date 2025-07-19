@@ -212,7 +212,7 @@ offset_bottom = 47.984
 label = &"Radius"
 resize_type = &"radius"
 minimum_value = 0.01
-maximum_value = 5.0
+maximum_value = 0.5
 starting_value = 0.5
 metadata/_edit_use_anchors_ = true
 
