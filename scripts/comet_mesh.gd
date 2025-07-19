@@ -274,7 +274,7 @@ func update_radius(value: float) -> void:
 		reverse_y_axis.set_height(mesh.height)
 	# update position and size of sun axis
 	get_tree().call_group("sun", "update_sun_axis", value * 2)
-	print("calling update_position on emitter\n")
+	# print("calling update_position on emitter\n")
 	get_tree().call_group("emitter", "update_position", value)
 ## Deprecated
 func update_height(value: float) -> void:

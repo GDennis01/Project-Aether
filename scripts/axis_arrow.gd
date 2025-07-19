@@ -76,7 +76,6 @@ func set_height(value: float, distance: float = 0) -> void:
 				arrow_head.position.y = distance + height / 2 - Util.comet_radius * 2.05
 				# position.z = position.z - distance
 			AXIS_TYPE.REVERSE_Y:
-				print("Setting reverse Y axis height: ", height)
 				arrow_head.scale = Vector3.ZERO
 				arrow_arm.scale = arrow_arm.scale * 0.9
 				arrow_arm.position.y = - height / 8 + _original_arm_mesh_height / 16

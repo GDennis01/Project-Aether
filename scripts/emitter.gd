@@ -197,7 +197,7 @@ func instant_simulation(_n_steps: int, _angle_per_step: float) -> void:
 		var ith_transform := _accelerate_particle2(_n_steps - i, _normal)
 		particle_transforms.append(ith_transform)
 		# this is to avoid showing particles inside the diffusion cloud sphere
-		if diffusion < 0:
+		if diffusion <= 0:
 			_append_data_to_mm_buffer(mm_buffer, ith_transform, color)
 	# if diffusion > 0:
 	# 	var total_space_cumulative := 0.0
@@ -213,7 +213,7 @@ func instant_simulation(_n_steps: int, _angle_per_step: float) -> void:
 	# 		)
 	# 		for p in diff_cloud:
 	# 			_append_data_to_mm_buffer(mm_buffer, p, Color.YELLOW)
-
+	print("buffer_size: %d" % mm_buffer.size())
 	# numerical integration to reconstruct diffusion particles
 	if diffusion > 0:
 		@warning_ignore("integer_division")
@@ -238,6 +238,7 @@ func instant_simulation(_n_steps: int, _angle_per_step: float) -> void:
 			var cloud := _generate_diffusion_particles2(travelled_space, final_t.origin)
 			for p in cloud:
 				_append_data_to_mm_buffer(mm_buffer, p, color)
+	print("mm_buffer size: %d" % mm_buffer.size())
 	@warning_ignore("integer_division")
 	mm_emitter.multimesh.instance_count = mm_buffer.size() / 16 # 16 is the number of floats per instance (12 for transform, 4 for color)
 	print("Emitter %d multimesh instance count: %d" % [jet_id, mm_emitter.multimesh.instance_count])
@@ -360,7 +361,7 @@ func _accelerate_particle(i: int) -> void:
 ## Generate Util.n_points diffusion particles around the current particle 
 ## It doesn't update multimesh.visible_instance_count!
 func _generate_diffusion_particles(i: int) -> void:
-	if Util.Util.n_points <= 0:
+	if Util.n_points <= 0:
 		return # no diffusion particles to generate
 	var center_particle := mm_emitter.multimesh.get_instance_transform(i)
 	var center_particle_color := mm_emitter.multimesh.get_instance_color(i)

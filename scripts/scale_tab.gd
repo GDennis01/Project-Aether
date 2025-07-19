@@ -61,6 +61,7 @@ func update_tel_image_size(value: float) -> void:
 	Util.tel_image_size = value
 	update_fov_km()
 	update_fov_arcmin()
+	update_scale_factor()
 
 func update_window_fov(value: float) -> void:
 	if Util.PRINT_UPDATE_METHOD: print("Updated window_fov:%f"%value)
@@ -92,7 +93,7 @@ func update_fov_km() -> void:
 		fov_km.text = str(int(Util.fov_km))
 		# 150 is the length of the ruler in pixels
 		var fov_km_ruler: float = Util.fov_km / Util.window_size * 150
-		print("Fov_km: %f Window size: %f Fov km ruler: %f" % [Util.fov_km, Util.window_size, fov_km_ruler])
+		print("Image_size:%f ResKmPix:%f Fov_km: %f Window size: %f Fov km ruler: %f" % [Util.tel_image_size, Util.tel_res_km_pixel, Util.fov_km, Util.window_size, fov_km_ruler])
 		Util.current_fov_label.text = "%s Km" % int(fov_km_ruler)
 
 func update_scale_factor() -> void:
