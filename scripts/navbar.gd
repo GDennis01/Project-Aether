@@ -2,6 +2,7 @@ extends CanvasLayer
 
 # @onready var rot_camera_viewport: SubViewport = $"/root/Hud/Body/SubViewportContainer/SubViewport"
 @onready var rot_camera_viewport: SubViewport = $"/root/Hud/Viewport/SubViewportContainer/SubViewport"
+@onready var minicamera_viewport: SubViewport = $"/root/Hud/Viewport/MiniViewportContainer/SubViewport"
 @onready var cam: Camera3D = $"/root/Hud/Viewport/SubViewportContainer/SubViewport/RotatingCamera"
 @onready var file_explorer: FileDialog = $TabButtons/ColorRect/HBoxContainer/FileExplorer
 # @onready var plane: MeshInstance3D = $"/root/World/Plane"
@@ -159,6 +160,11 @@ func _on_file_explorer_file_selected(path: String) -> void:
 			img.resize(1200, 1200)
 			img.save_png(path)
 			print("Screenshot saved to: ", path)
+
+			var minicamera_img := minicamera_viewport.get_texture().get_image()
+			path = path.replace(".png", "_minicamera.png")
+			minicamera_img.save_png(path)
+			print("Minicamera screenshot saved to: ", path)
 		else:
 			get_tree().call_group("save", "save_data")
 			SaveManager.save(path)
