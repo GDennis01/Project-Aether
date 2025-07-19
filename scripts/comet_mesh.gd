@@ -227,6 +227,11 @@ func spawn_emitter_at(latitude: float, longitude: float, emitter: Emitter) -> vo
 	emitter.light_source = light_source
 	emitter.add_to_group("emitter")
 	add_child(emitter)
+	# this is needed so that when I load the data, the particle mesh is updated correctly. 
+	# it's after add_child since particle_mesh is initialized in the _ready function
+	# the radius is 1/25 of the comet, chosen arbitrarly
+	emitter.particle_mesh.mesh.radius = mesh.radius * (1.0 / 25)
+	emitter.particle_mesh.mesh.height = emitter.particle_mesh.mesh.radius * 2
 
 
 ## Called by JetTable.remove_jet_entry

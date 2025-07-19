@@ -9,9 +9,9 @@ var particle_scene := preload("res://scenes/particle.tscn")
 
 var particles_alive: Array[Particle]
 
-var _sphere_mesh: SphereMesh
-# var _box_mesh: BoxMesh
 var _point_mesh: PointMesh
+
+var particle_mesh: MeshInstance3D
 
 # properties of emitter/jet_entry
 var jet_id: int
@@ -50,20 +50,13 @@ var initial_norm: Vector3 = Vector3(0, 1, 0)
 func _ready() -> void:
 	var unshaded_material := StandardMaterial3D.new()
 	unshaded_material.shading_mode = StandardMaterial3D.SHADING_MODE_UNSHADED
-	# unshaded_material.albedo_color = Color.WHITE
 	unshaded_material.vertex_color_use_as_albedo = true
+	particle_mesh = $ParticleMesh
 	
 	#$Particle/ParticleArea/ParticleShape.shape.set_radius($Particle.mesh.radius)
-	$Particle/ParticleArea/ParticleShape.shape.set_radius($Particle.mesh.radius)
+	$ParticleMesh/ParticleArea/ParticleShape.shape.set_radius(particle_mesh.mesh.radius)
+	particle_mesh.get_surface_override_material(0).albedo_color = color
 	
-	_sphere_mesh = SphereMesh.new()
-	_sphere_mesh.radius = particle_radius
-	_sphere_mesh.height = particle_radius * 2
-	_sphere_mesh.surface_set_material(0, unshaded_material)
-	# to reduce the polygons
-	_sphere_mesh.radial_segments = 4
-	_sphere_mesh.rings = 2
-
 	_point_mesh = PointMesh.new()
 	unshaded_material.use_point_size = true
 	unshaded_material.point_size = particle_radius / 2
@@ -112,8 +105,6 @@ func init_multimesh(multi_mesh_istance: MultiMeshInstance3D) -> void:
 	multi_mesh_istance.multimesh.visible_instance_count = 0 # 0 so no particles are shown at the beginning
 	# setting particle radius
 	multi_mesh_istance.multimesh.mesh = _point_mesh
-	# multi_mesh_istance.multimesh.mesh = _sphere_mesh
-	# multi_mesh_istance.multimesh.mesh = _box_mesh
 
 	multi_mesh_istance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	multi_mesh_istance.gi_mode = GeometryInstance3D.GI_MODE_DISABLED
@@ -149,9 +140,9 @@ func _physics_process(_delta: float) -> void:
 	## Dotproduct-based solution
 	is_lit = is_lit_math()
 	if is_lit:
-		$Particle.get_surface_override_material(0).albedo_color = Color.WHITE
+		particle_mesh.get_surface_override_material(0).albedo_color = color
 	else:
-		$Particle.get_surface_override_material(0).albedo_color = Color.RED
+		particle_mesh.get_surface_override_material(0).albedo_color = color.darkened(0.5) # shading the color
 
 
 ## Returns whether the emitter is lit by the sun or not, 
@@ -476,14 +467,22 @@ func destroy_multimesh() -> void:
 # Connection of signals is done in JetTable._on_add_jet_entry_btn_pressed
 ###################################################################################
 #region update methods
+## updating the emitter position (and mesh size) on a sphere of radius "radius"
+## called when the comet is resized
 func update_position(radius: float) -> void:
+	print("ciao")
 	var new_pos := Util.latlon_to_vector3(latitude, longitude, radius)
+	# the particle mesh is 1/25 of the comet mesh, chosen arbitrarly
+	particle_mesh.mesh.radius = radius * (1.0 / 25)
+	particle_mesh.mesh.height = particle_mesh.mesh.radius * 2
+	$ParticleMesh/ParticleArea/ParticleShape.shape.set_radius(particle_mesh.mesh.radius)
 	position = new_pos
 func update_speed(_speed: float) -> void:
 	if Util.PRINT_UPDATE_METHOD: print("Updated speed:%f"%_speed)
 	speed = _speed
 	pass
 func update_lat(lat: float) -> void:
+	print("ciao")
 	if Util.PRINT_UPDATE_METHOD: print("Updated lat:%f"%lat)
 	latitude = lat
 	var new_pos := Util.latlon_to_vector3(latitude, longitude, Util.comet_radius)
