@@ -13,7 +13,7 @@ uniform float border_thickness : hint_range(0.0, 0.1) = 0.002;
 
 float grid_line(float value, float num_lines, float thickness, out float index) {
     float line_val = value * num_lines;
-    index = floor(line_val);
+    index = floor(line_val + 0.5);
     float distance_to_line = abs(fract(line_val - 0.5) - 0.5);
     float fw = fwidth(line_val) * 0.5;
     return 1.0 - smoothstep(thickness - fw, thickness + fw, distance_to_line);
@@ -24,6 +24,7 @@ float grid_line(float value, float num_lines, float thickness, out float index) 
 void fragment() {
     vec3 black_color = vec3(0.0);
     vec3 white_color = vec3(1.0);
+    vec3 red_color = vec3(1.0, 0.0, 0.0);
 
     vec3 mixed_color = texture(comet_texture, UV).rgb;
 
@@ -43,7 +44,10 @@ void fragment() {
     // Inner mask for longitude
     float lon_inner_mask = grid_line(UV.x, longitude_lines, inner_thickness / 2.0, lon_idx);
 
-
+    // coloring the equator in red
+    float equator_index = floor((latitude_lines / 2.0) + 0.5);
+    vec3 lat_line_color = (lat_idx == equator_index) ? red_color : white_color;
+    
     // Layering the colors
     // 1. texture color
     // 2. black outline
@@ -51,11 +55,11 @@ void fragment() {
 
     // Apply latitude lines (black outline then white fill)
     mixed_color = mix(mixed_color, black_color, lat_outer_mask);
-    mixed_color = mix(mixed_color, white_color, lat_inner_mask);
+    mixed_color = mix(mixed_color, lat_line_color, lat_inner_mask);
 
     // Apply longitude lines (black outline then white fill)
     mixed_color = mix(mixed_color, black_color, lon_outer_mask);
     mixed_color = mix(mixed_color, white_color, lon_inner_mask);
-
+    
     ALBEDO = mixed_color;
 }
