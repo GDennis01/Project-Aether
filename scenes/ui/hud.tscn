@@ -185,6 +185,7 @@ metadata/is_screenshot = false
 
 [node name="CometTab" type="CanvasLayer" parent="Body" groups=["load", "save"]]
 layer = 3
+visible = false
 script = ExtResource("3_136eg")
 
 [node name="Control" type="Control" parent="Body/CometTab"]
@@ -868,7 +869,6 @@ vertical_alignment = 1
 
 [node name="ScaleTab" type="CanvasLayer" parent="Body" groups=["camera", "delta_au", "load", "save", "tel_image_size", "tel_resolution", "window_fov", "window_size"]]
 layer = 3
-visible = false
 script = ExtResource("9_0h1do")
 
 [node name="Control" type="Control" parent="Body/ScaleTab"]
@@ -1015,7 +1015,7 @@ offset_top = 264.0
 offset_right = 122.0
 offset_bottom = 287.0
 scale = Vector2(0.7, 0.7)
-text = "FOV (Arcmin):"
+text = "FOV Zero Zoom (Arcmin):"
 
 [node name="FOVArcminLineEdit" type="LineEdit" parent="Body/ScaleTab/Control"]
 layout_mode = 0
@@ -1034,7 +1034,7 @@ offset_top = 296.0
 offset_right = 92.0
 offset_bottom = 319.0
 scale = Vector2(0.7, 0.7)
-text = "FOV (Km):"
+text = "FOV Zero Zoom (Km):"
 
 [node name="FOVKmLineEdit" type="LineEdit" parent="Body/ScaleTab/Control"]
 layout_mode = 0
