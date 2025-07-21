@@ -43,6 +43,8 @@ var fov_km: float = 0.0
 ## Starting distance of the rotating camera
 var starting_distance: float = 0.0
 ## Visible area in meters at the starting distance of the rotating_camera
+var starting_visible_area: float = 0.0
+## Visible area in meters at the current distance of the rotating_camera
 var visible_area: float = 0.0
 #endregion Scale
 

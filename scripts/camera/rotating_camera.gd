@@ -28,10 +28,11 @@ func _ready() -> void:
 		make_current() # Make this camera the current one
 		size = starting_distance
 		starting_size = size
-		Util.visible_area = get_visible_area_at_distance(starting_distance).width # Store the visible area at the starting distance
-		# Util.starting_distance = starting_distance
-		Util.starting_distance = Util.visible_area / 2
-		starting_distance = Util.starting_distance
+		Util.starting_visible_area = get_visible_area_at_distance(starting_distance).width # Store the visible area at the starting distance
+		Util.starting_distance = starting_distance
+		Util.visible_area = Util.starting_visible_area
+		# Util.starting_distance = Util.starting_visible_area / 2
+		# starting_distance = Util.starting_distance
 		_update_camera_transform() # Set initial position and orientation
 
 func _unhandled_key_input(event: InputEvent) -> void:
@@ -44,6 +45,8 @@ func _unhandled_key_input(event: InputEvent) -> void:
 				_pitch = 0.0
 				distance = starting_distance
 				size = starting_size
+				Util.visible_area = get_visible_area_at_distance(distance).width # Update visible area
+				get_tree().call_group("camera", "update_ruler")
 				_update_camera_transform()
 			KEY_P: # Toggle perspective/orthographic mode
 				if projection == PROJECTION_PERSPECTIVE:
@@ -59,7 +62,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 func _input(event: InputEvent) -> void:
 	if not enabled:
 		return # Ignore input if camera is not enabled
-	if event is InputEventMouseButton:
+	if event is InputEventMouseButton and not event.is_echo():
 		if event.button_index == MOUSE_BUTTON_RIGHT:
 			_is_dragging = event.is_pressed()
 			if _is_dragging:
@@ -67,13 +70,19 @@ func _input(event: InputEvent) -> void:
 			else:
 				Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
-		elif event.button_index == MOUSE_BUTTON_WHEEL_UP:
+		# elif event.button_index == MOUSE_BUTTON_WHEEL_UP and Event.is_act:
+		elif event.is_action_pressed("zoom_in"):
 			distance = clamp(distance - zoom_sensitivity, min_distance, max_distance)
 			size = clamp(size - zoom_sensitivity * 2, 1, 1000) # Adjust size for orthographic projection
+			Util.visible_area = get_visible_area_at_distance(distance).width # Update visible area
+			get_tree().call_group("camera", "update_ruler")
 			_update_camera_transform()
-		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+		# elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN and _is_dragging:
+		elif event.is_action_pressed("zoom_out"):
 			distance = clamp(distance + zoom_sensitivity, min_distance, max_distance)
 			size = clamp(size + zoom_sensitivity * 2, 1, 1000) # Adjust size for orthographic projection
+			Util.visible_area = get_visible_area_at_distance(distance).width # Update visible area
+			get_tree().call_group("camera", "update_ruler")
 			_update_camera_transform()
 
 	elif event is InputEventMouseMotion and _is_dragging:
@@ -82,13 +91,6 @@ func _input(event: InputEvent) -> void:
 		_pitch = clamp(_pitch, -deg_to_rad(pitch_limit_degrees), deg_to_rad(pitch_limit_degrees))
 		_update_camera_transform()
 
-# func _process(_delta: float) -> void:
-# 	# If the target node moves, we want to follow it
-# 	if _target_node:
-# 		var current_target_pos := _target_node.position
-# 		if current_target_pos != _target_position:
-# 			_target_position = current_target_pos
-# 			_update_camera_transform() # Update if target moved, even if no input
 
 ## Update the camera's position and orientation based on current state
 func _update_camera_transform() -> void:
@@ -120,9 +122,9 @@ func get_visible_area_at_distance(dist: float) -> Dictionary:
 	var aspect_ratio := viewport_size.x / viewport_size.y
 	var visible_height := 2.0 * dist * tan(deg_to_rad(vertical_fov / 2.0))
 	var visible_width := visible_height * aspect_ratio
-	print("Calculating visible area at distance: ", dist)
-	print("Viewport Size: ", viewport_size)
-	print("Aspect Ratio: ", aspect_ratio)
-	print("Visible Width: ", visible_width, " Visible Height: ", visible_height)
-	print("------")
+	# print("Calculating visible area at distance: ", dist)
+	# print("Viewport Size: ", viewport_size)
+	# print("Aspect Ratio: ", aspect_ratio)
+	# print("Visible Width: ", visible_width, " Visible Height: ", visible_height)
+	# print("------")
 	return {"width": visible_width, "height": visible_height}

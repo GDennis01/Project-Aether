@@ -100,9 +100,20 @@ func update_fov_km() -> void:
 func update_scale_factor() -> void:
 	var window_image_scale_factor: float = Util.tel_image_size / Util.window_size
 	# var fov_full_zoom: float = Util.window_fov / 1000 * window_image_scale_factor
-	var fov_full_zoom: float = Util.visible_area / 1000 * window_image_scale_factor
+	var fov_full_zoom: float = Util.starting_visible_area / 1000 * window_image_scale_factor
 	var pixel_resolution_full_zoom: float = fov_full_zoom / Util.window_size
 	# Util.scale = Util.tel_res_km_pixel / pixel_resolution_full_zoom * window_image_scale_factor * 1000
 	Util.scale = Util.tel_res_km_pixel / pixel_resolution_full_zoom * window_image_scale_factor
+	update_ruler()
 	if scale_factor:
 		scale_factor.text = str(Util.scale)
+
+
+func update_ruler() -> void:
+	print("Updating ruler")
+	var fov_full_zoom: float = Util.visible_area / 1000 * (Util.tel_image_size / Util.window_size)
+	var pixel_resolution_full_zoom: float = fov_full_zoom / Util.window_size
+	var pixel_res_after_zoom: float = pixel_resolution_full_zoom * Util.scale
+	var fov_km_ruler: float = (pixel_res_after_zoom * Util.window_size)
+	fov_km_ruler = fov_km_ruler / Util.window_size * 150 # 150 is the length of the ruler in pixels
+	Util.current_fov_label.text = "%s Km" % str(int(round(fov_km_ruler)))
