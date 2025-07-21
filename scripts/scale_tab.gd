@@ -93,15 +93,16 @@ func update_fov_km() -> void:
 		fov_km.text = str(int(round(Util.fov_km)))
 		# 150 is the length of the ruler in pixels
 		var fov_km_ruler: float = Util.fov_km / Util.window_size * 150
-		print("Image_size:%f ResKmPix:%f Fov_km: %f Window size: %f Fov km ruler: %f" % [Util.tel_image_size, Util.tel_res_km_pixel, Util.fov_km, Util.window_size, fov_km_ruler])
+		# print("Image_size:%f ResKmPix:%f Fov_km: %f Window size: %f Fov km ruler: %f" % [Util.tel_image_size, Util.tel_res_km_pixel, Util.fov_km, Util.window_size, fov_km_ruler])
 		Util.current_fov_label.text = "%s Km" % int(round(fov_km_ruler))
 
+## TODO: this method is called twice
 func update_scale_factor() -> void:
 	var window_image_scale_factor: float = Util.tel_image_size / Util.window_size
 	# var fov_full_zoom: float = Util.window_fov / 1000 * window_image_scale_factor
 	var fov_full_zoom: float = Util.visible_area / 1000 * window_image_scale_factor
 	var pixel_resolution_full_zoom: float = fov_full_zoom / Util.window_size
-	Util.scale = Util.tel_res_km_pixel / pixel_resolution_full_zoom * window_image_scale_factor * 1000
-	# print("Scale factor: %f"%Util.scale)
+	# Util.scale = Util.tel_res_km_pixel / pixel_resolution_full_zoom * window_image_scale_factor * 1000
+	Util.scale = Util.tel_res_km_pixel / pixel_resolution_full_zoom * window_image_scale_factor
 	if scale_factor:
-		scale_factor.text = str(Util.scale / 1000)
+		scale_factor.text = str(Util.scale)

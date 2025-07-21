@@ -260,7 +260,7 @@ func _accelerate_particle2(time_alive2: int, _normal_dir: Vector3) -> Transform3
 	var global_displacement: Vector3 = local_displacement * new_basis.transposed()
 	# --- 6. Calculate Final Global Position ---
 	var final_global_position: Vector3 = Vector3.ZERO + global_displacement
-	var scaled_final_pos := final_global_position / (Util.scale / 500)
+	var scaled_final_pos := final_global_position / Util.scale
 	global_positions.append(scaled_final_pos)
 	# total_space[i] += (scaled_final_pos - global_positions[i]).length() # update total space travelled by the particle
 	# --- 7. Create the Final Transform and Set it ---

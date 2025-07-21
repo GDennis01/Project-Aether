@@ -68,7 +68,7 @@ var particle_diameter: float = 0.0
 var particle_density: float = 0.0
 
 #constants
-const AU: float = 149597870700 ## AU. Astronomical Unit expressed in Meters
+const AU: float = 149597870707 ## AU. Astronomical Unit expressed in Meters
 const GRAVITATIONAL_CONSTANT: float = 6.674e-11 ## G. Gravitational Constant expressed in MKS
 const SUN_MASS: float = 1.98892e30 ## Ms. Sun mass expressed in Kg
 const SUN_LUMINOSITY: float = 3.828e26 ## Ls. Sun Luminosity expressed in J/s
