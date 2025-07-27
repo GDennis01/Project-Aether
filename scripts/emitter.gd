@@ -59,7 +59,7 @@ func _ready() -> void:
 	
 	_point_mesh = PointMesh.new()
 	unshaded_material.use_point_size = true
-	unshaded_material.point_size = particle_radius / 2
+	unshaded_material.point_size = 0.5
 	
 	_point_mesh.surface_set_material(0, unshaded_material)
 	
@@ -238,10 +238,10 @@ func instant_simulation(_n_steps: int, _angle_per_step: float) -> void:
 			var cloud := _generate_diffusion_particles2(travelled_space, final_t.origin)
 			for p in cloud:
 				_append_data_to_mm_buffer(mm_buffer, p, color)
-	print("mm_buffer size: %d" % mm_buffer.size())
+	# print("mm_buffer size: %d" % mm_buffer.size())
 	@warning_ignore("integer_division")
 	mm_emitter.multimesh.instance_count = mm_buffer.size() / 16 # 16 is the number of floats per instance (12 for transform, 4 for color)
-	print("Emitter %d multimesh instance count: %d" % [jet_id, mm_emitter.multimesh.instance_count])
+	# print("Emitter %d multimesh instance count: %d" % [jet_id, mm_emitter.multimesh.instance_count])
 	mm_emitter.multimesh.visible_instance_count = -1
 	mm_emitter.multimesh.set_buffer(mm_buffer)
 func _accelerate_particle2(time_alive2: int, _normal_dir: Vector3) -> Transform3D:
