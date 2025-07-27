@@ -112,7 +112,6 @@ func update_scale_factor() -> void:
 
 
 func update_ruler() -> void:
-	print("Updating ruler")
 	var fov_full_zoom: float = Util.visible_area / 1000 * (Util.tel_image_size / Util.window_size)
 	var pixel_resolution_full_zoom: float = fov_full_zoom / Util.window_size
 	var pixel_res_after_zoom: float = pixel_resolution_full_zoom * Util.scale

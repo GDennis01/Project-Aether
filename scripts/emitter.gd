@@ -59,7 +59,7 @@ func _ready() -> void:
 	
 	_point_mesh = PointMesh.new()
 	unshaded_material.use_point_size = true
-	unshaded_material.point_size = 0.5
+	unshaded_material.point_size = 1
 	
 	_point_mesh.surface_set_material(0, unshaded_material)
 	
@@ -199,20 +199,7 @@ func instant_simulation(_n_steps: int, _angle_per_step: float) -> void:
 		# this is to avoid showing particles inside the diffusion cloud sphere
 		if diffusion <= 0:
 			_append_data_to_mm_buffer(mm_buffer, ith_transform, color)
-	# if diffusion > 0:
-	# 	var total_space_cumulative := 0.0
-	# 	for i in range(particle_transforms.size()):
-	# 		if i > 0:
-	# 			var delta = (particle_transforms[i].origin
-	# 					- particle_transforms[i - 1].origin).length()
-	# 			total_space_cumulative += delta
-	# 		# now use the cumulative path-length as the radius:
-	# 		var diff_cloud = _generate_diffusion_particles2(
-	# 			total_space_cumulative,
-	# 			particle_transforms[i].origin
-	# 		)
-	# 		for p in diff_cloud:
-	# 			_append_data_to_mm_buffer(mm_buffer, p, Color.YELLOW)
+
 	print("buffer_size: %d" % mm_buffer.size())
 	# numerical integration to reconstruct diffusion particles
 	if diffusion > 0:
@@ -260,6 +247,8 @@ func _accelerate_particle2(time_alive2: int, _normal_dir: Vector3) -> Transform3
 	var global_displacement: Vector3 = local_displacement * new_basis.transposed()
 	# --- 6. Calculate Final Global Position ---
 	var final_global_position: Vector3 = Vector3.ZERO + global_displacement
+
+	# print("Particle n°%d final position magnitude: %.10f" % [time_alive2, final_global_position.length() / 1000])
 	var scaled_final_pos := final_global_position / Util.scale
 	global_positions.append(scaled_final_pos)
 	# total_space[i] += (scaled_final_pos - global_positions[i]).length() # update total space travelled by the particle
@@ -343,7 +332,7 @@ func _accelerate_particle(i: int) -> void:
 	# --- 6. Calculate Final Global Position ---
 	var final_global_position: Vector3 = initial_positions[i] + global_displacement
 	# Apply your scaling factor
-	var scaled_final_pos := final_global_position / (Util.scale / 500)
+	var scaled_final_pos := final_global_position / (Util.scale)
 	total_space[i] += (scaled_final_pos - global_positions[i]).length() # update total space travelled by the particle
 	global_positions[i] = scaled_final_pos
 	# add to the total space only the delta travelled by the particle
