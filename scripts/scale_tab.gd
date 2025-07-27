@@ -1,8 +1,10 @@
 extends CanvasLayer
 
+# Uneditable LineEdit used only to display values
 @onready var tel_res_km_pixel: LineEdit = $Control/TelResLineEdit
 @onready var fov_arcmin: LineEdit = $Control/FOVArcminLineEdit
-@onready var fov_km: LineEdit = $Control/FOVKmLineEdit
+@onready var fov_km: LineEdit = $Control/FOVKmLineEdit # display fov at zoom zero (the starting one)
+@onready var fov_curr_zoom_km: LineEdit = $Control/FOVCurrZoomKmLineEdit # display fov at the current zoom
 @onready var scale_factor: LineEdit = $Control/ScaleFactorLineEdit
 
 # Called when the node enters the scene tree for the first time.
@@ -115,5 +117,6 @@ func update_ruler() -> void:
 	var pixel_resolution_full_zoom: float = fov_full_zoom / Util.window_size
 	var pixel_res_after_zoom: float = pixel_resolution_full_zoom * Util.scale
 	var fov_km_ruler: float = (pixel_res_after_zoom * Util.window_size)
+	fov_curr_zoom_km.text = str(int(round(fov_km_ruler)))
 	fov_km_ruler = fov_km_ruler / Util.window_size * 150 # 150 is the length of the ruler in pixels
 	Util.current_fov_label.text = "%s Km" % str(int(round(fov_km_ruler)))
