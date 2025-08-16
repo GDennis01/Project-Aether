@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://bwt7dtbn7pn3c"]
+[gd_scene load_steps=18 format=3 uid="uid://bwt7dtbn7pn3c"]
 
 [ext_resource type="Script" uid="uid://bmle6k05e5fff" path="res://scripts/hud.gd" id="1_moku2"]
 [ext_resource type="Script" uid="uid://bwvqb33hu6cxk" path="res://scripts/navbar.gd" id="1_r4m0t"]
@@ -6,6 +6,9 @@
 [ext_resource type="PackedScene" uid="uid://blm04kepg8q0g" path="res://scenes/ui/SliderWithLineEdit.tscn" id="3_f5f8u"]
 [ext_resource type="PackedScene" uid="uid://dfq2g8u3hd1nh" path="res://scenes/ui/play_animation_slider.tscn" id="3_gss2c"]
 [ext_resource type="Script" uid="uid://cpcxn2i4yw141" path="res://scripts/jet_table.gd" id="4_136eg"]
+[ext_resource type="Texture2D" uid="uid://b4lr0xn7kipbs" path="res://asset/save_icon.png" id="4_cwdlq"]
+[ext_resource type="Texture2D" uid="uid://crnvhxbv6byd4" path="res://asset/load_icon.png" id="5_o6xly"]
+[ext_resource type="Texture2D" uid="uid://bvjrrmsw2h5nx" path="res://asset/info_icon.png" id="6_o6xly"]
 [ext_resource type="PackedScene" uid="uid://b31lb3a4drve4" path="res://scenes/ui/sanitized_edit.tscn" id="6_oj5la"]
 [ext_resource type="Script" uid="uid://c3hrn6jcfsf4a" path="res://scripts/sim_tab.gd" id="7_h022r"]
 [ext_resource type="Script" uid="uid://cwr53alhuqvvs" path="res://scripts/scale_tab.gd" id="9_0h1do"]
@@ -160,18 +163,21 @@ size_flags_horizontal = 3
 
 [node name="SaveBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 layout_mode = 2
+tooltip_text = "Save the current configuration to a file"
 focus_mode = 0
-text = "Save"
+icon = ExtResource("4_cwdlq")
 
 [node name="LoadBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 layout_mode = 2
+tooltip_text = "Load a configuration from a file"
 focus_mode = 0
-text = "Load"
+icon = ExtResource("5_o6xly")
 
 [node name="HelpBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 layout_mode = 2
+tooltip_text = "Show commands"
 focus_mode = 0
-text = "Help"
+icon = ExtResource("6_o6xly")
 
 [node name="QuitBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 visible = false
@@ -1250,11 +1256,22 @@ offset_bottom = 220.0
 
 [node name="Label" type="Label" parent="Body/HelpPanel/BoxContainer"]
 layout_mode = 2
-text = "Right Click to rotate around the comet
-R to reset position to earth's view
-Ctrl+Wheel Up to increase zoom
-Ctrl+Weel Down to decrease zoom
-Shift while moving to move faster
+text = "Rotating Camera:
+- Right Click to rotate around the comet
+- R to reset position to earth's view
+- Mouse Wheel Up to increase zoom
+- Mouse Weel Down to decrease zoom
+- P to switch between perspective projection and ortographic projection
+
+Free Roam Camera:
+- Right Click to rotate the view
+- WASD to move around
+- R to reset position to earth's view
+- Mouse Wheel Up to increase movement speed
+- Mouse Wheel Down to decrease movement speed
+- Hold Shift to speed up
+- Hold Alt to speed down
+
 "
 
 [node name="DebugPanel" type="CanvasLayer" parent="Body"]
@@ -1329,7 +1346,7 @@ _rot_camera = NodePath("RotatingCamera")
 
 [node name="OverlayImg" type="TextureRect" parent="Viewport/SubViewportContainer/SubViewport"]
 modulate = Color(1, 1, 1, 0.447059)
-anchors_preset = -1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 metadata/_edit_use_anchors_ = true
