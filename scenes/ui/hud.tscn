@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://bwt7dtbn7pn3c"]
+[gd_scene load_steps=21 format=3 uid="uid://bwt7dtbn7pn3c"]
 
 [ext_resource type="Script" uid="uid://bmle6k05e5fff" path="res://scripts/hud.gd" id="1_moku2"]
 [ext_resource type="Script" uid="uid://bwvqb33hu6cxk" path="res://scripts/navbar.gd" id="1_r4m0t"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://cq4pfua0ypj2s" path="res://asset/xyz_planeZ.png" id="4_65nxt"]
 [ext_resource type="Script" uid="uid://cpcxn2i4yw141" path="res://scripts/jet_table.gd" id="4_136eg"]
 [ext_resource type="Texture2D" uid="uid://b4lr0xn7kipbs" path="res://asset/save_icon.png" id="4_cwdlq"]
+[ext_resource type="Texture2D" uid="uid://citlfkdtcbst4" path="res://asset/sun_axis.png" id="4_el1dq"]
 [ext_resource type="Texture2D" uid="uid://bn7yp1iw4u4ud" path="res://asset/xyz_plane.png" id="5_el1dq"]
 [ext_resource type="Texture2D" uid="uid://crnvhxbv6byd4" path="res://asset/load_icon.png" id="5_o6xly"]
 [ext_resource type="Texture2D" uid="uid://bvjrrmsw2h5nx" path="res://asset/info_icon.png" id="6_o6xly"]
@@ -144,12 +145,12 @@ text = "Debug"
 
 [node name="ToggleSunBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 layout_mode = 2
+tooltip_text = "Toggle Sun Axis"
 focus_mode = 0
-text = "Toggle Sun Axis"
+icon = ExtResource("4_el1dq")
 
 [node name="ToggleYBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 layout_mode = 2
-tooltip_text = "Toggle Z Axis"
 focus_mode = 0
 icon = ExtResource("4_65nxt")
 
