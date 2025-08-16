@@ -1,5 +1,12 @@
 extends CanvasLayer
 
+@onready var file_explorer: FileDialog = $"Control/FileExplorer"
+@onready var overlay_img_linedit: LineEdit = $"Control/OverlayImgLineEdit"
+@onready var overlay_img_picker_btn: Button = $"Control/OverlayImgPickerBtn"
+@onready var del_overlay_img_btn: Button = $"Control/DelOverlayImgBtn"
+@onready var transparency_label: Label = $"Control/TransparencyLabel"
+@onready var transparency_slider: HSlider = $"Control/TransparencySlider"
+@onready var overlay_img: TextureRect = $"/root/Hud/Viewport/SubViewportContainer/SubViewport/OverlayImg"
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# $Control/FrequencyEdit.set_value(1)
@@ -63,3 +70,54 @@ func update_true_anomaly(value: float) -> void:
 func update_n_points(value: float) -> void:
 	if Util.PRINT_UPDATE_METHOD or true: print("Updated n_points:%f"%value)
 	Util.n_points = int(value)
+
+func _on_overlay_img_chosen() -> void:
+	print("lol")
+# shows the navbar.file_explorer
+func _on_overlay_img_picker_btn_pressed() -> void:
+	file_explorer.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+	file_explorer.filters = ["*.png;Image File"]
+	file_explorer.popup_centered()
+	file_explorer.current_file = "config"
+	
+	file_explorer.visible = true
+
+
+func _on_file_explorer_file_selected(path: String) -> void:
+	print("File selected: ", path)
+	var filename := path.get_file()
+	overlay_img_linedit.visible = true
+	overlay_img_linedit.text = filename
+
+	overlay_img_picker_btn.visible = false
+	del_overlay_img_btn.visible = true
+
+	transparency_label.visible = true
+	transparency_slider.visible = true
+
+	load_texture(path)
+
+func load_texture(path: String) -> void:
+	var img := Image.load_from_file(path)
+	img.resize(900, 900)
+	overlay_img.texture = ImageTexture.create_from_image(img)
+	overlay_img.modulate.a = 0.5
+
+func _on_del_overlay_img_btn_pressed() -> void:
+	overlay_img_linedit.visible = false
+	overlay_img_linedit.text = ""
+
+	overlay_img_picker_btn.visible = true
+	del_overlay_img_btn.visible = false
+
+	transparency_label.visible = false
+	transparency_slider.value = 0.5
+	transparency_slider.visible = false
+
+	# remove overlay image
+	overlay_img.texture = null
+
+
+func _on_transparency_slider_value_changed(value: float) -> void:
+	print(value)
+	overlay_img.modulate.a = value

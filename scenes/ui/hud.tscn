@@ -697,6 +697,51 @@ anchor_bottom = 29.7273
 editable = false
 metadata/_edit_use_anchors_ = true
 
+[node name="OverlayImgPickerBtn" type="Button" parent="Body/SimTab/Control"]
+layout_mode = 0
+anchor_left = 9.84615
+anchor_top = 32.0
+anchor_right = 18.8462
+anchor_bottom = 34.8182
+focus_mode = 0
+text = "Choose Image"
+metadata/_edit_use_anchors_ = true
+
+[node name="OverlayImgLineEdit" type="LineEdit" parent="Body/SimTab/Control"]
+visible = false
+layout_mode = 0
+anchor_left = 9.84615
+anchor_top = 32.0
+anchor_right = 19.0769
+anchor_bottom = 34.8182
+editable = false
+metadata/_edit_use_anchors_ = true
+
+[node name="DelOverlayImgBtn" type="Button" parent="Body/SimTab/Control"]
+visible = false
+layout_mode = 0
+anchor_left = 19.6923
+anchor_top = 32.0
+anchor_right = 22.1538
+anchor_bottom = 34.8182
+focus_mode = 0
+text = "X"
+metadata/_edit_use_anchors_ = true
+
+[node name="TransparencySlider" type="HSlider" parent="Body/SimTab/Control"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 10.0
+anchor_top = 35.9091
+anchor_right = 22.2308
+anchor_bottom = 37.3636
+max_value = 1.0
+step = 0.01
+value = 0.5
+tick_count = 1
+metadata/_edit_use_anchors_ = true
+
 [node name="FrequencyLabel" type="Label" parent="Body/SimTab/Control"]
 layout_mode = 1
 anchors_preset = -1
@@ -774,13 +819,36 @@ metadata/_edit_use_anchors_ = true
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.846154
-anchor_top = 27.0909
+anchor_top = 27.1818
 anchor_right = 5.90769
-anchor_bottom = 28.5545
+anchor_bottom = 28.6454
 offset_right = 28.2
 offset_bottom = 6.9
 scale = Vector2(0.7, 0.7)
 text = "Accel. (m/s²)"
+metadata/_edit_use_anchors_ = true
+
+[node name="OverlayImgLabel" type="Label" parent="Body/SimTab/Control"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 355.0
+offset_right = 122.0
+offset_bottom = 378.0
+scale = Vector2(0.7, 0.7)
+text = "Overlay Image"
+
+[node name="TransparencyLabel" type="Label" parent="Body/SimTab/Control"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.692308
+anchor_top = 35.9091
+anchor_right = 6.4
+anchor_bottom = 37.4364
+offset_right = 31.8
+offset_bottom = 7.2
+scale = Vector2(0.7, 0.7)
+text = "Transparency"
 metadata/_edit_use_anchors_ = true
 
 [node name="KmScaleEdit" parent="Body/SimTab/Control" instance=ExtResource("6_oj5la")]
@@ -911,6 +979,12 @@ tooltip_text = "Frequency of rotation in hours"
 mouse_filter = 0
 text = "True Anomaly"
 vertical_alignment = 1
+
+[node name="FileExplorer" type="FileDialog" parent="Body/SimTab/Control"]
+title = "Choose an image"
+dialog_hide_on_ok = true
+access = 2
+show_hidden_files = true
 
 [node name="ScaleTab" type="CanvasLayer" parent="Body" groups=["camera", "delta_au", "load", "save", "tel_image_size", "tel_resolution", "window_fov", "window_size"]]
 layer = 3
@@ -1253,6 +1327,13 @@ script = ExtResource("9_4jqwt")
 _fr_camera = NodePath("FreeRoamCamera")
 _rot_camera = NodePath("RotatingCamera")
 
+[node name="OverlayImg" type="TextureRect" parent="Viewport/SubViewportContainer/SubViewport"]
+modulate = Color(1, 1, 1, 0.447059)
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+metadata/_edit_use_anchors_ = true
+
 [node name="CenterContainer" type="CenterContainer" parent="Viewport/SubViewportContainer/SubViewport"]
 anchors_preset = -1
 anchor_left = 0.811111
@@ -1333,3 +1414,7 @@ script = ExtResource("13_4d46k")
 [connection signal="pressed" from="Body/JetsTab/Control/SpawnEmitter" to="Body" method="_on_spawn_emitter_pressed"]
 [connection signal="pressed" from="Body/JetsTab/Control/JetTable/AddJetEntryBtn" to="Body" method="_on_add_jet_entry_btn_pressed"]
 [connection signal="pressed" from="Body/JetsTab/Control/JetTable/AddJetEntryBtn" to="Body/JetsTab/Control/JetTable" method="_on_add_jet_entry_btn_pressed"]
+[connection signal="pressed" from="Body/SimTab/Control/OverlayImgPickerBtn" to="Body/SimTab" method="_on_overlay_img_picker_btn_pressed"]
+[connection signal="pressed" from="Body/SimTab/Control/DelOverlayImgBtn" to="Body/SimTab" method="_on_del_overlay_img_btn_pressed"]
+[connection signal="value_changed" from="Body/SimTab/Control/TransparencySlider" to="Body/SimTab" method="_on_transparency_slider_value_changed"]
+[connection signal="file_selected" from="Body/SimTab/Control/FileExplorer" to="Body/SimTab" method="_on_file_explorer_file_selected"]
