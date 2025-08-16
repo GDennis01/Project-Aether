@@ -1,12 +1,14 @@
-[gd_scene load_steps=18 format=3 uid="uid://bwt7dtbn7pn3c"]
+[gd_scene load_steps=20 format=3 uid="uid://bwt7dtbn7pn3c"]
 
 [ext_resource type="Script" uid="uid://bmle6k05e5fff" path="res://scripts/hud.gd" id="1_moku2"]
 [ext_resource type="Script" uid="uid://bwvqb33hu6cxk" path="res://scripts/navbar.gd" id="1_r4m0t"]
 [ext_resource type="Script" uid="uid://c3wk256unbuoe" path="res://scripts/comet_tab.gd" id="3_136eg"]
 [ext_resource type="PackedScene" uid="uid://blm04kepg8q0g" path="res://scenes/ui/SliderWithLineEdit.tscn" id="3_f5f8u"]
 [ext_resource type="PackedScene" uid="uid://dfq2g8u3hd1nh" path="res://scenes/ui/play_animation_slider.tscn" id="3_gss2c"]
+[ext_resource type="Texture2D" uid="uid://cq4pfua0ypj2s" path="res://asset/xyz_planeZ.png" id="4_65nxt"]
 [ext_resource type="Script" uid="uid://cpcxn2i4yw141" path="res://scripts/jet_table.gd" id="4_136eg"]
 [ext_resource type="Texture2D" uid="uid://b4lr0xn7kipbs" path="res://asset/save_icon.png" id="4_cwdlq"]
+[ext_resource type="Texture2D" uid="uid://bn7yp1iw4u4ud" path="res://asset/xyz_plane.png" id="5_el1dq"]
 [ext_resource type="Texture2D" uid="uid://crnvhxbv6byd4" path="res://asset/load_icon.png" id="5_o6xly"]
 [ext_resource type="Texture2D" uid="uid://bvjrrmsw2h5nx" path="res://asset/info_icon.png" id="6_o6xly"]
 [ext_resource type="PackedScene" uid="uid://b31lb3a4drve4" path="res://scenes/ui/sanitized_edit.tscn" id="6_oj5la"]
@@ -64,7 +66,7 @@ offset_left = -0.152
 offset_top = -6.02
 offset_right = 0.114764
 offset_bottom = -0.0200002
-color = Color(0.1476, 0.31044, 0.36, 0.592157)
+color = Color(0.262663, 0.500612, 0.573635, 0.592157)
 metadata/_edit_group_ = true
 metadata/_edit_use_anchors_ = true
 
@@ -147,13 +149,15 @@ text = "Toggle Sun Axis"
 
 [node name="ToggleYBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 layout_mode = 2
+tooltip_text = "Toggle Z Axis"
 focus_mode = 0
-text = "Toggle Z"
+icon = ExtResource("4_65nxt")
 
 [node name="ToggleAxesBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 layout_mode = 2
+tooltip_text = "Toggle X and Y Axes"
 focus_mode = 0
-text = "Toggle X/Y"
+icon = ExtResource("5_el1dq")
 
 [node name="Spacer" type="Control" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 visible = false
