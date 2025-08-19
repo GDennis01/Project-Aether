@@ -151,6 +151,7 @@ icon = ExtResource("4_el1dq")
 
 [node name="ToggleYBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 layout_mode = 2
+tooltip_text = "Toggle Z Axis"
 focus_mode = 0
 icon = ExtResource("4_65nxt")
 
