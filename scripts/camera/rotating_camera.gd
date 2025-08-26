@@ -26,11 +26,14 @@ var _is_dragging: bool = false
 func _ready() -> void:
 	if enabled:
 		make_current() # Make this camera the current one
+		projection = PROJECTION_ORTHOGONAL # starting in orthogonal
+
 		size = starting_distance
 		starting_size = size
 		Util.starting_visible_area = get_visible_area_at_distance(starting_distance).width # Store the visible area at the starting distance
 		Util.starting_distance = starting_distance
-		Util.visible_area = Util.starting_visible_area
+		Util.visible_area = Util.starting_visible_area # FOV OF PERSPECTIVE CAMERA
+		size = Util.visible_area # TO ALIGN ORTHOGONAL WITH PERSPECTIVE!!!
 		# Util.starting_distance = Util.starting_visible_area / 2
 		# starting_distance = Util.starting_distance
 		_update_camera_transform() # Set initial position and orientation
@@ -44,8 +47,9 @@ func _unhandled_key_input(event: InputEvent) -> void:
 				_yaw = 0.0
 				_pitch = 0.0
 				distance = starting_distance
-				size = starting_size
+				# size = starting_size
 				Util.visible_area = get_visible_area_at_distance(distance).width # Update visible area
+				size = Util.visible_area
 				get_tree().call_group("camera", "update_ruler")
 				_update_camera_transform()
 			KEY_P: # Toggle perspective/orthographic mode
@@ -73,15 +77,17 @@ func _input(event: InputEvent) -> void:
 		# elif event.button_index == MOUSE_BUTTON_WHEEL_UP and Event.is_act:
 		elif event.is_action_pressed("zoom_in"):
 			distance = clamp(distance - zoom_sensitivity, min_distance, max_distance)
-			size = clamp(size - zoom_sensitivity * 2, 1, 1000) # Adjust size for orthographic projection
+			# size = clamp(size - zoom_sensitivity * 2, 1, 1000) # Adjust size for orthographic projection
 			Util.visible_area = get_visible_area_at_distance(distance).width # Update visible area
+			size = Util.visible_area
 			get_tree().call_group("camera", "update_ruler")
 			_update_camera_transform()
 		# elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN and _is_dragging:
 		elif event.is_action_pressed("zoom_out"):
 			distance = clamp(distance + zoom_sensitivity, min_distance, max_distance)
-			size = clamp(size + zoom_sensitivity * 2, 1, 1000) # Adjust size for orthographic projection
+			# size = clamp(size + zoom_sensitivity * 2, 1, 1000) # Adjust size for orthographic projection
 			Util.visible_area = get_visible_area_at_distance(distance).width # Update visible area
+			size = Util.visible_area
 			get_tree().call_group("camera", "update_ruler")
 			_update_camera_transform()
 

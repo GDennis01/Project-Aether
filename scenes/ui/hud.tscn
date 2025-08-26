@@ -1339,7 +1339,7 @@ metadata/_edit_use_anchors_ = true
 
 [node name="CurrCameraLabel" type="Label" parent="Viewport/SubViewportContainer"]
 layout_mode = 2
-text = "Rotating Camera (Perspective)"
+text = "Rotating Camera (Orthogonal)"
 metadata/_edit_use_anchors_ = true
 
 [node name="SubViewport" type="SubViewport" parent="Viewport/SubViewportContainer" node_paths=PackedStringArray("_fr_camera", "_rot_camera") groups=["camera"]]
