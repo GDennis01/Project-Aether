@@ -82,7 +82,7 @@ var is_simulation: bool = true ## True: simulation enabled, False: instant simul
 # Labels
 @onready var current_camera_label: Label = $"/root/Hud/Viewport/SubViewportContainer/CurrCameraLabel"
 @onready var current_fov_label: Label = $"/root/Hud/Viewport/SubViewportContainer/SubViewport/CenterContainer/ScaleLabel"
-@onready var beta_val_line_edit: LineEdit = $"/root/Hud/Body/SimTab/Control/BetaValLineEdit"
+@onready var beta_val_line_edit: LineEdit = $"/root/Hud/Body/CometTab/Control/BetaValLineEdit"
 @onready var accel_val_line_edit: LineEdit = $"/root/Hud/Body/SimTab/Control/AccelValLineEdit"
 
 ## Converts Latitude/Longitude (in degrees) to a local 3D position

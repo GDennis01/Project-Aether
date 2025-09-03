@@ -197,7 +197,6 @@ metadata/is_screenshot = false
 
 [node name="CometTab" type="CanvasLayer" parent="Body" groups=["load", "save"]]
 layer = 3
-visible = false
 script = ExtResource("3_136eg")
 
 [node name="Control" type="Control" parent="Body/CometTab"]
@@ -452,6 +451,29 @@ anchor_right = 1.18557
 anchor_bottom = 0.784091
 metadata/_edit_use_anchors_ = true
 
+[node name="BetaValLineEdit" type="LineEdit" parent="Body/CometTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.442693
+anchor_top = 1.20989
+anchor_right = 0.98393
+anchor_bottom = 1.32732
+editable = false
+metadata/_edit_use_anchors_ = true
+
+[node name="BetaValLabel" type="Label" parent="Body/CometTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.200424
+anchor_top = 1.21836
+anchor_right = 0.401455
+anchor_bottom = 1.27934
+offset_right = 12.0
+offset_bottom = 6.9
+scale = Vector2(0.85, 0.85)
+text = "Beta:"
+metadata/_edit_use_anchors_ = true
+
 [node name="JetsTab" type="CanvasLayer" parent="Body"]
 layer = 3
 visible = false
@@ -623,6 +645,7 @@ text = "Add Jet Entry"
 
 [node name="SimTab" type="CanvasLayer" parent="Body" groups=["i", "load", "n_points", "phi", "save", "true_anomaly"]]
 layer = 3
+visible = false
 script = ExtResource("7_h022r")
 
 [node name="Control" type="Control" parent="Body/SimTab"]
@@ -688,16 +711,6 @@ resize_type = &"n_points"
 lower_bound = 1.0
 higher_bound = 35.0
 no_decimal = true
-
-[node name="BetaValLineEdit" type="LineEdit" parent="Body/SimTab/Control"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 9.84615
-anchor_top = 24.0
-anchor_right = 21.6154
-anchor_bottom = 26.8182
-editable = false
-metadata/_edit_use_anchors_ = true
 
 [node name="AccelValLineEdit" type="LineEdit" parent="Body/SimTab/Control"]
 layout_mode = 1
@@ -813,19 +826,6 @@ offset_right = 165.0
 offset_bottom = 244.0
 scale = Vector2(0.7, 0.7)
 text = "N. Points (Diffusion)"
-
-[node name="BetaValLabel" type="Label" parent="Body/SimTab/Control"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.769231
-anchor_top = 24.2727
-anchor_right = 2.92308
-anchor_bottom = 25.7364
-offset_right = 12.0
-offset_bottom = 6.9
-scale = Vector2(0.7, 0.7)
-text = "Beta "
-metadata/_edit_use_anchors_ = true
 
 [node name="AccelValLabel" type="Label" parent="Body/SimTab/Control"]
 layout_mode = 1
@@ -1355,6 +1355,8 @@ modulate = Color(1, 1, 1, 0.447059)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 metadata/_edit_use_anchors_ = true
 
 [node name="CenterContainer" type="CenterContainer" parent="Viewport/SubViewportContainer/SubViewport"]

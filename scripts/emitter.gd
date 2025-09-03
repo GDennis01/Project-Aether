@@ -404,7 +404,8 @@ func update_acceleration() -> void:
 	# # P * 3 / (4 * d/2 * p)
 	var _a: float = P * 3.0 / (4.0 * ((Util.particle_diameter / 1000.0) / 2.0) * (Util.particle_density * 1000.0))
 	Util.accel_val_line_edit.text = str(_a)
-	var beta: float = Util.GRAVITATIONAL_CONSTANT * Util.SUN_MASS / pow(Util.sun_comet_distance * Util.AU, 2)
+	# var beta: float = Util.GRAVITATIONAL_CONSTANT * Util.SUN_MASS / pow(Util.sun_comet_distance * Util.AU, 2)
+	var beta: float = _a / (Util.GRAVITATIONAL_CONSTANT * Util.SUN_MASS / pow(Util.sun_comet_distance * Util.AU, 2))
 	Util.beta_val_line_edit.text = str(beta)
 	print("acceleration: %.10f m/s^2" % _a)
 	self.a = _a
