@@ -9,3 +9,4 @@ comet-models/
 config/
 build/
 screenshots/
+.vscode/
