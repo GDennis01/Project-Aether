@@ -249,6 +249,11 @@ func _accelerate_particle2(time_alive2: int, _normal_dir: Vector3) -> Transform3
 	var final_global_position: Vector3 = Vector3.ZERO + global_displacement
 
 	print("Particle n°%d final position magnitude: %.10f" % [time_alive2, final_global_position.length() / 1000])
+	print("Local Velocity: %s" % str(local_velocity))
+	print("New basis: %s" % str(new_basis))
+	print("_normal_dir: %s" % str(_normal_dir))
+	print("Global initial velocity: %s" % str(global_initial_velocity))
+	print("-------")
 	var scaled_final_pos := final_global_position / Util.scale
 	global_positions.append(scaled_final_pos)
 	# total_space[i] += (scaled_final_pos - global_positions[i]).length() # update total space travelled by the particle

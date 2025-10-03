@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://bwt7dtbn7pn3c"]
+[gd_scene load_steps=25 format=3 uid="uid://bwt7dtbn7pn3c"]
 
 [ext_resource type="Script" uid="uid://bmle6k05e5fff" path="res://scripts/hud.gd" id="1_moku2"]
 [ext_resource type="Script" uid="uid://bwvqb33hu6cxk" path="res://scripts/navbar.gd" id="1_r4m0t"]
@@ -20,6 +20,10 @@
 [ext_resource type="Script" uid="uid://c40guo1rckn11" path="res://scripts/camera/rotating_camera.gd" id="10_mj13f"]
 [ext_resource type="Script" uid="uid://ctb74i43u0sru" path="res://scripts/camera/free_roam_camera.gd" id="11_0h1do"]
 [ext_resource type="Script" uid="uid://cxp45je7onc6p" path="res://scripts/camera/mini_camera.gd" id="13_4d46k"]
+[ext_resource type="Script" uid="uid://dw88mjhs2jyww" path="res://scripts/jpl_tab.gd" id="16_gmc6u"]
+[ext_resource type="Script" uid="uid://cvmrw32h1bvjg" path="res://addons/calendar_button/scripts/calendar_script.gd" id="17_pkwgd"]
+[ext_resource type="Texture2D" uid="uid://brchqvd356pp8" path="res://addons/calendar_button/btn_img/btn_64x64_01.png" id="18_pkwgd"]
+[ext_resource type="Texture2D" uid="uid://22446a5qkmt5" path="res://addons/calendar_button/btn_img/btn_64x64_02.png" id="19_d5po8"]
 
 [node name="HUD" type="CanvasLayer"]
 layer = 0
@@ -102,6 +106,10 @@ text = "Simulation
 layout_mode = 2
 focus_mode = 0
 text = "Scale"
+
+[node name="JPLBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
+layout_mode = 2
+text = "JPL H."
 
 [node name="Spacer2" type="Control" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 layout_direction = 2
@@ -197,6 +205,7 @@ metadata/is_screenshot = false
 
 [node name="CometTab" type="CanvasLayer" parent="Body" groups=["load", "save"]]
 layer = 3
+visible = false
 script = ExtResource("3_136eg")
 
 [node name="Control" type="Control" parent="Body/CometTab"]
@@ -1250,6 +1259,152 @@ focus_mode = 0
 theme_override_constants/minimum_character_width = 0
 editable = false
 
+[node name="JPLTab" type="CanvasLayer" parent="Body" groups=["step_size"]]
+layer = 3
+script = ExtResource("16_gmc6u")
+
+[node name="Control" type="Control" parent="Body/JPLTab"]
+layout_mode = 3
+anchor_left = 0.00451128
+anchor_top = 0.0857143
+anchor_right = 0.278195
+anchor_bottom = 0.456122
+mouse_filter = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="CometSearchLabel" type="Label" parent="Body/JPLTab/Control"]
+layout_mode = 0
+anchor_left = 0.00824177
+anchor_top = 0.0495868
+anchor_right = 0.299451
+anchor_bottom = 0.112948
+text = "Comet Name:"
+metadata/_edit_use_anchors_ = true
+
+[node name="SearchBar" type="LineEdit" parent="Body/JPLTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.31044
+anchor_top = 0.0275482
+anchor_right = 0.621941
+anchor_bottom = 0.141094
+text = "C/2013 R1"
+metadata/_edit_use_anchors_ = true
+
+[node name="SearchBtn" type="Button" parent="Body/JPLTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.68132
+anchor_top = 0.0385675
+anchor_right = 0.917059
+anchor_bottom = 0.152114
+focus_mode = 0
+text = "SEARCH"
+metadata/_edit_use_anchors_ = true
+
+[node name="StartDateLabel" type="Label" parent="Body/JPLTab/Control"]
+layout_mode = 0
+anchor_left = 0.0219781
+anchor_top = 0.236915
+anchor_right = 0.25
+anchor_bottom = 0.300276
+text = "Start Date:"
+metadata/_edit_use_anchors_ = true
+
+[node name="StartCalendarBtn" type="TextureButton" parent="Body/JPLTab/Control"]
+layout_mode = 0
+anchor_left = 0.728023
+anchor_top = 0.176309
+anchor_right = 0.903848
+anchor_bottom = 0.352617
+toggle_mode = true
+texture_normal = ExtResource("18_pkwgd")
+script = ExtResource("17_pkwgd")
+image_normal = ExtResource("18_pkwgd")
+image_pressed = ExtResource("19_d5po8")
+metadata/_custom_type_script = "uid://cvmrw32h1bvjg"
+metadata/_edit_use_anchors_ = true
+
+[node name="StartDateLineEdit" type="LineEdit" parent="Body/JPLTab/Control"]
+layout_mode = 0
+anchor_left = 0.260989
+anchor_top = 0.23416
+anchor_right = 0.71154
+anchor_bottom = 0.31956
+text = "2025-10-3"
+metadata/_edit_use_anchors_ = true
+
+[node name="EndDateLabel" type="Label" parent="Body/JPLTab/Control"]
+layout_mode = 0
+anchor_left = 0.0219781
+anchor_top = 0.418733
+anchor_right = 0.228022
+anchor_bottom = 0.482094
+text = "End Date:"
+metadata/_edit_use_anchors_ = true
+
+[node name="EndCalendarBtn" type="TextureButton" parent="Body/JPLTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.739012
+anchor_top = 0.371901
+anchor_right = 0.914837
+anchor_bottom = 0.54821
+toggle_mode = true
+texture_normal = ExtResource("18_pkwgd")
+script = ExtResource("17_pkwgd")
+image_normal = ExtResource("18_pkwgd")
+image_pressed = ExtResource("19_d5po8")
+metadata/_custom_type_script = "uid://cvmrw32h1bvjg"
+metadata/_edit_use_anchors_ = true
+
+[node name="EndDateLineEdit" type="LineEdit" parent="Body/JPLTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.266484
+anchor_top = 0.410469
+anchor_right = 0.717034
+anchor_bottom = 0.495868
+focus_mode = 1
+text = "2025-10-3"
+metadata/_edit_use_anchors_ = true
+
+[node name="StepSizeSanEdit" parent="Body/JPLTab/Control" instance=ExtResource("6_oj5la")]
+layout_mode = 1
+anchor_left = 0.23077
+anchor_top = 0.592287
+anchor_right = 0.342121
+anchor_bottom = 0.690868
+offset_right = 0.0
+offset_bottom = 0.0
+text = "1"
+resize_type = &"step_size"
+higher_bound = 1000.0
+no_decimal = true
+metadata/_edit_use_anchors_ = true
+
+[node name="EphemScroll" type="ScrollContainer" parent="Body/JPLTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0576924
+anchor_top = 0.752067
+anchor_right = 0.997255
+anchor_bottom = 1.70248
+metadata/_edit_use_anchors_ = true
+
+[node name="EphemTable" type="VBoxContainer" parent="Body/JPLTab/Control/EphemScroll"]
+layout_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="StepSizeLabel" type="Label" parent="Body/JPLTab/Control"]
+layout_mode = 0
+anchor_left = 0.00549452
+anchor_top = 0.617081
+anchor_right = 0.206044
+anchor_bottom = 0.680442
+text = "Step Size:"
+metadata/_edit_use_anchors_ = true
+
 [node name="HelpPanel" type="CanvasLayer" parent="Body"]
 layer = 3
 visible = false
@@ -1423,6 +1578,7 @@ script = ExtResource("13_4d46k")
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/JetsBtn" to="Body" method="_on_jetsbtn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/SimBtn" to="Body" method="_on_sim_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ScaleBtn" to="Body" method="_on_scale_btn_pressed"]
+[connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/JPLBtn" to="Body" method="_on_jpl_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/TriggerRotBtn" to="Body" method="_on_trigger_rot_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ResetRotnBtn" to="Body" method="_on_reset_rotn_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ScreenshotBtn" to="Body" method="_on_screenshot_btn_pressed"]
@@ -1443,3 +1599,6 @@ script = ExtResource("13_4d46k")
 [connection signal="pressed" from="Body/SimTab/Control/DelOverlayImgBtn" to="Body/SimTab" method="_on_del_overlay_img_btn_pressed"]
 [connection signal="value_changed" from="Body/SimTab/Control/TransparencySlider" to="Body/SimTab" method="_on_transparency_slider_value_changed"]
 [connection signal="file_selected" from="Body/SimTab/Control/FileExplorer" to="Body/SimTab" method="_on_file_explorer_file_selected"]
+[connection signal="pressed" from="Body/JPLTab/Control/SearchBtn" to="Body/JPLTab" method="_on_search_btn_pressed"]
+[connection signal="date_selected" from="Body/JPLTab/Control/StartCalendarBtn" to="Body/JPLTab" method="_on_start_calendar_btn_date_selected"]
+[connection signal="date_selected" from="Body/JPLTab/Control/EndCalendarBtn" to="Body/JPLTab" method="_on_end_calendar_btn_date_selected"]

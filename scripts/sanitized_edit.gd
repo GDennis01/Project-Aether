@@ -67,3 +67,4 @@ func _on_focus_exited() -> void:
 		slider.set_value_no_signal(float(self.text))
 	if resize_type:
 		get_tree().call_group(resize_type, "update_" + resize_type, float(self.text))
+		print("[Sanitized Edit] Calling update_%s" % resize_type)

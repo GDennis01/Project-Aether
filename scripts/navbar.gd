@@ -31,6 +31,8 @@ func _on_cometbtn_pressed() -> void:
 		$HelpPanel.visible = false
 	if $ScaleTab.visible:
 		$ScaleTab.visible = false
+	if $JPLTab.visible:
+		$JPLTab.visible = false
 	$CometTab.visible = not $CometTab.visible
 
 ## Toggle JetsTab and hides all other tabs
@@ -43,6 +45,8 @@ func _on_jetsbtn_pressed() -> void:
 		$HelpPanel.visible = false
 	if $ScaleTab.visible:
 		$ScaleTab.visible = false
+	if $JPLTab.visible:
+		$JPLTab.visible = false
 	$JetsTab.visible = not $JetsTab.visible
 
 ## Toggle SimTab and hides all other tabs
@@ -55,6 +59,9 @@ func _on_sim_btn_pressed() -> void:
 		$HelpPanel.visible = false
 	if $ScaleTab.visible:
 		$ScaleTab.visible = false
+	if $JPLTab.visible:
+		$JPLTab.visible = false
+
 	$SimTab.visible = not $SimTab.visible
 
 ## Toggle HelpTab and hides all other tabs
@@ -67,6 +74,8 @@ func _on_help_btn_pressed() -> void:
 		$SimTab.visible = false
 	if $ScaleTab.visible:
 		$ScaleTab.visible = false
+	if $JPLTab.visible:
+		$JPLTab.visible = false
 	$HelpPanel.visible = not $HelpPanel.visible
 
 func _on_scale_btn_pressed() -> void:
@@ -78,7 +87,23 @@ func _on_scale_btn_pressed() -> void:
 		$SimTab.visible = false
 	if $HelpPanel.visible:
 		$HelpPanel.visible = false
+	if $JPLTab.visible:
+		$JPLTab.visible = false
 	$ScaleTab.visible = not $ScaleTab.visible
+
+func _on_jpl_btn_pressed() -> void:
+	if $CometTab.visible:
+		$CometTab.visible = false
+	if $JetsTab.visible:
+		$JetsTab.visible = false
+	if $SimTab.visible:
+		$SimTab.visible = false
+	if $HelpPanel.visible:
+		$HelpPanel.visible = false
+	if $ScaleTab.visible:
+		$ScaleTab.visible = false
+	$JPLTab.visible = not $JPLTab.visible
+	return
 
 		
 # Maybe make a scene button that automatically on pressed trigger this function?
