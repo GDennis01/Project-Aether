@@ -22,8 +22,8 @@ metadata/_edit_use_anchors_ = true
 [node name="JetID" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_top = -0.2
-anchor_bottom = -0.2
+anchor_top = -0.155969
+anchor_bottom = -0.155969
 offset_left = 8.0
 offset_top = 16.0
 offset_right = 32.0
@@ -62,9 +62,9 @@ anchor_top = -0.222
 anchor_right = 0.0
 anchor_bottom = -0.222
 offset_left = 200.0
-offset_top = 15.99
+offset_top = 16.99
 offset_right = 256.96
-offset_bottom = 46.99
+offset_bottom = 47.99
 higher_bound = 360.0
 
 [node name="DiffusionEdit" parent="." instance=ExtResource("2_65ngw")]
@@ -73,9 +73,9 @@ anchor_top = -0.222
 anchor_right = 0.0
 anchor_bottom = -0.222
 offset_left = 272.0
-offset_top = 15.99
+offset_top = 16.99
 offset_right = 328.96
-offset_bottom = 46.99
+offset_bottom = 47.99
 higher_bound = 100.0
 no_decimal = true
 
@@ -93,7 +93,10 @@ color = Color(0.454524, 0.454524, 0.454524, 1)
 metadata/_edit_use_anchors_ = true
 
 [node name="ToggleJet" type="CheckButton" parent="."]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -0.0146771
+anchor_bottom = -0.0146771
 offset_left = 392.0
 offset_top = 6.0
 offset_right = 436.0
@@ -106,8 +109,10 @@ metadata/_edit_use_anchors_ = true
 [node name="RemoveJetBtn" type="Button" parent="." groups=["remove"]]
 layout_mode = 1
 anchors_preset = -1
-anchor_top = -0.222
-anchor_bottom = -0.222
+anchor_left = 0.0270051
+anchor_top = -0.207323
+anchor_right = 0.0270051
+anchor_bottom = -0.207323
 offset_left = 456.0
 offset_top = 15.99
 offset_right = 488.0

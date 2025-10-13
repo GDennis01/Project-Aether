@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://bwt7dtbn7pn3c"]
+[gd_scene load_steps=27 format=3 uid="uid://bwt7dtbn7pn3c"]
 
 [ext_resource type="Script" uid="uid://bmle6k05e5fff" path="res://scripts/hud.gd" id="1_moku2"]
 [ext_resource type="Script" uid="uid://bwvqb33hu6cxk" path="res://scripts/navbar.gd" id="1_r4m0t"]
@@ -38,6 +38,8 @@ corner_radius_bottom_left = 5
 corner_detail = 10
 anti_aliasing_size = 0.545
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_pkwgd"]
+
 [node name="HUD" type="CanvasLayer"]
 layer = 0
 script = ExtResource("1_moku2")
@@ -76,9 +78,9 @@ metadata/_edit_use_anchors_ = true
 [node name="ColorRect" type="ColorRect" parent="Body/TabButtons"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.00090009
+anchor_left = 0.000114301
 anchor_top = -0.044
-anchor_right = 1.0
+anchor_right = 1.00005
 anchor_bottom = 0.956
 offset_left = -0.152
 offset_top = -6.02
@@ -122,6 +124,7 @@ text = "Scale"
 
 [node name="JPLBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 layout_mode = 2
+focus_mode = 0
 text = "JPL H."
 
 [node name="Spacer2" type="Control" parent="Body/TabButtons/ColorRect/HBoxContainer"]
@@ -326,12 +329,13 @@ valid_zero = true
 metadata/_edit_use_anchors_ = true
 
 [node name="HSeparator" type="HSeparator" parent="Body/CometTab/Control"]
-layout_mode = 0
-anchor_left = 0.0360825
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0421468
 anchor_top = 0.810606
-anchor_right = 1.40825
+anchor_right = 1.41431
 anchor_bottom = 0.831439
-offset_right = -24.2
+offset_right = -21.2
 offset_bottom = -0.5
 scale = Vector2(1.1, 1.1)
 metadata/_edit_use_anchors_ = true
@@ -420,11 +424,11 @@ metadata/_edit_use_anchors_ = true
 [node name="HSeparator2" type="HSeparator" parent="Body/CometTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.0360825
+anchor_left = 0.0421468
 anchor_top = 1.75178
-anchor_right = 1.40825
+anchor_right = 1.41431
 anchor_bottom = 1.77262
-offset_right = -24.2
+offset_right = -21.2
 offset_bottom = -0.5
 scale = Vector2(1.1, 1.1)
 metadata/_edit_use_anchors_ = true
@@ -1582,6 +1586,7 @@ text = "Rotating Camera (Orthogonal)"
 metadata/_edit_use_anchors_ = true
 
 [node name="SubViewport" type="SubViewport" parent="Viewport/SubViewportContainer" node_paths=PackedStringArray("_fr_camera", "_rot_camera") groups=["camera"]]
+transparent_bg = true
 handle_input_locally = false
 size = Vector2i(900, 900)
 render_target_update_mode = 4
@@ -1591,6 +1596,7 @@ _rot_camera = NodePath("RotatingCamera")
 
 [node name="OverlayImg" type="TextureRect" parent="Viewport/SubViewportContainer/SubViewport"]
 modulate = Color(1, 1, 1, 0.447059)
+material = SubResource("CanvasItemMaterial_pkwgd")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -1639,9 +1645,9 @@ anchor_top = 0.751
 anchor_right = 1.0
 anchor_bottom = 0.996
 offset_left = 64.0
-offset_top = 0.02
+offset_top = -2.98
 offset_right = -1026.0
-offset_bottom = -0.08
+offset_bottom = -3.08
 size_flags_horizontal = 4
 size_flags_vertical = 4
 metadata/_edit_use_anchors_ = true
