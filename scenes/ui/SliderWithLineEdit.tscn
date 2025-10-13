@@ -37,8 +37,8 @@ text = "Ciao"
 
 [node name="SanitizedEdit" parent="." node_paths=PackedStringArray("slider") instance=ExtResource("2_1k185")]
 layout_mode = 1
-offset_left = 136.0
-offset_right = 188.48
+offset_left = 176.0
+offset_right = 228.48
 offset_bottom = 27.248
 text = "2.0"
 slider = NodePath("../Slider")

@@ -40,7 +40,18 @@ func _ready() -> void:
 
 func _on_search_btn_pressed() -> void:
 	var query := search_bar.text
-	print(start_date.date("YYYY-MM-DD"))
+	if query == "":
+		push_error("Please enter a valid target name or ID.")
+		return
+	if start_date == null:
+		push_error("Please select a valid start date.")
+		return
+	if end_date == null:
+		push_error("Please select a valid end date.")
+		return
+	if step_size <= 0:
+		push_error("Please select a valid step size (greater than 0).")
+		return
 	var params := {
 		"format": "json",
 		"COMMAND": "'%s'" % query,
@@ -66,14 +77,13 @@ func _on_search_btn_pressed() -> void:
 	
 	if error != OK:
 		push_error("An error occurred in the HTTP request.")
-
-		print("Request sent successfully")
 	# Implement search functionality here
 
 
 func _http_request_completed(result: int, _response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
 	if result != HTTPRequest.RESULT_SUCCESS:
-		push_error("Image couldn't be downloaded. Try a different image.")
+		push_error("Error during HTTP request.")
+		return
 
 	var json_parser := JSON.new()
 	var body_string := body.get_string_from_utf8()
@@ -81,8 +91,8 @@ func _http_request_completed(result: int, _response_code: int, _headers: PackedS
 
 	var data: Variant = json_parser.data
 	json_parser.parse(parse_ephemeris(data.result))
+	
 	var ephemeris_data: Variant = json_parser.data
-	print(ephemeris_data)
 	clear_container()
 	populate_container(ephemeris_data)
 func clear_container() -> void:
@@ -104,15 +114,15 @@ func populate_container(data: Variant) -> void:
 		"geocentric_distance_rate": "Geocentric Distance Rate (km/s)"
 	}
 	var header_string := ""
-	for key in HEADER.keys():
+	for key: String in HEADER.keys():
 		header_string += "%-30s" % HEADER[key]
 	print(header_string)
 	var header_label := Label.new()
 	header_label.text = header_string
 	ephem_table.add_child(header_label)
-	for entry in data:
+	for entry: Dictionary in data:
 		var hbox := HBoxContainer.new()
-		for key in HEADER.keys():
+		for key: String in HEADER.keys():
 			var label := Label.new()
 			label.text = str(entry[key])
 			label.size_flags_horizontal = Control.SIZE_EXPAND_FILL

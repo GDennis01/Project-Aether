@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://bwt7dtbn7pn3c"]
+[gd_scene load_steps=26 format=3 uid="uid://bwt7dtbn7pn3c"]
 
 [ext_resource type="Script" uid="uid://bmle6k05e5fff" path="res://scripts/hud.gd" id="1_moku2"]
 [ext_resource type="Script" uid="uid://bwvqb33hu6cxk" path="res://scripts/navbar.gd" id="1_r4m0t"]
@@ -25,6 +25,19 @@
 [ext_resource type="Texture2D" uid="uid://brchqvd356pp8" path="res://addons/calendar_button/btn_img/btn_64x64_01.png" id="18_pkwgd"]
 [ext_resource type="Texture2D" uid="uid://22446a5qkmt5" path="res://addons/calendar_button/btn_img/btn_64x64_02.png" id="19_d5po8"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pkwgd"]
+bg_color = Color(0, 0.424667, 0.49, 1)
+border_width_left = 2
+border_width_bottom = 2
+border_color = Color(1.26343e-07, 0.113043, 0.136454, 1)
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+corner_detail = 10
+anti_aliasing_size = 0.545
+
 [node name="HUD" type="CanvasLayer"]
 layer = 0
 script = ExtResource("1_moku2")
@@ -34,10 +47,10 @@ z_index = -2
 anchors_preset = -1
 anchor_right = 1.005
 anchor_bottom = 1.0
-offset_left = -96.0
-offset_top = -40.0
-offset_right = 23.35
-offset_bottom = 68.0
+offset_left = -24.0
+offset_top = -16.0
+offset_right = 95.35
+offset_bottom = 92.0
 focus_mode = 2
 color = Color(0, 0.210733, 0.213576, 1)
 
@@ -205,32 +218,49 @@ metadata/is_screenshot = false
 
 [node name="CometTab" type="CanvasLayer" parent="Body" groups=["load", "save"]]
 layer = 3
-visible = false
 script = ExtResource("3_136eg")
 
 [node name="Control" type="Control" parent="Body/CometTab"]
 layout_mode = 3
 anchor_top = 0.098
 anchor_bottom = 0.098
-offset_left = 3.0
+offset_left = 59.0
 offset_top = -0.04
-offset_right = 197.0
+offset_right = 253.0
 offset_bottom = 263.96
 scale = Vector2(0.85, 0.85)
 size_flags_horizontal = 0
 mouse_filter = 2
 
+[node name="CometPanelLabel" type="Label" parent="Body/CometTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.436325
+anchor_top = -0.10762
+anchor_right = 1.04457
+anchor_bottom = -0.0204991
+text = "Comet Nucleus"
+metadata/_edit_use_anchors_ = true
+
+[node name="CometPanel" type="Panel" parent="Body/CometTab/Control"]
+z_index = -1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0309278
+anchor_right = 1.43814
+anchor_bottom = 0.768939
+theme_override_styles/panel = SubResource("StyleBoxFlat_pkwgd")
+metadata/_edit_use_anchors_ = true
+
 [node name="EditRadius" parent="Body/CometTab/Control" groups=["load"] instance=ExtResource("3_f5f8u")]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.0248472
-anchor_top = 0.0357112
-anchor_right = 0.0248472
-anchor_bottom = 0.0357112
-offset_left = 1.062
-offset_top = -0.0160003
-offset_right = 192.062
-offset_bottom = 47.984
+anchor_left = 0.0970285
+anchor_top = 0.0356506
+anchor_right = 1.08156
+anchor_bottom = 0.217469
+offset_right = -2.84217e-14
+offset_bottom = 0.0
 label = &"Radius"
 resize_type = &"radius"
 minimum_value = 0.01
@@ -242,13 +272,12 @@ metadata/_edit_use_anchors_ = true
 visible = false
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 1.108
-anchor_right = 1.108
-anchor_bottom = 0.0
-offset_left = 0.0479889
-offset_top = 5.0
-offset_right = 176.048
-offset_bottom = 54.0
+anchor_left = 1.10825
+anchor_top = 0.0189394
+anchor_right = 2.01546
+anchor_bottom = 0.204545
+offset_right = 0.0
+offset_bottom = 0.0
 grow_horizontal = 1
 grow_vertical = 1
 label = &"Height"
@@ -256,21 +285,20 @@ resize_type = &"height_"
 minimum_value = 0.01
 maximum_value = 1000.0
 starting_value = 1.0
+metadata/_edit_use_anchors_ = true
 
 [node name="EditCometIncl" parent="Body/CometTab/Control" groups=["load", "reset_rotation"] instance=ExtResource("3_f5f8u")]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.0308072
-anchor_top = 0.300152
-anchor_right = 0.0308072
-anchor_bottom = 0.300152
-offset_left = -0.0942353
-offset_top = -3.9459
-offset_right = 198.906
-offset_bottom = 55.0541
+anchor_left = 0.0970285
+anchor_top = 0.285205
+anchor_right = 1.1228
+anchor_bottom = 0.50869
+offset_right = 0.0
+offset_bottom = 0.0
 grow_horizontal = 1
 grow_vertical = 1
-label = &"Spin Axis Inclin. (°)"
+label = &"Spin Axis Inclination (°)"
 resize_type = &"inclination_rotation"
 reverse = true
 minimum_value = -90.0
@@ -282,14 +310,12 @@ metadata/_edit_use_anchors_ = true
 [node name="EditCometDir" parent="Body/CometTab/Control" groups=["load", "reset_rotation"] instance=ExtResource("3_f5f8u")]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.0304651
-anchor_top = 0.570205
-anchor_right = 0.0304651
-anchor_bottom = 0.570205
-offset_left = -0.0278824
-offset_top = 0.0541176
-offset_right = 175.972
-offset_bottom = 55.0541
+anchor_left = 0.0970285
+anchor_top = 0.499109
+anchor_right = 1.00424
+anchor_bottom = 0.707442
+offset_right = 0.0
+offset_bottom = 0.0
 grow_horizontal = 1
 grow_vertical = 0
 label = &"Spin Axis PA (°)"
@@ -299,17 +325,47 @@ starting_value = 0.0
 valid_zero = true
 metadata/_edit_use_anchors_ = true
 
+[node name="HSeparator" type="HSeparator" parent="Body/CometTab/Control"]
+layout_mode = 0
+anchor_left = 0.0360825
+anchor_top = 0.810606
+anchor_right = 1.40825
+anchor_bottom = 0.831439
+offset_right = -24.2
+offset_bottom = -0.5
+scale = Vector2(1.1, 1.1)
+metadata/_edit_use_anchors_ = true
+
+[node name="SunPanelLabel" type="Label" parent="Body/CometTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.630685
+anchor_top = 0.854947
+anchor_right = 0.831716
+anchor_bottom = 0.942068
+text = "Sun"
+metadata/_edit_use_anchors_ = true
+
+[node name="SunPanel" type="Panel" parent="Body/CometTab/Control"]
+z_index = -1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0309278
+anchor_top = 0.950758
+anchor_right = 1.43814
+anchor_bottom = 1.71212
+theme_override_styles/panel = SubResource("StyleBoxFlat_pkwgd")
+metadata/_edit_use_anchors_ = true
+
 [node name="EditSunIncl" parent="Body/CometTab/Control" groups=["load"] instance=ExtResource("3_f5f8u")]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 1.19515
-anchor_top = 0.284843
-anchor_right = 1.19515
-anchor_bottom = 0.284843
-offset_left = -0.0942353
-offset_top = 0.0955294
-offset_right = 175.906
-offset_bottom = 48.0955
+anchor_left = 0.0970328
+anchor_top = 1.20766
+anchor_right = 1.00425
+anchor_bottom = 1.38948
+offset_right = 0.0
+offset_bottom = 0.0
 label = &"STO (°)"
 resize_type = &"sun_inc_rotation"
 maximum_value = 180.0
@@ -320,14 +376,12 @@ metadata/_edit_use_anchors_ = true
 [node name="EditSunDir" parent="Body/CometTab/Control" groups=["load"] instance=ExtResource("3_f5f8u")]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 1.19481
-anchor_top = 0.570048
-anchor_right = 1.19481
-anchor_bottom = 0.570048
-offset_left = -0.0278824
-offset_top = 0.0955294
-offset_right = 175.972
-offset_bottom = 48.0955
+anchor_left = 0.0970348
+anchor_top = 1.45722
+anchor_right = 1.00425
+anchor_bottom = 1.63904
+offset_right = 0.0
+offset_bottom = 0.0
 label = &"Sun PA (°)"
 resize_type = &"sun_dir_rotation"
 maximum_value = 360.0
@@ -337,15 +391,14 @@ metadata/_edit_use_anchors_ = true
 
 [node name="EditSunCometDist" parent="Body/CometTab/Control" instance=ExtResource("6_oj5la")]
 layout_mode = 1
-anchor_left = 1.91025
-anchor_top = 0.0356506
-anchor_right = 2.29003
-anchor_bottom = 0.152945
-offset_right = 8.32199
-offset_bottom = 5.03436
+anchor_left = 1.01273
+anchor_top = 0.989305
+anchor_right = 1.37871
+anchor_bottom = 1.11052
+offset_right = 0.0
+offset_bottom = 0.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.85, 0.85)
 text = "0"
 resize_type = &"sun_comet_distance"
 higher_bound = 10.0
@@ -354,28 +407,59 @@ metadata/_edit_use_anchors_ = true
 [node name="SunCometDistLabel" type="Label" parent="Body/CometTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 1.19466
-anchor_top = 0.0713013
-anchor_right = 1.19466
-anchor_bottom = 0.0713014
-offset_top = -9.41177
-offset_right = 147.0
-offset_bottom = 13.5882
-scale = Vector2(0.85, 0.85)
+anchor_left = 0.103093
+anchor_top = 0.993761
+anchor_right = 0.785052
+anchor_bottom = 1.07217
+offset_right = 14.7
+offset_bottom = 2.3
+scale = Vector2(0.9, 0.9)
 text = "Sun distance r (AU)"
+metadata/_edit_use_anchors_ = true
+
+[node name="HSeparator2" type="HSeparator" parent="Body/CometTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0360825
+anchor_top = 1.75178
+anchor_right = 1.40825
+anchor_bottom = 1.77262
+offset_right = -24.2
+offset_bottom = -0.5
+scale = Vector2(1.1, 1.1)
+metadata/_edit_use_anchors_ = true
+
+[node name="ParticlePanelLabel" type="Label" parent="Body/CometTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.557914
+anchor_top = 1.80414
+anchor_right = 0.913584
+anchor_bottom = 1.90645
+text = "Particle"
+metadata/_edit_use_anchors_ = true
+
+[node name="ParticlePanel" type="Panel" parent="Body/CometTab/Control"]
+z_index = -2
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0309278
+anchor_top = 1.91288
+anchor_right = 1.43814
+anchor_bottom = 2.73864
+theme_override_styles/panel = SubResource("StyleBoxFlat_pkwgd")
 metadata/_edit_use_anchors_ = true
 
 [node name="EditAlbedo" parent="Body/CometTab/Control" instance=ExtResource("6_oj5la")]
 layout_mode = 1
-anchor_left = 0.194057
-anchor_top = 0.998216
-anchor_right = 0.435037
-anchor_bottom = 1.10769
-offset_right = 8.25002
-offset_bottom = 5.09999
+anchor_left = 1.00667
+anchor_top = 1.94296
+anchor_right = 1.37265
+anchor_bottom = 2.06417
+offset_right = 0.0
+offset_bottom = 0.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.85, 0.85)
 text = "0"
 resize_type = &"albedo"
 higher_bound = 1.0
@@ -384,27 +468,26 @@ metadata/_edit_use_anchors_ = true
 [node name="AlbedoLabel" type="Label" parent="Body/CometTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.194057
-anchor_top = 0.891266
-anchor_right = 0.487614
-anchor_bottom = 0.965319
-offset_right = 10.05
-offset_bottom = 3.45
-scale = Vector2(0.85, 0.85)
+anchor_left = 0.0970285
+anchor_top = 1.95633
+anchor_right = 0.407854
+anchor_bottom = 2.03474
+offset_right = 6.70001
+offset_bottom = 2.3
+scale = Vector2(0.9, 0.9)
 text = "Albedo"
 metadata/_edit_use_anchors_ = true
 
 [node name="EditParticleDiameter" parent="Body/CometTab/Control" instance=ExtResource("6_oj5la")]
 layout_mode = 1
-anchor_left = 0.824742
-anchor_top = 0.998216
-anchor_right = 1.1839
-anchor_bottom = 1.10794
-offset_right = 8.32199
-offset_bottom = 5.03436
+anchor_left = 1.00667
+anchor_top = 2.15686
+anchor_right = 1.37265
+anchor_bottom = 2.27807
+offset_right = 0.0
+offset_bottom = 0.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.85, 0.85)
 text = "0"
 resize_type = &"particle_diameter"
 higher_bound = 15.0
@@ -413,27 +496,26 @@ metadata/_edit_use_anchors_ = true
 [node name="ParticleDiameterLabel" type="Label" parent="Body/CometTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.6792
-anchor_top = 0.891266
-anchor_right = 1.37147
-anchor_bottom = 0.965319
-offset_right = 23.7
-offset_bottom = 3.45
-scale = Vector2(0.85, 0.85)
+anchor_left = 0.0970285
+anchor_top = 2.17023
+anchor_right = 0.83002
+anchor_bottom = 2.24864
+offset_right = 15.8
+offset_bottom = 2.3
+scale = Vector2(0.9, 0.9)
 text = "Dust Diameter (mm)"
 metadata/_edit_use_anchors_ = true
 
 [node name="EditParticleDensity" parent="Body/CometTab/Control" instance=ExtResource("6_oj5la")]
 layout_mode = 1
-anchor_left = 1.64948
-anchor_top = 0.998216
-anchor_right = 1.99123
-anchor_bottom = 1.10769
-offset_right = 11.6999
-offset_bottom = 5.09999
+anchor_left = 1.00667
+anchor_top = 2.37076
+anchor_right = 1.37265
+anchor_bottom = 2.49198
+offset_right = 0.0
+offset_bottom = 0.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.85, 0.85)
 text = "0"
 resize_type = &"particle_density"
 higher_bound = 5.0
@@ -442,17 +524,18 @@ metadata/_edit_use_anchors_ = true
 [node name="ParticleDensityLabel" type="Label" parent="Body/CometTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 1.50394
-anchor_top = 0.891266
-anchor_right = 2.24002
-anchor_bottom = 0.965319
-offset_right = 25.2
-offset_bottom = 3.45
-scale = Vector2(0.85, 0.85)
+anchor_left = 0.0970285
+anchor_top = 2.38414
+anchor_right = 0.876408
+anchor_bottom = 2.46254
+offset_right = 16.8
+offset_bottom = 2.3
+scale = Vector2(0.9, 0.9)
 text = "Dust density (g/cm³)"
 metadata/_edit_use_anchors_ = true
 
 [node name="VSeparator" type="VSeparator" parent="Body/CometTab/Control"]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 1.10825
@@ -463,23 +546,23 @@ metadata/_edit_use_anchors_ = true
 [node name="BetaValLineEdit" type="LineEdit" parent="Body/CometTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.442693
-anchor_top = 1.20989
-anchor_right = 0.98393
-anchor_bottom = 1.32732
+anchor_left = 0.830807
+anchor_top = 2.58467
+anchor_right = 1.37204
+anchor_bottom = 2.70588
 editable = false
 metadata/_edit_use_anchors_ = true
 
 [node name="BetaValLabel" type="Label" parent="Body/CometTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.200424
-anchor_top = 1.21836
-anchor_right = 0.401455
-anchor_bottom = 1.27934
-offset_right = 12.0
-offset_bottom = 6.9
-scale = Vector2(0.85, 0.85)
+anchor_left = 0.0970285
+anchor_top = 2.59804
+anchor_right = 0.333627
+anchor_bottom = 2.67645
+offset_right = 5.1
+offset_bottom = 2.3
+scale = Vector2(0.9, 0.9)
 text = "Beta:"
 metadata/_edit_use_anchors_ = true
 
@@ -1261,6 +1344,7 @@ editable = false
 
 [node name="JPLTab" type="CanvasLayer" parent="Body" groups=["step_size"]]
 layer = 3
+visible = false
 script = ExtResource("16_gmc6u")
 
 [node name="Control" type="Control" parent="Body/JPLTab"]
@@ -1551,16 +1635,16 @@ enabled = false
 
 [node name="MiniViewportContainer" type="SubViewportContainer" parent="Viewport"]
 anchors_preset = -1
-anchor_left = 0.271
-anchor_top = 0.743
-anchor_right = 0.271
-anchor_bottom = 0.988
-offset_left = -232.43
-offset_top = -0.14
-offset_right = 7.57
-offset_bottom = -0.24
+anchor_top = 0.751
+anchor_right = 1.0
+anchor_bottom = 0.996
+offset_left = 64.0
+offset_top = 0.02
+offset_right = -1026.0
+offset_bottom = -0.08
 size_flags_horizontal = 4
 size_flags_vertical = 4
+metadata/_edit_use_anchors_ = true
 
 [node name="SubViewport" type="SubViewport" parent="Viewport/MiniViewportContainer"]
 handle_input_locally = false

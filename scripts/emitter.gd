@@ -68,7 +68,8 @@ func _ready() -> void:
 	# _box_mesh.surface_set_material(0, unshaded_material)
 	# to reduce the polygons
 
-	longitude += 90 # longitude is shifted by 90°
+	# longitude is shifted by 90° in spawn_emitter_at
+	longitude += 90
 
 	var lat_rad := deg_to_rad(latitude)
 	var lon_rad := deg_to_rad(longitude)
@@ -161,6 +162,7 @@ func is_lit_math2(_n_step: int, _angle_per_step: float, _normal: Vector3) -> boo
 	var comet_basis: Basis = get_parent().global_transform.basis
 	comet_basis = comet_basis * comet_basis.rotated(Vector3.UP, deg_to_rad(_n_step * _angle_per_step))
 	var global_space_normal: Vector3 = _normal.normalized().rotated(Vector3.LEFT, deg_to_rad(Util.sun_direction + 90))
+	# var global_space_normal: Vector3 = _normal.normalized()
 	var result: float = (Util.sun_direction_vector).dot(global_space_normal)
 	result = (-Util.sun_direction_vector).dot(_normal)
 	is_lit = result > 0
@@ -170,7 +172,13 @@ func is_lit_math2(_n_step: int, _angle_per_step: float, _normal: Vector3) -> boo
 #region Simulation related
 ## Instant simulation of n_steps with angle_per_step each step.
 ## First, it computes when each particle spawns, then based on that it computes the final position of each particle.
-func instant_simulation(_n_steps: int, _angle_per_step: float) -> void:
+## TODO: fare in modo che instant_simulation supporti posizione di cometa e sole variabile -> ciò dipende da due variabili globali: 
+## get_parent().global_transform.origin e Util.sun_direction_vector
+## jpl_import: if set, it contains a dictionary with the JPL data to use for the simulation. Simulation data includes:
+## "date" (String, format "YYYY-MM-DD"), "time" (String, format "HH:MM"),
+## "right_ascension" (String, format "HH MM SS.SS"), "declination" (String, format "DD MM SS.S")
+## It's in the form of {date:[...], time:[...], ...}
+func instant_simulation(_n_steps: int, _angle_per_step: float, jpl_import: Dictionary = {}) -> void:
 	mm_emitter.multimesh.instance_count = 0
 	mm_emitter.multimesh.use_colors = true
 	mm_emitter.multimesh.use_custom_data = false
@@ -179,10 +187,28 @@ func instant_simulation(_n_steps: int, _angle_per_step: float) -> void:
 	var _normal_dirs: Array[Vector3] = []
 	var time_alive2: Array[int] = []
 	var mm_buffer: PackedFloat32Array = PackedFloat32Array()
+	var is_jpl_import: bool = jpl_import.size() > 0
+	# var start_comet_transform: Transform3D = get_parent().global_transform
+	# var start_comet_inclination: float = Util.comet_inclination
+	# var start_comet_direction: float = Util.comet_direction
+	# var start_sun_inclination: float = Util.sun_inclination
+	# var start_sun_direction: float = Util.sun_direction
+
 	# var total_space_cumulative: Array[float] = []
 	# for each steps i, compute position of ith particle (if it's spawned)
 	# ie: at step 40(out of 100) the emitter is lit and thus spawns a particle -> compute that particle position at the end of simulation (step 100)
 	for i in range(_n_steps):
+		if is_jpl_import:
+			# TODO: this
+			# var ith_ra := jpl_import["right_ascension"][i]
+			# var ith_dec := jpl_import["declination"][i]
+			# get_tree().call_group("comet", "update_comet_inc_rotation", Util.ra_dec_to_inclination(ith_ra, ith_dec))
+			# get_tree().call_group("comet", "update_comet_dir_rotation", Util.ra_dec_to_direction(ith_ra, ith_dec))
+			# get_tree().call_group("sun", "update_sun_inc_rotation", jpl_import["sun_inclination"][i])
+			# get_tree().call_group("sun", "update_sun_dir_rotation", jpl_import["sun_direction"][i])
+			# update acceleration
+			# update fov
+			pass
 		var comet_basis: Basis = get_parent().global_transform.basis
 		comet_basis = comet_basis * Basis(Vector3.UP, deg_to_rad((i + 1) * _angle_per_step))
 		var _normal := update_norm2(initial_norm, comet_basis)
@@ -231,6 +257,14 @@ func instant_simulation(_n_steps: int, _angle_per_step: float) -> void:
 	# print("Emitter %d multimesh instance count: %d" % [jet_id, mm_emitter.multimesh.instance_count])
 	mm_emitter.multimesh.visible_instance_count = -1
 	mm_emitter.multimesh.set_buffer(mm_buffer)
+	if is_jpl_import:
+		# reset comet and sun to initial position
+		# TODO: this
+		# get_tree().call_group("comet", "update_comet_inc_rotation", start_comet_inclination)
+		# get_tree().call_group("comet", "update_comet_dir_rotation", start_comet_direction)
+		# get_tree().call_group("sun", "update_sun_inc_rotation", start_sun_inclination)
+		# get_tree().call_group("sun", "update_sun_dir_rotation", start_sun_direction)
+		pass
 func _accelerate_particle2(time_alive2: int, _normal_dir: Vector3) -> Transform3D:
 	# --- 1. Get Particle-Specific Data ---
 	var new_basis := Util.orbital_basis
@@ -248,12 +282,12 @@ func _accelerate_particle2(time_alive2: int, _normal_dir: Vector3) -> Transform3
 	# --- 6. Calculate Final Global Position ---
 	var final_global_position: Vector3 = Vector3.ZERO + global_displacement
 
-	print("Particle n°%d final position magnitude: %.10f" % [time_alive2, final_global_position.length() / 1000])
-	print("Local Velocity: %s" % str(local_velocity))
-	print("New basis: %s" % str(new_basis))
-	print("_normal_dir: %s" % str(_normal_dir))
-	print("Global initial velocity: %s" % str(global_initial_velocity))
-	print("-------")
+	# print("Particle n°%d final position magnitude: %.10f" % [time_alive2, final_global_position.length() / 1000])
+	# print("Local Velocity: %s" % str(local_velocity))
+	# print("New basis: %s" % str(new_basis))
+	# print("_normal_dir: %s" % str(_normal_dir))
+	# print("Global initial velocity: %s" % str(global_initial_velocity))
+	# print("-------")
 	var scaled_final_pos := final_global_position / Util.scale
 	global_positions.append(scaled_final_pos)
 	# total_space[i] += (scaled_final_pos - global_positions[i]).length() # update total space travelled by the particle

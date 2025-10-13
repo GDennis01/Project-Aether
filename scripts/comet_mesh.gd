@@ -220,6 +220,7 @@ func speed_up(value: int) -> void:
 ## Called by JetTable._on_add_jet_entry_btn_pressed
 func spawn_emitter_at(latitude: float, longitude: float, emitter: Emitter) -> void:
 	# print("Latitude:" + str(latitude) + " Longitude:" + str(longitude))
+	# +90 so that it spawn correctly
 	var emitter_pos := Util.latlon_to_vector3(latitude, longitude + 90, mesh.radius)
 	emitter.position = emitter_pos
 	emitter.enabled = rotation_enabled
