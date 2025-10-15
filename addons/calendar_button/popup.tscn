@@ -2,6 +2,7 @@
 
 [node name="popup" type="Popup"]
 size = Vector2i(250, 300)
+visible = true
 min_size = Vector2i(228, 300)
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
@@ -101,168 +102,210 @@ columns = 7
 
 [node name="btn_0" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_1" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_2" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_3" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_4" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_5" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_6" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_7" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_8" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_9" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_10" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_11" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_12" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_13" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_14" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_15" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_16" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_17" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_18" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_19" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_20" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_21" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_22" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_23" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_24" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_25" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_26" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_27" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_28" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_29" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_30" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_31" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_32" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_33" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_34" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_35" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_36" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_37" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_38" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_39" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_40" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true
 
 [node name="btn_41" type="Button" parent="PanelContainer/vbox/hbox_days"]
 layout_mode = 2
+focus_mode = 0
 disabled = true

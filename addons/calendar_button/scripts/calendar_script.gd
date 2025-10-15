@@ -19,6 +19,7 @@ func _enter_tree():
 	set_toggle_mode(true)
 	setup_calendar_icon()
 	popup = create_popup_scene()
+	popup.popup_hide.connect(close_popup)
 	calendar_buttons = create_calendar_buttons()
 	setup_month_and_year_signals(popup)
 	refresh_data()
@@ -55,6 +56,8 @@ func refresh_data():
 	set_popup_title(title)
 	calendar_buttons.update_calendar_buttons(selected_date)
 
+# when focus exit
+
 func day_selected(btn_node):
 	close_popup()
 	var day := int(btn_node[0].text)
@@ -76,6 +79,7 @@ func go_prev_year():
 func go_next_year():
 	selected_date.change_to_next_year()
 	refresh_data()
+
 
 func close_popup():
 	popup.hide()

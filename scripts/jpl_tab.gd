@@ -10,11 +10,12 @@ extends CanvasLayer
 var http_request: HTTPRequest
 var start_date: Date
 var end_date: Date
-var step_size: float = 1.0
+var step_size: float = 24.0
 # var target = "C/2013 R1"
 var api_url := "https://ssd.jpl.nasa.gov/api/horizons.api"
 
-var quantities := "1,19,20,23"
+# var quantities := "1,19,20,23"
+var quantities := "1,16,19,20,24,28,41,47"
 
 # Regex Related
 var regex_params: Array[String] = [
@@ -22,15 +23,28 @@ var regex_params: Array[String] = [
 		"(\\d{2}:\\d{2})", # Matches the time, e.g., 10:00
 		"([+-]?\\d{2}\\s\\d{2}\\s\\d{2}\\.\\d{2})", # Matches right ascension, e.g., 20 55 41.20
 		"([-+]?\\d{2}\\s\\d{2}\\s\\d{2}\\.\\d)", # Matches declination, e.g., -18 33 23.0
-		"([+-]?\\d+\\.\\d+)", # Matches the first float value, e.g., 1.199
-		"([+-]?\\d+\\.\\d+)", # Matches the second float value, e.g., 4.107
-		"([+-]?\\d+\\.\\d+)", # Matches the third float value, e.g., 2.13799045474771
-		"([+-]?\\d+\\.\\d+)" # Matches the fourth float value, e.g., 5.6049390
+		"([+-]?\\d+\\.\\d+)", # Sun PA (single float value)
+		"([+-]?\\d+\\.\\d+)", # SN.dist (single float value) --- IGNORE ---
+		"([+-]?\\d+\\.\\d+)", # Sun Distance R (single float value)
+		"([+-]?\\d+\\.\\d+)", # r.dot (single float value) --- IGNORE ---
+		"([+-]?\\d+\\.\\d+)", # Delta (single float value)
+		"([+-]?\\d+\\.\\d+)", # deldot (single float value) --- IGNORE ---
+		"([+-]?\\d+\\.\\d+)", # STO (single float value)
+		"([+-]?\\d+\\.\\d+)", # PlAngle (single float value)
+		"([+-]?\\d+\\.\\d+)", # True anomaly (single float value)
+		"([+-]?\\d+\\.\\d+)", # Sky motion (single float value) --- IGNORE ---
+		"([+-]?\\d+\\.\\d+)", # Sky motion PA (single float value)
 	]
+
 var number_params := regex_params.size()
 var full_pattern := "\\s+".join(PackedStringArray(regex_params))
-var regex := RegEx.new()
-var compiled := regex.compile(full_pattern)
+var jpl_regex := RegEx.new()
+var compiled := jpl_regex.compile(full_pattern)
+
+
+var om_w_in_regex: RegEx = RegEx.new()
+# Pattern to match " OM= 124.567, W= 123.456, IN= 78.910"
+var om_w_in_compiled := om_w_in_regex.compile("\\s*OM=\\s*([-+]?\\d+\\.\\d+)\\s*W=\\s*([-+]?\\d+\\.\\d+)\\s*IN=\\s*([-+]?\\d+\\.\\d+)")
 
 func _ready() -> void:
 	http_request = HTTPRequest.new()
@@ -72,12 +86,11 @@ func _on_search_btn_pressed() -> void:
 			query_string += "&"
 		query_string += "%s=%s" % [key, params[key]]
 	var url := "{api_url}?{query_string}".format({"api_url": api_url, "query_string": query_string})
-	print("Request URL: ", url)
+	# print("Request URL: ", url)
 	var error := http_request.request(url)
 	
 	if error != OK:
 		push_error("An error occurred in the HTTP request.")
-	# Implement search functionality here
 
 
 func _http_request_completed(result: int, _response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
@@ -93,42 +106,23 @@ func _http_request_completed(result: int, _response_code: int, _headers: PackedS
 	json_parser.parse(parse_ephemeris(data.result))
 	
 	var ephemeris_data: Variant = json_parser.data
+	
+	$Control/JPLTablePanel.visible = true
+
+	$Control/WLabel.visible = true
+	$Control/OMLabel.visible = true
+	$Control/INLabel.visible = true
+	$Control/WLineEdit.visible = true
+	$Control/OMLineEdit.visible = true
+	$Control/INLineEdit.visible = true
+	
+	$Control/OMLineEdit.text = str(ephemeris_data.om)
+	$Control/WLineEdit.text = str(ephemeris_data.w)
+	$Control/INLineEdit.text = str(ephemeris_data.inc)
+	
 	clear_container()
-	populate_container(ephemeris_data)
-func clear_container() -> void:
-	for child in ephem_table.get_children():
-		ephem_table.remove_child(child)
-		child.queue_free()
-	# adjust scroll to top
-	scroll_container.custom_minimum_size.y = 0
-	scroll_container.scroll_vertical = 0
-func populate_container(data: Variant) -> void:
-	var HEADER := {
-		"date": "Date",
-		"time": "Time",
-		"right_ascension": "Right Ascension (HH MM SS.SS)",
-		"declination": "Declination (DD MM SS.S)",
-		"heliocentric_distance": "Heliocentric Distance (AU)",
-		"geocentric_distance": "Geocentric Distance (AU)",
-		"heliocentric_distance_rate": "Heliocentric Distance Rate (km/s)",
-		"geocentric_distance_rate": "Geocentric Distance Rate (km/s)"
-	}
-	var header_string := ""
-	for key: String in HEADER.keys():
-		header_string += "%-30s" % HEADER[key]
-	print(header_string)
-	var header_label := Label.new()
-	header_label.text = header_string
-	ephem_table.add_child(header_label)
-	for entry: Dictionary in data:
-		var hbox := HBoxContainer.new()
-		for key: String in HEADER.keys():
-			var label := Label.new()
-			label.text = str(entry[key])
-			label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			hbox.add_child(label)
-		ephem_table.add_child(hbox)
-	# scroll_container.scroll_vertical = scroll_container.get_v_scrollbar().max_value
+	populate_container(ephemeris_data.data)
+
 
 func parse_ephemeris(data: String) -> String:
 	var data_start_marker := "$$SOE"
@@ -143,6 +137,24 @@ func parse_ephemeris(data: String) -> String:
 		push_error("Data end marker not found.")
 		return ""
 
+	# from the body, extract the line containing OM=.. , W=.. , IN=...
+	# and extract the object name from it
+	var om_index := data.find(" OM=")
+	if om_index == -1:
+		push_error("OM/W/IN line not found.")
+
+
+	var om_end_index := data.find("\n", om_index)
+	var om_line := data.substr(om_index, om_end_index - om_index).strip_edges()
+	var om_result := om_w_in_regex.search(om_line)
+	if om_result == null:
+		push_error("No matches found in the OM/W/IN line: %s" % om_line)
+		return ""
+	var om := om_result.get_string(1)
+	var w := om_result.get_string(2)
+	var inc := om_result.get_string(3)
+	# print("OM: %s, W: %s, IN: %s" % [om, w, inc])
+	# set the object name in the search bar
 	# extracting only the ephemeris body (which is enclosed between the start and end markers)
 	var eph_body := data.substr((start_index + data_start_marker.length()), (end_index - start_index - data_start_marker.length()))
 	eph_body = eph_body.replace("/L", "")
@@ -155,11 +167,11 @@ func parse_ephemeris(data: String) -> String:
 			eph_lines.append(line.strip_edges())
 
 	# extracting each column, line by line, using regex
-	var json_text := "["
+	var json_text := "{\"om\": %s, \"w\": %s, \"inc\": %s, \"data\": [" % [om, w, inc]
 	for index in range(len(eph_lines)):
 		var line := eph_lines[index]
-		print(line)
-		var result := regex.search(line)
+		# print(line)
+		var result := jpl_regex.search(line)
 		if result == null:
 			push_error("No matches found in the ephemeris data line: %s" % line)
 			continue
@@ -170,37 +182,81 @@ func parse_ephemeris(data: String) -> String:
 			"time": result.get_string(2),
 		"right_ascension": result.get_string(3),
 		"declination": result.get_string(4),
-		"heliocentric_distance": result.get_string(5),
-		"geocentric_distance": result.get_string(6),
-		"heliocentric_distance_rate": result.get_string(7),
-		"geocentric_distance_rate": result.get_string(8)
+		"sun_pa": result.get_string(5),
+		"sun_distance_r": result.get_string(7),
+		"delta": result.get_string(9),
+		"sto": result.get_string(11),
+		"pl_ang": result.get_string(12),
+		"true_anomaly": result.get_string(13),
+		"sky_motion_pa": result.get_string(15)
 		}
 		# print(entry)
 
 		json_text += JSON.stringify(entry)
 		if index < len(eph_lines) - 1:
 			json_text += ","
-	json_text += "]"
+	json_text += "]}"
 	# print(json_text)
 	return json_text
 
+# Clear the container before populating it with new data.
+func clear_container() -> void:
+	for child in ephem_table.get_children():
+		ephem_table.remove_child(child)
+		child.queue_free()
+	# adjust scroll to top
+	scroll_container.custom_minimum_size.y = 0
+	scroll_container.scroll_vertical = 0
+# Populate the container with tabular data from the ephemeris, retrieved from Nasa JPL API.
+func populate_container(data: Variant) -> void:
+	var HEADER := {
+		"date": "Date",
+		"time": "Time",
+		"right_ascension": "Right Ascension (HH MM SS.SS)",
+		"declination": "Declination (DD MM SS.S)",
+		"sun_pa": "Sun PA (deg)",
+		"sun_distance_r": "Sun Distance R (AU)",
+		"delta": "Delta (AU)",
+		"sto": "STO (deg)",
+		"pl_ang": "Phase Angle (deg)",
+		"true_anomaly": "True Anomaly (deg)",
+		"sky_motion_pa": "Sky Motion PA (deg)"
+	}
+	var header_string := ""
+	for key: String in HEADER.keys():
+		header_string += "%-30s" % HEADER[key]
+	# print(header_string)
+	var header_label := Label.new()
+	header_label.text = header_string
+	ephem_table.add_child(header_label)
+	for entry: Dictionary in data:
+		var hbox := HBoxContainer.new()
+		for key: String in HEADER.keys():
+			var label := Label.new()
+			label.text = str(entry[key])
+			label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			hbox.add_child(label)
+		ephem_table.add_child(hbox)
+	# scroll_container.scroll_vertical = scroll_container.get_v_scrollbar().max_value
+
+
 func _on_start_calendar_btn_date_selected(date_obj: Date) -> void:
-	print(date_obj.date()) # Example of formatted date output
-	if end_date != null and date_obj.year() > end_date.year():
-		push_error("Start date cannot be later than end date.")
-		return
-	elif end_date != null and date_obj.year() == end_date.year() and date_obj.month() > end_date.month():
-		push_error("Start date cannot be later than end date.")
-		return
-	elif end_date != null and date_obj.year() == end_date.year() and date_obj.month() == end_date.month() and date_obj.day() > end_date.day():
-		push_error("Start date cannot be later than end date.")
-		return
+	# print(date_obj.date()) # Example of formatted date output
+	# if end_date != null and date_obj.year() > end_date.year():
+	# 	push_error("Start date cannot be later than end date.")
+	# 	return
+	# elif end_date != null and date_obj.year() == end_date.year() and date_obj.month() > end_date.month():
+	# 	push_error("Start date cannot be later than end date.")
+	# 	return
+	# elif end_date != null and date_obj.year() == end_date.year() and date_obj.month() == end_date.month() and date_obj.day() > end_date.day():
+	# 	push_error("Start date cannot be later than end date.")
+	# 	return
 	start_date = date_obj
 	start_date_ledit.text = date_obj.date("DD-MM-YYYY")
 
 
 func _on_end_calendar_btn_date_selected(date_obj: Date) -> void:
-	print(date_obj.date("DD-MM-YYYY")) # Example of formatted date output
+	# print(date_obj.date("DD-MM-YYYY")) # Example of formatted date output
 	if start_date != null and date_obj.year() < start_date.year():
 		push_error("End date cannot be earlier than start date.")
 		return
@@ -216,4 +272,4 @@ func _on_end_calendar_btn_date_selected(date_obj: Date) -> void:
 
 func update_step_size(value: float) -> void:
 	step_size = value
-	print("Step size updated to: ", step_size)
+	# print("Step size updated to: ", step_size)
