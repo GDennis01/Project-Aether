@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://bwt7dtbn7pn3c"]
+[gd_scene load_steps=29 format=3 uid="uid://bwt7dtbn7pn3c"]
 
 [ext_resource type="Script" uid="uid://bmle6k05e5fff" path="res://scripts/hud.gd" id="1_moku2"]
 [ext_resource type="Script" uid="uid://bwvqb33hu6cxk" path="res://scripts/navbar.gd" id="1_r4m0t"]
@@ -38,6 +38,15 @@ corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 corner_detail = 10
 anti_aliasing_size = 0.545
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d5po8"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+border_blend = true
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_pkwgd"]
 
@@ -1368,8 +1377,8 @@ anchor_left = 0.0274726
 anchor_top = 0.0550965
 anchor_right = 0.318682
 anchor_bottom = 0.118457
+offset_bottom = -0.000167266
 text = "Comet Name:"
-metadata/_edit_use_anchors_ = true
 
 [node name="SearchBar" type="LineEdit" parent="Body/JPLTab/Control"]
 layout_mode = 1
@@ -1378,8 +1387,8 @@ anchor_left = 0.357143
 anchor_top = 0.0550965
 anchor_right = 0.640111
 anchor_bottom = 0.140496
+offset_bottom = -2.02714e-05
 text = "C/2013 R1"
-metadata/_edit_use_anchors_ = true
 
 [node name="SearchBtn" type="Button" parent="Body/JPLTab/Control"]
 layout_mode = 1
@@ -1390,7 +1399,6 @@ anchor_right = 0.79121
 anchor_bottom = 0.143251
 focus_mode = 0
 icon = ExtResource("17_d5po8")
-metadata/_edit_use_anchors_ = true
 
 [node name="StartDateLabel" type="Label" parent="Body/JPLTab/Control"]
 layout_mode = 1
@@ -1399,8 +1407,8 @@ anchor_left = 0.0219781
 anchor_top = 0.192838
 anchor_right = 0.25
 anchor_bottom = 0.256199
+offset_right = -0.000177161
 text = "Start Date:"
-metadata/_edit_use_anchors_ = true
 
 [node name="StartCalendarBtn" type="TextureButton" parent="Body/JPLTab/Control"]
 layout_mode = 1
@@ -1418,7 +1426,6 @@ script = ExtResource("17_pkwgd")
 image_normal = ExtResource("19_7yoph")
 image_pressed = ExtResource("19_7yoph")
 metadata/_custom_type_script = "uid://cvmrw32h1bvjg"
-metadata/_edit_use_anchors_ = true
 
 [node name="StartDateLineEdit" type="LineEdit" parent="Body/JPLTab/Control"]
 layout_mode = 1
@@ -1428,7 +1435,6 @@ anchor_top = 0.190083
 anchor_right = 0.642858
 anchor_bottom = 0.275482
 text = "2025-10-3"
-metadata/_edit_use_anchors_ = true
 
 [node name="EndDateLabel" type="Label" parent="Body/JPLTab/Control"]
 layout_mode = 1
@@ -1438,7 +1444,6 @@ anchor_top = 0.330579
 anchor_right = 0.228022
 anchor_bottom = 0.39394
 text = "End Date:"
-metadata/_edit_use_anchors_ = true
 
 [node name="EndCalendarBtn" type="TextureButton" parent="Body/JPLTab/Control"]
 layout_mode = 1
@@ -1456,7 +1461,6 @@ script = ExtResource("17_pkwgd")
 image_normal = ExtResource("19_7yoph")
 image_pressed = ExtResource("19_7yoph")
 metadata/_custom_type_script = "uid://cvmrw32h1bvjg"
-metadata/_edit_use_anchors_ = true
 
 [node name="EndDateLineEdit" type="LineEdit" parent="Body/JPLTab/Control"]
 layout_mode = 1
@@ -1467,7 +1471,6 @@ anchor_right = 0.642858
 anchor_bottom = 0.407714
 focus_mode = 1
 text = "2025-10-3"
-metadata/_edit_use_anchors_ = true
 
 [node name="StepSizeLabel" type="Label" parent="Body/JPLTab/Control"]
 layout_mode = 1
@@ -1492,7 +1495,6 @@ text = "24"
 resize_type = &"step_size"
 higher_bound = 1000.0
 no_decimal = true
-metadata/_edit_use_anchors_ = true
 
 [node name="JPLTablePanel" type="Panel" parent="Body/JPLTab/Control"]
 visible = false
@@ -1513,7 +1515,6 @@ anchor_left = 0.0274726
 anchor_top = 0.78237
 anchor_right = 0.997255
 anchor_bottom = 1.70248
-metadata/_edit_use_anchors_ = true
 
 [node name="EphemTable" type="VBoxContainer" parent="Body/JPLTab/Control/EphemScroll"]
 layout_mode = 2
@@ -1522,82 +1523,111 @@ metadata/_edit_use_anchors_ = true
 [node name="OMLabel" type="Label" parent="Body/JPLTab/Control"]
 visible = false
 layout_mode = 0
-offset_left = 50.0
-offset_top = 212.0
-offset_right = 90.0
-offset_bottom = 235.0
+anchor_left = 0.137363
+anchor_top = 0.584023
+anchor_right = 0.247253
+anchor_bottom = 0.647384
 text = "OM"
+metadata/_edit_use_anchors_ = true
 
 [node name="WLabel" type="Label" parent="Body/JPLTab/Control"]
 visible = false
-offset_left = 170.0
-offset_top = 212.0
-offset_right = 210.0
-offset_bottom = 235.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.467034
+anchor_top = 0.584023
+anchor_right = 0.576924
+anchor_bottom = 0.647384
 text = "W"
+metadata/_edit_use_anchors_ = true
 
 [node name="INLabel" type="Label" parent="Body/JPLTab/Control"]
 visible = false
-offset_left = 298.0
-offset_top = 212.0
-offset_right = 338.0
-offset_bottom = 235.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.818683
+anchor_top = 0.584023
+anchor_right = 0.928573
+anchor_bottom = 0.647384
 text = "IN"
+metadata/_edit_use_anchors_ = true
 
 [node name="OMLineEdit" type="LineEdit" parent="Body/JPLTab/Control"]
 visible = false
 layout_mode = 0
-offset_left = 10.0
-offset_top = 236.0
-offset_right = 122.0
-offset_bottom = 267.0
+anchor_left = 0.0274726
+anchor_top = 0.650139
+anchor_right = 0.335165
+anchor_bottom = 0.735538
 editable = false
+metadata/_edit_use_anchors_ = true
 
 [node name="WLineEdit" type="LineEdit" parent="Body/JPLTab/Control"]
 visible = false
-offset_left = 130.0
-offset_top = 236.0
-offset_right = 242.0
-offset_bottom = 267.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.357143
+anchor_top = 0.650139
+anchor_right = 0.664836
+anchor_bottom = 0.735538
 editable = false
+metadata/_edit_use_anchors_ = true
 
 [node name="INLineEdit" type="LineEdit" parent="Body/JPLTab/Control"]
 visible = false
-offset_left = 250.0
-offset_top = 236.0
-offset_right = 362.0
-offset_bottom = 267.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.686814
+anchor_top = 0.650139
+anchor_right = 0.994507
+anchor_bottom = 0.735538
 editable = false
+metadata/_edit_use_anchors_ = true
 
 [node name="HelpPanel" type="CanvasLayer" parent="Body"]
 layer = 3
 visible = false
 
-[node name="BoxContainer" type="BoxContainer" parent="Body/HelpPanel"]
-offset_left = 13.0
-offset_top = 79.0
-offset_right = 261.0
-offset_bottom = 220.0
+[node name="Label" type="RichTextLabel" parent="Body/HelpPanel"]
+anchors_preset = -1
+anchor_left = 0.0203008
+anchor_top = 0.0806122
+anchor_right = 0.281955
+anchor_bottom = 0.526531
+offset_top = 1.0
+offset_bottom = 1.0
+bbcode_enabled = true
+text = "[b]Rotating Camera: [/b]
+[ul] Right Click to rotate around the comet [/ul]
+[ul] R to reset position to earth's view [/ul]
+[ul] Mouse Wheel Up to increase zoom [/ul]
+[ul] Mouse Weel Down to decrease zoom [/ul]
+[ul] P to switch between perspective projection and ortographic projection [/ul]
 
-[node name="Label" type="Label" parent="Body/HelpPanel/BoxContainer"]
-layout_mode = 2
-text = "Rotating Camera:
-- Right Click to rotate around the comet
-- R to reset position to earth's view
-- Mouse Wheel Up to increase zoom
-- Mouse Weel Down to decrease zoom
-- P to switch between perspective projection and ortographic projection
-
-Free Roam Camera:
-- Right Click to rotate the view
-- WASD to move around
-- R to reset position to earth's view
-- Mouse Wheel Up to increase movement speed
-- Mouse Wheel Down to decrease movement speed
-- Hold Shift to speed up
-- Hold Alt to speed down
+[b] Free Roam Camera:[/b]
+[ul] Right Click to rotate the view [/ul]
+[ul] WASD to move around [/ul]
+[ul] R to reset position to earth's view [/ul]
+[ul] Mouse Wheel Up to increase movement speed [/ul]
+[ul] Mouse Wheel Down to decrease movement speed [/ul]
+[ul] Hold Shift to speed up [/ul]
+[ul] Hold Alt to speed down [/ul]
 
 "
+fit_content = true
+metadata/_edit_use_anchors_ = true
+
+[node name="CometPanel" type="Panel" parent="Body/HelpPanel"]
+z_index = -1
+anchors_preset = -1
+anchor_left = 0.00977444
+anchor_top = 0.0744898
+anchor_right = 0.280451
+anchor_bottom = 0.516327
+offset_top = 1.0
+offset_bottom = 1.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_pkwgd")
+metadata/_edit_use_anchors_ = true
 
 [node name="DebugPanel" type="CanvasLayer" parent="Body"]
 layer = 3
@@ -1640,18 +1670,23 @@ text = "Time:"
 [node name="Viewport" type="CanvasLayer" parent="."]
 layer = 2
 
+[node name="Panel" type="Panel" parent="Viewport"]
+anchors_preset = -1
+anchor_left = 0.288722
+anchor_top = 0.0744898
+anchor_right = 0.965414
+anchor_bottom = 0.992857
+theme_override_styles/panel = SubResource("StyleBoxFlat_d5po8")
+metadata/_edit_use_anchors_ = true
+
 [node name="SubViewportContainer" type="SubViewportContainer" parent="Viewport"]
 visibility_layer = 4
 z_index = -1
 anchors_preset = -1
-anchor_left = 0.627
-anchor_top = 0.534
-anchor_right = 0.627
-anchor_bottom = 0.534
-offset_left = -449.91
-offset_top = -450.32
-offset_right = 450.09
-offset_bottom = 449.68
+anchor_left = 0.288722
+anchor_top = 0.0744898
+anchor_right = 0.965414
+anchor_bottom = 0.992857
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.55
 metadata/_edit_use_anchors_ = true
