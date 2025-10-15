@@ -1383,22 +1383,30 @@ text = "Comet Name:"
 [node name="SearchBar" type="LineEdit" parent="Body/JPLTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.357143
-anchor_top = 0.0550965
-anchor_right = 0.640111
-anchor_bottom = 0.140496
-offset_bottom = -2.02714e-05
+anchor_left = 0.027
+anchor_top = 0.077
+anchor_right = 0.027
+anchor_bottom = 0.077
+offset_left = 120.172
+offset_top = -7.95096
+offset_right = 223.172
+offset_bottom = 23.049
 text = "C/2013 R1"
 
 [node name="SearchBtn" type="Button" parent="Body/JPLTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.703298
-anchor_top = 0.0550964
-anchor_right = 0.79121
-anchor_bottom = 0.143251
+anchor_left = 0.027
+anchor_top = 0.077
+anchor_right = 0.027
+anchor_bottom = 0.077
+offset_left = 246.172
+offset_top = -7.951
+offset_right = 278.172
+offset_bottom = 24.0491
 focus_mode = 0
 icon = ExtResource("17_d5po8")
+metadata/_edit_use_anchors_ = true
 
 [node name="StartDateLabel" type="Label" parent="Body/JPLTab/Control"]
 layout_mode = 1
@@ -1407,16 +1415,21 @@ anchor_left = 0.0219781
 anchor_top = 0.192838
 anchor_right = 0.25
 anchor_bottom = 0.256199
-offset_right = -0.000177161
+offset_left = 2.0
+offset_right = 2.00018
 text = "Start Date:"
 
 [node name="StartCalendarBtn" type="TextureButton" parent="Body/JPLTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.708792
-anchor_top = 0.187328
-anchor_right = 0.796705
-anchor_bottom = 0.275482
+anchor_left = 0.027
+anchor_top = 0.209
+anchor_right = 0.027
+anchor_bottom = 0.209
+offset_left = 248.172
+offset_top = -7.86693
+offset_right = 280.172
+offset_bottom = 24.1331
 toggle_mode = true
 texture_normal = ExtResource("18_d5po8")
 texture_pressed = ExtResource("19_7yoph")
@@ -1426,15 +1439,21 @@ script = ExtResource("17_pkwgd")
 image_normal = ExtResource("19_7yoph")
 image_pressed = ExtResource("19_7yoph")
 metadata/_custom_type_script = "uid://cvmrw32h1bvjg"
+metadata/_edit_use_anchors_ = true
 
 [node name="StartDateLineEdit" type="LineEdit" parent="Body/JPLTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.379121
-anchor_top = 0.190083
-anchor_right = 0.642858
-anchor_bottom = 0.275482
+anchor_left = 0.027
+anchor_top = 0.209
+anchor_right = 0.027
+anchor_bottom = 0.209
+offset_left = 128.172
+offset_top = -6.86686
+offset_right = 224.172
+offset_bottom = 24.1329
 text = "2025-10-3"
+metadata/_edit_use_anchors_ = true
 
 [node name="EndDateLabel" type="Label" parent="Body/JPLTab/Control"]
 layout_mode = 1
@@ -1443,15 +1462,21 @@ anchor_left = 0.0219781
 anchor_top = 0.330579
 anchor_right = 0.228022
 anchor_bottom = 0.39394
+offset_left = 2.0
+offset_right = 2.00015
 text = "End Date:"
 
 [node name="EndCalendarBtn" type="TextureButton" parent="Body/JPLTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.708792
-anchor_top = 0.31956
-anchor_right = 0.796705
-anchor_bottom = 0.407714
+anchor_left = 0.027
+anchor_top = 0.342
+anchor_right = 0.027
+anchor_bottom = 0.342
+offset_left = 248.172
+offset_top = -8.14571
+offset_right = 280.172
+offset_bottom = 23.8543
 toggle_mode = true
 texture_normal = ExtResource("18_d5po8")
 texture_pressed = ExtResource("19_7yoph")
@@ -1465,12 +1490,17 @@ metadata/_custom_type_script = "uid://cvmrw32h1bvjg"
 [node name="EndDateLineEdit" type="LineEdit" parent="Body/JPLTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.379122
-anchor_top = 0.322315
-anchor_right = 0.642858
-anchor_bottom = 0.407714
+anchor_left = 0.027
+anchor_top = 0.342
+anchor_right = 0.027
+anchor_bottom = 0.342
+offset_left = 128.172
+offset_top = -7.14565
+offset_right = 224.172
+offset_bottom = 23.8542
 focus_mode = 1
 text = "2025-10-3"
+metadata/_edit_use_anchors_ = true
 
 [node name="StepSizeLabel" type="Label" parent="Body/JPLTab/Control"]
 layout_mode = 1
@@ -1485,16 +1515,19 @@ text = "Step Size:"
 
 [node name="StepSizeSanEdit" parent="Body/JPLTab/Control" instance=ExtResource("6_oj5la")]
 layout_mode = 1
-anchor_left = 0.532968
-anchor_top = 0.451791
-anchor_right = 0.645606
-anchor_bottom = 0.539946
-offset_right = 0.0
-offset_bottom = 0.0
+anchor_left = 0.027
+anchor_top = 0.496
+anchor_right = 0.027
+anchor_bottom = 0.496
+offset_left = 184.172
+offset_top = -16.0478
+offset_right = 225.172
+offset_bottom = 15.9522
 text = "24"
 resize_type = &"step_size"
 higher_bound = 1000.0
 no_decimal = true
+metadata/_edit_use_anchors_ = true
 
 [node name="JPLTablePanel" type="Panel" parent="Body/JPLTab/Control"]
 visible = false
@@ -1513,8 +1546,10 @@ layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.0274726
 anchor_top = 0.78237
-anchor_right = 0.997255
-anchor_bottom = 1.70248
+anchor_right = 0.997
+anchor_bottom = 1.702
+offset_right = 0.0928198
+offset_bottom = 0.17424
 
 [node name="EphemTable" type="VBoxContainer" parent="Body/JPLTab/Control/EphemScroll"]
 layout_mode = 2
@@ -1672,11 +1707,26 @@ layer = 2
 
 [node name="Panel" type="Panel" parent="Viewport"]
 anchors_preset = -1
-anchor_left = 0.288722
-anchor_top = 0.0744898
-anchor_right = 0.965414
-anchor_bottom = 0.992857
+anchor_left = 0.289
+anchor_top = 0.082
+anchor_right = 0.289
+anchor_bottom = 0.082
+offset_left = -0.37
+offset_top = -7.36
+offset_right = 899.63
+offset_bottom = 892.64
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.55
 theme_override_styles/panel = SubResource("StyleBoxFlat_d5po8")
+
+[node name="Control" type="Control" parent="Viewport"]
+layout_mode = 3
+anchor_left = 0.291729
+anchor_top = 0.0816327
+anchor_right = 0.962406
+anchor_bottom = 0.985714
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.55
 metadata/_edit_use_anchors_ = true
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="Viewport"]
