@@ -10,3 +10,5 @@ config/
 build/
 screenshots/
 .vscode/
+WEB/
+WEB.zip
