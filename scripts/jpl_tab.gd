@@ -11,6 +11,8 @@ var http_request: HTTPRequest
 var start_date: Date
 var end_date: Date
 var step_size: float = 24.0
+var alpha_p: float = 0.0
+var delta_p: float = 0.0
 # var target = "C/2013 R1"
 var api_url := "https://ssd.jpl.nasa.gov/api/horizons.api"
 
@@ -273,3 +275,17 @@ func _on_end_calendar_btn_date_selected(date_obj: Date) -> void:
 func update_step_size(value: float) -> void:
 	step_size = value
 	# print("Step size updated to: ", step_size)
+
+func update_alpha_p(value: float) -> void:
+	alpha_p = value
+	update_i()
+	update_phi()
+func update_delta_p(value: float) -> void:
+	delta_p = value
+	update_i()
+	update_phi()
+
+func update_i() -> void:
+	pass
+func update_phi() -> void:
+	pass
