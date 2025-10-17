@@ -22,9 +22,12 @@ var quantities := "1,16,19,20,24,28,41,47"
 # Regex Related
 var regex_params: Array[String] = [
 		"(\\d{4}-\\w{3}-\\d{2})", # Matches the date, e.g., 1998-Jan-01
-		"(\\d{2}:\\d{2})", # Matches the time, e.g., 10:00
-		"([+-]?\\d{2}\\s\\d{2}\\s\\d{2}\\.\\d{2})", # Matches right ascension, e.g., 20 55 41.20
-		"([-+]?\\d{2}\\s\\d{2}\\s\\d{2}\\.\\d)", # Matches declination, e.g., -18 33 23.0
+		"(\\d{2}:\\d{2}(?::\\d{2}(?:\\.\\d{3})?)?)", # Matches the time, e.g., 10:00 or 10:00:00.000
+		"([+-]?\\d+\\.\\d+)", # Matches right ascension, e.g., 314.921234
+		"([+-]?\\d+\\.\\d+)", # Matches declination, e.g., -18.556789
+
+		# "([+-]?\\d{2}\\s\\d{2}\\s\\d{2}\\.\\d{2})", # Matches right ascension, e.g., 20 55 41.20
+		# "([-+]?\\d{2}\\s\\d{2}\\s\\d{2}\\.\\d)", # Matches declination, e.g., -18 33 23.0
 		"([+-]?\\d+\\.\\d+)", # Sun PA (single float value)
 		"([+-]?\\d+\\.\\d+)", # SN.dist (single float value) --- IGNORE ---
 		"([+-]?\\d+\\.\\d+)", # Sun Distance R (single float value)
@@ -57,16 +60,13 @@ func _ready() -> void:
 func _on_search_btn_pressed() -> void:
 	var query := search_bar.text
 	if query == "":
-		push_error("Please enter a valid target name or ID.")
+		Util.create_popup("Error", "Please enter a valid target name or designation.")
 		return
 	if start_date == null:
-		push_error("Please select a valid start date.")
-		return
-	if end_date == null:
-		push_error("Please select a valid end date.")
+		Util.create_popup("Error", "Please select a valid start date.")
 		return
 	if step_size <= 0:
-		push_error("Please select a valid step size (greater than 0).")
+		Util.create_popup("Error", "Please select a valid step size (greater than 0).")
 		return
 	var params := {
 		"format": "json",
@@ -75,12 +75,16 @@ func _on_search_btn_pressed() -> void:
 		"MAKE_EPHEM": "YES",
 		"EPHEM_TYPE": "OBSERVER",
 		"CENTER": "'500@399'", # Geocentric (Observatory at the center of Earth)
-		"START_TIME": "'%s 00:00'" % start_date.date("YYYY-MM-DD"),
-		"STOP_TIME": "'%s 00:00'" % end_date.date("YYYY-MM-DD"),
+		
 		"STEP_SIZE": "'%sh'" % int(step_size),
+		"ANG_FORMAT": "DEG",
 		"QUANTITIES": "'%s'" % quantities
 	}
-
+	if end_date == null:
+		params["TLIST"] = "'%s 00:00'" % start_date.date("YYYY-MM-DD")
+	else:
+		params["START_TIME"] = "'%s 00:00'" % start_date.date("YYYY-MM-DD")
+		params["STOP_TIME"] = "'%s 00:00'" % end_date.date("YYYY-MM-DD")
 	# Construct the query string from the parameters
 	var query_string := ""
 	for key: String in params.keys():
@@ -96,19 +100,20 @@ func _on_search_btn_pressed() -> void:
 
 
 func _http_request_completed(result: int, _response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
-	if result != HTTPRequest.RESULT_SUCCESS:
-		push_error("Error during HTTP request.")
-		return
-
 	var json_parser := JSON.new()
 	var body_string := body.get_string_from_utf8()
 	json_parser.parse(body_string)
+
+	if _response_code != 200 or json_parser.data.has("error"):
+		push_error("Error: %s" % json_parser.data.error)
+		Util.create_popup("Error", "Failed to retrieve ephemeris data:\n%s" % json_parser.data.error)
+		return
 
 	var data: Variant = json_parser.data
 	json_parser.parse(parse_ephemeris(data.result))
 	
 	var ephemeris_data: Variant = json_parser.data
-	
+	print(ephemeris_data)
 	$Control/JPLTablePanel.visible = true
 
 	$Control/WLabel.visible = true
@@ -214,16 +219,18 @@ func populate_container(data: Variant) -> void:
 	var HEADER := {
 		"date": "Date",
 		"time": "Time",
-		"right_ascension": "Right Ascension (HH MM SS.SS)",
-		"declination": "Declination (DD MM SS.S)",
-		"sun_pa": "Sun PA (deg)",
+		"right_ascension": "Right Ascension (Deg)",
+		"declination": "Declination (Deg)",
+		"sun_pa": "Sun PA (Deg)",
 		"sun_distance_r": "Sun Distance R (AU)",
 		"delta": "Delta (AU)",
-		"sto": "STO (deg)",
-		"pl_ang": "Phase Angle (deg)",
-		"true_anomaly": "True Anomaly (deg)",
-		"sky_motion_pa": "Sky Motion PA (deg)"
+		"sto": "STO (Deg)",
+		"pl_ang": "Phase Angle (Deg)",
+		"true_anomaly": "True Anomaly (Deg)",
+		"sky_motion_pa": "Sky Motion PA (Deg)"
 	}
+	Util.jpl_data = data
+	print(data)
 	var header_string := ""
 	for key: String in HEADER.keys():
 		header_string += "%-30s" % HEADER[key]
@@ -254,38 +261,49 @@ func _on_start_calendar_btn_date_selected(date_obj: Date) -> void:
 	# 	push_error("Start date cannot be later than end date.")
 	# 	return
 	start_date = date_obj
-	start_date_ledit.text = date_obj.date("DD-MM-YYYY")
+	start_date_ledit.text = date_obj.date("YYYY-MM-DD")
 
 
 func _on_end_calendar_btn_date_selected(date_obj: Date) -> void:
-	# print(date_obj.date("DD-MM-YYYY")) # Example of formatted date output
-	if start_date != null and date_obj.year() < start_date.year():
-		push_error("End date cannot be earlier than start date.")
-		return
-	elif start_date != null and date_obj.year() == start_date.year() and date_obj.month() < start_date.month():
-		push_error("End date cannot be earlier than start date.")
-		return
-	elif start_date != null and date_obj.year() == start_date.year() and date_obj.month() == start_date.month() and date_obj.day() < start_date.day():
-		push_error("End date cannot be earlier than start date.")
-		return
+	# print(date_obj.date("YYYY-MM-DD")) # Example of formatted date output
+	# if start_date != null and date_obj.year() < start_date.year():
+	# 	push_error("End date cannot be earlier than start date.")
+	# 	return
+	# elif start_date != null and date_obj.year() == start_date.year() and date_obj.month() < start_date.month():
+	# 	push_error("End date cannot be earlier than start date.")
+	# 	return
+	# elif start_date != null and date_obj.year() == start_date.year() and date_obj.month() == start_date.month() and date_obj.day() < start_date.day():
+	# 	push_error("End date cannot be earlier than start date.")
+	# 	return
 	end_date = date_obj
-	end_date_ledit.text = date_obj.date("DD-MM-YYYY")
+	end_date_ledit.text = date_obj.date("YYYY-MM-DD")
 
 
 func update_step_size(value: float) -> void:
 	step_size = value
 	# print("Step size updated to: ", step_size)
 
-func update_alpha_p(value: float) -> void:
-	alpha_p = value
-	update_i()
-	update_phi()
-func update_delta_p(value: float) -> void:
-	delta_p = value
-	update_i()
-	update_phi()
 
-func update_i() -> void:
-	pass
-func update_phi() -> void:
-	pass
+func _on_clear_start_date_btn_pressed() -> void:
+	start_date = null
+	start_date_ledit.text = ""
+func _on_clear_end_date_btn_pressed() -> void:
+	end_date = null
+	end_date_ledit.text = ""
+# func update_alpha_p(value: float) -> void:
+# 	alpha_p = value
+# 	update_i()
+# 	update_phi()
+# 	update_table()
+# func update_delta_p(value: float) -> void:
+# 	delta_p = value
+# 	update_i()
+# 	update_phi()
+# 	update_table()
+
+# func update_i() -> void:
+# 	pass
+# func update_phi() -> void:
+# 	pass
+# func update_table() -> void:
+# 	pass

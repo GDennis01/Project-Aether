@@ -282,7 +282,7 @@ func update_height(value: float) -> void:
 	#print_debug("[UPDATE HEIGHT] Before:"+str(mesh.height)+" After:"+str(value))
 	mesh.set_height(value)
 func update_direction_rotation(value: float) -> void:
-	if Util.PRINT_UPDATE_METHOD: print("Updated comet direction:%f"%value)
+	if Util.PRINT_UPDATE_METHOD: print("Updated comet PA:%f"%value)
 	Util.comet_direction = value
 	update_comet_orientation()
 func update_inclination_rotation(value: float) -> void:
@@ -323,6 +323,37 @@ func update_sun_comet_distance(value: float) -> void:
 	Util.sun_comet_distance = value
 	get_tree().call_group("emitter", "update_acceleration")
 
+# jpl related
+func update_alpha_p(value: float) -> void:
+	if Util.PRINT_UPDATE_METHOD: print("Updated alpha_p:%f"%value)
+	Util.alpha_p = value
+	update_pa_incl()
+func update_delta_p(value: float) -> void:
+	if Util.PRINT_UPDATE_METHOD: print("Updated delta_p:%f"%value)
+	Util.delta_p = value
+	update_pa_incl()
+
+func update_pa_incl() -> void:
+	var alpha_rad := deg_to_rad(Util.alpha_p)
+	var delta_rad := deg_to_rad(Util.delta_p)
+	if Util.jpl_data == null or Util.jpl_data.size() == 0:
+		Util.create_popup("JPL data not loaded", "Please load JPL data to compute comet PA and Inclination from pole coordinates.")
+		return
+	var ra_comet_pos: float = float(Util.jpl_data[0]["right_ascension"])
+	var dec_comet_pos: float = float(Util.jpl_data[0]["declination"])
+
+	var pa: float = atan2(
+		cos(delta_rad) * sin(alpha_rad - deg_to_rad(ra_comet_pos)),
+		cos(deg_to_rad(dec_comet_pos)) * sin(delta_rad) - sin(deg_to_rad(dec_comet_pos)) * cos(delta_rad) * cos(alpha_rad - deg_to_rad(ra_comet_pos)))
+	pa = fmod(pa + 2 * PI, 2 * PI)
+	var incl: float = acos(cos(alpha_rad - deg_to_rad(ra_comet_pos)) * cos(deg_to_rad(dec_comet_pos)) * cos(delta_rad) + sin(deg_to_rad(dec_comet_pos)) * sin(delta_rad))
+
+	Util.comet_direction = rad_to_deg(pa)
+	Util.comet_inclination = -90 + rad_to_deg(incl)
+	
+	Util.comet_incl_line_edit.set_value(Util.comet_inclination)
+	Util.comet_pa_line_edit.set_value(Util.comet_direction)
+	update_comet_orientation()
 #endregion Update methods
 
 

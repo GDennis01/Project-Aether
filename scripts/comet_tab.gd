@@ -8,6 +8,8 @@ func save_data() -> void:
 	SaveManager.config.set_value("comet", "direction", float($Control/EditCometDir/SanitizedEdit.text))
 	SaveManager.config.set_value("comet", "inclination", float($Control/EditCometIncl/SanitizedEdit.text))
 	SaveManager.config.set_value("comet", "radius", float($Control/EditRadius/SanitizedEdit.text))
+	SaveManager.config.set_value("comet", "alpha_p", float($Control/AlphaPSanEdit.text))
+	SaveManager.config.set_value("comet", "delta_p", float($Control/DeltaPSanEdit.text))
 
 	SaveManager.config.set_value("sun", "direction", float($Control/EditSunDir/SanitizedEdit.text))
 	SaveManager.config.set_value("sun", "inclination", float($Control/EditSunIncl/SanitizedEdit.text))
@@ -35,6 +37,8 @@ func load_data() -> void:
 	$Control/EditRadius.set_value(float(SaveManager.config.get_value("comet", "radius", 0)))
 	$Control/EditCometIncl.set_value(float(SaveManager.config.get_value("comet", "inclination", 0)))
 	$Control/EditCometDir.set_value(float(SaveManager.config.get_value("comet", "direction", 0)))
+	$Control/AlphaPSanEdit.set_value(float(SaveManager.config.get_value("comet", "alpha_p", 0)))
+	$Control/DeltaPSanEdit.set_value(float(SaveManager.config.get_value("comet", "delta_p", 0)))
 
 	$Control/EditSunDir.set_value(float(SaveManager.config.get_value("sun", "direction", 0)))
 	$Control/EditSunIncl.set_value(float(SaveManager.config.get_value("sun", "inclination", 0)))

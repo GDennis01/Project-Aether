@@ -19,8 +19,11 @@ var jet_rate: float = 0.0
 var sun_comet_distance: float = 0.0
 ## Sun direction vector in the 3D space
 var sun_direction_vector: Vector3 = Vector3.ZERO
-## Eart-comet delta in AU
+## Earth-comet delta in AU
 var earth_comet_delta: float = 0.0
+## RA and DEC of the comet pole
+var alpha_p: float = 0.0
+var delta_p: float = 0.0
 
 # Scale related properties
 #region Scale
@@ -47,6 +50,9 @@ var starting_visible_area: float = 0.0
 ## Visible area in meters at the current distance of the rotating_camera
 var visible_area: float = 0.0
 #endregion Scale
+
+## JPL Table
+var jpl_data: Variant
 
 ## Orbital comet basis
 var orbital_basis: Basis = Basis() ## Orbital basis of the comet in the 3D space
@@ -79,12 +85,13 @@ const LIGHT_SPEED: float = 2.99792458e8 ## c. Speed of light Expressed in m/s
 var is_simulation: bool = true ## True: simulation enabled, False: instant simulation enabled
 
 
-# Labels
+# Labels and LineEdits
 @onready var current_camera_label: Label = $"/root/Hud/Viewport/SubViewportContainer/CurrCameraLabel"
 @onready var current_fov_label: Label = $"/root/Hud/Viewport/SubViewportContainer/SubViewport/CenterContainer/ScaleLabel"
 @onready var beta_val_line_edit: LineEdit = $"/root/Hud/Body/CometTab/Control/BetaValLineEdit"
 @onready var accel_val_line_edit: LineEdit = $"/root/Hud/Body/SimTab/Control/AccelValLineEdit"
-
+@onready var comet_incl_line_edit: SliderWithLineEdit = $"/root/Hud/Body/CometTab/Control/EditCometIncl"
+@onready var comet_pa_line_edit: SliderWithLineEdit = $"/root/Hud/Body/CometTab/Control/EditCometDir"
 ## Converts Latitude/Longitude (in degrees) to a local 3D position
 ## vector relative to the center of a sphere with the given radius.
 ## Assumes Y-Up, Latitude 0 = Equator, Longitude 0 = +X axis.
@@ -111,6 +118,13 @@ func latlon_to_vector3(latitude: float, longitude: float, radius: float) -> Vect
 
 	return Vector3(x, y, z)
 
+func create_popup(title: String, message: String) -> AcceptDialog:
+	var popup := AcceptDialog.new()
+	popup.title = title
+	popup.dialog_text = message
+	get_tree().get_root().add_child(popup)
+	popup.popup_centered()
+	return popup
 
 # ## Convert coordinate from equatorial plane to orbital plane by applying a transformation as following:
 # ## This transformation is done by rotating the frame around the axis Y with an angle
