@@ -24,6 +24,11 @@ var earth_comet_delta: float = 0.0
 ## RA and DEC of the comet pole
 var alpha_p: float = 0.0
 var delta_p: float = 0.0
+## Beta and Lambda of the comet pole
+var beta: float = 0.0
+var lambda: float = 0.0
+## Latitude of subsolar point
+var subsolar_latitude: float = 0.0
 
 # Scale related properties
 #region Scale
@@ -53,6 +58,11 @@ var visible_area: float = 0.0
 
 ## JPL Table
 var jpl_data: Variant
+var om := 0.0 ## Longitude of ascending node
+var w := 0.0 ## Argument of perihelion
+var incl := 0.0 ## Inclination
+var i := 0.0 ## angle between rotationa xis and the orbital plane in degrees
+var phi := 0.0 ## angle between projection of axis direction and sun direction at perihelion in degrees
 
 ## Orbital comet basis
 var orbital_basis: Basis = Basis() ## Orbital basis of the comet in the 3D space
@@ -65,9 +75,7 @@ var equatorial_transformation: Transform3D = Transform3D() ## Equatorial transfo
 var equatorial_rotation: Quaternion ## Equatorial rotation of the comet in the 3D space
 
 # Simulation related properties
-var i: float = 0.0 ## angle between rotationa xis and the orbital plane in degrees
-var phi: float = 0.0 ## angle between projection of axis direction and sun direction at perihelion in degrees
-var true_anomaly: float = 0.0 ## angular position of the comet in its orbit in degrees
+# var true_anomaly: float = 0.0 ## angular position of the comet in its orbit in degrees
 var n_points: int = 1 ## number of points in the orbit
 
 #particle properties
@@ -92,6 +100,11 @@ var is_simulation: bool = true ## True: simulation enabled, False: instant simul
 @onready var accel_val_line_edit: LineEdit = $"/root/Hud/Body/SimTab/Control/AccelValLineEdit"
 @onready var comet_incl_line_edit: SliderWithLineEdit = $"/root/Hud/Body/CometTab/Control/EditCometIncl"
 @onready var comet_pa_line_edit: SliderWithLineEdit = $"/root/Hud/Body/CometTab/Control/EditCometDir"
+@onready var lambda_line_edit: LineEdit = $"/root/Hud/Body/CometTab/Control/LambdaLineEdit"
+@onready var beta_line_edit: LineEdit = $"/root/Hud/Body/CometTab/Control/BetaLineEdit"
+@onready var phi_line_edit: LineEdit = $"/root/Hud/Body/CometTab/Control/PhiLineEdit"
+@onready var i_line_edit: LineEdit = $"/root/Hud/Body/CometTab/Control/ILineEdit"
+@onready var subsolar_lat_line_edit: LineEdit = $"/root/Hud/Body/CometTab/Control/SubsolarPLineEdit"
 ## Converts Latitude/Longitude (in degrees) to a local 3D position
 ## vector relative to the center of a sphere with the given radius.
 ## Assumes Y-Up, Latitude 0 = Equator, Longitude 0 = +X axis.

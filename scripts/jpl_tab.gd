@@ -113,7 +113,7 @@ func _http_request_completed(result: int, _response_code: int, _headers: PackedS
 	json_parser.parse(parse_ephemeris(data.result))
 	
 	var ephemeris_data: Variant = json_parser.data
-	print(ephemeris_data)
+	# print(ephemeris_data)
 	$Control/JPLTablePanel.visible = true
 
 	$Control/WLabel.visible = true
@@ -175,6 +175,9 @@ func parse_ephemeris(data: String) -> String:
 
 	# extracting each column, line by line, using regex
 	var json_text := "{\"om\": %s, \"w\": %s, \"inc\": %s, \"data\": [" % [om, w, inc]
+	Util.om = float(om)
+	Util.w = float(w)
+	Util.incl = float(inc)
 	for index in range(len(eph_lines)):
 		var line := eph_lines[index]
 		# print(line)
@@ -216,6 +219,7 @@ func clear_container() -> void:
 	scroll_container.scroll_vertical = 0
 # Populate the container with tabular data from the ephemeris, retrieved from Nasa JPL API.
 func populate_container(data: Variant) -> void:
+	print(get_tree().get_nodes_in_group("load"))
 	var HEADER := {
 		"date": "Date",
 		"time": "Time",
@@ -230,7 +234,10 @@ func populate_container(data: Variant) -> void:
 		"sky_motion_pa": "Sky Motion PA (Deg)"
 	}
 	Util.jpl_data = data
-	print(data)
+	get_tree().call_group("switch_date", "switch_date_set_date", data[0]["date"], true)
+	get_tree().call_group("switch_date", "switch_date_prev_date")
+	get_tree().call_group("switch_date", "switch_date_next_date")
+	# print(data)
 	var header_string := ""
 	for key: String in HEADER.keys():
 		header_string += "%-30s" % HEADER[key]

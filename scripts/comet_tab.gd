@@ -56,3 +56,11 @@ func load_data() -> void:
 	# $Control/EditAlbedo.set_block_signals(false)
 	# $Control/EditParticleDiameter.set_block_signals(false)
 	# $Control/EditParticleDensity.set_block_signals(false)
+
+
+func _on_next_date_btn_pressed() -> void:
+	get_tree().call_group("switch_date", "switch_date_next_date")
+
+
+func _on_prev_date_btn_pressed() -> void:
+	get_tree().call_group("switch_date", "switch_date_prev_date")

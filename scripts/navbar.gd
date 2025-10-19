@@ -238,14 +238,14 @@ func _on_full_viewport_btn_pressed() -> void:
 	# comet.quaternion = tot_quat
 	#endregion quaternion
 	return
-	if not rot_camera_viewport.size == Vector2i(900, 900):
-		# rot_camera_viewport.get_parent().position =
-		rot_camera_viewport.size = Vector2(900, 900)
-		rot_camera_viewport.get_parent().position = camera_position
-	else:
-		camera_position = rot_camera_viewport.get_parent().position
-		rot_camera_viewport.size = get_window().size
-		rot_camera_viewport.get_parent().position = Vector2(0, 0)
+	# if not rot_camera_viewport.size == Vector2i(900, 900):
+	# 	# rot_camera_viewport.get_parent().position =
+	# 	rot_camera_viewport.size = Vector2(900, 900)
+	# 	rot_camera_viewport.get_parent().position = camera_position
+	# else:
+	# 	camera_position = rot_camera_viewport.get_parent().position
+	# 	rot_camera_viewport.size = get_window().size
+	# 	rot_camera_viewport.get_parent().position = Vector2(0, 0)
 
 
 func _on_change_camera_btn_pressed() -> void:

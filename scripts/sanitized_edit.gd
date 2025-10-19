@@ -53,7 +53,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				sanitize_field(lower_bound, higher_bound)
 
 
-func _on_editing_toggled(toggled_on: bool) -> void:
+func _on_editing_toggled(_toggled_on: bool) -> void:
 	# if toggled_on:
 	# 	FlyCamera.set_process(false)
 	# else:

@@ -40,9 +40,9 @@ func load_data() -> void:
 	$Control/NumRotationEdit.set_value(float(SaveManager.config.get_value("simulation", "num_rotations", 0)))
 	$Control/JetRateEdit.set_value(float(SaveManager.config.get_value("simulation", "jet_rate", 0)))
 	$Control/KmScaleEdit.set_value(float(SaveManager.config.get_value("simulation", "scale", 0)))
-	$Control/IEdit.set_value(float(SaveManager.config.get_value("simulation", "i", 0)))
-	$Control/PhiEdit.set_value(float(SaveManager.config.get_value("simulation", "phi", 0)))
-	$Control/TrueAnomalyEdit.set_value(float(SaveManager.config.get_value("simulation", "true_anomaly", 0)))
+	# $Control/IEdit.set_value(float(SaveManager.config.get_value("simulation", "i", 0)))
+	# $Control/PhiEdit.set_value(float(SaveManager.config.get_value("simulation", "phi", 0)))
+	# $Control/TrueAnomalyEdit.set_value(float(SaveManager.config.get_value("simulation", "true_anomaly", 0)))
 	$Control/NPointsEdit.set_value(int(SaveManager.config.get_value("simulation", "n_points", 1)))
 
 	# set block signals for the sanitized edits
@@ -55,17 +55,17 @@ func load_data() -> void:
 	# $Control/TrueAnomalyEdit.set_block_signals(false)
 
 
-func update_i(value: float) -> void:
-	if Util.PRINT_UPDATE_METHOD: print("Updated i:%f"%value)
-	Util.i = value
+# func update_i(value: float) -> void:
+# 	if Util.PRINT_UPDATE_METHOD: print("Updated i:%f"%value)
+# 	Util.i = value
 
-func update_phi(value: float) -> void:
-	if Util.PRINT_UPDATE_METHOD: print("Updated phi:%f"%value)
-	Util.phi = value
+# func update_phi(value: float) -> void:
+# 	if Util.PRINT_UPDATE_METHOD: print("Updated phi:%f"%value)
+# 	Util.phi = value
 
-func update_true_anomaly(value: float) -> void:
-	if Util.PRINT_UPDATE_METHOD: print("Updated true_anomaly:%f"%value)
-	Util.true_anomaly = value
+# func update_true_anomaly(value: float) -> void:
+# 	if Util.PRINT_UPDATE_METHOD: print("Updated true_anomaly:%f"%value)
+# 	Util.true_anomaly = value
 
 func update_n_points(value: float) -> void:
 	if Util.PRINT_UPDATE_METHOD or true: print("Updated n_points:%f"%value)

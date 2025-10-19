@@ -14,6 +14,10 @@ enum ANIMATION_STATE {
 var total_sim_time: float = 0.0
 @onready var debug_sphere: MeshInstance3D = $"/root/World/DebugRotationSphere"
 
+#switch date
+@onready var switch_date: LineEdit = $"/root/Hud/Body/CometTab/Control/SwitchDate/CurrDateLineEdit"
+var current_date_index: int = 0
+
 
 # simulation related
 var animation_state: ANIMATION_STATE = ANIMATION_STATE.STOPPED
@@ -328,19 +332,23 @@ func update_alpha_p(value: float) -> void:
 	if Util.PRINT_UPDATE_METHOD: print("Updated alpha_p:%f"%value)
 	Util.alpha_p = value
 	update_pa_incl()
+	update_lambda_beta()
+	update_i_phi()
 func update_delta_p(value: float) -> void:
 	if Util.PRINT_UPDATE_METHOD: print("Updated delta_p:%f"%value)
 	Util.delta_p = value
 	update_pa_incl()
-
+	update_lambda_beta()
+	update_i_phi()
+	update_subsolar_latitude()
 func update_pa_incl() -> void:
 	var alpha_rad := deg_to_rad(Util.alpha_p)
 	var delta_rad := deg_to_rad(Util.delta_p)
 	if Util.jpl_data == null or Util.jpl_data.size() == 0:
-		Util.create_popup("JPL data not loaded", "Please load JPL data to compute comet PA and Inclination from pole coordinates.")
+		Util.create_popup("JPL data not loaded", "Please load JPL data to compute comet PA, Inclination, I and Phi from pole coordinates.")
 		return
-	var ra_comet_pos: float = float(Util.jpl_data[0]["right_ascension"])
-	var dec_comet_pos: float = float(Util.jpl_data[0]["declination"])
+	var ra_comet_pos: float = float(Util.jpl_data[current_date_index]["right_ascension"])
+	var dec_comet_pos: float = float(Util.jpl_data[current_date_index]["declination"])
 
 	var pa: float = atan2(
 		cos(delta_rad) * sin(alpha_rad - deg_to_rad(ra_comet_pos)),
@@ -354,6 +362,87 @@ func update_pa_incl() -> void:
 	Util.comet_incl_line_edit.set_value(Util.comet_inclination)
 	Util.comet_pa_line_edit.set_value(Util.comet_direction)
 	update_comet_orientation()
+func update_lambda_beta() -> void:
+	var alpha_rad := deg_to_rad(Util.alpha_p)
+	var delta_rad := deg_to_rad(Util.delta_p)
+	const eps := deg_to_rad(23.43929111)
+	var lambda := atan2(sin(alpha_rad) * cos(eps) + tan(delta_rad) * sin(eps), cos(alpha_rad))
+	var beta := asin(sin(delta_rad) * cos(eps) - cos(delta_rad) * sin(eps) * sin(alpha_rad))
+	lambda = fmod(lambda + 2 * PI, 2 * PI)
+	# print("Updated lambda:%f beta:%f" % [rad_to_deg(lambda), rad_to_deg(asin(beta))])
+	Util.lambda = rad_to_deg(lambda)
+	Util.beta = rad_to_deg(beta)
+	#  only 2 decimals
+	Util.lambda_line_edit.text = str("%.2f" % Util.lambda)
+	Util.beta_line_edit.text = str(" %.2f" % Util.beta)
+func update_i_phi() -> void:
+	var lambda := deg_to_rad(Util.lambda)
+	var beta := deg_to_rad(Util.beta)
+	var asc_node_long: float = deg_to_rad(Util.om) # Omega
+	var incl: float = deg_to_rad(Util.incl) # i
+	var arg_perihelion: float = deg_to_rad(Util.w) # omega(w)
+	print("OM:%f INCL:%f W:%f" % [Util.om, Util.incl, Util.w])
+
+	# ecliptic to equatorial conversion
+	var x_e := cos(beta) * cos(lambda)
+	var y_e := cos(beta) * sin(lambda)
+	var z_e := sin(beta)
+
+	var p := Vector3(x_e, y_e, z_e)
+	print(p)
+	# rotation of Omega around Z
+	var rz_omega := Basis(
+		Vector3(cos(asc_node_long), -sin(asc_node_long), 0),
+		Vector3(sin(asc_node_long), cos(asc_node_long), 0),
+		Vector3(0, 0, 1)
+	)
+	var p1 := rz_omega * p
+	print(p1)
+
+	# rotation of i around X
+	var rx_i := Basis(
+		Vector3(1, 0, 0),
+		Vector3(0, cos(incl), -sin(incl)),
+		Vector3(0, sin(incl), cos(incl))
+	)
+
+	var p2 := rx_i * p1
+	print(p2)
+	# rotation of w around Z
+	var rz_w := Basis(
+		Vector3(cos(arg_perihelion), -sin(arg_perihelion), 0),
+		Vector3(sin(arg_perihelion), cos(arg_perihelion), 0),
+		Vector3(0, 0, 1)
+	)
+	var p3 := rz_w * p2
+	print(p3)
+	
+	#  back to spherical coordinates
+	var phi := atan2(p3.x, p3.y)
+	phi = rad_to_deg(phi) + 180
+	var I := acos(p3.z)
+	I = rad_to_deg(I)
+	Util.i_line_edit.text = str("%.2f" % I)
+	Util.i = I
+	Util.phi_line_edit.text = str("%.2f" % phi)
+	Util.phi = phi
+	print("Updated Phi:%f I:%f" % [phi, I])
+	print("---------")
+
+func update_subsolar_latitude() -> void:
+	var I := deg_to_rad(Util.i)
+	var phi := deg_to_rad(Util.phi)
+	if Util.jpl_data == null or Util.jpl_data.size() == 0:
+		Util.create_popup("JPL data not loaded", "Please load JPL data to compute subsolar latitude from I, Phi and true anomaly.")
+		return
+	var true_anomaly := deg_to_rad(float(Util.jpl_data[current_date_index]["true_anomaly"]))
+	# var I := deg_to_rad(133.9)
+	# var phi := deg_to_rad(245.1)
+	# var true_anomaly := deg_to_rad(272.6)
+	Util.subsolar_latitude = asin(sin(I) * sin(true_anomaly + phi))
+	Util.subsolar_lat_line_edit.text = str("%.2f" % rad_to_deg(Util.subsolar_latitude))
+
+
 #endregion Update methods
 
 
@@ -401,3 +490,39 @@ func update_comet_orientation() -> void:
 	# debug_sphere.global_position = global_transform.origin + direction * mesh.radius * 3
 	point_y_axis_toward(global_transform.origin + direction)
 	get_tree().call_group("emitter", "update_norm")
+
+
+#region switch date
+func switch_date_set_date(date: String, reset: bool = false) -> void:
+	if reset:
+		current_date_index = 0
+	switch_date.text = date
+	update_pa_incl()
+	update_lambda_beta()
+	update_i_phi()
+	update_subsolar_latitude()
+	pass
+# called by CometTab._on_prev_date_btn_pressed
+func switch_date_prev_date() -> void:
+	print("switch_date_prev_date called")
+	if Util.jpl_data == null or Util.jpl_data.size() == 0:
+		Util.create_popup("JPL data not loaded", "Please load JPL data to switch dates.")
+		return
+	current_date_index -= 1
+	if current_date_index < 0:
+		current_date_index = Util.jpl_data.size() - 1
+	var date_str: String = str(Util.jpl_data[current_date_index]["date"])
+	switch_date_set_date(date_str)
+	pass
+# called by CometTab._on_next_date_btn_pressed
+func switch_date_next_date() -> void:
+	print("switch_date_next_date called")
+	if Util.jpl_data == null or Util.jpl_data.size() == 0:
+		Util.create_popup("JPL data not loaded", "Please load JPL data to switch dates.")
+		return
+	current_date_index += 1
+	if current_date_index >= Util.jpl_data.size():
+		current_date_index = 0
+	var date_str: String = str(Util.jpl_data[current_date_index]["date"])
+	switch_date_set_date(date_str)
+#endregion switch date

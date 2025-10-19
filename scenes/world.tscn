@@ -71,7 +71,7 @@ spot_angle = 10.45
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Sun/SpotLight3D"]
 mesh = SubResource("SphereMesh_i7141")
 
-[node name="CometMesh" type="MeshInstance3D" parent="." node_paths=PackedStringArray("light_source", "comet_collider") groups=["albedo", "alpha_p", "animation", "comet", "delta_p", "direction_rotation", "frequency", "height", "inclination_rotation", "jet_rate", "latitude", "longitude", "num_rotation", "particle_density", "particle_diameter", "radius", "reset_rotation", "scale", "sun_comet_distance", "trigger_rotation"]]
+[node name="CometMesh" type="MeshInstance3D" parent="." node_paths=PackedStringArray("light_source", "comet_collider") groups=["albedo", "alpha_p", "animation", "comet", "delta_p", "direction_rotation", "frequency", "height", "inclination_rotation", "jet_rate", "latitude", "longitude", "num_rotation", "particle_density", "particle_diameter", "radius", "reset_rotation", "scale", "sun_comet_distance", "switch_date", "trigger_rotation"]]
 transform = Transform3D(1, 0, 0, 0, 6.12323e-17, 1, 0, -1, 6.12323e-17, 0, 0, 0)
 layers = 31
 lod_bias = 0.001
