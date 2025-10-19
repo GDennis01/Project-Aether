@@ -793,7 +793,7 @@ metadata/_edit_use_anchors_ = true
 [node name="CometPanel" type="Panel" parent="Body/CometTab/Control/SwitchDate"]
 z_index = -1
 layout_mode = 1
-offset_right = 155.0
+offset_right = 153.55
 offset_bottom = 38.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_pkwgd")
 
@@ -816,10 +816,9 @@ text = "R"
 [node name="CurrDateLineEdit" type="LineEdit" parent="Body/CometTab/Control/SwitchDate"]
 layout_mode = 1
 offset_left = 22.0
-offset_top = 1.0
+offset_top = 0.245
 offset_right = 134.0
-offset_bottom = 39.0
-text = "2025-10-31"
+offset_bottom = 38.245
 editable = false
 
 [node name="JetsTab" type="CanvasLayer" parent="Body"]

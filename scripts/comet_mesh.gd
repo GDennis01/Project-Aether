@@ -331,12 +331,19 @@ func update_sun_comet_distance(value: float) -> void:
 func update_alpha_p(value: float) -> void:
 	if Util.PRINT_UPDATE_METHOD: print("Updated alpha_p:%f"%value)
 	Util.alpha_p = value
+	if Util.jpl_data == null or Util.jpl_data.size() == 0:
+		Util.create_popup("JPL data not loaded", "Please first load JPL data to compute ecliptic and orbital elements.")
+		return
 	update_pa_incl()
 	update_lambda_beta()
 	update_i_phi()
+	update_subsolar_latitude()
 func update_delta_p(value: float) -> void:
 	if Util.PRINT_UPDATE_METHOD: print("Updated delta_p:%f"%value)
 	Util.delta_p = value
+	if Util.jpl_data == null or Util.jpl_data.size() == 0:
+		Util.create_popup("JPL data not loaded", "Please first load JPL data to compute ecliptic and orbital elements.")
+		return
 	update_pa_incl()
 	update_lambda_beta()
 	update_i_phi()
@@ -344,9 +351,6 @@ func update_delta_p(value: float) -> void:
 func update_pa_incl() -> void:
 	var alpha_rad := deg_to_rad(Util.alpha_p)
 	var delta_rad := deg_to_rad(Util.delta_p)
-	if Util.jpl_data == null or Util.jpl_data.size() == 0:
-		Util.create_popup("JPL data not loaded", "Please load JPL data to compute comet PA, Inclination, I and Phi from pole coordinates.")
-		return
 	var ra_comet_pos: float = float(Util.jpl_data[current_date_index]["right_ascension"])
 	var dec_comet_pos: float = float(Util.jpl_data[current_date_index]["declination"])
 
@@ -432,9 +436,9 @@ func update_i_phi() -> void:
 func update_subsolar_latitude() -> void:
 	var I := deg_to_rad(Util.i)
 	var phi := deg_to_rad(Util.phi)
-	if Util.jpl_data == null or Util.jpl_data.size() == 0:
-		Util.create_popup("JPL data not loaded", "Please load JPL data to compute subsolar latitude from I, Phi and true anomaly.")
-		return
+	# if Util.jpl_data == null or Util.jpl_data.size() == 0:
+	# 	Util.create_popup("JPL data not loaded", "Please load JPL data to compute ecliptic and orbital elements.")
+	# 	return
 	var true_anomaly := deg_to_rad(float(Util.jpl_data[current_date_index]["true_anomaly"]))
 	# var I := deg_to_rad(133.9)
 	# var phi := deg_to_rad(245.1)
