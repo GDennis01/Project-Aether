@@ -332,7 +332,7 @@ func update_alpha_p(value: float) -> void:
 	if Util.PRINT_UPDATE_METHOD: print("Updated alpha_p:%f"%value)
 	Util.alpha_p = value
 	if Util.jpl_data == null or Util.jpl_data.size() == 0:
-		Util.create_popup("JPL data not loaded", "Please first load JPL data to compute ecliptic and orbital elements.")
+		Util.create_popup("JPL data not loaded", "Please first load JPL data to compute ecliptic and orbital coordinates.")
 		return
 	update_pa_incl()
 	update_lambda_beta()
@@ -342,7 +342,7 @@ func update_delta_p(value: float) -> void:
 	if Util.PRINT_UPDATE_METHOD: print("Updated delta_p:%f"%value)
 	Util.delta_p = value
 	if Util.jpl_data == null or Util.jpl_data.size() == 0:
-		Util.create_popup("JPL data not loaded", "Please first load JPL data to compute ecliptic and orbital elements.")
+		Util.create_popup("JPL data not loaded", "Please first load JPL data to compute ecliptic and orbital coordinates.")
 		return
 	update_pa_incl()
 	update_lambda_beta()
@@ -385,7 +385,6 @@ func update_i_phi() -> void:
 	var asc_node_long: float = deg_to_rad(Util.om) # Omega
 	var incl: float = deg_to_rad(Util.incl) # i
 	var arg_perihelion: float = deg_to_rad(Util.w) # omega(w)
-	print("OM:%f INCL:%f W:%f" % [Util.om, Util.incl, Util.w])
 
 	# ecliptic to equatorial conversion
 	var x_e := cos(beta) * cos(lambda)
@@ -393,7 +392,7 @@ func update_i_phi() -> void:
 	var z_e := sin(beta)
 
 	var p := Vector3(x_e, y_e, z_e)
-	print(p)
+
 	# rotation of Omega around Z
 	var rz_omega := Basis(
 		Vector3(cos(asc_node_long), -sin(asc_node_long), 0),
@@ -401,7 +400,7 @@ func update_i_phi() -> void:
 		Vector3(0, 0, 1)
 	)
 	var p1 := rz_omega * p
-	print(p1)
+
 
 	# rotation of i around X
 	var rx_i := Basis(
@@ -411,7 +410,7 @@ func update_i_phi() -> void:
 	)
 
 	var p2 := rx_i * p1
-	print(p2)
+
 	# rotation of w around Z
 	var rz_w := Basis(
 		Vector3(cos(arg_perihelion), -sin(arg_perihelion), 0),
@@ -419,7 +418,7 @@ func update_i_phi() -> void:
 		Vector3(0, 0, 1)
 	)
 	var p3 := rz_w * p2
-	print(p3)
+
 	
 	#  back to spherical coordinates
 	var phi := atan2(p3.x, p3.y)
@@ -430,8 +429,6 @@ func update_i_phi() -> void:
 	Util.i = I
 	Util.phi_line_edit.text = str("%.2f" % phi)
 	Util.phi = phi
-	print("Updated Phi:%f I:%f" % [phi, I])
-	print("---------")
 
 func update_subsolar_latitude() -> void:
 	var I := deg_to_rad(Util.i)
@@ -508,7 +505,6 @@ func switch_date_set_date(date: String, reset: bool = false) -> void:
 	pass
 # called by CometTab._on_prev_date_btn_pressed
 func switch_date_prev_date() -> void:
-	print("switch_date_prev_date called")
 	if Util.jpl_data == null or Util.jpl_data.size() == 0:
 		Util.create_popup("JPL data not loaded", "Please load JPL data to switch dates.")
 		return
@@ -520,7 +516,6 @@ func switch_date_prev_date() -> void:
 	pass
 # called by CometTab._on_next_date_btn_pressed
 func switch_date_next_date() -> void:
-	print("switch_date_next_date called")
 	if Util.jpl_data == null or Util.jpl_data.size() == 0:
 		Util.create_popup("JPL data not loaded", "Please load JPL data to switch dates.")
 		return

@@ -25,9 +25,9 @@ func _enter_tree():
 	refresh_data()
 
 func setup_calendar_icon():
-	var normal_texture: ImageTexture = create_button_texture("btn_64x64_03.png")
-	var pressed_texture: ImageTexture = create_button_texture("btn_64x64_04.png")
-
+	# var normal_texture: ImageTexture = create_button_texture("btn_64x64_03.png")
+	# var pressed_texture: ImageTexture = create_button_texture("btn_64x64_04.png")
+	pass
 func create_button_texture(image_name: String) -> ImageTexture:
 	var image_normal := Image.load_from_file("res://addons/calendar_button/btn_img/" + image_name)
 	var image_texture_normal := ImageTexture.create_from_image(image_normal)

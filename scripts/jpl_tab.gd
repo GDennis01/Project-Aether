@@ -92,18 +92,40 @@ func _on_search_btn_pressed() -> void:
 			query_string += "&"
 		query_string += "%s=%s" % [key, params[key]]
 	var url := "{api_url}?{query_string}".format({"api_url": api_url, "query_string": query_string})
+	print("API URL:")
+	print(url)
 	# print("Request URL: ", url)
+	var tls_options := TLSOptions.client_unsafe()
+	http_request.set_tls_options(tls_options)
 	var error := http_request.request(url)
-	
+	var error_msg: String = ""
+	match error:
+		OK:
+			error_msg = "HTTP request sent successfully."
+		ERR_UNCONFIGURED:
+			error_msg = "HTTPRequest node is not configured."
+		ERR_BUSY:
+			error_msg = "HTTPRequest node is busy with another request."
+		ERR_INVALID_PARAMETER:
+			error_msg = "Invalid parameter provided to HTTPRequest."
+		ERR_CANT_CONNECT:
+			error_msg = "Cannot connect to the server."
+		_:
+			error_msg = "Default error message."
+	print("HTTP Request Status: ", error_msg)
+	# Util.create_popup("Request Status", error_msg)
 	if error != OK:
 		push_error("An error occurred in the HTTP request.")
+	print("----------")
 
 
 func _http_request_completed(result: int, _response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
 	var json_parser := JSON.new()
 	var body_string := body.get_string_from_utf8()
 	json_parser.parse(body_string)
-
+	print("JSON\n")
+	print(body_string)
+	# Util.create_popup("Data Loaded", body_string)
 	if _response_code != 200 or json_parser.data.has("error"):
 		push_error("Error: %s" % json_parser.data.error)
 		Util.create_popup("Error", "Failed to retrieve ephemeris data:\n%s" % json_parser.data.error)
@@ -219,7 +241,6 @@ func clear_container() -> void:
 	scroll_container.scroll_vertical = 0
 # Populate the container with tabular data from the ephemeris, retrieved from Nasa JPL API.
 func populate_container(data: Variant) -> void:
-	print(get_tree().get_nodes_in_group("load"))
 	var HEADER := {
 		"date": "Date",
 		"time": "Time",
@@ -229,7 +250,7 @@ func populate_container(data: Variant) -> void:
 		"sun_distance_r": "Sun Distance R (AU)",
 		"delta": "Delta (AU)",
 		"sto": "STO (Deg)",
-		"pl_ang": "Phase Angle (Deg)",
+		"pl_ang": "Sky Plane (Deg)",
 		"true_anomaly": "True Anomaly (Deg)",
 		"sky_motion_pa": "Sky Motion PA (Deg)"
 	}

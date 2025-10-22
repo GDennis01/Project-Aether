@@ -6,7 +6,8 @@ extends CanvasLayer
 @onready var del_overlay_img_btn: Button = $"Control/DelOverlayImgBtn"
 @onready var transparency_label: Label = $"Control/TransparencyLabel"
 @onready var transparency_slider: HSlider = $"Control/TransparencySlider"
-@onready var overlay_img: TextureRect = $"/root/Hud/Viewport/SubViewportContainer/SubViewport/OverlayImg"
+@onready var overlay_img: TextureRect = $"/root/Hud/Viewport/Panel/OverlayImg"
+@onready var sub_viewport_container: SubViewportContainer = $"/root/Hud/Viewport/SubViewportContainer"
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# $Control/FrequencyEdit.set_value(1)
@@ -117,7 +118,9 @@ func _on_del_overlay_img_btn_pressed() -> void:
 	# remove overlay image
 	overlay_img.texture = null
 
+	sub_viewport_container.modulate.a = 1.0
+
 
 func _on_transparency_slider_value_changed(value: float) -> void:
 	print(value)
-	overlay_img.modulate.a = value
+	sub_viewport_container.modulate.a = value

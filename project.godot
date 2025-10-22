@@ -25,6 +25,7 @@ SaveManager="*res://scenes/save_manager.tscn"
 
 [debug]
 
+file_logging/enable_file_logging=true
 gdscript/warnings/untyped_declaration=1
 
 [display]
@@ -86,8 +87,3 @@ zoom_out={
 [network]
 
 tls/enable_tls_v1.3=false
-
-[rendering]
-
-renderer/rendering_method="gl_compatibility"
-renderer/rendering_method.mobile="gl_compatibility"
