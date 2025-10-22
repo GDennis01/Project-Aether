@@ -96,6 +96,8 @@ func _on_file_explorer_file_selected(path: String) -> void:
 	transparency_label.visible = true
 	transparency_slider.visible = true
 
+	sub_viewport_container.get_node("SubViewport").transparent_bg = true
+
 	load_texture(path)
 
 func load_texture(path: String) -> void:
@@ -119,7 +121,7 @@ func _on_del_overlay_img_btn_pressed() -> void:
 	overlay_img.texture = null
 
 	sub_viewport_container.modulate.a = 1.0
-
+	sub_viewport_container.get_node("SubViewport").transparent_bg = false
 
 func _on_transparency_slider_value_changed(value: float) -> void:
 	print(value)

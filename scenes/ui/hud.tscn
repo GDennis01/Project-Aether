@@ -2103,7 +2103,6 @@ size_flags_stretch_ratio = 0.55
 metadata/_edit_use_anchors_ = true
 
 [node name="SubViewport" type="SubViewport" parent="Viewport/SubViewportContainer" node_paths=PackedStringArray("_fr_camera", "_rot_camera") groups=["camera"]]
-transparent_bg = true
 handle_input_locally = false
 size = Vector2i(900, 900)
 render_target_update_mode = 4
