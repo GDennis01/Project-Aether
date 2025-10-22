@@ -444,6 +444,51 @@ func update_subsolar_latitude() -> void:
 	Util.subsolar_lat_line_edit.text = str("%.2f" % rad_to_deg(Util.subsolar_latitude))
 
 
+#region switch date
+func switch_date_set_date(date: String, reset: bool = false) -> void:
+	if reset:
+		current_date_index = 0
+	switch_date.text = date
+	# updates all parameters based on the jpl data in that date
+	update_pa_incl()
+	update_lambda_beta()
+	update_i_phi()
+	update_subsolar_latitude()
+	# sun params
+	Util.sun_pa_line_edit.set_value(float(Util.jpl_data[current_date_index]["sun_pa"]))
+	Util.sun_incl_line_edit.set_value(float(Util.jpl_data[current_date_index]["sto"]))
+	Util.sun_dist_line_edit.set_value(float(Util.jpl_data[current_date_index]["sun_distance_r"]))
+	# scale 
+	Util.scale_line_edit.set_value(float(Util.jpl_data[current_date_index]["delta"]))
+# called by CometTab._on_prev_date_btn_pressed
+func switch_date_prev_date() -> void:
+	_switch_date_prev_next_date(-1)
+
+# called by CometTab._on_next_date_btn_pressed
+func switch_date_next_date() -> void:
+	_switch_date_prev_next_date(1)
+
+
+func _switch_date_prev_next_date(prev_next: int) -> void:
+	if Util.jpl_data == null or Util.jpl_data.size() == 0:
+		Util.create_popup("JPL data not loaded", "Please load JPL data to switch dates.")
+		return
+	# current_date_index-1 or +1 based on prev_next
+	current_date_index += prev_next
+	if current_date_index < 0:
+		current_date_index = Util.jpl_data.size() - 1
+	elif current_date_index >= Util.jpl_data.size():
+		current_date_index = 0
+	var date_str: String = str(Util.jpl_data[current_date_index]["date"])
+	var time_str: String = str(Util.jpl_data[current_date_index]["time"])
+	# only the first 2 digits (hours)
+	time_str = time_str.substr(0, 2)
+	switch_date_set_date(date_str + " " + time_str)
+
+
+#endregion switch date
+
+
 #endregion Update methods
 
 
@@ -491,37 +536,3 @@ func update_comet_orientation() -> void:
 	# debug_sphere.global_position = global_transform.origin + direction * mesh.radius * 3
 	point_y_axis_toward(global_transform.origin + direction)
 	get_tree().call_group("emitter", "update_norm")
-
-
-#region switch date
-func switch_date_set_date(date: String, reset: bool = false) -> void:
-	if reset:
-		current_date_index = 0
-	switch_date.text = date
-	update_pa_incl()
-	update_lambda_beta()
-	update_i_phi()
-	update_subsolar_latitude()
-	pass
-# called by CometTab._on_prev_date_btn_pressed
-func switch_date_prev_date() -> void:
-	if Util.jpl_data == null or Util.jpl_data.size() == 0:
-		Util.create_popup("JPL data not loaded", "Please load JPL data to switch dates.")
-		return
-	current_date_index -= 1
-	if current_date_index < 0:
-		current_date_index = Util.jpl_data.size() - 1
-	var date_str: String = str(Util.jpl_data[current_date_index]["date"])
-	switch_date_set_date(date_str)
-	pass
-# called by CometTab._on_next_date_btn_pressed
-func switch_date_next_date() -> void:
-	if Util.jpl_data == null or Util.jpl_data.size() == 0:
-		Util.create_popup("JPL data not loaded", "Please load JPL data to switch dates.")
-		return
-	current_date_index += 1
-	if current_date_index >= Util.jpl_data.size():
-		current_date_index = 0
-	var date_str: String = str(Util.jpl_data[current_date_index]["date"])
-	switch_date_set_date(date_str)
-#endregion switch date

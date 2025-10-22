@@ -27,16 +27,19 @@ func update_sun_axis(value: float) -> void:
 	if sun_axis:
 		sun_axis.set_height(value, distance)
 	pass
+## Updates Sun PA
 func update_sun_dir_rotation(value: float) -> void:
 		if Util.PRINT_UPDATE_METHOD: print("Updated sun direction:%f"%value)
+		print("Sun PA: %f"%value)
 		# rotation_degrees.x = value
 		sun_direction = value
 		Util.sun_direction = value
 		update_sun_orientation()
-	
+## Updates Sun STO
 func update_sun_inc_rotation(value: float) -> void:
 		if Util.PRINT_UPDATE_METHOD: print("Updated sun inclination:%f"%value)
 		# rotation_degrees.x = - value + 90
+		print("Sun STO: %f"%value)
 		sun_inclination = - value
 		Util.sun_inclination = value
 		update_sun_orientation()

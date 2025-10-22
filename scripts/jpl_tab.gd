@@ -92,8 +92,7 @@ func _on_search_btn_pressed() -> void:
 			query_string += "&"
 		query_string += "%s=%s" % [key, params[key]]
 	var url := "{api_url}?{query_string}".format({"api_url": api_url, "query_string": query_string})
-	print("API URL:")
-	print(url)
+	# print("API URL:")
 	# print("Request URL: ", url)
 	var tls_options := TLSOptions.client_unsafe()
 	http_request.set_tls_options(tls_options)
@@ -123,8 +122,8 @@ func _http_request_completed(result: int, _response_code: int, _headers: PackedS
 	var json_parser := JSON.new()
 	var body_string := body.get_string_from_utf8()
 	json_parser.parse(body_string)
-	print("JSON\n")
-	print(body_string)
+	# print("JSON\n")
+	# print(body_string)
 	# Util.create_popup("Data Loaded", body_string)
 	if _response_code != 200 or json_parser.data.has("error"):
 		push_error("Error: %s" % json_parser.data.error)
@@ -246,18 +245,20 @@ func populate_container(data: Variant) -> void:
 		"time": "Time",
 		"right_ascension": "Right Ascension (Deg)",
 		"declination": "Declination (Deg)",
-		"sun_pa": "Sun PA (Deg)",
-		"sun_distance_r": "Sun Distance R (AU)",
-		"delta": "Delta (AU)",
-		"sto": "STO (Deg)",
-		"pl_ang": "Sky Plane (Deg)",
+		# "sun_pa": "Sun PA (Deg)",
+		# "sun_distance_r": "Sun Distance R (AU)",
+		# "delta": "Delta (AU)",
+		# "sto": "STO (Deg)",
+		"pl_ang": "Sky Plane Angle (Deg)",
 		"true_anomaly": "True Anomaly (Deg)",
 		"sky_motion_pa": "Sky Motion PA (Deg)"
 	}
 	Util.jpl_data = data
-	get_tree().call_group("switch_date", "switch_date_set_date", data[0]["date"], true)
-	get_tree().call_group("switch_date", "switch_date_prev_date")
-	get_tree().call_group("switch_date", "switch_date_next_date")
+	var date_str: String = str(data[0]["date"])
+	var time_str: String = str(data[0]["time"])
+	# only the first 2 digits
+	time_str = time_str.substr(0, 2)
+	get_tree().call_group("switch_date", "switch_date_set_date", date_str + " " + time_str, true)
 	# print(data)
 	var header_string := ""
 	for key: String in HEADER.keys():

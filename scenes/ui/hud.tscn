@@ -233,6 +233,7 @@ metadata/is_screenshot = false
 
 [node name="CometTab" type="CanvasLayer" parent="Body" groups=["alpha_p", "delta_p", "load", "save", "switch_date"]]
 layer = 3
+visible = false
 script = ExtResource("3_136eg")
 
 [node name="Control" type="Control" parent="Body/CometTab"]
@@ -794,10 +795,10 @@ metadata/_edit_use_anchors_ = true
 
 [node name="SwitchDate" type="Control" parent="Body/CometTab/Control"]
 layout_mode = 1
-anchor_left = -0.0148757
+anchor_left = -0.0251856
 anchor_top = -0.0344403
-anchor_right = 0.000588235
-anchor_bottom = -0.0230766
+anchor_right = 0.00574227
+anchor_bottom = -0.0230765
 offset_left = 285.886
 offset_top = 0.0922353
 offset_right = 437.886
@@ -807,34 +808,38 @@ metadata/_edit_use_anchors_ = true
 [node name="CometPanel" type="Panel" parent="Body/CometTab/Control/SwitchDate"]
 z_index = -1
 layout_mode = 1
-offset_right = 153.55
-offset_bottom = 38.0
+offset_right = 154.0
+offset_bottom = 37.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_pkwgd")
 
 [node name="PrevDateBtn" type="Button" parent="Body/CometTab/Control/SwitchDate"]
 layout_mode = 1
-offset_left = 0.529
-offset_top = -0.487
-offset_right = 22.529
-offset_bottom = 37.513
+offset_left = 1.35294
+offset_top = 0.764706
+offset_right = 23.3529
+offset_bottom = 38.7647
+scale = Vector2(0.9, 0.9)
 focus_mode = 0
 icon = ExtResource("13_qmm8d")
 
 [node name="NextDateBtn" type="Button" parent="Body/CometTab/Control/SwitchDate"]
 layout_mode = 1
-offset_left = 134.118
-offset_top = -0.487
-offset_right = 156.118
-offset_bottom = 37.513
+offset_left = 134.294
+offset_top = 0.764706
+offset_right = 156.294
+offset_bottom = 38.7647
+scale = Vector2(0.9, 0.9)
 focus_mode = 0
 icon = ExtResource("14_t0png")
 
 [node name="CurrDateLineEdit" type="LineEdit" parent="Body/CometTab/Control/SwitchDate"]
 layout_mode = 1
 offset_left = 22.0
-offset_top = 0.245
-offset_right = 134.0
-offset_bottom = 38.245
+offset_top = 1.0
+offset_right = 172.0
+offset_bottom = 48.0
+scale = Vector2(0.745, 0.745)
+text = "2025-Oct-16 23:00"
 editable = false
 
 [node name="JetsTab" type="CanvasLayer" parent="Body"]
@@ -1363,7 +1368,6 @@ show_hidden_files = true
 
 [node name="ScaleTab" type="CanvasLayer" parent="Body" groups=["camera", "delta_au", "load", "save", "tel_image_size", "tel_resolution", "window_fov", "window_size"]]
 layer = 3
-visible = false
 script = ExtResource("9_0h1do")
 
 [node name="Control" type="Control" parent="Body/ScaleTab"]
