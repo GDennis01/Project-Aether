@@ -131,8 +131,14 @@ func _http_request_completed(result: int, _response_code: int, _headers: PackedS
 		return
 
 	var data: Variant = json_parser.data
-	json_parser.parse(parse_ephemeris(data.result))
-	
+	var eph_tmp := parse_ephemeris(data.result)
+	if eph_tmp == "":
+		push_error("Failed to parse ephemeris data.")
+		Util.create_popup("Error", "Failed to parse ephemeris data. One or more fields may be wrong.")
+		return
+	json_parser.parse(eph_tmp)
+	print("Json:\n")
+	print(json_parser.data)
 	var ephemeris_data: Variant = json_parser.data
 	# print(ephemeris_data)
 	$Control/JPLTablePanel.visible = true
@@ -170,7 +176,7 @@ func parse_ephemeris(data: String) -> String:
 	var om_index := data.find(" OM=")
 	if om_index == -1:
 		push_error("OM/W/IN line not found.")
-
+		return ""
 
 	var om_end_index := data.find("\n", om_index)
 	var om_line := data.substr(om_index, om_end_index - om_index).strip_edges()
