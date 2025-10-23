@@ -10,3 +10,8 @@ func save(filename: StringName) -> void:
 func load(filename: StringName) -> void:
 	config = ConfigFile.new()
 	config.load(filename)
+func get_data_bytes() -> PackedByteArray:
+	return config.encode_to_text().to_utf8_buffer()
+func load_from_string(data_string: String) -> void:
+	config = ConfigFile.new()
+	config.parse(data_string)

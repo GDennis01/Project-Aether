@@ -7,6 +7,7 @@ extends CanvasLayer
 @onready var file_explorer: FileDialog = $TabButtons/ColorRect/HBoxContainer/FileExplorer
 # @onready var plane: MeshInstance3D = $"/root/World/Plane"
 @onready var comet: MeshInstance3D = $"/root/World/CometMesh"
+@onready var file_access_web: FileAccessWeb = FileAccessWeb.new()
 # @onready var comet2: MeshInstance3D = $"/root/World/CometMesh2"
 var camera_position: Vector2
 
@@ -134,22 +135,38 @@ func _on_spawn_emitter_pressed() -> void:
 
 ## Opens the OS Native file explorer to save the current configuration in a file
 func _on_save_btn_pressed() -> void:
-	print(OS.get_data_dir())
-	file_explorer.file_mode = FileDialog.FILE_MODE_SAVE_FILE
-	file_explorer.filters = ["*.txt;Configuration File"]
-	file_explorer.set_meta("is_screenshot", false)
-	file_explorer.popup_centered()
-	file_explorer.current_file = "config"
+	get_tree().call_group("save", "save_data")
+	JavaScriptBridge.download_buffer(SaveManager.get_data_bytes(), "config2.txt", "text/plain")
 	
-	file_explorer.visible = true
+	# print(OS.get_data_dir())
+	# file_explorer.file_mode = FileDialog.FILE_MODE_SAVE_FILE
+	# file_explorer.filters = ["*.txt;Configuration File"]
+	# file_explorer.set_meta("is_screenshot", false)
+	# file_explorer.popup_centered()
+	# file_explorer.current_file = "config"
+	
+	# file_explorer.visible = true
+
+# func _on_web_file_loaded_save(file_name: String, file_type: String, base64_data: String)->void:
+
 ## Opens the OS Native file explorer to load a configuration from a chosen file
 func _on_load_btn_pressed() -> void:
-	file_explorer.file_mode = FileDialog.FILE_MODE_OPEN_FILE
-	file_explorer.filters = ["*.txt;Configuration File"]
-	file_explorer.set_meta("is_screenshot", false)
-	file_explorer.popup_centered()
+	file_access_web.loaded.connect(_on_web_file_loaded_load)
+	file_access_web.open()
+	print("Opened web file explorer")
+	# file_explorer.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+	# file_explorer.filters = ["*.txt;Configuration File"]
+	# file_explorer.set_meta("is_screenshot", false)
+	# file_explorer.popup_centered()
 	
-	file_explorer.visible = true
+	# file_explorer.visible = true
+
+func _on_web_file_loaded_load(_file_name: String, _file_type: String, base64_data: String) -> void:
+	var decoded_data: PackedByteArray = Marshalls.base64_to_raw(base64_data)
+	var config_text: String = decoded_data.get_string_from_utf8()
+	print("Config Text: ", config_text)
+	SaveManager.load_from_string(config_text)
+	get_tree().call_group("load", "load_data")
 
 func disable_btn(btn_name: String) -> void:
 	var btn := $TabButtons/ColorRect/HBoxContainer.get_node(btn_name)
@@ -167,13 +184,20 @@ func enable_btn(btn_name: String) -> void:
 		print("Button not found: ", name)
 
 func _on_screenshot_btn_pressed() -> void:
-	file_explorer.file_mode = FileDialog.FILE_MODE_SAVE_FILE
-	file_explorer.filters = ["*.png;Image File"]
-	file_explorer.set_meta("is_screenshot", true)
-	file_explorer.popup_centered()
-	file_explorer.current_file = "screenshot"
-	
-	file_explorer.visible = true
+	# file_explorer.file_mode = FileDialog.FILE_MODE_SAVE_FILE
+	# file_explorer.filters = ["*.png;Image File"]
+	# file_explorer.set_meta("is_screenshot", true)
+	# file_explorer.popup_centered()
+	# file_explorer.current_file = "screenshot"
+	# file_explorer.visible = true 
+	var img1 := rot_camera_viewport.get_texture().get_image()
+	img1.resize(1200, 1200)
+	var img_data1 := img1.save_png_to_buffer()
+	JavaScriptBridge.download_buffer(img_data1, "screenshot.png", "image/png")
+
+	var img2 := minicamera_viewport.get_texture().get_image()
+	var img_data2 := img2.save_png_to_buffer()
+	JavaScriptBridge.download_buffer(img_data2, "minicamera_screenshot.png", "image/png")
 
 
 ## Called when a file, either through the save or load methods, is selected.

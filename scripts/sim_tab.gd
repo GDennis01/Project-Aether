@@ -8,6 +8,7 @@ extends CanvasLayer
 @onready var transparency_slider: HSlider = $"Control/TransparencySlider"
 @onready var overlay_img: TextureRect = $"/root/Hud/Viewport/Panel/OverlayImg"
 @onready var sub_viewport_container: SubViewportContainer = $"/root/Hud/Viewport/SubViewportContainer"
+@onready var file_access_web: FileAccessWeb = FileAccessWeb.new()
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# $Control/FrequencyEdit.set_value(1)
@@ -76,14 +77,36 @@ func _on_overlay_img_chosen() -> void:
 	print("lol")
 # shows the navbar.file_explorer
 func _on_overlay_img_picker_btn_pressed() -> void:
-	file_explorer.file_mode = FileDialog.FILE_MODE_OPEN_FILE
-	file_explorer.filters = ["*.png;Image File"]
-	file_explorer.popup_centered()
-	file_explorer.current_file = "config"
-	
-	file_explorer.visible = true
+	file_access_web.loaded.connect(_on_web_file_loaded)
+	file_access_web.open()
 
+func _on_web_file_loaded(file_name: String, _file_type: String, base64_data: String) -> void:
+	overlay_img_linedit.visible = true
+	overlay_img_linedit.text = file_name
 
+	overlay_img_picker_btn.visible = false
+	del_overlay_img_btn.visible = true
+
+	transparency_label.visible = true
+	transparency_slider.visible = true
+
+	sub_viewport_container.get_node("SubViewport").transparent_bg = true
+
+	# load data from base64 string
+	var decoded_data: PackedByteArray = Marshalls.base64_to_raw(base64_data)
+	var img := Image.new()
+	var err := img.load_png_from_buffer(decoded_data)
+	if err != OK:
+		Util.create_popup("Image Error", "Please load a valid PNG image file.")
+		return
+	img.resize(900, 900)
+	overlay_img.texture = ImageTexture.create_from_image(img)
+	overlay_img.modulate.a = 0.5
+	# file_explorer.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+	# file_explorer.filters = ["*.png;Image File"]
+	# file_explorer.popup_centered()
+	# file_explorer.current_file = "config"
+	# file_explorer.visible = true
 func _on_file_explorer_file_selected(path: String) -> void:
 	print("File selected: ", path)
 	var filename := path.get_file()
