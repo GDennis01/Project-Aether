@@ -839,7 +839,6 @@ offset_top = 1.0
 offset_right = 172.0
 offset_bottom = 48.0
 scale = Vector2(0.745, 0.745)
-text = "2025-Oct-16 23:00"
 editable = false
 
 [node name="JetsTab" type="CanvasLayer" parent="Body"]
@@ -1368,6 +1367,7 @@ show_hidden_files = true
 
 [node name="ScaleTab" type="CanvasLayer" parent="Body" groups=["camera", "delta_au", "load", "save", "tel_image_size", "tel_resolution", "window_fov", "window_size"]]
 layer = 3
+visible = false
 script = ExtResource("9_0h1do")
 
 [node name="Control" type="Control" parent="Body/ScaleTab"]
