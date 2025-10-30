@@ -200,6 +200,12 @@ func _on_file_explorer_file_selected(path: String) -> void:
 
 ## Now is used as a button for debugging purposes
 func _on_full_viewport_btn_pressed() -> void:
+	var model_tab_nodes := get_tree().get_nodes_in_group("model_tab")
+	for node in model_tab_nodes:
+		node.visible = not node.visible
+	var settings_tab_nodes := get_tree().get_nodes_in_group("settings_tab")
+	for node in settings_tab_nodes:
+		node.visible = not node.visible
 	# get_visible_area_at_distance(42)
 	## Prova plane
 	#region plane

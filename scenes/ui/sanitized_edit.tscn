@@ -4,14 +4,13 @@
 
 [node name="SanitizedEdit" type="LineEdit"]
 anchors_preset = -1
-anchor_right = 0.111
-anchor_bottom = 0.099
-offset_right = 0.127991
-offset_bottom = -0.152008
+anchor_right = 0.0333333
+anchor_bottom = 0.0306931
 focus_mode = 1
 theme_override_constants/minimum_character_width = 0
 text = "0.0"
 script = ExtResource("1_httd2")
+metadata/_edit_use_anchors_ = true
 
 [connection signal="editing_toggled" from="." to="." method="_on_editing_toggled"]
 [connection signal="focus_exited" from="." to="." method="_on_focus_exited"]

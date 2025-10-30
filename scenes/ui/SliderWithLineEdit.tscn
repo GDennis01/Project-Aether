@@ -5,11 +5,8 @@
 
 [node name="SliderWithLineEdit" type="Control" node_paths=PackedStringArray("slider", "line_edit")]
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = -1010.0
-offset_bottom = -932.0
+anchor_right = 0.125
+anchor_bottom = 0.039604
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_nm6q3")
@@ -17,13 +14,14 @@ slider = NodePath("Slider")
 line_edit = NodePath("SanitizedEdit")
 label = &"Ciao"
 starting_value = 2.0
+metadata/_edit_use_anchors_ = true
 
 [node name="Slider" type="HSlider" parent="."]
 layout_mode = 1
 anchors_preset = -1
-offset_top = 31.0
-offset_right = 176.0
-offset_bottom = 54.0
+offset_top = 16.0
+offset_right = 160.0
+offset_bottom = 39.0
 focus_mode = 0
 max_value = 0.0
 step = 0.01
@@ -37,9 +35,12 @@ text = "Ciao"
 
 [node name="SanitizedEdit" parent="." node_paths=PackedStringArray("slider") instance=ExtResource("2_1k185")]
 layout_mode = 1
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
 offset_left = 176.0
-offset_right = 228.48
-offset_bottom = 27.248
+offset_right = 237.013
+offset_bottom = 28.7213
 text = "2.0"
 slider = NodePath("../Slider")
 

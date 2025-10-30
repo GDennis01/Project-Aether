@@ -282,9 +282,9 @@ func update_radius(value: float) -> void:
 	# print("calling update_position on emitter\n")
 	get_tree().call_group("emitter", "update_position", value)
 ## Deprecated
-func update_height(value: float) -> void:
-	#print_debug("[UPDATE HEIGHT] Before:"+str(mesh.height)+" After:"+str(value))
-	mesh.set_height(value)
+# func update_height(value: float) -> void:
+# 	#print_debug("[UPDATE HEIGHT] Before:"+str(mesh.height)+" After:"+str(value))
+# 	mesh.set_height(value)
 func update_direction_rotation(value: float) -> void:
 	if Util.PRINT_UPDATE_METHOD: print("Updated comet PA:%f"%value)
 	Util.comet_direction = value

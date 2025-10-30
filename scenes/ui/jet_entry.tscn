@@ -34,8 +34,9 @@ metadata/_edit_use_anchors_ = true
 
 [node name="SpeedEdit" parent="." instance=ExtResource("2_65ngw")]
 layout_mode = 1
+anchor_left = 0.0931047
 anchor_top = -0.222
-anchor_right = 0.0
+anchor_right = 0.0931047
 anchor_bottom = -0.222
 offset_left = 35.0
 offset_top = 16.99
@@ -46,8 +47,9 @@ no_decimal = true
 
 [node name="LatitudeEdit" parent="." instance=ExtResource("2_65ngw")]
 layout_mode = 1
+anchor_left = 0.165261
 anchor_top = -0.222
-anchor_right = 0.0
+anchor_right = 0.165261
 anchor_bottom = -0.222
 offset_left = 128.0
 offset_top = 16.99
@@ -58,8 +60,9 @@ higher_bound = 90.0
 
 [node name="LongitudeEdit" parent="." instance=ExtResource("2_65ngw")]
 layout_mode = 1
+anchor_left = 0.222288
 anchor_top = -0.222
-anchor_right = 0.0
+anchor_right = 0.222288
 anchor_bottom = -0.222
 offset_left = 200.0
 offset_top = 16.99
@@ -69,8 +72,9 @@ higher_bound = 360.0
 
 [node name="DiffusionEdit" parent="." instance=ExtResource("2_65ngw")]
 layout_mode = 1
+anchor_left = 0.306082
 anchor_top = -0.222
-anchor_right = 0.0
+anchor_right = 0.306082
 anchor_bottom = -0.222
 offset_left = 272.0
 offset_top = 16.99
@@ -82,7 +86,9 @@ no_decimal = true
 [node name="ColorPickerButton" type="ColorPickerButton" parent="."]
 layout_mode = 1
 anchors_preset = -1
+anchor_left = 0.343324
 anchor_top = -0.2
+anchor_right = 0.343324
 anchor_bottom = -0.2
 offset_left = 344.0
 offset_top = 16.0
@@ -95,8 +101,10 @@ metadata/_edit_use_anchors_ = true
 [node name="ToggleJet" type="CheckButton" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_top = -0.0146771
-anchor_bottom = -0.0146771
+anchor_left = 0.405006
+anchor_top = -0.0431575
+anchor_right = 0.405006
+anchor_bottom = -0.0431575
 offset_left = 392.0
 offset_top = 6.0
 offset_right = 436.0
@@ -109,9 +117,9 @@ metadata/_edit_use_anchors_ = true
 [node name="RemoveJetBtn" type="Button" parent="." groups=["remove"]]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.0270051
+anchor_left = 0.516969
 anchor_top = -0.207323
-anchor_right = 0.0270051
+anchor_right = 0.516969
 anchor_bottom = -0.207323
 offset_left = 456.0
 offset_top = 15.99
