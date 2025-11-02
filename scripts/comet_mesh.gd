@@ -14,8 +14,9 @@ enum ANIMATION_STATE {
 var total_sim_time: float = 0.0
 @onready var debug_sphere: MeshInstance3D = $"/root/World/DebugRotationSphere"
 
-#switch date
-@onready var switch_date: LineEdit = $"/root/Hud/Body/CometTab/Control/SwitchDate/CurrDateLineEdit"
+#switch dateViewport/Panel/DateLabel
+# @onready var switch_date: LineEdit = $"/root/Hud/Body/CometTab/Control/SwitchDate/CurrDateLineEdit"
+@onready var switch_date: Label = $"/root/Hud/Viewport/Panel/DateLabel"
 var current_date_index: int = 0
 
 
@@ -41,8 +42,7 @@ var emitter_scene := preload("res://scenes/particle_emitter.tscn")
 @onready var y_axis: AxisArrow
 @onready var z_axis: AxisArrow
 @onready var reverse_y_axis: AxisArrow
-
-@onready var animation_slider: AnimationSlider = $"/root/Hud/Body/TabButtons/ColorRect/HBoxContainer/AnimationSlider"
+@onready var animation_slider: AnimationSlider = $"/root/Hud/Body/TabButtons/AnimationSlider"
 
 @export var light_source: Light3D
 @export var comet_collider: CollisionObject3D
@@ -462,14 +462,20 @@ func switch_date_set_date(date: String, reset: bool = false) -> void:
 	Util.scale_line_edit.set_value(float(Util.jpl_data[current_date_index]["delta"]))
 # called by CometTab._on_prev_date_btn_pressed
 func switch_date_prev_date() -> void:
-	_switch_date_prev_next_date(-1)
+	_switch_date_prev_next_date(-1, 0)
+
+func switch_date_first_date() -> void:
+	_switch_date_prev_next_date(-1, -1)
+
+func switch_date_last_date() -> void:
+	_switch_date_prev_next_date(1, 1)
 
 # called by CometTab._on_next_date_btn_pressed
 func switch_date_next_date() -> void:
-	_switch_date_prev_next_date(1)
+	_switch_date_prev_next_date(1, 0)
 
 
-func _switch_date_prev_next_date(prev_next: int) -> void:
+func _switch_date_prev_next_date(prev_next: int, first_last: int) -> void:
 	if Util.jpl_data == null or Util.jpl_data.size() == 0:
 		Util.create_popup("JPL data not loaded", "Please load JPL data to switch dates.")
 		return
@@ -477,6 +483,10 @@ func _switch_date_prev_next_date(prev_next: int) -> void:
 	current_date_index += prev_next
 	if current_date_index < 0:
 		current_date_index = Util.jpl_data.size() - 1
+	elif first_last == 1:
+		current_date_index = Util.jpl_data.size() - 1
+	elif first_last == -1:
+		current_date_index = 0
 	elif current_date_index >= Util.jpl_data.size():
 		current_date_index = 0
 	var date_str: String = str(Util.jpl_data[current_date_index]["date"])

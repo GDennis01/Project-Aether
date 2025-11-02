@@ -4,7 +4,7 @@ extends CanvasLayer
 @onready var overlay_img_linedit: LineEdit = $"Control/OverlayImgLineEdit"
 @onready var overlay_img_picker_btn: Button = $"Control/OverlayImgPickerBtn"
 @onready var del_overlay_img_btn: Button = $"Control/DelOverlayImgBtn"
-@onready var transparency_label: Label = $"Control/TransparencyLabel"
+# @onready var transparency_label: Label = $"Control/TransparencyLabel"
 @onready var transparency_slider: HSlider = $"Control/TransparencySlider"
 @onready var overlay_img: TextureRect = $"/root/Hud/Viewport/Panel/OverlayImg"
 @onready var sub_viewport_container: SubViewportContainer = $"/root/Hud/Viewport/SubViewportContainer"
@@ -93,7 +93,7 @@ func _on_file_explorer_file_selected(path: String) -> void:
 	overlay_img_picker_btn.visible = false
 	del_overlay_img_btn.visible = true
 
-	transparency_label.visible = true
+	# transparency_label.visible = true
 	transparency_slider.visible = true
 
 	sub_viewport_container.get_node("SubViewport").transparent_bg = true
@@ -113,7 +113,7 @@ func _on_del_overlay_img_btn_pressed() -> void:
 	overlay_img_picker_btn.visible = true
 	del_overlay_img_btn.visible = false
 
-	transparency_label.visible = false
+	# transparency_label.visible = false
 	transparency_slider.value = 0.5
 	transparency_slider.visible = false
 

@@ -10,7 +10,7 @@ func _ready() -> void:
 	await get_tree().process_frame
 	_force_resize()
 	var _window := get_window()
-	_window.min_size = Vector2i(1330, 980)
+	_window.min_size = Vector2i(1920, 1030)
 
 func _force_resize() -> void:
 	var size := DisplayServer.window_get_size()

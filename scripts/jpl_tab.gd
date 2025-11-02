@@ -141,15 +141,18 @@ func _http_request_completed(result: int, _response_code: int, _headers: PackedS
 	print(json_parser.data)
 	var ephemeris_data: Variant = json_parser.data
 	# print(ephemeris_data)
-	$Control/JPLTablePanel.visible = true
+	# $Control/JPLTablePanel.visible = true
 
-	$Control/WLabel.visible = true
-	$Control/OMLabel.visible = true
-	$Control/INLabel.visible = true
-	$Control/WLineEdit.visible = true
-	$Control/OMLineEdit.visible = true
-	$Control/INLineEdit.visible = true
+	# $Control/WLabel.visible = true
+	# $Control/OMLabel.visible = true
+	# $Control/INLabel.visible = true
+	# $Control/WLineEdit.visible = true
+	# $Control/OMLineEdit.visible = true
+	# $Control/INLineEdit.visible = true
 	
+	$Control/ECLineEdit.text = "N/A"
+	$Control/QRLineEdit.text = "N/A"
+	$Control/TPLineEdit.text = "N/A"
 	$Control/OMLineEdit.text = str(ephemeris_data.om)
 	$Control/WLineEdit.text = str(ephemeris_data.w)
 	$Control/INLineEdit.text = str(ephemeris_data.inc)

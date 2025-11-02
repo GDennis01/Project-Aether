@@ -175,6 +175,15 @@ func _on_screenshot_btn_pressed() -> void:
 	
 	file_explorer.visible = true
 
+func _on_save_nucleus_btn_pressed() -> void:
+	file_explorer.file_mode = FileDialog.FILE_MODE_SAVE_FILE
+	file_explorer.filters = ["*.png;Image File"]
+	file_explorer.set_meta("is_screenshot_mini", true)
+	file_explorer.popup_centered()
+	file_explorer.current_file = "screenshot"
+	
+	file_explorer.visible = true
+
 
 ## Called when a file, either through the save or load methods, is selected.
 ## Saves/Loads a configuration
@@ -185,9 +194,8 @@ func _on_file_explorer_file_selected(path: String) -> void:
 			img.resize(1200, 1200)
 			img.save_png(path)
 			print("Screenshot saved to: ", path)
-
+		elif file_explorer.get_meta("is_screenshot_mini", false):
 			var minicamera_img := minicamera_viewport.get_texture().get_image()
-			path = path.replace(".png", "_minicamera.png")
 			minicamera_img.save_png(path)
 			print("Minicamera screenshot saved to: ", path)
 		else:
@@ -260,3 +268,55 @@ func _on_change_camera_btn_pressed() -> void:
 
 func _on_quit_btn_pressed() -> void:
 	get_tree().quit()
+
+
+func _on_settings_btn_pressed() -> void:
+	if not $Navbar/ModelBtn.button_pressed:
+		return
+	if not $Navbar/SettingsBtn.button_pressed:
+		return
+	print("Enabling settings tab, disabling model tab")
+	$Navbar/ModelBtn.button_pressed = false
+	var model_tab_nodes := get_tree().get_nodes_in_group("model_tab")
+	for node in model_tab_nodes:
+		node.visible = false
+	var settings_tab_nodes := get_tree().get_nodes_in_group("settings_tab")
+	for node in settings_tab_nodes:
+		node.visible = true
+
+
+func _on_model_btn_pressed() -> void:
+	if not $Navbar/SettingsBtn.button_pressed:
+		return
+	print("Enabling model tab, disabling settings tab")
+	$Navbar/SettingsBtn.button_pressed = false
+	var model_tab_nodes := get_tree().get_nodes_in_group("model_tab")
+	for node in model_tab_nodes:
+		node.visible = true
+	var settings_tab_nodes := get_tree().get_nodes_in_group("settings_tab")
+	for node in settings_tab_nodes:
+		node.visible = false
+func _on_navbar_tab_changed(tab: int) -> void:
+	match tab:
+		0:
+			var model_tab_nodes := get_tree().get_nodes_in_group("model_tab")
+			for node in model_tab_nodes:
+				node.visible = false
+			var settings_tab_nodes := get_tree().get_nodes_in_group("settings_tab")
+			for node in settings_tab_nodes:
+				node.visible = true
+		1:
+			var model_tab_nodes := get_tree().get_nodes_in_group("model_tab")
+			for node in model_tab_nodes:
+				node.visible = true
+			var settings_tab_nodes := get_tree().get_nodes_in_group("settings_tab")
+			for node in settings_tab_nodes:
+				node.visible = false
+
+
+func _on_toggle_date_btn_pressed() -> void:
+	Util.date_label.visible = not Util.date_label.visible
+
+
+func _on_toggle_transparency_toggled(toggled_on: bool) -> void:
+	$/root/Hud/Viewport/Panel/OverlayImg.visible = toggled_on

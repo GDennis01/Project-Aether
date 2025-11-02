@@ -64,3 +64,11 @@ func _on_next_date_btn_pressed() -> void:
 
 func _on_prev_date_btn_pressed() -> void:
 	get_tree().call_group("switch_date", "switch_date_prev_date")
+
+
+func _on_prev_date_full_btn_pressed() -> void:
+	get_tree().call_group("switch_date", "switch_date_first_date")
+
+
+func _on_next_date_full_btn_pressed() -> void:
+	get_tree().call_group("switch_date", "switch_date_last_date")

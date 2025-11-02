@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://bwt7dtbn7pn3c"]
+[gd_scene load_steps=35 format=3 uid="uid://bwt7dtbn7pn3c"]
 
 [ext_resource type="Script" uid="uid://bmle6k05e5fff" path="res://scripts/hud.gd" id="1_moku2"]
 [ext_resource type="Script" uid="uid://bwvqb33hu6cxk" path="res://scripts/navbar.gd" id="1_r4m0t"]
@@ -21,12 +21,35 @@
 [ext_resource type="Script" uid="uid://ctb74i43u0sru" path="res://scripts/camera/free_roam_camera.gd" id="11_0h1do"]
 [ext_resource type="Script" uid="uid://cxp45je7onc6p" path="res://scripts/camera/mini_camera.gd" id="13_4d46k"]
 [ext_resource type="Texture2D" uid="uid://bu03bnee16tf7" path="res://asset/left_arrow.png" id="13_qmm8d"]
+[ext_resource type="Texture2D" uid="uid://dbn53fyv3ud31" path="res://asset/left_arrow_full.png" id="14_b6swc"]
 [ext_resource type="Texture2D" uid="uid://u8jxl6s6ohd5" path="res://asset/right_arrow.png" id="14_t0png"]
 [ext_resource type="Script" uid="uid://dw88mjhs2jyww" path="res://scripts/jpl_tab.gd" id="16_gmc6u"]
+[ext_resource type="Texture2D" uid="uid://bhtflu2su42h4" path="res://asset/right_arrow_full.png" id="17_27rlx"]
 [ext_resource type="Texture2D" uid="uid://dgtsycgiab1gq" path="res://asset/search_icon.png" id="17_d5po8"]
 [ext_resource type="Script" uid="uid://cvmrw32h1bvjg" path="res://addons/calendar_button/scripts/calendar_script.gd" id="17_pkwgd"]
 [ext_resource type="Texture2D" uid="uid://hojlochig6h1" path="res://asset/Calendar32x32NP.png" id="18_d5po8"]
 [ext_resource type="Texture2D" uid="uid://cpx74l1o5t2j" path="res://asset/Calendar32x32.png" id="19_7yoph"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qmm8d"]
+bg_color = Color(0, 0.286, 0.33, 1)
+border_width_left = 2
+border_width_bottom = 2
+border_color = Color(0.11, 0.11, 0.11, 1)
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+corner_detail = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b6swc"]
+resource_local_to_scene = true
+bg_color = Color(0, 0.286275, 0.329412, 1)
+border_width_left = 1
+border_width_bottom = 1
+border_color = Color(0, 0.112667, 0.13, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pkwgd"]
 bg_color = Color(0, 0.424667, 0.49, 1)
@@ -63,14 +86,49 @@ anchor_right = 1.005
 anchor_bottom = 1.0
 offset_left = -24.0
 offset_top = -16.0
-offset_right = 95.35
-offset_bottom = 92.0
+offset_right = 22.4
+offset_bottom = 34.0
 focus_mode = 2
 color = Color(0, 0.210733, 0.213576, 1)
 
 [node name="Body" type="CanvasLayer" parent="." groups=["disable", "enable"]]
 layer = 3
 script = ExtResource("1_r4m0t")
+
+[node name="ModelPanel" type="Panel" parent="Body"]
+z_index = -1
+anchors_preset = -1
+anchor_left = 0.00677083
+anchor_top = -0.208738
+anchor_right = 0.280266
+anchor_bottom = 0.680379
+offset_left = 1.0
+offset_top = 258.0
+offset_right = 57.89
+offset_bottom = 300.21
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_qmm8d")
+metadata/_edit_use_anchors_ = true
+
+[node name="Navbar" type="TabContainer" parent="Body"]
+offset_left = 32.0
+offset_top = 8.0
+offset_right = 204.0
+offset_bottom = 48.0
+theme_override_colors/font_selected_color = Color(1, 1, 1, 1)
+theme_override_styles/panel = SubResource("StyleBoxFlat_b6swc")
+current_tab = 0
+
+[node name="Settings" type="TabBar" parent="Body/Navbar"]
+layout_mode = 2
+focus_mode = 0
+metadata/_tab_index = 0
+
+[node name="Model" type="TabBar" parent="Body/Navbar"]
+visible = false
+layout_mode = 2
+focus_mode = 0
+metadata/_tab_index = 1
 
 [node name="TabButtons" type="Control" parent="Body"]
 z_index = 2
@@ -87,7 +145,147 @@ grow_horizontal = 2
 mouse_filter = 2
 metadata/_edit_use_anchors_ = true
 
+[node name="RunModelLabel" type="Label" parent="Body/TabButtons" groups=["model_tab"]]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.842525
+anchor_top = 16.6525
+anchor_right = 0.885771
+anchor_bottom = 17.1398
+text = "Run Model"
+metadata/_edit_use_anchors_ = true
+
+[node name="RunModelBtn" type="Panel" parent="Body/TabButtons" groups=["model_tab"]]
+visible = false
+z_index = -2
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 120.966
+anchor_top = 77.4549
+anchor_right = 145.589
+anchor_bottom = 93.7315
+offset_left = -230603.0
+offset_top = -2844.87
+offset_right = -277530.0
+offset_bottom = -3507.13
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_pkwgd")
+metadata/_edit_use_anchors_ = true
+
+[node name="ToggleSunBtn" type="Button" parent="Body/TabButtons" groups=["model_tab"]]
+visible = false
+layout_mode = 2
+offset_left = 624.067
+offset_top = 932.923
+offset_right = 664.067
+offset_bottom = 972.923
+tooltip_text = "Toggle Sun Axis"
+focus_mode = 0
+icon = ExtResource("4_el1dq")
+
+[node name="ToggleYBtn" type="Button" parent="Body/TabButtons" groups=["model_tab"]]
+visible = false
+layout_mode = 2
+offset_left = 751.067
+offset_top = 932.923
+offset_right = 791.067
+offset_bottom = 972.923
+tooltip_text = "Toggle Z Axis"
+focus_mode = 0
+icon = ExtResource("4_65nxt")
+
+[node name="ToggleAxesBtn" type="Button" parent="Body/TabButtons" groups=["model_tab"]]
+visible = false
+layout_mode = 2
+offset_left = 687.067
+offset_top = 932.923
+offset_right = 727.067
+offset_bottom = 972.923
+tooltip_text = "Toggle X and Y Axes"
+focus_mode = 0
+icon = ExtResource("5_el1dq")
+
+[node name="ToggleDateBtn" type="Button" parent="Body/TabButtons" groups=["model_tab"]]
+visible = false
+layout_mode = 0
+offset_left = 815.0
+offset_top = 933.0
+offset_right = 855.0
+offset_bottom = 973.0
+focus_mode = 0
+icon = ExtResource("18_d5po8")
+
+[node name="SaveSimBtn" type="Button" parent="Body/TabButtons" groups=["model_tab"]]
+visible = false
+layout_mode = 2
+anchor_left = 0.820641
+anchor_top = 18.4166
+anchor_right = 0.976953
+anchor_bottom = 19.272
+focus_mode = 0
+text = "Save Image"
+metadata/_edit_use_anchors_ = true
+
+[node name="AnimationSlider" parent="Body/TabButtons" groups=["model_tab"] instance=ExtResource("3_gss2c")]
+visible = false
+layout_mode = 2
+anchors_preset = 0
+anchor_left = 0.853987
+anchor_top = 17.4788
+anchor_right = 0.945691
+anchor_bottom = 18.3263
+offset_right = 0.0
+size_flags_vertical = 1
+size_flags_stretch_ratio = 0.45
+num_steps = 500
+
+[node name="SaveNucleusBtn" type="Button" parent="Body/TabButtons" groups=["model_tab"]]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.820641
+anchor_top = 7.18563
+anchor_right = 0.977995
+anchor_bottom = 7.84859
+offset_top = 30.0
+offset_bottom = 30.0
+focus_mode = 0
+text = "Save Image"
+metadata/_edit_use_anchors_ = true
+
+[node name="SaveBtn" type="Button" parent="Body/TabButtons"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.137
+anchor_top = -0.478
+anchor_right = 0.137
+anchor_bottom = -0.478
+offset_left = -41.7028
+offset_top = 0.0116015
+offset_right = -1.70277
+offset_bottom = 40.0116
+tooltip_text = "Save the current configuration to a file"
+focus_mode = 0
+icon = ExtResource("4_cwdlq")
+
+[node name="LoadBtn" type="Button" parent="Body/TabButtons"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.163
+anchor_top = -0.478
+anchor_right = 0.163
+anchor_bottom = -0.478
+offset_left = -41.6028
+offset_top = 0.0116015
+offset_right = -1.6028
+offset_bottom = 40.0116
+tooltip_text = "Load a configuration from a file"
+focus_mode = 0
+icon = ExtResource("5_o6xly")
+
 [node name="ColorRect" type="ColorRect" parent="Body/TabButtons"]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.000114301
@@ -118,28 +316,33 @@ focus_mode = 0
 text = "Debug"
 
 [node name="CometBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
+visible = false
 z_index = 1
 layout_mode = 2
 focus_mode = 0
 text = "Comet"
 
 [node name="JetsBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
+visible = false
 layout_mode = 2
 focus_mode = 0
 text = "Jets"
 
 [node name="SimBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
+visible = false
 layout_mode = 2
 focus_mode = 0
 text = "Simulation
 "
 
 [node name="ScaleBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
+visible = false
 layout_mode = 2
 focus_mode = 0
 text = "Scale"
 
 [node name="JPLBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
+visible = false
 layout_mode = 2
 focus_mode = 0
 text = "JPL H."
@@ -149,12 +352,6 @@ layout_direction = 2
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.1
-
-[node name="AnimationSlider" parent="Body/TabButtons/ColorRect/HBoxContainer" instance=ExtResource("3_gss2c")]
-layout_mode = 2
-size_flags_vertical = 1
-size_flags_stretch_ratio = 0.45
-num_steps = 500
 
 [node name="TriggerRotBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 visible = false
@@ -168,33 +365,10 @@ layout_mode = 2
 focus_mode = 0
 text = "Reset Rotation"
 
-[node name="ScreenshotBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
-layout_mode = 2
-focus_mode = 0
-text = "Screenshot"
-
 [node name="ChangeCameraBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 layout_mode = 2
 focus_mode = 0
 text = "Change Camera"
-
-[node name="ToggleSunBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
-layout_mode = 2
-tooltip_text = "Toggle Sun Axis"
-focus_mode = 0
-icon = ExtResource("4_el1dq")
-
-[node name="ToggleYBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
-layout_mode = 2
-tooltip_text = "Toggle Z Axis"
-focus_mode = 0
-icon = ExtResource("4_65nxt")
-
-[node name="ToggleAxesBtn" type="Button" parent="Body/TabButtons/ColorRect/HBoxContainer"]
-layout_mode = 2
-tooltip_text = "Toggle X and Y Axes"
-focus_mode = 0
-icon = ExtResource("5_el1dq")
 
 [node name="Spacer" type="Control" parent="Body/TabButtons/ColorRect/HBoxContainer"]
 visible = false
@@ -239,10 +413,10 @@ script = ExtResource("3_136eg")
 layout_mode = 3
 anchor_top = 0.098
 anchor_bottom = 0.098
-offset_left = 43.0
-offset_top = -8.04
-offset_right = 237.0
-offset_bottom = 255.96
+offset_left = 45.0
+offset_top = -36.04
+offset_right = 239.0
+offset_bottom = 227.96
 size_flags_horizontal = 0
 mouse_filter = 2
 
@@ -705,47 +879,97 @@ metadata/_edit_use_anchors_ = true
 
 [node name="SwitchDate" type="Control" parent="Body/CometTab/Control"]
 layout_mode = 1
-anchor_left = 7.88144
-anchor_top = 1.27295
-anchor_right = 8.69588
-anchor_bottom = 1.42826
+anchor_left = 8.01546
+anchor_top = 1.51174
+anchor_right = 9.29381
+anchor_bottom = 1.72386
 metadata/_edit_use_anchors_ = true
-metadata/_edit_group_ = true
 
 [node name="CometPanel" type="Panel" parent="Body/CometTab/Control/SwitchDate"]
 z_index = -1
 layout_mode = 1
-offset_right = 154.0
-offset_bottom = 37.0
+offset_left = 32.0
+offset_top = 17.0
+offset_right = 224.0
+offset_bottom = 57.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_pkwgd")
+metadata/_edit_use_anchors_ = true
+
+[node name="ChangeDateLabel" type="Label" parent="Body/CometTab/Control/SwitchDate"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.194
+anchor_top = -0.125
+anchor_right = 0.194
+anchor_bottom = -0.125
+offset_left = 0.888
+offset_top = 3.0
+offset_right = 157.888
+offset_bottom = 26.0
+scale = Vector2(0.75, 0.75)
+text = "Change Date  / Hour"
+metadata/_edit_use_anchors_ = true
+
+[node name="PrevDateFullBtn" type="Button" parent="Body/CometTab/Control/SwitchDate"]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 25.1
+offset_right = 72.0
+offset_bottom = 49.1
+focus_mode = 0
+icon = ExtResource("14_b6swc")
+metadata/_edit_use_anchors_ = true
 
 [node name="PrevDateBtn" type="Button" parent="Body/CometTab/Control/SwitchDate"]
 layout_mode = 1
-offset_left = 1.35294
-offset_top = 0.764706
-offset_right = 23.3529
-offset_bottom = 38.7647
+anchors_preset = -1
+anchor_left = 0.062
+anchor_top = 0.44
+anchor_right = 0.062
+anchor_bottom = 0.44
+offset_left = 80.128
+offset_top = 0.02
+offset_right = 102.128
+offset_bottom = 27.02
 scale = Vector2(0.9, 0.9)
 focus_mode = 0
 icon = ExtResource("13_qmm8d")
+metadata/_edit_use_anchors_ = true
 
 [node name="NextDateBtn" type="Button" parent="Body/CometTab/Control/SwitchDate"]
 layout_mode = 1
-offset_left = 134.294
-offset_top = 0.764706
-offset_right = 156.294
-offset_bottom = 38.7647
+anchors_preset = -1
+anchor_left = 0.062
+anchor_top = 0.44
+anchor_right = 0.062
+anchor_bottom = 0.44
+offset_left = 125.128
+offset_top = 0.02
+offset_right = 147.128
+offset_bottom = 27.02
 scale = Vector2(0.9, 0.9)
 focus_mode = 0
 icon = ExtResource("14_t0png")
+metadata/_edit_use_anchors_ = true
+
+[node name="NextDateFullBtn" type="Button" parent="Body/CometTab/Control/SwitchDate"]
+layout_mode = 0
+offset_left = 184.0
+offset_top = 25.1
+offset_right = 206.0
+offset_bottom = 47.1
+focus_mode = 0
+icon = ExtResource("17_27rlx")
+metadata/_edit_use_anchors_ = true
 
 [node name="CurrDateLineEdit" type="LineEdit" parent="Body/CometTab/Control/SwitchDate"]
+visible = false
 layout_mode = 1
 offset_left = 22.0
 offset_top = 1.0
-offset_right = 172.0
-offset_bottom = 48.0
-scale = Vector2(0.745, 0.745)
+offset_right = 191.0
+offset_bottom = 41.0
+scale = Vector2(1.5, 1.5)
 text = "2025-Oct-16 23:00"
 editable = false
 
@@ -772,8 +996,8 @@ layout_mode = 3
 anchor_top = 0.0792079
 anchor_right = 0.00677083
 anchor_bottom = 0.090099
-offset_top = -8.0
-offset_bottom = -8.0
+offset_top = -40.0
+offset_bottom = -40.0
 mouse_filter = 2
 metadata/_edit_use_anchors_ = true
 
@@ -781,13 +1005,13 @@ metadata/_edit_use_anchors_ = true
 layout_mode = 1
 anchors_preset = -1
 anchor_left = -2.00672
-anchor_top = 13.297
-anchor_right = 0.887414
-anchor_bottom = 13.3993
-offset_left = 138.763
-offset_top = 473.768
-offset_right = 170.139
-offset_bottom = 495.643
+anchor_top = 13.8319
+anchor_right = 0.887435
+anchor_bottom = 13.9342
+offset_left = 140.763
+offset_top = 477.768
+offset_right = 172.139
+offset_bottom = 499.643
 text = "Dust Jets"
 metadata/_edit_use_anchors_ = true
 
@@ -799,8 +1023,8 @@ anchor_left = 1.84615
 anchor_top = 59.091
 anchor_right = 44.9231
 anchor_bottom = 84.6364
-offset_top = -4.0
-offset_bottom = -4.0
+offset_left = 2.0
+offset_right = 2.0
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_pkwgd")
 metadata/_edit_use_anchors_ = true
@@ -812,10 +1036,10 @@ anchor_left = 0.923
 anchor_top = 8.0
 anchor_right = 0.923
 anchor_bottom = 8.0
-offset_left = 24.001
-offset_top = 565.0
-offset_right = 51.001
-offset_bottom = 588.0
+offset_left = 26.001
+offset_top = 576.0
+offset_right = 53.001
+offset_bottom = 599.0
 text = "ID"
 
 [node name="SpeedLabel" type="Label" parent="Body/JetsTab/Control"]
@@ -825,10 +1049,10 @@ anchor_left = 2.538
 anchor_top = 8.0
 anchor_right = 2.538
 anchor_bottom = 8.0
-offset_left = 34.006
-offset_top = 565.0
-offset_right = 125.006
-offset_bottom = 588.0
+offset_left = 36.006
+offset_top = 576.0
+offset_right = 127.006
+offset_bottom = 599.0
 text = "Speed (m/s)"
 
 [node name="LatitudeLabel" type="Label" parent="Body/JetsTab/Control"]
@@ -838,10 +1062,10 @@ anchor_left = 7.769
 anchor_top = 8.0
 anchor_right = 7.769
 anchor_bottom = 8.0
-offset_left = 72.003
-offset_top = 565.0
-offset_right = 122.003
-offset_bottom = 588.0
+offset_left = 74.003
+offset_top = 576.0
+offset_right = 124.003
+offset_bottom = 599.0
 text = "Lat. (°)"
 
 [node name="LongitudeLabel" type="Label" parent="Body/JetsTab/Control"]
@@ -851,10 +1075,10 @@ anchor_left = 11.538
 anchor_top = 8.0
 anchor_right = 11.538
 anchor_bottom = 8.0
-offset_left = 91.006
-offset_top = 565.0
-offset_right = 155.006
-offset_bottom = 588.0
+offset_left = 93.006
+offset_top = 576.0
+offset_right = 157.006
+offset_bottom = 599.0
 text = "Long. (°)"
 
 [node name="DiffusionLabel" type="Label" parent="Body/JetsTab/Control"]
@@ -864,10 +1088,10 @@ anchor_left = 15.385
 anchor_top = 8.0
 anchor_right = 15.385
 anchor_bottom = 8.0
-offset_left = 120.995
-offset_top = 565.0
-offset_right = 191.995
-offset_bottom = 588.0
+offset_left = 122.995
+offset_top = 576.0
+offset_right = 193.995
+offset_bottom = 599.0
 text = "Diffus."
 
 [node name="ColorLabel" type="Label" parent="Body/JetsTab/Control"]
@@ -877,10 +1101,10 @@ anchor_left = 19.308
 anchor_top = 8.0
 anchor_right = 19.308
 anchor_bottom = 8.0
-offset_left = 130.996
-offset_top = 565.0
-offset_right = 172.996
-offset_bottom = 588.0
+offset_left = 132.996
+offset_top = 576.0
+offset_right = 174.996
+offset_bottom = 599.0
 text = "Color"
 
 [node name="ToggleLabel" type="Label" parent="Body/JetsTab/Control"]
@@ -890,10 +1114,10 @@ anchor_left = 22.154
 anchor_top = 8.0
 anchor_right = 22.154
 anchor_bottom = 8.0
-offset_left = 149.998
-offset_top = 565.0
-offset_right = 200.998
-offset_bottom = 588.0
+offset_left = 151.998
+offset_top = 576.0
+offset_right = 202.998
+offset_bottom = 599.0
 text = "Toggle"
 
 [node name="RemoveLabel" type="Label" parent="Body/JetsTab/Control"]
@@ -903,10 +1127,10 @@ anchor_left = 25.231
 anchor_top = 8.0
 anchor_right = 25.231
 anchor_bottom = 8.0
-offset_left = 175.997
-offset_top = 565.0
-offset_right = 238.997
-offset_bottom = 588.0
+offset_left = 177.997
+offset_top = 576.0
+offset_right = 240.997
+offset_bottom = 599.0
 text = "Remove"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Body/JetsTab/Control"]
@@ -916,15 +1140,19 @@ anchor_left = 16.6154
 anchor_top = 48.3636
 anchor_right = 19.6923
 anchor_bottom = 51.9999
+offset_left = 2.0
+offset_top = 4.0
+offset_right = 2.0
+offset_bottom = 4.0
 metadata/_edit_use_anchors_ = true
 
 [node name="JetTable" type="VBoxContainer" parent="Body/JetsTab/Control" node_paths=PackedStringArray("content_node", "scroll_container") groups=["jet_table", "load", "save"]]
 z_index = 1
 layout_mode = 2
-offset_left = 35.0
-offset_top = 679.0
-offset_right = 796.0
-offset_bottom = 714.0
+offset_left = 37.0
+offset_top = 691.0
+offset_right = 798.0
+offset_bottom = 726.0
 scale = Vector2(0.7, 0.7)
 script = ExtResource("4_136eg")
 content_node = NodePath("JetBodyScrollBar/JetBody")
@@ -955,16 +1183,48 @@ offset_right = 13.0
 offset_bottom = 11.0
 mouse_filter = 2
 
+[node name="ModelingLabel" type="Label" parent="Body/SimTab/Control"]
+layout_mode = 0
+offset_left = 1619.0
+offset_top = 629.0
+offset_right = 1785.0
+offset_bottom = 652.0
+text = "Modeling Parameters"
+
+[node name="ModelingParametersPanel" type="Panel" parent="Body/SimTab/Control"]
+z_index = -2
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 120.0
+anchor_top = 59.6364
+anchor_right = 145.231
+anchor_bottom = 73.3636
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_pkwgd")
+metadata/_edit_use_anchors_ = true
+
+[node name="CCDImagePanel" type="Panel" parent="Body/SimTab/Control"]
+z_index = -2
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 120.0
+anchor_top = 49.2727
+anchor_right = 145.231
+anchor_bottom = 55.7273
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_pkwgd")
+metadata/_edit_use_anchors_ = true
+
 [node name="NumRotationEdit" parent="Body/SimTab/Control" instance=ExtResource("6_oj5la")]
 layout_mode = 1
-anchor_left = 1.231
+anchor_left = 11.7695
 anchor_top = 13.091
-anchor_right = 1.231
+anchor_right = 11.7695
 anchor_bottom = 13.091
 offset_left = 1671.0
-offset_top = 399.999
+offset_top = 525.999
 offset_right = 1719.0
-offset_bottom = 430.999
+offset_bottom = 556.999
 text = "0"
 resize_type = &"num_rotation"
 lower_bound = 0.1
@@ -972,14 +1232,14 @@ higher_bound = -1.0
 
 [node name="JetRateEdit" parent="Body/SimTab/Control" instance=ExtResource("6_oj5la")]
 layout_mode = 1
-anchor_left = 1.231
-anchor_top = 16.727
-anchor_right = 1.231
-anchor_bottom = 16.727
+anchor_left = 11.8464
+anchor_top = 17.4543
+anchor_right = 11.8464
+anchor_bottom = 17.4543
 offset_left = 1670.0
-offset_top = 400.003
+offset_top = 526.003
 offset_right = 1718.0
-offset_bottom = 431.003
+offset_bottom = 557.003
 text = "0"
 resize_type = &"jet_rate"
 lower_bound = 0.5
@@ -987,10 +1247,14 @@ higher_bound = -1.0
 
 [node name="NPointsEdit" parent="Body/SimTab/Control" instance=ExtResource("6_oj5la")]
 layout_mode = 1
+anchor_left = 10.6923
+anchor_top = 1.45455
+anchor_right = 10.7256
+anchor_bottom = 1.48524
 offset_left = 1686.0
-offset_top = 624.0
+offset_top = 750.0
 offset_right = 1732.56
-offset_bottom = 653.911
+offset_bottom = 780.662
 text = "1"
 resize_type = &"n_points"
 lower_bound = 1.0
@@ -1004,56 +1268,46 @@ anchor_left = 38.1538
 anchor_top = 56.3636
 anchor_right = 43.6923
 anchor_bottom = 59.1818
+offset_left = 2.0
+offset_top = -28.0
+offset_right = 2.0
+offset_bottom = -28.0
 editable = false
 metadata/_edit_use_anchors_ = true
 
-[node name="OverlayImgPickerBtn" type="Button" parent="Body/SimTab/Control"]
+[node name="ToggleTransparency" type="CheckButton" parent="Body/SimTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 9.84615
-anchor_top = 32.0
-anchor_right = 18.8462
-anchor_bottom = 34.8182
-offset_left = 1534.0
-offset_top = 336.0
-offset_right = 1534.0
-offset_bottom = 336.0
+anchor_left = 140.231
+anchor_top = 49.5455
+anchor_right = 143.615
+anchor_bottom = 51.7273
 focus_mode = 0
-text = "Choose Image"
 metadata/_edit_use_anchors_ = true
 
-[node name="OverlayImgLineEdit" type="LineEdit" parent="Body/SimTab/Control"]
-visible = false
-layout_mode = 0
-anchor_left = 9.84615
-anchor_top = 32.0
-anchor_right = 19.0769
-anchor_bottom = 34.8182
-editable = false
-metadata/_edit_use_anchors_ = true
-
-[node name="DelOverlayImgBtn" type="Button" parent="Body/SimTab/Control"]
-visible = false
-layout_mode = 0
-anchor_left = 19.6923
-anchor_top = 32.0
-anchor_right = 22.1538
-anchor_bottom = 34.8182
-focus_mode = 0
-text = "X"
+[node name="ModelTransparencyLabel" type="Label" parent="Body/SimTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 122.154
+anchor_top = 51.6364
+anchor_right = 131.096
+anchor_bottom = 53.2045
+offset_right = 38.75
+offset_bottom = 5.75
+scale = Vector2(0.75, 0.75)
+text = "Model transparency"
 metadata/_edit_use_anchors_ = true
 
 [node name="TransparencySlider" type="HSlider" parent="Body/SimTab/Control"]
-visible = false
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 10.0
-anchor_top = 35.9091
-anchor_right = 22.2308
-anchor_bottom = 37.3636
+anchor_left = 121.923
+anchor_top = 53.3636
+anchor_right = 143.385
+anchor_bottom = 54.8182
 max_value = 1.0
 step = 0.01
-value = 0.5
+value = 1.0
 tick_count = 1
 metadata/_edit_use_anchors_ = true
 
@@ -1081,14 +1335,13 @@ anchor_left = 1.231
 anchor_top = 13.091
 anchor_right = 1.231
 anchor_bottom = 13.091
-offset_left = 1552.0
-offset_top = 399.999
-offset_right = 1685.0
-offset_bottom = 439.999
-scale = Vector2(0.7, 0.7)
+offset_left = 1558.0
+offset_top = 521.999
+offset_right = 1764.0
+offset_bottom = 561.999
 tooltip_text = "Number of rotations"
 mouse_filter = 0
-text = "Num. Rotations"
+text = "Number Nucleus rotations"
 vertical_alignment = 1
 
 [node name="JetRateLabel" type="Label" parent="Body/SimTab/Control"]
@@ -1098,24 +1351,22 @@ anchor_left = 1.231
 anchor_top = 16.727
 anchor_right = 1.231
 anchor_bottom = 16.727
-offset_left = 1552.0
-offset_top = 400.003
-offset_right = 1705.0
-offset_bottom = 440.003
-scale = Vector2(0.7, 0.7)
+offset_left = 1560.0
+offset_top = 529.003
+offset_right = 1733.0
+offset_bottom = 569.003
 tooltip_text = "Jet emission rate in minutes"
 mouse_filter = 0
-text = "Emission Rate (min)"
+text = "Integration step  (min)"
 vertical_alignment = 1
 
 [node name="NPointsLabel" type="Label" parent="Body/SimTab/Control"]
 layout_mode = 0
-offset_left = 1568.0
-offset_top = 629.0
-offset_right = 1722.0
-offset_bottom = 652.0
-scale = Vector2(0.7, 0.7)
-text = "N. Points (Diffusion)"
+offset_left = 1576.0
+offset_top = 770.0
+offset_right = 1813.0
+offset_bottom = 793.0
+text = "N. particles emitted per step"
 
 [node name="AccelValLabel" type="Label" parent="Body/SimTab/Control"]
 layout_mode = 1
@@ -1124,33 +1375,33 @@ anchor_left = 25.5384
 anchor_top = 58.8182
 anchor_right = 34.6
 anchor_bottom = 60.2818
-offset_top = -24.0
-offset_right = 28.2
-offset_bottom = -17.1
+offset_left = 2.0
+offset_top = -52.0
+offset_right = 30.2
+offset_bottom = -45.1
 text = "Acceleration (m/s²)"
 metadata/_edit_use_anchors_ = true
 
 [node name="OverlayImgLabel" type="Label" parent="Body/SimTab/Control"]
+visible = false
 layout_mode = 0
 offset_left = 1544.0
-offset_top = 691.0
+offset_top = 537.0
 offset_right = 1656.0
-offset_bottom = 714.0
-scale = Vector2(0.7, 0.7)
+offset_bottom = 560.0
 text = "Overlay Image"
 
-[node name="TransparencyLabel" type="Label" parent="Body/SimTab/Control"]
-visible = false
+[node name="CCDImgLabel" type="Label" parent="Body/SimTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.692308
-anchor_top = 35.9091
-anchor_right = 6.4
-anchor_bottom = 37.4364
-offset_right = 31.8
-offset_bottom = 7.2
-scale = Vector2(0.7, 0.7)
-text = "Transparency"
+anchor_left = 122.154
+anchor_top = 49.7273
+anchor_right = 128.269
+anchor_bottom = 51.3637
+offset_right = 26.5
+offset_bottom = 6.00007
+scale = Vector2(0.75, 0.75)
+text = "CCD Image"
 metadata/_edit_use_anchors_ = true
 
 [node name="KmScaleEdit" parent="Body/SimTab/Control" instance=ExtResource("6_oj5la")]
@@ -1294,8 +1545,10 @@ anchor_left = 25.4615
 anchor_top = 27.9091
 anchor_right = 43.923
 anchor_bottom = 30.8182
-offset_top = -35.0
-offset_bottom = -35.0
+offset_left = 2.0
+offset_top = -63.0
+offset_right = 2.0
+offset_bottom = -63.0
 label = &"Rotation Period"
 resize_type = &"frequency"
 maximum_value = 1000.0
@@ -1303,25 +1556,82 @@ starting_value = 0.0
 
 [node name="ScaleTab" type="CanvasLayer" parent="Body" groups=["camera", "delta_au", "load", "save", "settings_tab", "tel_image_size", "tel_resolution", "window_fov", "window_size"]]
 layer = 3
-visible = false
 script = ExtResource("9_0h1do")
 
 [node name="Control" type="Control" parent="Body/ScaleTab"]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 51.0
+offset_top = 712.0
+offset_right = 91.0
+offset_bottom = 752.0
+
+[node name="TableSettingsPanel" type="Panel" parent="Body/ScaleTab/Control" groups=["settings_tab"]]
+z_index = -1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.723471
+anchor_top = 1.00223
+anchor_right = 0.723471
+anchor_bottom = 1.15223
+offset_left = 0.0611798
+offset_top = -0.0891997
+offset_right = 408.061
+offset_bottom = 189.911
+theme_override_styles/panel = SubResource("StyleBoxFlat_pkwgd")
+metadata/_edit_use_anchors_ = true
+
+[node name="OverlayImgPickerBtn" type="Button" parent="Body/ScaleTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 9.84615
+anchor_top = 32.0
+anchor_right = 18.8462
+anchor_bottom = 34.8182
+offset_left = -132.846
+offset_top = -1268.0
+offset_right = -348.848
+offset_bottom = -1348.73
+focus_mode = 0
+text = "Choose Image"
+
+[node name="OverlayImgLineEdit" type="LineEdit" parent="Body/ScaleTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 120.815
+anchor_top = 50.5364
+anchor_right = 124.815
+anchor_bottom = 51.3364
+offset_left = -4779.62
+offset_top = -2009.45
+offset_right = -4779.62
+offset_bottom = -2009.45
+editable = false
+
+[node name="DelOverlayImgBtn" type="Button" parent="Body/ScaleTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 130.662
+anchor_top = 50.5614
+anchor_right = 131.462
+anchor_bottom = 51.3364
+offset_left = -5045.46
+offset_top = -2009.45
+offset_right = -5045.46
+offset_bottom = -2009.45
+focus_mode = 0
+text = "X"
+metadata/_edit_use_anchors_ = true
 
 [node name="DeltaAULabel" type="Label" parent="Body/ScaleTab/Control"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.4
-anchor_top = 18.0
+anchor_top = 1.4
 anchor_right = 2.5525
-anchor_bottom = 18.4025
+anchor_bottom = 1.8025
 offset_right = 36.9
 offset_bottom = 6.9
-scale = Vector2(0.7, 0.7)
 tooltip_text = "arcsec/pixel"
 mouse_filter = 0
 text = "Delta (AU) :"
@@ -1329,10 +1639,10 @@ metadata/_edit_use_anchors_ = true
 
 [node name="DeltaAUEdit" parent="Body/ScaleTab/Control" instance=ExtResource("6_oj5la")]
 layout_mode = 1
-anchor_left = 4.8
-anchor_top = 17.8
-anchor_right = 6.2
-anchor_bottom = 18.575
+anchor_left = 6.8
+anchor_top = 1.2
+anchor_right = 8.2
+anchor_bottom = 1.975
 resize_type = &"delta_au"
 higher_bound = 1000.0
 
@@ -1340,12 +1650,11 @@ higher_bound = 1000.0
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.4
-anchor_top = 19.0
+anchor_top = 2.4
 anchor_right = 4.3375
-anchor_bottom = 19.4025
+anchor_bottom = 2.8025
 offset_right = 67.5
 offset_bottom = 6.9
-scale = Vector2(0.7, 0.7)
 tooltip_text = "arcsec/pixel"
 mouse_filter = 0
 text = "Tel. Resolution (arcsec/pixel):"
@@ -1353,10 +1662,10 @@ metadata/_edit_use_anchors_ = true
 
 [node name="TelResolutionEdit" parent="Body/ScaleTab/Control" instance=ExtResource("6_oj5la")]
 layout_mode = 1
-anchor_left = 4.8
-anchor_top = 18.8
-anchor_right = 6.2
-anchor_bottom = 19.575
+anchor_left = 6.8
+anchor_top = 2.2
+anchor_right = 8.2
+anchor_bottom = 2.975
 resize_type = &"tel_resolution"
 higher_bound = 1000.0
 
@@ -1364,12 +1673,11 @@ higher_bound = 1000.0
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.4
-anchor_top = 20.0
+anchor_top = 3.4
 anchor_right = 3.48
-anchor_bottom = 20.4025
+anchor_bottom = 3.8025
 offset_right = 52.8
 offset_bottom = 6.9
-scale = Vector2(0.7, 0.7)
 tooltip_text = "Telescope image size in pixels"
 mouse_filter = 0
 text = "Tel. Image size (pixels):"
@@ -1377,10 +1685,10 @@ metadata/_edit_use_anchors_ = true
 
 [node name="TelImageSizeEdit" parent="Body/ScaleTab/Control" instance=ExtResource("6_oj5la")]
 layout_mode = 1
-anchor_left = 4.8
-anchor_top = 19.8
-anchor_right = 6.2
-anchor_bottom = 20.575
+anchor_left = 6.8
+anchor_top = 3.2
+anchor_right = 8.2
+anchor_bottom = 3.975
 text = "0"
 resize_type = &"tel_image_size"
 lower_bound = 100.0
@@ -1440,22 +1748,21 @@ no_decimal = true
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.4
-anchor_top = 21.2
+anchor_top = 4.4
 anchor_right = 3.0425
-anchor_bottom = 21.6025
+anchor_bottom = 4.8025
 offset_right = 45.3
 offset_bottom = 6.9
-scale = Vector2(0.7, 0.7)
 text = "Tel. Res. (Km/Pixel):"
 metadata/_edit_use_anchors_ = true
 
 [node name="TelResLineEdit" type="LineEdit" parent="Body/ScaleTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 4.8
-anchor_top = 21.0
-anchor_right = 7.4
-anchor_bottom = 21.775
+anchor_left = 6.8
+anchor_top = 4.2
+anchor_right = 9.4
+anchor_bottom = 4.975
 focus_mode = 0
 theme_override_constants/minimum_character_width = 0
 editable = false
@@ -1465,47 +1772,33 @@ metadata/_edit_use_anchors_ = true
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.4
-anchor_top = 22.0
-anchor_right = 5.9525
-anchor_bottom = 22.4025
+anchor_top = 5.1
+anchor_right = 6.7525
+anchor_bottom = 5.5025
 offset_right = -29.1
 offset_bottom = 6.9
-scale = Vector2(0.7, 0.7)
-text = "FOV Zero Zoom (Arcmin):"
+text = "FOV Zero Zoom (Arcmin/Km):"
 metadata/_edit_use_anchors_ = true
 
 [node name="FOVArcminLineEdit" type="LineEdit" parent="Body/ScaleTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 4.8
-anchor_top = 21.8
-anchor_right = 7.4
-anchor_bottom = 22.575
+anchor_left = 6.8
+anchor_top = 5.0
+anchor_right = 9.4
+anchor_bottom = 5.775
 focus_mode = 0
 theme_override_constants/minimum_character_width = 0
 editable = false
 metadata/_edit_use_anchors_ = true
 
-[node name="FOVKmLabel" type="Label" parent="Body/ScaleTab/Control"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.4
-anchor_top = 22.8
-anchor_right = 5.4275
-anchor_bottom = 23.2025
-offset_right = -38.1
-offset_bottom = 6.9
-scale = Vector2(0.7, 0.7)
-text = "FOV Zero Zoom (Km):"
-metadata/_edit_use_anchors_ = true
-
 [node name="FOVKmLineEdit" type="LineEdit" parent="Body/ScaleTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 4.8
-anchor_top = 22.6
-anchor_right = 7.4
-anchor_bottom = 23.375
+anchor_left = 9.725
+anchor_top = 5.0
+anchor_right = 12.325
+anchor_bottom = 5.775
 focus_mode = 0
 theme_override_constants/minimum_character_width = 0
 editable = false
@@ -1515,22 +1808,21 @@ metadata/_edit_use_anchors_ = true
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.4
-anchor_top = 23.6
+anchor_top = 6.4
 anchor_right = 3.3225
-anchor_bottom = 24.0025
+anchor_bottom = 6.8025
 offset_right = 50.1
 offset_bottom = 6.9
-scale = Vector2(0.7, 0.7)
 text = "FOV Curr. Zoom (Km):"
 metadata/_edit_use_anchors_ = true
 
 [node name="FOVCurrZoomKmLineEdit" type="LineEdit" parent="Body/ScaleTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 4.8
-anchor_top = 23.4
-anchor_right = 7.4
-anchor_bottom = 24.175
+anchor_left = 6.8
+anchor_top = 6.2
+anchor_right = 9.4
+anchor_bottom = 6.975
 editable = false
 metadata/_edit_use_anchors_ = true
 
@@ -1557,7 +1849,6 @@ editable = false
 
 [node name="JPLTab" type="CanvasLayer" parent="Body" groups=["alpha_p", "delta_p", "settings_tab", "step_size"]]
 layer = 3
-visible = false
 script = ExtResource("16_gmc6u")
 
 [node name="Control" type="Control" parent="Body/JPLTab"]
@@ -1572,43 +1863,40 @@ metadata/_edit_use_anchors_ = true
 [node name="CometSearchLabel" type="Label" parent="Body/JPLTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.0274726
-anchor_top = 0.0550965
-anchor_right = 0.289561
-anchor_bottom = 0.112121
-offset_top = -16.0
-offset_right = 10.6
-offset_bottom = -13.7
-scale = Vector2(0.9, 0.9)
+anchor_left = 0.136
+anchor_top = -0.064
+anchor_right = 0.136
+anchor_bottom = -0.064
+offset_left = 24.9718
+offset_top = 5.43769
+offset_right = 173.292
+offset_bottom = 29.4937
 text = "Comet Name:"
-metadata/_edit_use_anchors_ = true
 
 [node name="SearchBar" type="LineEdit" parent="Body/JPLTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.027
-anchor_top = 0.077
-anchor_right = 0.027
-anchor_bottom = 0.077
-offset_left = 128.172
-offset_top = -23.951
-offset_right = 244.172
-offset_bottom = 7.049
-scale = Vector2(0.85, 0.85)
+anchor_left = 0.136
+anchor_top = -0.064
+anchor_right = 0.136
+anchor_bottom = -0.064
+offset_left = 192.536
+offset_top = 5.41728
+offset_right = 313.536
+offset_bottom = 36.4173
 text = "C/2013 R1"
 
 [node name="SearchBtn" type="Button" parent="Body/JPLTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.0352418
-anchor_top = 0.0742452
-anchor_right = 0.0352418
-anchor_bottom = 0.0742452
-offset_left = 246.172
-offset_top = -23.951
-offset_right = 278.172
-offset_bottom = 8.0491
-scale = Vector2(0.85, 0.85)
+anchor_left = 0.136
+anchor_top = -0.064
+anchor_right = 0.136
+anchor_bottom = -0.064
+offset_left = 339.226
+offset_top = 4.7923
+offset_right = 371.226
+offset_bottom = 36.7924
 focus_mode = 0
 icon = ExtResource("17_d5po8")
 metadata/_edit_use_anchors_ = true
@@ -1616,28 +1904,28 @@ metadata/_edit_use_anchors_ = true
 [node name="StartDateLabel" type="Label" parent="Body/JPLTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.0274726
-anchor_top = 0.16529
-anchor_right = 0.232693
-anchor_bottom = 0.222315
-offset_top = -16.0
-offset_right = 8.3
-offset_bottom = -13.7
-scale = Vector2(0.9, 0.9)
+anchor_left = 0.136
+anchor_top = -0.064
+anchor_right = 0.136
+anchor_bottom = -0.064
+offset_left = 24.9718
+offset_top = 58.4787
+offset_right = 141.11
+offset_bottom = 82.5349
 text = "Start Date:"
 metadata/_edit_use_anchors_ = true
 
 [node name="StartCalendarBtn" type="TextureButton" parent="Body/JPLTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.027
-anchor_top = 0.178697
-anchor_right = 0.027
-anchor_bottom = 0.178697
-offset_left = 248.172
-offset_top = -23.8669
-offset_right = 280.172
-offset_bottom = 8.1331
+anchor_left = 0.136
+anchor_top = -0.064
+anchor_right = 0.136
+anchor_bottom = -0.064
+offset_left = 340.895
+offset_top = 54.7268
+offset_right = 372.895
+offset_bottom = 86.7268
 toggle_mode = true
 texture_normal = ExtResource("18_d5po8")
 texture_pressed = ExtResource("19_7yoph")
@@ -1652,53 +1940,56 @@ metadata/_edit_use_anchors_ = true
 [node name="StartDateLineEdit" type="LineEdit" parent="Body/JPLTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.027
-anchor_top = 0.184206
-anchor_right = 0.0407363
-anchor_bottom = 0.184206
-offset_left = 128.172
-offset_top = -22.8669
-offset_right = 241.172
-offset_bottom = 8.13314
-scale = Vector2(0.85, 0.85)
+anchor_left = 0.136
+anchor_top = -0.064
+anchor_right = 0.136
+anchor_bottom = -0.064
+offset_left = 189.536
+offset_top = 55.4173
+offset_right = 313.536
+offset_bottom = 86.4173
 focus_mode = 0
 editable = false
 metadata/_edit_use_anchors_ = true
 
 [node name="ClearStartDateBtn" type="Button" parent="Body/JPLTab/Control"]
-layout_mode = 0
-offset_left = 215.0
-offset_top = 47.0
-offset_right = 249.0
-offset_bottom = 78.0
-scale = Vector2(0.65, 0.65)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.136
+anchor_top = -0.064
+anchor_right = 0.136
+anchor_bottom = -0.064
+offset_left = 273.536
+offset_top = 55.4173
+offset_right = 307.536
+offset_bottom = 86.4173
 focus_mode = 0
 text = "X"
 
 [node name="EndDateLabel" type="Label" parent="Body/JPLTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.0274726
-anchor_top = 0.31956
-anchor_right = 0.212913
-anchor_bottom = 0.376585
-offset_top = -32.0
-offset_right = 7.5
-offset_bottom = -29.7
-scale = Vector2(0.9, 0.9)
+anchor_left = 0.136
+anchor_top = -0.064
+anchor_right = 0.136
+anchor_bottom = -0.064
+offset_left = 24.9718
+offset_top = 106.336
+offset_right = 129.916
+offset_bottom = 130.392
 text = "End Date:"
 
 [node name="EndCalendarBtn" type="TextureButton" parent="Body/JPLTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.027
-anchor_top = 0.342
-anchor_right = 0.027
-anchor_bottom = 0.342
-offset_left = 248.172
-offset_top = -43.1457
-offset_right = 280.172
-offset_bottom = -11.1457
+anchor_left = 0.136
+anchor_top = -0.064
+anchor_right = 0.136
+anchor_bottom = -0.064
+offset_left = 341.895
+offset_top = 106.751
+offset_right = 373.895
+offset_bottom = 138.751
 toggle_mode = true
 texture_normal = ExtResource("18_d5po8")
 texture_pressed = ExtResource("19_7yoph")
@@ -1712,88 +2003,105 @@ metadata/_custom_type_script = "uid://cvmrw32h1bvjg"
 [node name="EndDateLineEdit" type="LineEdit" parent="Body/JPLTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.027
-anchor_top = 0.342
-anchor_right = 0.0352418
-anchor_bottom = 0.342
-offset_left = 128.172
-offset_top = -39.1457
-offset_right = 243.172
-offset_bottom = -8.14565
-scale = Vector2(0.85, 0.85)
+anchor_left = 0.136
+anchor_top = -0.064
+anchor_right = 0.136
+anchor_bottom = -0.064
+offset_left = 189.536
+offset_top = 107.417
+offset_right = 313.536
+offset_bottom = 138.417
 focus_mode = 0
 editable = false
 metadata/_edit_use_anchors_ = true
 
 [node name="ClearEndDateBtn" type="Button" parent="Body/JPLTab/Control"]
-layout_mode = 0
-offset_left = 214.75
-offset_top = 87.55
-offset_right = 248.75
-offset_bottom = 118.55
-scale = Vector2(0.65, 0.65)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.136
+anchor_top = -0.064
+anchor_right = 0.136
+anchor_bottom = -0.064
+offset_left = 274.286
+offset_top = 106.967
+offset_right = 308.286
+offset_bottom = 137.967
 focus_mode = 0
 text = "X"
 
 [node name="StepSizeLabel" type="Label" parent="Body/JPLTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.0274726
-anchor_top = 0.341599
-anchor_right = 0.225275
-anchor_bottom = 0.406061
-offset_right = 8.0
-offset_bottom = 2.6
-scale = Vector2(0.9, 0.9)
+anchor_left = 0.136
+anchor_top = -0.064
+anchor_right = 0.136
+anchor_bottom = -0.064
+offset_left = 24.9718
+offset_top = 156.744
+offset_right = 136.912
+offset_bottom = 183.938
 text = "Step Size (h):"
 metadata/_edit_use_anchors_ = true
 
 [node name="StepSizeSanEdit" parent="Body/JPLTab/Control" instance=ExtResource("6_oj5la")]
 layout_mode = 1
-anchor_left = 0.027
-anchor_top = 0.364
-anchor_right = 0.027
-anchor_bottom = 0.364
-offset_left = 184.172
-offset_top = -8.13185
-offset_right = 233.172
-offset_bottom = 22.8682
-scale = Vector2(0.85, 0.85)
+anchor_left = 0.136
+anchor_top = -0.064
+anchor_right = 0.136
+anchor_bottom = -0.064
+offset_left = 264.895
+offset_top = 155.159
+offset_right = 313.895
+offset_bottom = 186.159
 text = "24"
 resize_type = &"step_size"
 higher_bound = 1000.0
 no_decimal = true
 
 [node name="HSeparator" type="HSeparator" parent="Body/JPLTab/Control"]
-layout_mode = 0
-offset_left = 11.0
-offset_top = 158.0
-offset_right = 234.0
-offset_bottom = 162.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.136
+anchor_top = -0.064
+anchor_right = 0.136
+anchor_bottom = -0.064
+offset_left = 3.53571
+offset_top = 206.417
+offset_right = 279.536
+offset_bottom = 210.417
 
 [node name="JPLTablePanel" type="Panel" parent="Body/JPLTab/Control"]
 z_index = -1
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.00549451
-anchor_top = 0.716254
-anchor_right = 1.00275
-anchor_bottom = 1.75207
-offset_top = -72.0
-offset_bottom = -72.0
+anchor_left = 1.20653
+anchor_top = -0.12057
+anchor_right = 3.5587
+anchor_bottom = 2.39306
 theme_override_styles/panel = SubResource("StyleBoxFlat_pkwgd")
 metadata/_edit_use_anchors_ = true
+
+[node name="HSeparator2" type="HSeparator" parent="Body/JPLTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.151
+anchor_top = 1.09
+anchor_right = 0.151
+anchor_bottom = 1.09
+offset_left = -5.34638
+offset_top = -1.85672
+offset_right = 270.654
+offset_bottom = 2.14328
 
 [node name="EphemScroll" type="ScrollContainer" parent="Body/JPLTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.0549452
-anchor_top = 0.93664
-anchor_right = 0.937502
-anchor_bottom = 1.70221
-offset_top = -72.0
-offset_right = 60.75
-offset_bottom = -21.9
+anchor_left = 1.28836
+anchor_top = -0.0131055
+anchor_right = 3.48991
+anchor_bottom = 2.197
+offset_right = 204.15
+offset_bottom = 148.8
 scale = Vector2(0.85, 0.85)
 metadata/_edit_use_anchors_ = true
 
@@ -1801,58 +2109,154 @@ metadata/_edit_use_anchors_ = true
 layout_mode = 2
 metadata/_edit_use_anchors_ = true
 
+[node name="OrbitalElemLabel" type="Label" parent="Body/JPLTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.166
+anchor_top = 0.5
+anchor_right = 0.166
+anchor_bottom = 0.5
+offset_left = 96.1099
+offset_top = -6.04569
+offset_right = 226.11
+offset_bottom = 16.9543
+text = "Orbital Elements"
+metadata/_edit_use_anchors_ = true
+
+[node name="ECLabel" type="Label" parent="Body/JPLTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.136
+anchor_top = 0.565
+anchor_right = 0.136
+anchor_bottom = 0.565
+offset_left = 74.384
+offset_top = -2.16807
+offset_right = 129.467
+offset_bottom = 21.8295
+text = "EC (e)"
+metadata/_edit_use_anchors_ = true
+
+[node name="QRLabel" type="Label" parent="Body/JPLTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.136
+anchor_top = 0.565
+anchor_right = 0.136
+anchor_bottom = 0.565
+offset_left = 270.72
+offset_top = -2.73367
+offset_right = 330.72
+offset_bottom = 21.2639
+text = "QR (AU)"
+metadata/_edit_use_anchors_ = true
+
+[node name="TPLabel" type="Label" parent="Body/JPLTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.136
+anchor_top = 0.565
+anchor_right = 0.136
+anchor_bottom = 0.565
+offset_left = 73.874
+offset_top = 61.1555
+offset_right = 128.957
+offset_bottom = 85.153
+text = "TP (JD)"
+metadata/_edit_use_anchors_ = true
+
 [node name="OMLabel" type="Label" parent="Body/JPLTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.137363
-anchor_top = 0.738293
-anchor_right = 0.23077
-anchor_bottom = 0.79215
-offset_top = -72.0
-offset_right = 5.99998
-offset_bottom = -68.55
-scale = Vector2(0.85, 0.85)
+anchor_left = 0.136
+anchor_top = 0.565
+anchor_right = 0.136
+anchor_bottom = 0.565
+offset_left = 273.716
+offset_top = 61.1147
+offset_right = 328.799
+offset_bottom = 85.1123
 text = "OM (Ω)"
 metadata/_edit_use_anchors_ = true
 
 [node name="WLabel" type="Label" parent="Body/JPLTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.467034
-anchor_top = 0.738293
-anchor_right = 0.560441
-anchor_bottom = 0.79215
-offset_top = -72.0
-offset_right = 5.99998
-offset_bottom = -68.55
-scale = Vector2(0.85, 0.85)
+anchor_left = 0.136
+anchor_top = 0.565
+anchor_right = 0.136
+anchor_bottom = 0.565
+offset_left = 77.9493
+offset_top = 125.115
+offset_right = 133.032
+offset_bottom = 149.112
 text = "W (ω)"
 metadata/_edit_use_anchors_ = true
 
 [node name="INLabel" type="Label" parent="Body/JPLTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.796705
-anchor_top = 0.738293
-anchor_right = 0.890111
-anchor_bottom = 0.79215
-offset_top = -72.0
-offset_right = 5.99998
-offset_bottom = -68.55
-scale = Vector2(0.85, 0.85)
+anchor_left = 0.136
+anchor_top = 0.565
+anchor_right = 0.136
+anchor_bottom = 0.565
+offset_left = 278.182
+offset_top = 125.115
+offset_right = 333.265
+offset_bottom = 149.112
 text = "IN (i)"
 metadata/_edit_use_anchors_ = true
+
+[node name="ECLineEdit" type="LineEdit" parent="Body/JPLTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.136
+anchor_top = 0.565
+anchor_right = 0.136
+anchor_bottom = 0.565
+offset_left = 23.5357
+offset_top = 19.4412
+offset_right = 183.536
+offset_bottom = 50.4412
+editable = false
+
+[node name="QRLineEdit" type="LineEdit" parent="Body/JPLTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.136
+anchor_top = 0.565
+anchor_right = 0.136
+anchor_bottom = 0.565
+offset_left = 223.536
+offset_top = 19.4412
+offset_right = 383.536
+offset_bottom = 50.4412
+editable = false
+
+[node name="TPLineEdit" type="LineEdit" parent="Body/JPLTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.136
+anchor_top = 0.565
+anchor_right = 0.136
+anchor_bottom = 0.565
+offset_left = 23.5357
+offset_top = 83.4412
+offset_right = 183.536
+offset_bottom = 114.441
+editable = false
 
 [node name="OMLineEdit" type="LineEdit" parent="Body/JPLTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.0494506
-anchor_top = 0.606062
-anchor_right = 0.317995
-anchor_bottom = 0.678651
-offset_right = 17.25
-offset_bottom = 4.64997
-scale = Vector2(0.85, 0.85)
+anchor_left = 0.136
+anchor_top = 0.565
+anchor_right = 0.136
+anchor_bottom = 0.565
+offset_left = 223.536
+offset_top = 83.4412
+offset_right = 383.536
+offset_bottom = 115.441
 focus_mode = 0
 editable = false
 metadata/_edit_use_anchors_ = true
@@ -1860,13 +2264,14 @@ metadata/_edit_use_anchors_ = true
 [node name="WLineEdit" type="LineEdit" parent="Body/JPLTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.357143
-anchor_top = 0.650139
-anchor_right = 0.664836
-anchor_bottom = 0.735538
-offset_top = -16.0
-offset_bottom = -15.9998
-scale = Vector2(0.85, 0.85)
+anchor_left = 0.136
+anchor_top = 0.565
+anchor_right = 0.136
+anchor_bottom = 0.565
+offset_left = 23.5357
+offset_top = 147.441
+offset_right = 184.536
+offset_bottom = 180.441
 focus_mode = 0
 editable = false
 metadata/_edit_use_anchors_ = true
@@ -1874,15 +2279,202 @@ metadata/_edit_use_anchors_ = true
 [node name="INLineEdit" type="LineEdit" parent="Body/JPLTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.686814
-anchor_top = 0.650139
-anchor_right = 0.994507
-anchor_bottom = 0.735538
-offset_top = -16.0
-offset_bottom = -15.9998
-scale = Vector2(0.85, 0.85)
+anchor_left = 0.136
+anchor_top = 0.565
+anchor_right = 0.136
+anchor_bottom = 0.565
+offset_left = 223.536
+offset_top = 147.441
+offset_right = 383.536
+offset_bottom = 180.441
 focus_mode = 0
 editable = false
+metadata/_edit_use_anchors_ = true
+
+[node name="TableSettingsLabel" type="Label" parent="Body/JPLTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.352064
+anchor_top = 1.10086
+anchor_right = 0.559496
+anchor_bottom = 1.16115
+text = "Table Settings"
+metadata/_edit_use_anchors_ = true
+
+[node name="TableSettings" type="Control" parent="Body/JPLTab/Control"]
+layout_mode = 1
+anchor_left = 0.136
+anchor_top = 1.174
+anchor_right = 0.136
+anchor_bottom = 1.174
+offset_left = 8.53571
+offset_top = -3.9044
+offset_right = 399.536
+offset_bottom = 132.096
+
+[node name="cbRaDecLabel" type="Label" parent="Body/JPLTab/Control/TableSettings"]
+offset_left = 47.0
+offset_top = 5.0
+offset_right = 215.0
+offset_bottom = 28.0
+scale = Vector2(0.9, 0.9)
+text = "Astrometric RA & DEC"
+
+[node name="cbDeltaLabel" type="Label" parent="Body/JPLTab/Control/TableSettings"]
+offset_left = 46.0
+offset_top = 25.0
+offset_right = 321.0
+offset_bottom = 48.0
+scale = Vector2(0.9, 0.9)
+text = "Observer range & range-rate (delta)"
+
+[node name="cbSnAngLabel" type="Label" parent="Body/JPLTab/Control/TableSettings"]
+offset_left = 46.0
+offset_top = 46.0
+offset_right = 376.0
+offset_bottom = 69.0
+scale = Vector2(0.9, 0.9)
+text = "Sub-Sun position angle & distance (SN.ang)"
+
+[node name="cbHeliocentricLabel" type="Label" parent="Body/JPLTab/Control/TableSettings"]
+layout_mode = 0
+offset_left = 46.0
+offset_top = 69.0
+offset_right = 311.0
+offset_bottom = 92.0
+scale = Vector2(0.9, 0.9)
+text = "Heliocentric range & range-rate (r)"
+
+[node name="cbSTOLabel" type="Label" parent="Body/JPLTab/Control/TableSettings"]
+offset_left = 47.0
+offset_top = 93.0
+offset_right = 362.0
+offset_bottom = 116.0
+scale = Vector2(0.9, 0.9)
+text = "Sun-Target-Observer ~PHASE angle (STO)"
+
+[node name="cbPlAngLabel" type="Label" parent="Body/JPLTab/Control/TableSettings"]
+offset_left = 46.0
+offset_top = 116.0
+offset_right = 238.0
+offset_bottom = 139.0
+scale = Vector2(0.9, 0.9)
+text = "Orbit plane angle (PlAng)"
+
+[node name="cbTrueAnomalyLabel" type="Label" parent="Body/JPLTab/Control/TableSettings"]
+offset_left = 47.0
+offset_top = 139.0
+offset_right = 290.0
+offset_bottom = 162.0
+scale = Vector2(0.9, 0.9)
+text = "True anomaly angle (Tru Anom)"
+
+[node name="cbSkyMotionLabel" type="Label" parent="Body/JPLTab/Control/TableSettings"]
+offset_left = 47.0
+offset_top = 162.0
+offset_right = 345.0
+offset_bottom = 185.0
+scale = Vector2(0.9, 0.9)
+text = "Sky motion: rate & angles (Sky mot PA)​"
+
+[node name="cbRaDec" type="CheckBox" parent="Body/JPLTab/Control/TableSettings"]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 5.0
+offset_right = 35.0
+offset_bottom = 29.0
+scale = Vector2(0.9, 0.9)
+
+[node name="cbDelta" type="CheckBox" parent="Body/JPLTab/Control/TableSettings"]
+offset_left = 11.0
+offset_top = 25.0
+offset_right = 35.0
+offset_bottom = 49.0
+scale = Vector2(0.9, 0.9)
+
+[node name="cbSngAng" type="CheckBox" parent="Body/JPLTab/Control/TableSettings"]
+offset_left = 11.0
+offset_top = 45.0
+offset_right = 35.0
+offset_bottom = 69.0
+scale = Vector2(0.9, 0.9)
+
+[node name="cbHeliocentric" type="CheckBox" parent="Body/JPLTab/Control/TableSettings"]
+offset_left = 11.0
+offset_top = 69.0
+offset_right = 35.0
+offset_bottom = 93.0
+scale = Vector2(0.9, 0.9)
+
+[node name="cbSTO" type="CheckBox" parent="Body/JPLTab/Control/TableSettings"]
+offset_left = 11.0
+offset_top = 93.0
+offset_right = 35.0
+offset_bottom = 117.0
+scale = Vector2(0.9, 0.9)
+
+[node name="cbPlAng" type="CheckBox" parent="Body/JPLTab/Control/TableSettings"]
+offset_left = 11.0
+offset_top = 116.0
+offset_right = 35.0
+offset_bottom = 140.0
+scale = Vector2(0.9, 0.9)
+
+[node name="cbTrueAnomaly" type="CheckBox" parent="Body/JPLTab/Control/TableSettings"]
+offset_left = 11.0
+offset_top = 139.0
+offset_right = 35.0
+offset_bottom = 163.0
+scale = Vector2(0.9, 0.9)
+
+[node name="cbSkyMotion" type="CheckBox" parent="Body/JPLTab/Control/TableSettings"]
+offset_left = 11.0
+offset_top = 162.0
+offset_right = 35.0
+offset_bottom = 186.0
+scale = Vector2(0.9, 0.9)
+
+[node name="SearchDataPanel" type="Panel" parent="Body/JPLTab/Control" groups=["settings_tab"]]
+z_index = -1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.135
+anchor_top = -0.084
+anchor_right = 0.135
+anchor_bottom = -0.084
+offset_left = 0.0611798
+offset_top = 0.0476742
+offset_right = 408.061
+offset_bottom = 208.048
+theme_override_styles/panel = SubResource("StyleBoxFlat_pkwgd")
+metadata/_edit_use_anchors_ = true
+
+[node name="OrbitalElemPanel" type="Panel" parent="Body/JPLTab/Control" groups=["settings_tab"]]
+z_index = -1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.135116
+anchor_top = 0.55043
+anchor_right = 0.135116
+anchor_bottom = 0.55043
+offset_right = 408.0
+offset_bottom = 200.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_pkwgd")
+metadata/_edit_use_anchors_ = true
+
+[node name="TableSettingsPanel" type="Panel" parent="Body/JPLTab/Control" groups=["settings_tab"]]
+z_index = -1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.135
+anchor_top = 1.164
+anchor_right = 0.135
+anchor_bottom = 1.164
+offset_left = 0.0611798
+offset_top = -0.0891997
+offset_right = 408.061
+offset_bottom = 189.911
+theme_override_styles/panel = SubResource("StyleBoxFlat_pkwgd")
 metadata/_edit_use_anchors_ = true
 
 [node name="HelpPanel" type="CanvasLayer" parent="Body"]
@@ -1972,16 +2564,27 @@ text = "Time:"
 layer = 2
 visible = false
 
+[node name="NucleusPanel" type="Panel" parent="Viewport"]
+z_index = -1
+anchors_preset = -1
+anchor_left = 0.813021
+anchor_top = 0.061165
+anchor_right = 0.983333
+anchor_bottom = 0.427184
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_pkwgd")
+metadata/_edit_use_anchors_ = true
+
 [node name="Panel" type="Panel" parent="Viewport"]
 anchors_preset = -1
-anchor_left = 0.313
-anchor_top = 0.082
-anchor_right = 0.313
-anchor_bottom = 0.082
-offset_left = -0.29
-offset_top = 12.64
-offset_right = 899.71
-offset_bottom = 912.64
+anchor_left = 0.325
+anchor_top = 0.043
+anchor_right = 0.325
+anchor_bottom = 0.043
+offset_left = 0.67
+offset_top = -1.19
+offset_right = 900.67
+offset_bottom = 898.81
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.55
 theme_override_styles/panel = SubResource("StyleBoxFlat_d5po8")
@@ -2028,16 +2631,25 @@ position = Vector2(800, 878)
 scale = Vector2(0.473, 0.473)
 texture = ExtResource("10_erw67")
 
+[node name="DateLabel" type="Label" parent="Viewport/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0266667
+anchor_top = 0.942222
+anchor_right = 0.0266667
+anchor_bottom = 0.942222
+offset_right = 40.0
+offset_bottom = 23.0
+metadata/_edit_use_anchors_ = true
+
 [node name="SubViewportContainer" type="SubViewportContainer" parent="Viewport"]
 visibility_layer = 4
 z_index = -1
 anchors_preset = -1
-anchor_left = 0.313021
-anchor_top = 0.111111
-anchor_right = 0.781771
-anchor_bottom = 0.944444
-offset_top = -16.0
-offset_bottom = 42.3333
+anchor_left = 0.325521
+anchor_top = 0.0417476
+anchor_right = 0.794271
+anchor_bottom = 0.915534
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.55
 metadata/_edit_use_anchors_ = true
@@ -2066,11 +2678,12 @@ script = ExtResource("11_0h1do")
 enabled = false
 
 [node name="MiniViewportContainer" type="SubViewportContainer" parent="Viewport"]
+z_index = -1
 anchors_preset = -1
-anchor_left = 0.808333
-anchor_top = 0.0945613
-anchor_right = 0.964583
-anchor_bottom = 0.385823
+anchor_left = 0.820312
+anchor_top = 0.0732021
+anchor_right = 0.976562
+anchor_bottom = 0.364464
 size_flags_horizontal = 4
 size_flags_vertical = 4
 metadata/_edit_use_anchors_ = true
@@ -2087,6 +2700,26 @@ projection = 1
 size = 2.031
 script = ExtResource("13_4d46k")
 
+[node name="Label" type="Label" parent="Viewport"]
+anchors_preset = -1
+anchor_right = 0.0598958
+anchor_bottom = 0.0223301
+offset_left = 1615.0
+offset_top = 37.0
+offset_right = 1615.0
+offset_bottom = 37.0
+text = "Nucleus Model"
+metadata/_edit_use_anchors_ = true
+
+[connection signal="tab_changed" from="Body/Navbar" to="Body" method="_on_navbar_tab_changed"]
+[connection signal="pressed" from="Body/TabButtons/ToggleSunBtn" to="Body" method="_on_toggle_sun_btn_pressed"]
+[connection signal="pressed" from="Body/TabButtons/ToggleYBtn" to="Body" method="_on_toggle_y_btn_pressed"]
+[connection signal="pressed" from="Body/TabButtons/ToggleAxesBtn" to="Body" method="_on_toggle_axes_btn_pressed"]
+[connection signal="pressed" from="Body/TabButtons/ToggleDateBtn" to="Body" method="_on_toggle_date_btn_pressed"]
+[connection signal="pressed" from="Body/TabButtons/SaveSimBtn" to="Body" method="_on_screenshot_btn_pressed"]
+[connection signal="pressed" from="Body/TabButtons/SaveNucleusBtn" to="Body" method="_on_save_nucleus_btn_pressed"]
+[connection signal="pressed" from="Body/TabButtons/SaveBtn" to="Body" method="_on_save_btn_pressed"]
+[connection signal="pressed" from="Body/TabButtons/LoadBtn" to="Body" method="_on_load_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/DebugBtn" to="Body" method="_on_full_viewport_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/CometBtn" to="Body" method="_on_cometbtn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/JetsBtn" to="Body" method="_on_jetsbtn_pressed"]
@@ -2095,24 +2728,23 @@ script = ExtResource("13_4d46k")
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/JPLBtn" to="Body" method="_on_jpl_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/TriggerRotBtn" to="Body" method="_on_trigger_rot_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ResetRotnBtn" to="Body" method="_on_reset_rotn_btn_pressed"]
-[connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ScreenshotBtn" to="Body" method="_on_screenshot_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ChangeCameraBtn" to="Body" method="_on_change_camera_btn_pressed"]
-[connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ToggleSunBtn" to="Body" method="_on_toggle_sun_btn_pressed"]
-[connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ToggleYBtn" to="Body" method="_on_toggle_y_btn_pressed"]
-[connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/ToggleAxesBtn" to="Body" method="_on_toggle_axes_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/SaveBtn" to="Body" method="_on_save_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/LoadBtn" to="Body" method="_on_load_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/HelpBtn" to="Body" method="_on_help_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ColorRect/HBoxContainer/QuitBtn" to="Body" method="_on_quit_btn_pressed"]
 [connection signal="file_selected" from="Body/TabButtons/ColorRect/HBoxContainer/FileExplorer" to="Body" method="_on_file_explorer_file_selected"]
+[connection signal="pressed" from="Body/CometTab/Control/SwitchDate/PrevDateFullBtn" to="Body/CometTab" method="_on_prev_date_full_btn_pressed"]
 [connection signal="pressed" from="Body/CometTab/Control/SwitchDate/PrevDateBtn" to="Body/CometTab" method="_on_prev_date_btn_pressed"]
 [connection signal="pressed" from="Body/CometTab/Control/SwitchDate/NextDateBtn" to="Body/CometTab" method="_on_next_date_btn_pressed"]
+[connection signal="pressed" from="Body/CometTab/Control/SwitchDate/NextDateFullBtn" to="Body/CometTab" method="_on_next_date_full_btn_pressed"]
 [connection signal="pressed" from="Body/JetsTab/Control/JetTable/AddJetEntryBtn" to="Body" method="_on_add_jet_entry_btn_pressed"]
 [connection signal="pressed" from="Body/JetsTab/Control/JetTable/AddJetEntryBtn" to="Body/JetsTab/Control/JetTable" method="_on_add_jet_entry_btn_pressed"]
-[connection signal="pressed" from="Body/SimTab/Control/OverlayImgPickerBtn" to="Body/SimTab" method="_on_overlay_img_picker_btn_pressed"]
-[connection signal="pressed" from="Body/SimTab/Control/DelOverlayImgBtn" to="Body/SimTab" method="_on_del_overlay_img_btn_pressed"]
+[connection signal="toggled" from="Body/SimTab/Control/ToggleTransparency" to="Body" method="_on_toggle_transparency_toggled"]
 [connection signal="value_changed" from="Body/SimTab/Control/TransparencySlider" to="Body/SimTab" method="_on_transparency_slider_value_changed"]
 [connection signal="file_selected" from="Body/SimTab/Control/FileExplorer" to="Body/SimTab" method="_on_file_explorer_file_selected"]
+[connection signal="pressed" from="Body/ScaleTab/Control/OverlayImgPickerBtn" to="Body/SimTab" method="_on_overlay_img_picker_btn_pressed"]
+[connection signal="pressed" from="Body/ScaleTab/Control/DelOverlayImgBtn" to="Body/SimTab" method="_on_del_overlay_img_btn_pressed"]
 [connection signal="pressed" from="Body/JPLTab/Control/SearchBtn" to="Body/JPLTab" method="_on_search_btn_pressed"]
 [connection signal="date_selected" from="Body/JPLTab/Control/StartCalendarBtn" to="Body/JPLTab" method="_on_start_calendar_btn_date_selected"]
 [connection signal="pressed" from="Body/JPLTab/Control/ClearStartDateBtn" to="Body/JPLTab" method="_on_clear_start_date_btn_pressed"]

@@ -92,9 +92,9 @@ const LIGHT_SPEED: float = 2.99792458e8 ## c. Speed of light Expressed in m/s
 
 var is_simulation: bool = true ## True: simulation enabled, False: instant simulation enabled
 
-
 # Labels and LineEdits
 @onready var current_camera_label: Label = $"/root/Hud/Viewport/Panel/CurrCameraLabel"
+@onready var date_label: Label = $"/root/Hud/Viewport/Panel/DateLabel"
 @onready var current_fov_label: Label = $"/root/Hud/Viewport/Panel/CenterContainer/ScaleLabel"
 @onready var beta_val_line_edit: LineEdit = $"/root/Hud/Body/CometTab/Control/BetaValLineEdit"
 @onready var accel_val_line_edit: LineEdit = $"/root/Hud/Body/SimTab/Control/AccelValLineEdit"
