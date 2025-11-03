@@ -328,7 +328,10 @@ func update_sun_comet_distance(value: float) -> void:
 	get_tree().call_group("emitter", "update_acceleration")
 
 # jpl related
-func update_alpha_p(value: float) -> void:
+func update_alpha_p(value: float, booted: bool = true) -> void:
+	# to prevent to being called at startup
+	if not booted:
+		return
 	if Util.PRINT_UPDATE_METHOD: print("Updated alpha_p:%f"%value)
 	Util.alpha_p = value
 	if Util.jpl_data == null or Util.jpl_data.size() == 0:
@@ -338,7 +341,10 @@ func update_alpha_p(value: float) -> void:
 	update_lambda_beta()
 	update_i_phi()
 	update_subsolar_latitude()
-func update_delta_p(value: float) -> void:
+func update_delta_p(value: float, booted: bool = true) -> void:
+	# to prevent to being called at startup
+	if not booted:
+		return
 	if Util.PRINT_UPDATE_METHOD: print("Updated delta_p:%f"%value)
 	Util.delta_p = value
 	if Util.jpl_data == null or Util.jpl_data.size() == 0:

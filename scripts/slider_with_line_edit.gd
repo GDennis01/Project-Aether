@@ -33,7 +33,10 @@ func _ready() -> void:
 	$Label.text = label
 	if resize_type:
 		# print("[Slider w LineEdit] update_" + resize_type + "(" + str(starting_value) + ")")
-		get_tree().call_group(resize_type, "update_" + resize_type, starting_value)
+		if resize_type == "alpha_p" or resize_type == "delta_p":
+			get_tree().call_group(resize_type, "update_" + resize_type, starting_value, false)
+		else:
+			get_tree().call_group(resize_type, "update_" + resize_type, starting_value)
 
 
 func _on_slider_value_changed(value: float) -> void:

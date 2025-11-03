@@ -38,6 +38,10 @@ window/size/mode=2
 
 enabled=PackedStringArray("res://addons/calendar_button/plugin.cfg")
 
+[gui]
+
+timers/tooltip_delay_sec=0.25
+
 [input]
 
 ui_left={

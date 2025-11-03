@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://bwt7dtbn7pn3c"]
+[gd_scene load_steps=37 format=3 uid="uid://bwt7dtbn7pn3c"]
 
 [ext_resource type="Script" uid="uid://bmle6k05e5fff" path="res://scripts/hud.gd" id="1_moku2"]
 [ext_resource type="Script" uid="uid://bwvqb33hu6cxk" path="res://scripts/navbar.gd" id="1_r4m0t"]
@@ -29,6 +29,7 @@
 [ext_resource type="Script" uid="uid://cvmrw32h1bvjg" path="res://addons/calendar_button/scripts/calendar_script.gd" id="17_pkwgd"]
 [ext_resource type="Texture2D" uid="uid://hojlochig6h1" path="res://asset/Calendar32x32NP.png" id="18_d5po8"]
 [ext_resource type="Texture2D" uid="uid://cpx74l1o5t2j" path="res://asset/Calendar32x32.png" id="19_7yoph"]
+[ext_resource type="Texture2D" uid="uid://danq8www5kxvw" path="res://asset/24x24_i.png" id="25_27rlx"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qmm8d"]
 bg_color = Color(0, 0.286, 0.33, 1)
@@ -63,6 +64,14 @@ corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 corner_detail = 10
 anti_aliasing_size = 0.545
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_27rlx"]
+bg_color = Color(0.0546, 0.13, 0.128743, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.17676, 0.18, 0.1152, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d5po8"]
 bg_color = Color(0, 0, 0, 0)
@@ -1283,6 +1292,7 @@ anchor_top = 49.5455
 anchor_right = 143.615
 anchor_bottom = 51.7273
 focus_mode = 0
+button_pressed = true
 metadata/_edit_use_anchors_ = true
 
 [node name="ModelTransparencyLabel" type="Label" parent="Body/SimTab/Control"]
@@ -1571,13 +1581,14 @@ z_index = -1
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.723471
-anchor_top = 1.00223
-anchor_right = 0.723471
-anchor_bottom = 1.15223
+anchor_top = 0.40223
+anchor_right = 0.723475
+anchor_bottom = 2.32722
 offset_left = 0.0611798
-offset_top = -0.0891997
+offset_top = -11.0892
 offset_right = 408.061
-offset_bottom = 189.911
+offset_bottom = 178.911
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_pkwgd")
 metadata/_edit_use_anchors_ = true
 
@@ -1588,12 +1599,12 @@ anchor_left = 9.84615
 anchor_top = 32.0
 anchor_right = 18.8462
 anchor_bottom = 34.8182
-offset_left = -132.846
-offset_top = -1268.0
-offset_right = -348.848
-offset_bottom = -1348.73
+offset_left = -124.846
+offset_top = -1263.0
+offset_right = -340.848
+offset_bottom = -1343.73
 focus_mode = 0
-text = "Choose Image"
+text = "Load CCD Image"
 
 [node name="OverlayImgLineEdit" type="LineEdit" parent="Body/ScaleTab/Control"]
 layout_mode = 1
@@ -1602,10 +1613,10 @@ anchor_left = 120.815
 anchor_top = 50.5364
 anchor_right = 124.815
 anchor_bottom = 51.3364
-offset_left = -4779.62
-offset_top = -2009.45
-offset_right = -4779.62
-offset_bottom = -2009.45
+offset_left = -4787.62
+offset_top = -2004.45
+offset_right = -4787.62
+offset_bottom = -2004.45
 editable = false
 
 [node name="DelOverlayImgBtn" type="Button" parent="Body/ScaleTab/Control"]
@@ -1615,23 +1626,23 @@ anchor_left = 130.662
 anchor_top = 50.5614
 anchor_right = 131.462
 anchor_bottom = 51.3364
-offset_left = -5045.46
-offset_top = -2009.45
-offset_right = -5045.46
-offset_bottom = -2009.45
+offset_left = -5010.46
+offset_top = -2005.45
+offset_right = -5010.46
+offset_bottom = -2005.45
 focus_mode = 0
 text = "X"
-metadata/_edit_use_anchors_ = true
 
 [node name="DeltaAULabel" type="Label" parent="Body/ScaleTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.4
-anchor_top = 1.4
-anchor_right = 2.5525
-anchor_bottom = 1.8025
+anchor_left = 1.125
+anchor_top = 1.65
+anchor_right = 3.2775
+anchor_bottom = 2.0525
+offset_top = -11.0
 offset_right = 36.9
-offset_bottom = 6.9
+offset_bottom = -4.1
 tooltip_text = "arcsec/pixel"
 mouse_filter = 0
 text = "Delta (AU) :"
@@ -1639,56 +1650,66 @@ metadata/_edit_use_anchors_ = true
 
 [node name="DeltaAUEdit" parent="Body/ScaleTab/Control" instance=ExtResource("6_oj5la")]
 layout_mode = 1
-anchor_left = 6.8
-anchor_top = 1.2
-anchor_right = 8.2
-anchor_bottom = 1.975
+anchor_left = 8.725
+anchor_top = 1.6
+anchor_right = 10.125
+anchor_bottom = 2.375
+offset_left = 8.0
+offset_top = -11.0
+offset_right = 8.0
+offset_bottom = -11.0
 resize_type = &"delta_au"
 higher_bound = 1000.0
 
 [node name="TelResolutionlabel" type="Label" parent="Body/ScaleTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.4
-anchor_top = 2.4
-anchor_right = 4.3375
-anchor_bottom = 2.8025
+anchor_left = 1.125
+anchor_top = 3.45
+anchor_right = 5.4875
+anchor_bottom = 3.8525
+offset_top = -11.0
 offset_right = 67.5
-offset_bottom = 6.9
+offset_bottom = -4.1
 tooltip_text = "arcsec/pixel"
 mouse_filter = 0
-text = "Tel. Resolution (arcsec/pixel):"
+text = "Image resolution (arcsec/pixel):"
 metadata/_edit_use_anchors_ = true
 
 [node name="TelResolutionEdit" parent="Body/ScaleTab/Control" instance=ExtResource("6_oj5la")]
 layout_mode = 1
-anchor_left = 6.8
-anchor_top = 2.2
-anchor_right = 8.2
-anchor_bottom = 2.975
+anchor_left = 8.725
+anchor_top = 3.425
+anchor_right = 10.125
+anchor_bottom = 4.2
+offset_left = 8.0
+offset_top = -11.0
+offset_right = 8.0
+offset_bottom = -11.0
 resize_type = &"tel_resolution"
 higher_bound = 1000.0
 
 [node name="TelImageSizeLabel" type="Label" parent="Body/ScaleTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.4
-anchor_top = 3.4
-anchor_right = 3.48
-anchor_bottom = 3.8025
+anchor_left = 1.125
+anchor_top = 2.525
+anchor_right = 4.205
+anchor_bottom = 2.9275
+offset_top = -11.0
 offset_right = 52.8
-offset_bottom = 6.9
+offset_bottom = -4.1
 tooltip_text = "Telescope image size in pixels"
 mouse_filter = 0
-text = "Tel. Image size (pixels):"
+text = "CCD image size (pixels)"
 metadata/_edit_use_anchors_ = true
 
 [node name="TelImageSizeEdit" parent="Body/ScaleTab/Control" instance=ExtResource("6_oj5la")]
 layout_mode = 1
-anchor_left = 6.8
-anchor_top = 3.2
-anchor_right = 8.2
-anchor_bottom = 3.975
+anchor_left = 8.925
+anchor_top = 2.25
+anchor_right = 10.325
+anchor_bottom = 3.025
 text = "0"
 resize_type = &"tel_image_size"
 lower_bound = 100.0
@@ -1747,22 +1768,25 @@ no_decimal = true
 [node name="TelResKmPixelLabel" type="Label" parent="Body/ScaleTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.4
-anchor_top = 4.4
-anchor_right = 3.0425
-anchor_bottom = 4.8025
+anchor_left = 1.125
+anchor_top = 4.3
+anchor_right = 5.4675
+anchor_bottom = 4.7025
+offset_top = -11.0
 offset_right = 45.3
-offset_bottom = 6.9
-text = "Tel. Res. (Km/Pixel):"
+offset_bottom = -4.1
+text = "Image resolution (Km/Pixel):"
 metadata/_edit_use_anchors_ = true
 
 [node name="TelResLineEdit" type="LineEdit" parent="Body/ScaleTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 6.8
-anchor_top = 4.2
-anchor_right = 9.4
-anchor_bottom = 4.975
+anchor_left = 8.925
+anchor_top = 4.3
+anchor_right = 10.325
+anchor_bottom = 5.075
+offset_top = -11.0
+offset_bottom = -11.0
 focus_mode = 0
 theme_override_constants/minimum_character_width = 0
 editable = false
@@ -1771,22 +1795,25 @@ metadata/_edit_use_anchors_ = true
 [node name="FOVArcminLabel" type="Label" parent="Body/ScaleTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.4
-anchor_top = 5.1
-anchor_right = 6.7525
-anchor_bottom = 5.5025
+anchor_left = 1.125
+anchor_top = 5.2
+anchor_right = 7.4775
+anchor_bottom = 5.6025
+offset_top = -11.0
 offset_right = -29.1
-offset_bottom = 6.9
-text = "FOV Zero Zoom (Arcmin/Km):"
+offset_bottom = -4.1
+text = "FOV  (Arcmin/Km):"
 metadata/_edit_use_anchors_ = true
 
 [node name="FOVArcminLineEdit" type="LineEdit" parent="Body/ScaleTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 6.8
-anchor_top = 5.0
-anchor_right = 9.4
-anchor_bottom = 5.775
+anchor_left = 6.725
+anchor_top = 5.2
+anchor_right = 8.125
+anchor_bottom = 5.975
+offset_top = -11.0
+offset_bottom = -11.0
 focus_mode = 0
 theme_override_constants/minimum_character_width = 0
 editable = false
@@ -1795,34 +1822,41 @@ metadata/_edit_use_anchors_ = true
 [node name="FOVKmLineEdit" type="LineEdit" parent="Body/ScaleTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 9.725
-anchor_top = 5.0
-anchor_right = 12.325
-anchor_bottom = 5.775
+anchor_left = 8.325
+anchor_top = 5.2
+anchor_right = 10.325
+anchor_bottom = 5.975
+offset_top = -11.0
+offset_bottom = -11.0
 focus_mode = 0
 theme_override_constants/minimum_character_width = 0
 editable = false
 metadata/_edit_use_anchors_ = true
 
 [node name="CurrZoomFovLabel" type="Label" parent="Body/ScaleTab/Control"]
+visible = false
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.4
-anchor_top = 6.4
-anchor_right = 3.3225
-anchor_bottom = 6.8025
+anchor_left = 1.125
+anchor_top = 6.1
+anchor_right = 4.0475
+anchor_bottom = 6.5025
+offset_top = -11.0
 offset_right = 50.1
-offset_bottom = 6.9
+offset_bottom = -4.1
 text = "FOV Curr. Zoom (Km):"
 metadata/_edit_use_anchors_ = true
 
 [node name="FOVCurrZoomKmLineEdit" type="LineEdit" parent="Body/ScaleTab/Control"]
+visible = false
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 6.8
-anchor_top = 6.2
-anchor_right = 9.4
-anchor_bottom = 6.975
+anchor_left = 7.325
+anchor_top = 6.125
+anchor_right = 10.3
+anchor_bottom = 6.9
+offset_top = -11.0
+offset_bottom = -11.0
 editable = false
 metadata/_edit_use_anchors_ = true
 
@@ -1847,6 +1881,60 @@ focus_mode = 0
 theme_override_constants/minimum_character_width = 0
 editable = false
 
+[node name="ShowFOVRulerLabel" type="Label" parent="Body/ScaleTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.725
+anchor_top = 0.2
+anchor_right = 0.725
+anchor_bottom = 0.2
+offset_left = 16.0
+offset_top = 225.0
+offset_right = 139.0
+offset_bottom = 248.0
+text = "Show FOV Ruler"
+
+[node name="ArcKmToggle" type="CheckButton" parent="Body/ScaleTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.725
+anchor_top = 0.2
+anchor_right = 0.725
+anchor_bottom = 0.2
+offset_left = 295.0
+offset_top = 223.0
+offset_right = 339.0
+offset_bottom = 255.0
+scale = Vector2(1.25, 1.25)
+focus_mode = 0
+button_pressed = true
+
+[node name="KmToggleLabel" type="Label" parent="Body/ScaleTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.725
+anchor_top = 0.2
+anchor_right = 0.725
+anchor_bottom = 0.2
+offset_left = 344.0
+offset_top = 230.0
+offset_right = 376.0
+offset_bottom = 253.0
+text = "Km"
+
+[node name="ArcsecToggleLabel" type="Label" parent="Body/ScaleTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.725
+anchor_top = 0.2
+anchor_right = 0.725
+anchor_bottom = 0.2
+offset_left = 245.0
+offset_top = 230.0
+offset_right = 301.0
+offset_bottom = 253.0
+text = "Arcmin"
+
 [node name="JPLTab" type="CanvasLayer" parent="Body" groups=["alpha_p", "delta_p", "settings_tab", "step_size"]]
 layer = 3
 script = ExtResource("16_gmc6u")
@@ -1858,6 +1946,54 @@ anchor_top = 0.0857143
 anchor_right = 0.278195
 anchor_bottom = 0.456122
 mouse_filter = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="SearchDataPanel" type="Panel" parent="Body/JPLTab/Control" groups=["settings_tab"]]
+z_index = -1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.135
+anchor_top = -0.084
+anchor_right = 0.135
+anchor_bottom = -0.084
+offset_left = 0.0611798
+offset_top = 0.0476742
+offset_right = 408.061
+offset_bottom = 208.048
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pkwgd")
+metadata/_edit_use_anchors_ = true
+
+[node name="OrbitalElemPanel" type="Panel" parent="Body/JPLTab/Control" groups=["settings_tab"]]
+z_index = -1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.135
+anchor_top = 0.565
+anchor_right = 0.135
+anchor_bottom = 0.565
+offset_left = 0.0609548
+offset_top = -5.55875
+offset_right = 408.061
+offset_bottom = 176.441
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pkwgd")
+metadata/_edit_use_anchors_ = true
+
+[node name="TableSettingsPanel" type="Panel" parent="Body/JPLTab/Control" groups=["settings_tab"]]
+z_index = -1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.135
+anchor_top = 1.164
+anchor_right = 0.135
+anchor_bottom = 1.164
+offset_left = 0.0611798
+offset_top = -14.0892
+offset_right = 408.061
+offset_bottom = 175.911
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pkwgd")
 metadata/_edit_use_anchors_ = true
 
 [node name="CometSearchLabel" type="Label" parent="Body/JPLTab/Control"]
@@ -1959,9 +2095,9 @@ anchor_left = 0.136
 anchor_top = -0.064
 anchor_right = 0.136
 anchor_bottom = -0.064
-offset_left = 273.536
+offset_left = 281.536
 offset_top = 55.4173
-offset_right = 307.536
+offset_right = 315.536
 offset_bottom = 86.4173
 focus_mode = 0
 text = "X"
@@ -2022,9 +2158,9 @@ anchor_left = 0.136
 anchor_top = -0.064
 anchor_right = 0.136
 anchor_bottom = -0.064
-offset_left = 274.286
+offset_left = 282.286
 offset_top = 106.967
-offset_right = 308.286
+offset_right = 316.286
 offset_bottom = 137.967
 focus_mode = 0
 text = "X"
@@ -2074,9 +2210,9 @@ offset_bottom = 210.417
 z_index = -1
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 1.20653
-anchor_top = -0.12057
-anchor_right = 3.5587
+anchor_left = 1.17608
+anchor_top = -0.115328
+anchor_right = 3.52825
 anchor_bottom = 2.39306
 theme_override_styles/panel = SubResource("StyleBoxFlat_pkwgd")
 metadata/_edit_use_anchors_ = true
@@ -2089,20 +2225,21 @@ anchor_top = 1.09
 anchor_right = 0.151
 anchor_bottom = 1.09
 offset_left = -5.34638
-offset_top = -1.85672
+offset_top = -17.8567
 offset_right = 270.654
-offset_bottom = 2.14328
+offset_bottom = -13.8567
 
 [node name="EphemScroll" type="ScrollContainer" parent="Body/JPLTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 1.28836
+anchor_left = 1.25791
 anchor_top = -0.0131055
-anchor_right = 3.48991
-anchor_bottom = 2.197
+anchor_right = 3.45945
+anchor_bottom = 2.22583
 offset_right = 204.15
 offset_bottom = 148.8
 scale = Vector2(0.85, 0.85)
+theme_override_styles/panel = SubResource("StyleBoxFlat_27rlx")
 metadata/_edit_use_anchors_ = true
 
 [node name="EphemTable" type="VBoxContainer" parent="Body/JPLTab/Control/EphemScroll"]
@@ -2159,9 +2296,9 @@ anchor_top = 0.565
 anchor_right = 0.136
 anchor_bottom = 0.565
 offset_left = 73.874
-offset_top = 61.1555
+offset_top = 53.1555
 offset_right = 128.957
-offset_bottom = 85.153
+offset_bottom = 77.153
 text = "TP (JD)"
 metadata/_edit_use_anchors_ = true
 
@@ -2173,9 +2310,9 @@ anchor_top = 0.565
 anchor_right = 0.136
 anchor_bottom = 0.565
 offset_left = 273.716
-offset_top = 61.1147
+offset_top = 53.1147
 offset_right = 328.799
-offset_bottom = 85.1123
+offset_bottom = 77.1123
 text = "OM (Ω)"
 metadata/_edit_use_anchors_ = true
 
@@ -2187,11 +2324,10 @@ anchor_top = 0.565
 anchor_right = 0.136
 anchor_bottom = 0.565
 offset_left = 77.9493
-offset_top = 125.115
+offset_top = 109.115
 offset_right = 133.032
-offset_bottom = 149.112
+offset_bottom = 133.112
 text = "W (ω)"
-metadata/_edit_use_anchors_ = true
 
 [node name="INLabel" type="Label" parent="Body/JPLTab/Control"]
 layout_mode = 1
@@ -2201,11 +2337,10 @@ anchor_top = 0.565
 anchor_right = 0.136
 anchor_bottom = 0.565
 offset_left = 278.182
-offset_top = 125.115
+offset_top = 109.115
 offset_right = 333.265
-offset_bottom = 149.112
+offset_bottom = 133.112
 text = "IN (i)"
-metadata/_edit_use_anchors_ = true
 
 [node name="ECLineEdit" type="LineEdit" parent="Body/JPLTab/Control"]
 layout_mode = 1
@@ -2218,6 +2353,7 @@ offset_left = 23.5357
 offset_top = 19.4412
 offset_right = 183.536
 offset_bottom = 50.4412
+focus_mode = 0
 editable = false
 
 [node name="QRLineEdit" type="LineEdit" parent="Body/JPLTab/Control"]
@@ -2231,6 +2367,7 @@ offset_left = 223.536
 offset_top = 19.4412
 offset_right = 383.536
 offset_bottom = 50.4412
+focus_mode = 0
 editable = false
 
 [node name="TPLineEdit" type="LineEdit" parent="Body/JPLTab/Control"]
@@ -2241,9 +2378,10 @@ anchor_top = 0.565
 anchor_right = 0.136
 anchor_bottom = 0.565
 offset_left = 23.5357
-offset_top = 83.4412
+offset_top = 75.4412
 offset_right = 183.536
-offset_bottom = 114.441
+offset_bottom = 106.441
+focus_mode = 0
 editable = false
 
 [node name="OMLineEdit" type="LineEdit" parent="Body/JPLTab/Control"]
@@ -2254,12 +2392,11 @@ anchor_top = 0.565
 anchor_right = 0.136
 anchor_bottom = 0.565
 offset_left = 223.536
-offset_top = 83.4412
+offset_top = 75.4412
 offset_right = 383.536
-offset_bottom = 115.441
+offset_bottom = 107.441
 focus_mode = 0
 editable = false
-metadata/_edit_use_anchors_ = true
 
 [node name="WLineEdit" type="LineEdit" parent="Body/JPLTab/Control"]
 layout_mode = 1
@@ -2269,12 +2406,11 @@ anchor_top = 0.565
 anchor_right = 0.136
 anchor_bottom = 0.565
 offset_left = 23.5357
-offset_top = 147.441
+offset_top = 131.441
 offset_right = 184.536
-offset_bottom = 180.441
+offset_bottom = 164.441
 focus_mode = 0
 editable = false
-metadata/_edit_use_anchors_ = true
 
 [node name="INLineEdit" type="LineEdit" parent="Body/JPLTab/Control"]
 layout_mode = 1
@@ -2284,12 +2420,11 @@ anchor_top = 0.565
 anchor_right = 0.136
 anchor_bottom = 0.565
 offset_left = 223.536
-offset_top = 147.441
+offset_top = 131.441
 offset_right = 383.536
-offset_bottom = 180.441
+offset_bottom = 164.441
 focus_mode = 0
 editable = false
-metadata/_edit_use_anchors_ = true
 
 [node name="TableSettingsLabel" type="Label" parent="Body/JPLTab/Control"]
 layout_mode = 1
@@ -2298,6 +2433,9 @@ anchor_left = 0.352064
 anchor_top = 1.10086
 anchor_right = 0.559496
 anchor_bottom = 1.16115
+offset_top = -14.0
+offset_right = 0.000138098
+offset_bottom = -14.0
 text = "Table Settings"
 metadata/_edit_use_anchors_ = true
 
@@ -2308,11 +2446,12 @@ anchor_top = 1.174
 anchor_right = 0.136
 anchor_bottom = 1.174
 offset_left = 8.53571
-offset_top = -3.9044
+offset_top = -17.9044
 offset_right = 399.536
-offset_bottom = 132.096
+offset_bottom = 118.096
 
 [node name="cbRaDecLabel" type="Label" parent="Body/JPLTab/Control/TableSettings"]
+layout_mode = 0
 offset_left = 47.0
 offset_top = 5.0
 offset_right = 215.0
@@ -2321,6 +2460,7 @@ scale = Vector2(0.9, 0.9)
 text = "Astrometric RA & DEC"
 
 [node name="cbDeltaLabel" type="Label" parent="Body/JPLTab/Control/TableSettings"]
+layout_mode = 0
 offset_left = 46.0
 offset_top = 25.0
 offset_right = 321.0
@@ -2329,6 +2469,7 @@ scale = Vector2(0.9, 0.9)
 text = "Observer range & range-rate (delta)"
 
 [node name="cbSnAngLabel" type="Label" parent="Body/JPLTab/Control/TableSettings"]
+layout_mode = 0
 offset_left = 46.0
 offset_top = 46.0
 offset_right = 376.0
@@ -2346,6 +2487,7 @@ scale = Vector2(0.9, 0.9)
 text = "Heliocentric range & range-rate (r)"
 
 [node name="cbSTOLabel" type="Label" parent="Body/JPLTab/Control/TableSettings"]
+layout_mode = 0
 offset_left = 47.0
 offset_top = 93.0
 offset_right = 362.0
@@ -2354,6 +2496,7 @@ scale = Vector2(0.9, 0.9)
 text = "Sun-Target-Observer ~PHASE angle (STO)"
 
 [node name="cbPlAngLabel" type="Label" parent="Body/JPLTab/Control/TableSettings"]
+layout_mode = 0
 offset_left = 46.0
 offset_top = 116.0
 offset_right = 238.0
@@ -2362,6 +2505,7 @@ scale = Vector2(0.9, 0.9)
 text = "Orbit plane angle (PlAng)"
 
 [node name="cbTrueAnomalyLabel" type="Label" parent="Body/JPLTab/Control/TableSettings"]
+layout_mode = 0
 offset_left = 47.0
 offset_top = 139.0
 offset_right = 290.0
@@ -2370,6 +2514,7 @@ scale = Vector2(0.9, 0.9)
 text = "True anomaly angle (Tru Anom)"
 
 [node name="cbSkyMotionLabel" type="Label" parent="Body/JPLTab/Control/TableSettings"]
+layout_mode = 0
 offset_left = 47.0
 offset_top = 162.0
 offset_right = 345.0
@@ -2384,98 +2529,202 @@ offset_top = 5.0
 offset_right = 35.0
 offset_bottom = 29.0
 scale = Vector2(0.9, 0.9)
+focus_mode = 0
+button_pressed = true
 
 [node name="cbDelta" type="CheckBox" parent="Body/JPLTab/Control/TableSettings"]
+layout_mode = 0
 offset_left = 11.0
 offset_top = 25.0
 offset_right = 35.0
 offset_bottom = 49.0
 scale = Vector2(0.9, 0.9)
+focus_mode = 0
+button_pressed = true
 
 [node name="cbSngAng" type="CheckBox" parent="Body/JPLTab/Control/TableSettings"]
+layout_mode = 0
 offset_left = 11.0
 offset_top = 45.0
 offset_right = 35.0
 offset_bottom = 69.0
 scale = Vector2(0.9, 0.9)
+focus_mode = 0
+button_pressed = true
 
 [node name="cbHeliocentric" type="CheckBox" parent="Body/JPLTab/Control/TableSettings"]
+layout_mode = 0
 offset_left = 11.0
 offset_top = 69.0
 offset_right = 35.0
 offset_bottom = 93.0
 scale = Vector2(0.9, 0.9)
+focus_mode = 0
+button_pressed = true
 
 [node name="cbSTO" type="CheckBox" parent="Body/JPLTab/Control/TableSettings"]
+layout_mode = 0
 offset_left = 11.0
 offset_top = 93.0
 offset_right = 35.0
 offset_bottom = 117.0
 scale = Vector2(0.9, 0.9)
+focus_mode = 0
+button_pressed = true
 
 [node name="cbPlAng" type="CheckBox" parent="Body/JPLTab/Control/TableSettings"]
+layout_mode = 0
 offset_left = 11.0
 offset_top = 116.0
 offset_right = 35.0
 offset_bottom = 140.0
 scale = Vector2(0.9, 0.9)
+focus_mode = 0
+button_pressed = true
 
 [node name="cbTrueAnomaly" type="CheckBox" parent="Body/JPLTab/Control/TableSettings"]
+layout_mode = 0
 offset_left = 11.0
 offset_top = 139.0
 offset_right = 35.0
 offset_bottom = 163.0
 scale = Vector2(0.9, 0.9)
+focus_mode = 0
+button_pressed = true
 
 [node name="cbSkyMotion" type="CheckBox" parent="Body/JPLTab/Control/TableSettings"]
+layout_mode = 0
 offset_left = 11.0
 offset_top = 162.0
 offset_right = 35.0
 offset_bottom = 186.0
 scale = Vector2(0.9, 0.9)
+focus_mode = 0
+button_pressed = true
 
-[node name="SearchDataPanel" type="Panel" parent="Body/JPLTab/Control" groups=["settings_tab"]]
-z_index = -1
+[node name="ExportCSVBtn" type="Button" parent="Body/JPLTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.135
-anchor_top = -0.084
-anchor_right = 0.135
-anchor_bottom = -0.084
-offset_left = 0.0611798
-offset_top = 0.0476742
-offset_right = 408.061
-offset_bottom = 208.048
-theme_override_styles/panel = SubResource("StyleBoxFlat_pkwgd")
-metadata/_edit_use_anchors_ = true
+anchor_left = 1.217
+anchor_top = -0.106
+anchor_right = 1.217
+anchor_bottom = -0.106
+offset_left = 935.5
+offset_top = 904.441
+offset_right = 1127.5
+offset_bottom = 935.441
+text = "EXPORT CSV"
 
-[node name="OrbitalElemPanel" type="Panel" parent="Body/JPLTab/Control" groups=["settings_tab"]]
-z_index = -1
+[node name="FileExplorer" type="FileDialog" parent="Body/JPLTab/Control"]
+auto_translate_mode = 1
+initial_position = 1
+access = 2
+metadata/is_screenshot = false
+
+[node name="ImageResInfoBtn" type="TextureButton" parent="Body/JPLTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.135116
-anchor_top = 0.55043
-anchor_right = 0.135116
-anchor_bottom = 0.55043
-offset_right = 408.0
-offset_bottom = 200.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_pkwgd")
-metadata/_edit_use_anchors_ = true
+anchor_left = 0.137
+anchor_top = -0.055
+anchor_right = 0.137
+anchor_bottom = -0.055
+offset_left = 285.349
+offset_top = 773.698
+offset_right = 309.349
+offset_bottom = 797.698
+tooltip_text = "To be calculated by user from telescope focal length and CCD pixel size​"
+disabled = true
+texture_normal = ExtResource("25_27rlx")
 
-[node name="TableSettingsPanel" type="Panel" parent="Body/JPLTab/Control" groups=["settings_tab"]]
-z_index = -1
+[node name="CCDImageInfoBtn" type="TextureButton" parent="Body/JPLTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.135
-anchor_top = 1.164
-anchor_right = 0.135
-anchor_bottom = 1.164
-offset_left = 0.0611798
-offset_top = -0.0891997
-offset_right = 408.061
-offset_bottom = 189.911
-theme_override_styles/panel = SubResource("StyleBoxFlat_pkwgd")
-metadata/_edit_use_anchors_ = true
+anchor_left = 0.137
+anchor_top = -0.055
+anchor_right = 0.137
+anchor_bottom = -0.055
+offset_left = 285.349
+offset_top = 735.698
+offset_right = 309.349
+offset_bottom = 759.698
+tooltip_text = "PLEASE NOTE if image is rectangular please crop it square with the comet in the center, then enter the size of one side​"
+disabled = true
+texture_normal = ExtResource("25_27rlx")
+
+[node name="TableSettingsInfoBtn" type="TextureButton" parent="Body/JPLTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.137
+anchor_top = -0.055
+anchor_right = 0.137
+anchor_bottom = -0.055
+offset_left = 255.349
+offset_top = 424.698
+offset_right = 279.349
+offset_bottom = 448.698
+tooltip_text = "Select parameters to be shown in the Table (NB this does not affect the automatic import by the software for the calculations)​"
+disabled = true
+texture_normal = ExtResource("25_27rlx")
+
+[node name="StepsizeInfoBtn" type="TextureButton" parent="Body/JPLTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.137
+anchor_top = -0.055
+anchor_right = 0.137
+anchor_bottom = -0.055
+offset_left = 159.349
+offset_top = 153.698
+offset_right = 183.349
+offset_bottom = 177.698
+tooltip_text = "Insert step size in hours (24 if one day)​"
+disabled = true
+texture_normal = ExtResource("25_27rlx")
+
+[node name="TimespanInfoBtn" type="TextureButton" parent="Body/JPLTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.137
+anchor_top = -0.055
+anchor_right = 0.137
+anchor_bottom = -0.055
+offset_left = 158.985
+offset_top = 84.0757
+offset_right = 182.985
+offset_bottom = 108.076
+tooltip_text = "Select time span​"
+disabled = true
+texture_normal = ExtResource("25_27rlx")
+
+[node name="CometNameInfoBtn" type="TextureButton" parent="Body/JPLTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.137
+anchor_top = -0.055
+anchor_right = 0.137
+anchor_bottom = -0.055
+offset_left = 159.349
+offset_top = 2.69787
+offset_right = 183.349
+offset_bottom = 26.6979
+tooltip_text = "Enter comet name (capital letters)​"
+disabled = true
+texture_normal = ExtResource("25_27rlx")
+
+[node name="OrbitalInfoBtn" type="TextureButton" parent="Body/JPLTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.137
+anchor_top = -0.055
+anchor_right = 0.137
+anchor_bottom = -0.055
+offset_left = 255.349
+offset_top = 205.698
+offset_right = 279.349
+offset_bottom = 229.698
+tooltip_text = "Calculated automatically by software​"
+disabled = true
+texture_normal = ExtResource("25_27rlx")
 
 [node name="HelpPanel" type="CanvasLayer" parent="Body"]
 layer = 3
@@ -2745,8 +2994,19 @@ metadata/_edit_use_anchors_ = true
 [connection signal="file_selected" from="Body/SimTab/Control/FileExplorer" to="Body/SimTab" method="_on_file_explorer_file_selected"]
 [connection signal="pressed" from="Body/ScaleTab/Control/OverlayImgPickerBtn" to="Body/SimTab" method="_on_overlay_img_picker_btn_pressed"]
 [connection signal="pressed" from="Body/ScaleTab/Control/DelOverlayImgBtn" to="Body/SimTab" method="_on_del_overlay_img_btn_pressed"]
+[connection signal="toggled" from="Body/ScaleTab/Control/ArcKmToggle" to="Body/ScaleTab" method="_on_arc_km_toggle_toggled"]
 [connection signal="pressed" from="Body/JPLTab/Control/SearchBtn" to="Body/JPLTab" method="_on_search_btn_pressed"]
 [connection signal="date_selected" from="Body/JPLTab/Control/StartCalendarBtn" to="Body/JPLTab" method="_on_start_calendar_btn_date_selected"]
 [connection signal="pressed" from="Body/JPLTab/Control/ClearStartDateBtn" to="Body/JPLTab" method="_on_clear_start_date_btn_pressed"]
 [connection signal="date_selected" from="Body/JPLTab/Control/EndCalendarBtn" to="Body/JPLTab" method="_on_end_calendar_btn_date_selected"]
 [connection signal="pressed" from="Body/JPLTab/Control/ClearEndDateBtn" to="Body/JPLTab" method="_on_clear_end_date_btn_pressed"]
+[connection signal="toggled" from="Body/JPLTab/Control/TableSettings/cbRaDec" to="Body/JPLTab" method="_on_cb_ra_dec_toggled"]
+[connection signal="toggled" from="Body/JPLTab/Control/TableSettings/cbDelta" to="Body/JPLTab" method="_on_cb_delta_toggled"]
+[connection signal="toggled" from="Body/JPLTab/Control/TableSettings/cbSngAng" to="Body/JPLTab" method="_on_cb_sng_ang_toggled"]
+[connection signal="toggled" from="Body/JPLTab/Control/TableSettings/cbHeliocentric" to="Body/JPLTab" method="_on_cb_heliocentric_toggled"]
+[connection signal="toggled" from="Body/JPLTab/Control/TableSettings/cbSTO" to="Body/JPLTab" method="_on_cb_sto_toggled"]
+[connection signal="toggled" from="Body/JPLTab/Control/TableSettings/cbPlAng" to="Body/JPLTab" method="_on_cb_pl_ang_toggled"]
+[connection signal="toggled" from="Body/JPLTab/Control/TableSettings/cbTrueAnomaly" to="Body/JPLTab" method="_on_cb_true_anomaly_toggled"]
+[connection signal="toggled" from="Body/JPLTab/Control/TableSettings/cbSkyMotion" to="Body/JPLTab" method="_on_cb_sky_motion_toggled"]
+[connection signal="pressed" from="Body/JPLTab/Control/ExportCSVBtn" to="Body/JPLTab" method="_on_export_csv_btn_pressed"]
+[connection signal="file_selected" from="Body/JPLTab/Control/FileExplorer" to="Body/JPLTab" method="_on_file_explorer_file_selected"]

@@ -19,6 +19,18 @@ var api_url := "https://ssd.jpl.nasa.gov/api/horizons.api"
 # var quantities := "1,19,20,23"
 var quantities := "1,16,19,20,24,28,41,47"
 
+# options
+var options := {
+	"RA_DEC": true,
+	"Delta": true,
+	"SngAng": true,
+	"Heliocentric": true,
+	"STO": true,
+	"PlAngle": true,
+	"TrueAnomaly": true,
+	"SkyMotion": true
+}
+
 # Regex Related
 var regex_params: Array[String] = [
 		"(\\d{4}-\\w{3}-\\d{2})", # Matches the date, e.g., 1998-Jan-01
@@ -46,10 +58,12 @@ var full_pattern := "\\s+".join(PackedStringArray(regex_params))
 var jpl_regex := RegEx.new()
 var compiled := jpl_regex.compile(full_pattern)
 
-
 var om_w_in_regex: RegEx = RegEx.new()
 # Pattern to match " OM= 124.567, W= 123.456, IN= 78.910"
-var om_w_in_compiled := om_w_in_regex.compile("\\s*OM=\\s*([-+]?\\d+\\.\\d+)\\s*W=\\s*([-+]?\\d+\\.\\d+)\\s*IN=\\s*([-+]?\\d+\\.\\d+)")
+var om_w_in_compiled := om_w_in_regex.compile("\\s*OM=\\s*([-+]?\\d*\\.\\d+)\\s*W=\\s*([-+]?\\d*\\.\\d+)\\s*IN=\\s*([-+]?\\d*\\.\\d+)")
+
+var ec_qr_tp_regex: RegEx = RegEx.new()
+var ec_qr_tp_compiled := ec_qr_tp_regex.compile("\\s*EC=\\s*([-+]?\\d*\\.\\d+)\\s*QR=\\s*([-+]?\\d*\\.\\d+)\\s*TP=\\s*([-+]?\\d*\\.\\d+)")
 
 func _ready() -> void:
 	http_request = HTTPRequest.new()
@@ -149,14 +163,13 @@ func _http_request_completed(result: int, _response_code: int, _headers: PackedS
 	# $Control/WLineEdit.visible = true
 	# $Control/OMLineEdit.visible = true
 	# $Control/INLineEdit.visible = true
-	
-	$Control/ECLineEdit.text = "N/A"
-	$Control/QRLineEdit.text = "N/A"
-	$Control/TPLineEdit.text = "N/A"
+
+	$Control/ECLineEdit.text = str(ephemeris_data.ec)
+	$Control/QRLineEdit.text = str(ephemeris_data.qr)
+	$Control/TPLineEdit.text = str(ephemeris_data.tp)
 	$Control/OMLineEdit.text = str(ephemeris_data.om)
 	$Control/WLineEdit.text = str(ephemeris_data.w)
 	$Control/INLineEdit.text = str(ephemeris_data.inc)
-	
 	clear_container()
 	populate_container(ephemeris_data.data)
 
@@ -173,6 +186,24 @@ func parse_ephemeris(data: String) -> String:
 	if end_index == -1:
 		push_error("Data end marker not found.")
 		return ""
+
+	var ec_index := data.find(" EC=")
+	if ec_index == -1:
+		push_error("EC line not found.")
+		return ""
+	var ec_end_index := data.find("\n", ec_index)
+	var ec_line := data.substr(ec_index, ec_end_index - ec_index).strip_edges()
+	var ec_result := ec_qr_tp_regex.search(ec_line)
+	if ec_result == null:
+		push_error("No matches found in the EC/QR/TP line: %s" % ec_line)
+		return ""
+	print(ec_result.get_string(0))
+	print(ec_result.get_string(1))
+	print(ec_result.get_string(2))
+	print(ec_result.get_string(3))
+	var ec := ec_result.get_string(1)
+	var qr := ec_result.get_string(2)
+	var tp := ec_result.get_string(3)
 
 	# from the body, extract the line containing OM=.. , W=.. , IN=...
 	# and extract the object name from it
@@ -203,11 +234,16 @@ func parse_ephemeris(data: String) -> String:
 		if line.strip_edges() != "":
 			eph_lines.append(line.strip_edges())
 
-	# extracting each column, line by line, using regex
-	var json_text := "{\"om\": %s, \"w\": %s, \"inc\": %s, \"data\": [" % [om, w, inc]
+
+	Util.ec = float(ec)
+	Util.qr = float(qr)
+	Util.tp = float(tp)
 	Util.om = float(om)
 	Util.w = float(w)
 	Util.incl = float(inc)
+
+	# extracting each column, line by line, using regex
+	var json_text := "{\"ec\": %s, \"qr\": %s, \"tp\": %s, \"om\": %s, \"w\": %s, \"inc\": %s, \"data\": [" % [Util.ec, Util.qr, Util.tp, Util.om, Util.w, Util.incl]
 	for index in range(len(eph_lines)):
 		var line := eph_lines[index]
 		# print(line)
@@ -223,11 +259,15 @@ func parse_ephemeris(data: String) -> String:
 		"right_ascension": result.get_string(3),
 		"declination": result.get_string(4),
 		"sun_pa": result.get_string(5),
+		"sun_pa_dist": result.get_string(6),
 		"sun_distance_r": result.get_string(7),
+		"sun_r_dot": result.get_string(8),
 		"delta": result.get_string(9),
+		"delta_dot": result.get_string(10),
 		"sto": result.get_string(11),
 		"pl_ang": result.get_string(12),
 		"true_anomaly": result.get_string(13),
+		"sky_motion": result.get_string(14),
 		"sky_motion_pa": result.get_string(15)
 		}
 		# print(entry)
@@ -236,7 +276,6 @@ func parse_ephemeris(data: String) -> String:
 		if index < len(eph_lines) - 1:
 			json_text += ","
 	json_text += "]}"
-	# print(json_text)
 	return json_text
 
 # Clear the container before populating it with new data.
@@ -254,14 +293,39 @@ func populate_container(data: Variant) -> void:
 		"time": "Time",
 		"right_ascension": "Right Ascension (Deg)",
 		"declination": "Declination (Deg)",
-		# "sun_pa": "Sun PA (Deg)",
-		# "sun_distance_r": "Sun Distance R (AU)",
-		# "delta": "Delta (AU)",
-		# "sto": "STO (Deg)",
+		"delta": "Delta (AU)",
+		"delta_dot": "Delta Dot",
+		"sun_pa": "Sun PA (Deg)",
+		"sun_pa_dist": "Sun PA Dist",
+		"sun_distance_r": "Sun Distance R (AU)",
+		"sun_r_dot": "Sun Distance R Dot",
+		"sto": "STO (Deg)",
 		"pl_ang": "Sky Plane Angle (Deg)",
 		"true_anomaly": "True Anomaly (Deg)",
+		"sky_motion": "Sky Motion",
 		"sky_motion_pa": "Sky Motion PA (Deg)"
 	}
+	if options["RA_DEC"] == false:
+		HEADER.erase("right_ascension")
+		HEADER.erase("declination")
+	if options["Delta"] == false:
+		HEADER.erase("delta")
+		HEADER.erase("delta_dot")
+	if options["SngAng"] == false:
+		HEADER.erase("sun_pa")
+		HEADER.erase("sun_pa_dist")
+	if options["Heliocentric"] == false:
+		HEADER.erase("sun_distance_r")
+		HEADER.erase("sun_r_dot")
+	if options["STO"] == false:
+		HEADER.erase("sto")
+	if options["PlAngle"] == false:
+		HEADER.erase("pl_ang")
+	if options["TrueAnomaly"] == false:
+		HEADER.erase("true_anomaly")
+	if options["SkyMotion"] == false:
+		HEADER.erase("sky_motion")
+		HEADER.erase("sky_motion_pa")
 	Util.jpl_data = data
 	var date_str: String = str(data[0]["date"])
 	var time_str: String = str(data[0]["time"])
@@ -288,31 +352,11 @@ func populate_container(data: Variant) -> void:
 
 
 func _on_start_calendar_btn_date_selected(date_obj: Date) -> void:
-	# print(date_obj.date()) # Example of formatted date output
-	# if end_date != null and date_obj.year() > end_date.year():
-	# 	push_error("Start date cannot be later than end date.")
-	# 	return
-	# elif end_date != null and date_obj.year() == end_date.year() and date_obj.month() > end_date.month():
-	# 	push_error("Start date cannot be later than end date.")
-	# 	return
-	# elif end_date != null and date_obj.year() == end_date.year() and date_obj.month() == end_date.month() and date_obj.day() > end_date.day():
-	# 	push_error("Start date cannot be later than end date.")
-	# 	return
 	start_date = date_obj
 	start_date_ledit.text = date_obj.date("YYYY-MM-DD")
 
 
 func _on_end_calendar_btn_date_selected(date_obj: Date) -> void:
-	# print(date_obj.date("YYYY-MM-DD")) # Example of formatted date output
-	# if start_date != null and date_obj.year() < start_date.year():
-	# 	push_error("End date cannot be earlier than start date.")
-	# 	return
-	# elif start_date != null and date_obj.year() == start_date.year() and date_obj.month() < start_date.month():
-	# 	push_error("End date cannot be earlier than start date.")
-	# 	return
-	# elif start_date != null and date_obj.year() == start_date.year() and date_obj.month() == start_date.month() and date_obj.day() < start_date.day():
-	# 	push_error("End date cannot be earlier than start date.")
-	# 	return
 	end_date = date_obj
 	end_date_ledit.text = date_obj.date("YYYY-MM-DD")
 
@@ -328,20 +372,92 @@ func _on_clear_start_date_btn_pressed() -> void:
 func _on_clear_end_date_btn_pressed() -> void:
 	end_date = null
 	end_date_ledit.text = ""
-# func update_alpha_p(value: float) -> void:
-# 	alpha_p = value
-# 	update_i()
-# 	update_phi()
-# 	update_table()
-# func update_delta_p(value: float) -> void:
-# 	delta_p = value
-# 	update_i()
-# 	update_phi()
-# 	update_table()
 
-# func update_i() -> void:
-# 	pass
-# func update_phi() -> void:
-# 	pass
-# func update_table() -> void:
-# 	pass
+
+func _on_cb_ra_dec_toggled(toggled_on: bool) -> void:
+	options["RA_DEC"] = toggled_on
+
+
+func _on_cb_delta_toggled(toggled_on: bool) -> void:
+	options["Delta"] = toggled_on
+
+
+func _on_cb_sng_ang_toggled(toggled_on: bool) -> void:
+	options["SngAng"] = toggled_on
+
+
+func _on_cb_heliocentric_toggled(toggled_on: bool) -> void:
+	options["Heliocentric"] = toggled_on
+
+
+func _on_cb_sto_toggled(toggled_on: bool) -> void:
+	options["STO"] = toggled_on
+
+
+func _on_cb_pl_ang_toggled(toggled_on: bool) -> void:
+	options["PlAngle"] = toggled_on
+
+
+func _on_cb_true_anomaly_toggled(toggled_on: bool) -> void:
+	options["TrueAnomaly"] = toggled_on
+
+
+func _on_cb_sky_motion_toggled(toggled_on: bool) -> void:
+	options["SkyMotion"] = toggled_on
+
+
+func _on_export_csv_btn_pressed() -> void:
+	$Control/FileExplorer.file_mode = FileDialog.FILE_MODE_SAVE_FILE
+	$Control/FileExplorer.filters = ["*.csv;CSV File"]
+	$Control/FileExplorer.popup_centered()
+	$Control/FileExplorer.current_file = "jpl_ephemeris.csv"
+	$Control/FileExplorer.visible = true
+	
+
+func _on_file_explorer_file_selected(path: String) -> void:
+	# convert json data to csv
+	if Util.jpl_data == null or Util.jpl_data.size() == 0:
+		Util.create_popup("Error", "No ephemeris data to export.")
+		return
+	# print("Exporting CSV")
+	var csv_text := ""
+	var HEADER := {}
+	if options["RA_DEC"] == true:
+		HEADER["right_ascension"] = "Right Ascension (Deg)"
+		HEADER["declination"] = "Declination (Deg)"
+	if options["Delta"] == true:
+		HEADER["delta"] = "Delta (AU)"
+		HEADER["delta_dot"] = "Delta Dot"
+	if options["SngAng"] == true:
+		HEADER["sun_pa"] = "Sun PA (Deg)"
+		HEADER["sun_pa_dist"] = "Sun PA Dist"
+	if options["Heliocentric"] == true:
+		HEADER["sun_distance_r"] = "Sun Distance R (AU)"
+		HEADER["sun_r_dot"] = "Sun Distance R Dot"
+	if options["STO"] == true:
+		HEADER["sto"] = "STO (Deg)"
+	if options["PlAngle"] == true:
+		HEADER["pl_ang"] = "Sky Plane Angle (Deg)"
+	if options["TrueAnomaly"] == true:
+		HEADER["true_anomaly"] = "True Anomaly (Deg)"
+	if options["SkyMotion"] == true:
+		HEADER["sky_motion"] = "Sky Motion"
+		HEADER["sky_motion_pa"] = "Sky Motion PA (Deg)"
+
+	for key: String in HEADER.keys():
+		csv_text += "%s," % HEADER[key]
+	csv_text = csv_text.trim_suffix(",") + "\n"
+	for line: Dictionary in Util.jpl_data:
+		var line_string := ""
+		for key: String in HEADER.keys():
+			line_string += "%s," % str(line[key])
+		csv_text += line_string.trim_suffix(",") + "\n"
+	# save csv_text to file
+	var file := FileAccess.open(path, FileAccess.WRITE)
+	if file == null:
+		Util.create_popup("Error", "Failed to open file for writing.")
+		return
+	file.store_string(csv_text)
+	file.close()
+
+	Util.create_popup("Export Successful", "Ephemeris data exported to %s" % path)

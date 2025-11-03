@@ -58,6 +58,9 @@ var visible_area: float = 0.0
 
 ## JPL Table
 var jpl_data: Variant
+var ec := 0.0 ## Eccentricity
+var qr := 0.0 ## Perihelion distance in AU
+var tp := 0.0 ## Time of perihelion passage in JD
 var om := 0.0 ## Longitude of ascending node
 var w := 0.0 ## Argument of perihelion
 var incl := 0.0 ## Inclination
@@ -109,6 +112,17 @@ var is_simulation: bool = true ## True: simulation enabled, False: instant simul
 @onready var phi_line_edit: LineEdit = $"/root/Hud/Body/CometTab/Control/PhiLineEdit"
 @onready var i_line_edit: LineEdit = $"/root/Hud/Body/CometTab/Control/ILineEdit"
 @onready var subsolar_lat_line_edit: LineEdit = $"/root/Hud/Body/CometTab/Control/SubsolarPLineEdit"
+
+#scale/sim tab variables
+# @onready var file_explorer: FileDialog = $"/root/Hud/Body/SimTab/Control/FileExplorer"
+# @onready var overlay_img_linedit: LineEdit = $"/root/Hud/Body/ScaleTab/Control/OverlayImgLineEdit"
+# @onready var overlay_img_picker_btn: Button = $"/root/Hud/Body/ScaleTab/Control/OverlayImgPickerBtn"
+# @onready var del_overlay_img_btn: Button = $"/root/Hud/Body/ScaleTab/Control/DelOverlayImgBtn"
+# # @onready var transparency_label: Label = $"Control/TransparencyLabel"
+# @onready var transparency_slider: HSlider = $"/root/Hud/Body/ScaleTab/Control/TransparencySlider"
+# @onready var overlay_img: TextureRect = $"/root/Hud/Viewport/Panel/OverlayImg"
+# @onready var sub_viewport_container: SubViewportContainer = $"/root/Hud/Viewport/SubViewportContainer"
+
 ## Converts Latitude/Longitude (in degrees) to a local 3D position
 ## vector relative to the center of a sphere with the given radius.
 ## Assumes Y-Up, Latitude 0 = Equator, Longitude 0 = +X axis.
@@ -139,7 +153,8 @@ func create_popup(title: String, message: String) -> AcceptDialog:
 	var popup := AcceptDialog.new()
 	popup.title = title
 	popup.dialog_text = message
-	get_tree().get_root().add_child(popup)
+	get_tree().get_root().add_child.call_deferred(popup)
+	await popup.ready
 	popup.popup_centered()
 	return popup
 

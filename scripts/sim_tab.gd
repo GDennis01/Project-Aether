@@ -1,11 +1,10 @@
 extends CanvasLayer
-
-@onready var file_explorer: FileDialog = $"Control/FileExplorer"
-@onready var overlay_img_linedit: LineEdit = $"Control/OverlayImgLineEdit"
-@onready var overlay_img_picker_btn: Button = $"Control/OverlayImgPickerBtn"
-@onready var del_overlay_img_btn: Button = $"Control/DelOverlayImgBtn"
+@onready var file_explorer: FileDialog = $"/root/Hud/Body/SimTab/Control/FileExplorer"
+@onready var overlay_img_linedit: LineEdit = $"/root/Hud/Body/ScaleTab/Control/OverlayImgLineEdit"
+@onready var overlay_img_picker_btn: Button = $"/root/Hud/Body/ScaleTab/Control/OverlayImgPickerBtn"
+@onready var del_overlay_img_btn: Button = $"/root/Hud/Body/ScaleTab/Control/DelOverlayImgBtn"
 # @onready var transparency_label: Label = $"Control/TransparencyLabel"
-@onready var transparency_slider: HSlider = $"Control/TransparencySlider"
+@onready var transparency_slider: HSlider = $"/root/Hud/Body/SimTab/Control/TransparencySlider"
 @onready var overlay_img: TextureRect = $"/root/Hud/Viewport/Panel/OverlayImg"
 @onready var sub_viewport_container: SubViewportContainer = $"/root/Hud/Viewport/SubViewportContainer"
 # Called when the node enters the scene tree for the first time.
@@ -29,44 +28,13 @@ func save_data() -> void:
 ## Called by Navbar._on_file_explorer_file_selected()
 ## Loads the data from the config file into the different element of the scene
 func load_data() -> void:
-	# set block signals for the sanitized edits
-	# $Control/FrequencyEdit.set_block_signals(true)
-	# $Control/NumRotationEdit.set_block_signals(true)
-	# $Control/JetRateEdit.set_block_signals(true)
-	# $Control/KmScaleEdit.set_block_signals(true)
-	# $Control/IEdit.set_block_signals(true)
-	# $Control/PhiEdit.set_block_signals(true)
-	# $Control/TrueAnomalyEdit.set_block_signals(true)
 	$Control/FrequencyEdit.set_value(float(SaveManager.config.get_value("simulation", "frequency", 0)))
 	$Control/NumRotationEdit.set_value(float(SaveManager.config.get_value("simulation", "num_rotations", 0)))
 	$Control/JetRateEdit.set_value(float(SaveManager.config.get_value("simulation", "jet_rate", 0)))
 	$Control/KmScaleEdit.set_value(float(SaveManager.config.get_value("simulation", "scale", 0)))
-	# $Control/IEdit.set_value(float(SaveManager.config.get_value("simulation", "i", 0)))
-	# $Control/PhiEdit.set_value(float(SaveManager.config.get_value("simulation", "phi", 0)))
-	# $Control/TrueAnomalyEdit.set_value(float(SaveManager.config.get_value("simulation", "true_anomaly", 0)))
+
 	$Control/NPointsEdit.set_value(int(SaveManager.config.get_value("simulation", "n_points", 1)))
 
-	# set block signals for the sanitized edits
-	# $Control/FrequencyEdit.set_block_signals(false)
-	# $Control/NumRotationEdit.set_block_signals(false)
-	# $Control/JetRateEdit.set_block_signals(false)
-	# $Control/KmScaleEdit.set_block_signals(false)
-	# $Control/IEdit.set_block_signals(false)
-	# $Control/PhiEdit.set_block_signals(false)
-	# $Control/TrueAnomalyEdit.set_block_signals(false)
-
-
-# func update_i(value: float) -> void:
-# 	if Util.PRINT_UPDATE_METHOD: print("Updated i:%f"%value)
-# 	Util.i = value
-
-# func update_phi(value: float) -> void:
-# 	if Util.PRINT_UPDATE_METHOD: print("Updated phi:%f"%value)
-# 	Util.phi = value
-
-# func update_true_anomaly(value: float) -> void:
-# 	if Util.PRINT_UPDATE_METHOD: print("Updated true_anomaly:%f"%value)
-# 	Util.true_anomaly = value
 
 func update_n_points(value: float) -> void:
 	if Util.PRINT_UPDATE_METHOD or true: print("Updated n_points:%f"%value)
@@ -90,11 +58,11 @@ func _on_file_explorer_file_selected(path: String) -> void:
 	overlay_img_linedit.visible = true
 	overlay_img_linedit.text = filename
 
-	overlay_img_picker_btn.visible = false
-	del_overlay_img_btn.visible = true
+	# overlay_img_picker_btn.visible = false
+	# del_overlay_img_btn.visible = true
 
-	# transparency_label.visible = true
-	transparency_slider.visible = true
+	# # transparency_label.visible = true
+	# transparency_slider.visible = true
 
 	sub_viewport_container.get_node("SubViewport").transparent_bg = true
 
@@ -107,16 +75,13 @@ func load_texture(path: String) -> void:
 	overlay_img.modulate.a = 0.5
 
 func _on_del_overlay_img_btn_pressed() -> void:
-	overlay_img_linedit.visible = false
+	# overlay_img_linedit.visible = false
 	overlay_img_linedit.text = ""
-
-	overlay_img_picker_btn.visible = true
-	del_overlay_img_btn.visible = false
-
-	# transparency_label.visible = false
-	transparency_slider.value = 0.5
-	transparency_slider.visible = false
-
+	# overlay_img_picker_btn.visible = true
+	# del_overlay_img_btn.visible = false
+	# # transparency_label.visible = false
+	# transparency_slider.value = 0.5
+	# transparency_slider.visible = false
 	# remove overlay image
 	overlay_img.texture = null
 

@@ -119,3 +119,10 @@ func update_ruler() -> void:
 	fov_curr_zoom_km.text = str(int(round(fov_km_ruler)))
 	fov_km_ruler = fov_km_ruler / Util.window_size * 150 # 150 is the length of the ruler in pixels
 	Util.current_fov_label.text = "%s Km" % str(int(round(fov_km_ruler)))
+
+
+func _on_arc_km_toggle_toggled(toggled_on: bool) -> void:
+	if toggled_on:
+		update_ruler()
+	else:
+		Util.current_fov_label.text = str(int(Util.fov_arcmin)) + " Arcmin"
