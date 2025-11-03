@@ -197,10 +197,6 @@ func parse_ephemeris(data: String) -> String:
 	if ec_result == null:
 		push_error("No matches found in the EC/QR/TP line: %s" % ec_line)
 		return ""
-	print(ec_result.get_string(0))
-	print(ec_result.get_string(1))
-	print(ec_result.get_string(2))
-	print(ec_result.get_string(3))
 	var ec := ec_result.get_string(1)
 	var qr := ec_result.get_string(2)
 	var tp := ec_result.get_string(3)
@@ -331,7 +327,7 @@ func populate_container(data: Variant) -> void:
 	var time_str: String = str(data[0]["time"])
 	# only the first 2 digits
 	time_str = time_str.substr(0, 2)
-	get_tree().call_group("switch_date", "switch_date_set_date", date_str + " " + time_str, true)
+	get_tree().call_group("switch_date", "switch_date_set_date", date_str + " " + time_str + ":00", true)
 	# print(data)
 	var header_string := ""
 	for key: String in HEADER.keys():

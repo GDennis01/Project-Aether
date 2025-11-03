@@ -480,6 +480,8 @@ func switch_date_set_date(date: String, reset: bool = false) -> void:
 	# update coords grid labels
 	update_coordinate_grid_labels()
 func update_coordinate_grid_labels() -> void:
+	if Util.jpl_data == null or Util.jpl_data.size() == 0:
+		return
 	var ra: float = float(Util.jpl_data[current_date_index]["right_ascension"])
 	var dec: float = float(Util.jpl_data[current_date_index]["declination"])
 	if not Util.fov_arcmin:
@@ -527,7 +529,7 @@ func _switch_date_prev_next_date(prev_next: int, first_last: int) -> void:
 	var time_str: String = str(Util.jpl_data[current_date_index]["time"])
 	# only the first 2 digits (hours)
 	time_str = time_str.substr(0, 2)
-	switch_date_set_date(date_str + " " + time_str)
+	switch_date_set_date(date_str + " " + time_str + ":00")
 
 
 #endregion switch date

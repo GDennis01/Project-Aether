@@ -132,4 +132,4 @@ func _on_arc_km_toggle_toggled(toggled_on: bool) -> void:
 	else:
 		var fov_full_img_arcsec := Util.fov_arcmin * 60
 		var arcsec_ruler := fov_full_img_arcsec / 6
-		Util.current_fov_label.text = str(int(arcsec_ruler)) + " Arcsec"
+		Util.current_fov_label.text = str(int(arcsec_ruler)) + " arcsec"

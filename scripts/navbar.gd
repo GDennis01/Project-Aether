@@ -297,21 +297,28 @@ func _on_model_btn_pressed() -> void:
 	for node in settings_tab_nodes:
 		node.visible = false
 func _on_navbar_tab_changed(tab: int) -> void:
+	var model_tab_nodes := get_tree().get_nodes_in_group("model_tab")
+	var settings_tab_nodes := get_tree().get_nodes_in_group("settings_tab")
+	var help_tab := $"/root/Hud/Body/HelpPanel"
 	match tab:
 		0:
-			var model_tab_nodes := get_tree().get_nodes_in_group("model_tab")
 			for node in model_tab_nodes:
 				node.visible = false
-			var settings_tab_nodes := get_tree().get_nodes_in_group("settings_tab")
 			for node in settings_tab_nodes:
 				node.visible = true
+			help_tab.visible = false
 		1:
-			var model_tab_nodes := get_tree().get_nodes_in_group("model_tab")
 			for node in model_tab_nodes:
 				node.visible = true
-			var settings_tab_nodes := get_tree().get_nodes_in_group("settings_tab")
 			for node in settings_tab_nodes:
 				node.visible = false
+			help_tab.visible = false
+		2:
+			for node in model_tab_nodes:
+				node.visible = false
+			for node in settings_tab_nodes:
+				node.visible = false
+			help_tab.visible = true
 
 
 func _on_toggle_date_btn_pressed() -> void:
