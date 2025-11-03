@@ -294,15 +294,15 @@ func populate_container(data: Variant) -> void:
 		"right_ascension": "Right Ascension (Deg)",
 		"declination": "Declination (Deg)",
 		"delta": "Delta (AU)",
-		"delta_dot": "Delta Dot",
+		# "delta_dot": "Delta Dot",
 		"sun_pa": "Sun PA (Deg)",
-		"sun_pa_dist": "Sun PA Dist",
+		# "sun_pa_dist": "Sun PA Dist",
 		"sun_distance_r": "Sun Distance R (AU)",
-		"sun_r_dot": "Sun Distance R Dot",
+		# "sun_r_dot": "Sun Distance R Dot",
 		"sto": "STO (Deg)",
 		"pl_ang": "Sky Plane Angle (Deg)",
 		"true_anomaly": "True Anomaly (Deg)",
-		"sky_motion": "Sky Motion",
+		# "sky_motion": "Sky Motion",
 		"sky_motion_pa": "Sky Motion PA (Deg)"
 	}
 	if options["RA_DEC"] == false:
@@ -310,13 +310,13 @@ func populate_container(data: Variant) -> void:
 		HEADER.erase("declination")
 	if options["Delta"] == false:
 		HEADER.erase("delta")
-		HEADER.erase("delta_dot")
+		# HEADER.erase("delta_dot")
 	if options["SngAng"] == false:
 		HEADER.erase("sun_pa")
-		HEADER.erase("sun_pa_dist")
+		# HEADER.erase("sun_pa_dist")
 	if options["Heliocentric"] == false:
 		HEADER.erase("sun_distance_r")
-		HEADER.erase("sun_r_dot")
+		# HEADER.erase("sun_r_dot")
 	if options["STO"] == false:
 		HEADER.erase("sto")
 	if options["PlAngle"] == false:
@@ -324,7 +324,7 @@ func populate_container(data: Variant) -> void:
 	if options["TrueAnomaly"] == false:
 		HEADER.erase("true_anomaly")
 	if options["SkyMotion"] == false:
-		HEADER.erase("sky_motion")
+		# HEADER.erase("sky_motion")
 		HEADER.erase("sky_motion_pa")
 	Util.jpl_data = data
 	var date_str: String = str(data[0]["date"])
@@ -427,13 +427,13 @@ func _on_file_explorer_file_selected(path: String) -> void:
 		HEADER["declination"] = "Declination (Deg)"
 	if options["Delta"] == true:
 		HEADER["delta"] = "Delta (AU)"
-		HEADER["delta_dot"] = "Delta Dot"
+		# HEADER["delta_dot"] = "Delta Dot"
 	if options["SngAng"] == true:
 		HEADER["sun_pa"] = "Sun PA (Deg)"
-		HEADER["sun_pa_dist"] = "Sun PA Dist"
+		# HEADER["sun_pa_dist"] = "Sun PA Dist"
 	if options["Heliocentric"] == true:
 		HEADER["sun_distance_r"] = "Sun Distance R (AU)"
-		HEADER["sun_r_dot"] = "Sun Distance R Dot"
+		# HEADER["sun_r_dot"] = "Sun Distance R Dot"
 	if options["STO"] == true:
 		HEADER["sto"] = "STO (Deg)"
 	if options["PlAngle"] == true:
@@ -441,7 +441,7 @@ func _on_file_explorer_file_selected(path: String) -> void:
 	if options["TrueAnomaly"] == true:
 		HEADER["true_anomaly"] = "True Anomaly (Deg)"
 	if options["SkyMotion"] == true:
-		HEADER["sky_motion"] = "Sky Motion"
+		# HEADER["sky_motion"] = "Sky Motion"
 		HEADER["sky_motion_pa"] = "Sky Motion PA (Deg)"
 
 	for key: String in HEADER.keys():

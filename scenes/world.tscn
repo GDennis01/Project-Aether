@@ -35,6 +35,7 @@ height = 10.0
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7r4gi"]
 render_priority = 0
 shader = ExtResource("6_4mrxx")
+shader_parameter/grid_enabled = true
 shader_parameter/comet_texture = ExtResource("4_71j4m")
 shader_parameter/latitude_lines = 12.0
 shader_parameter/longitude_lines = 24.0

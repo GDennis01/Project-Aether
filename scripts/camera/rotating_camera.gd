@@ -52,14 +52,14 @@ func _unhandled_key_input(event: InputEvent) -> void:
 				size = Util.visible_area
 				get_tree().call_group("camera", "update_ruler")
 				_update_camera_transform()
-			KEY_P: # Toggle perspective/orthographic mode
-				if projection == PROJECTION_PERSPECTIVE:
-					projection = PROJECTION_ORTHOGONAL
-					Util.current_camera_label.text = "Rotating Camera (Orthographic)"
-				else:
-					projection = Camera3D.PROJECTION_PERSPECTIVE
-					Util.current_camera_label.text = "Rotating Camera (Perspective)"
-				_update_camera_transform() # Update transform after changing mode
+			# KEY_P: # Toggle perspective/orthographic mode
+			# 	if projection == PROJECTION_PERSPECTIVE:
+			# 		projection = PROJECTION_ORTHOGONAL
+			# 		Util.current_camera_label.text = "Rotating Camera (Orthographic)"
+			# 	else:
+			# 		projection = Camera3D.PROJECTION_PERSPECTIVE
+			# 		Util.current_camera_label.text = "Rotating Camera (Perspective)"
+			# 	_update_camera_transform() # Update transform after changing mode
 ## R to reset position
 ## Mouse wheel to zoom in/out
 ## Right mouse button to drag and rotate the camera

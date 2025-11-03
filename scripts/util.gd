@@ -98,6 +98,7 @@ var is_simulation: bool = true ## True: simulation enabled, False: instant simul
 # Labels and LineEdits
 @onready var current_camera_label: Label = $"/root/Hud/Viewport/Panel/CurrCameraLabel"
 @onready var date_label: Label = $"/root/Hud/Viewport/Panel/DateLabel"
+@onready var nucleus_date_label: Label = $"/root/Hud/Viewport/NucleusPanel/NucleusDateLabel"
 @onready var current_fov_label: Label = $"/root/Hud/Viewport/Panel/CenterContainer/ScaleLabel"
 @onready var beta_val_line_edit: LineEdit = $"/root/Hud/Body/CometTab/Control/BetaValLineEdit"
 @onready var accel_val_line_edit: LineEdit = $"/root/Hud/Body/SimTab/Control/AccelValLineEdit"
@@ -112,6 +113,15 @@ var is_simulation: bool = true ## True: simulation enabled, False: instant simul
 @onready var phi_line_edit: LineEdit = $"/root/Hud/Body/CometTab/Control/PhiLineEdit"
 @onready var i_line_edit: LineEdit = $"/root/Hud/Body/CometTab/Control/ILineEdit"
 @onready var subsolar_lat_line_edit: LineEdit = $"/root/Hud/Body/CometTab/Control/SubsolarPLineEdit"
+
+# coords grid labels
+@onready var ra_center_label: Label = $"/root/Hud/Viewport/Panel/CoordinateGrid/RACenterLabel"
+@onready var dec_center_label: Label = $"/root/Hud/Viewport/Panel/CoordinateGrid/DECCenterLabel"
+@onready var ra_left_label: Label = $"/root/Hud/Viewport/Panel/CoordinateGrid/RALeftLabel"
+@onready var ra_right_label: Label = $"/root/Hud/Viewport/Panel/CoordinateGrid/RARightLabel"
+@onready var dec_left_label: Label = $"/root/Hud/Viewport/Panel/CoordinateGrid/DECLeftLabel"
+@onready var dec_right_label: Label = $"/root/Hud/Viewport/Panel/CoordinateGrid/DECRightLabel"
+
 
 #scale/sim tab variables
 # @onready var file_explorer: FileDialog = $"/root/Hud/Body/SimTab/Control/FileExplorer"

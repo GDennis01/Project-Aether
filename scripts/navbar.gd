@@ -317,6 +317,17 @@ func _on_navbar_tab_changed(tab: int) -> void:
 func _on_toggle_date_btn_pressed() -> void:
 	Util.date_label.visible = not Util.date_label.visible
 
+func _on_toggle_nucleus_date_btn_pressed() -> void:
+	Util.nucleus_date_label.visible = not Util.nucleus_date_label.visible
+
 
 func _on_toggle_transparency_toggled(toggled_on: bool) -> void:
 	$/root/Hud/Viewport/Panel/OverlayImg.visible = toggled_on
+
+
+func _on_toggle_nucleus_grid_btn_pressed() -> void:
+	get_tree().call_group("comet", "toggle_nucleus_grid")
+
+
+func _on_toggle_model_grid_btn_pressed() -> void:
+	$"/root/Hud/Viewport/Panel/CoordinateGrid".visible = not $"/root/Hud/Viewport/Panel/CoordinateGrid".visible

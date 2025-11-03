@@ -1,10 +1,11 @@
-[gd_scene load_steps=37 format=3 uid="uid://bwt7dtbn7pn3c"]
+[gd_scene load_steps=39 format=3 uid="uid://bwt7dtbn7pn3c"]
 
 [ext_resource type="Script" uid="uid://bmle6k05e5fff" path="res://scripts/hud.gd" id="1_moku2"]
 [ext_resource type="Script" uid="uid://bwvqb33hu6cxk" path="res://scripts/navbar.gd" id="1_r4m0t"]
 [ext_resource type="Script" uid="uid://c3wk256unbuoe" path="res://scripts/comet_tab.gd" id="3_136eg"]
 [ext_resource type="PackedScene" uid="uid://blm04kepg8q0g" path="res://scenes/ui/SliderWithLineEdit.tscn" id="3_f5f8u"]
 [ext_resource type="PackedScene" uid="uid://dfq2g8u3hd1nh" path="res://scenes/ui/play_animation_slider.tscn" id="3_gss2c"]
+[ext_resource type="Texture2D" uid="uid://c0vxaxy568mia" path="res://asset/32x32_grid.png" id="3_vuvg6"]
 [ext_resource type="Texture2D" uid="uid://cq4pfua0ypj2s" path="res://asset/xyz_planeZ.png" id="4_65nxt"]
 [ext_resource type="Script" uid="uid://cpcxn2i4yw141" path="res://scripts/jet_table.gd" id="4_136eg"]
 [ext_resource type="Texture2D" uid="uid://b4lr0xn7kipbs" path="res://asset/save_icon.png" id="4_cwdlq"]
@@ -30,6 +31,7 @@
 [ext_resource type="Texture2D" uid="uid://hojlochig6h1" path="res://asset/Calendar32x32NP.png" id="18_d5po8"]
 [ext_resource type="Texture2D" uid="uid://cpx74l1o5t2j" path="res://asset/Calendar32x32.png" id="19_7yoph"]
 [ext_resource type="Texture2D" uid="uid://danq8www5kxvw" path="res://asset/24x24_i.png" id="25_27rlx"]
+[ext_resource type="Texture2D" uid="uid://yakwf864ftmt" path="res://asset/coordinate_grid.png" id="28_emer0"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qmm8d"]
 bg_color = Color(0, 0.286, 0.33, 1)
@@ -75,10 +77,6 @@ border_color = Color(0.17676, 0.18, 0.1152, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d5po8"]
 bg_color = Color(0, 0, 0, 0)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
 border_color = Color(0, 0, 0, 1)
 border_blend = true
 
@@ -155,18 +153,19 @@ mouse_filter = 2
 metadata/_edit_use_anchors_ = true
 
 [node name="RunModelLabel" type="Label" parent="Body/TabButtons" groups=["model_tab"]]
-visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.842525
 anchor_top = 16.6525
 anchor_right = 0.885771
 anchor_bottom = 17.1398
+offset_top = 52.0
+offset_right = 0.000898207
+offset_bottom = 52.0
 text = "Run Model"
 metadata/_edit_use_anchors_ = true
 
 [node name="RunModelBtn" type="Panel" parent="Body/TabButtons" groups=["model_tab"]]
-visible = false
 z_index = -2
 layout_mode = 1
 anchors_preset = -1
@@ -175,82 +174,136 @@ anchor_top = 77.4549
 anchor_right = 145.589
 anchor_bottom = 93.7315
 offset_left = -230603.0
-offset_top = -2844.87
+offset_top = -2792.87
 offset_right = -277530.0
-offset_bottom = -3507.13
+offset_bottom = -3455.13
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_pkwgd")
 metadata/_edit_use_anchors_ = true
 
+[node name="ToggleModelGridBtn" type="Button" parent="Body/TabButtons" groups=["model_tab"]]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.325
+anchor_top = 19.459
+anchor_right = 0.325
+anchor_bottom = 19.459
+offset_left = -0.51836
+offset_top = 7.98518
+offset_right = 39.4816
+offset_bottom = 47.9852
+focus_mode = 0
+icon = ExtResource("3_vuvg6")
+
+[node name="ToggleNucleusGridBtn" type="Button" parent="Body/TabButtons" groups=["model_tab"]]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.812
+anchor_top = 8.611
+anchor_right = 0.812
+anchor_bottom = 8.611
+offset_left = 193.584
+offset_top = 23.5608
+offset_right = 233.584
+offset_bottom = 63.5608
+focus_mode = 0
+icon = ExtResource("3_vuvg6")
+
 [node name="ToggleSunBtn" type="Button" parent="Body/TabButtons" groups=["model_tab"]]
-visible = false
 layout_mode = 2
-offset_left = 624.067
-offset_top = 932.923
-offset_right = 664.067
-offset_bottom = 972.923
+anchor_left = 0.812
+anchor_top = 8.611
+anchor_right = 0.812
+anchor_bottom = 8.611
+offset_left = 6.81572
+offset_top = 24.0108
+offset_right = 46.8157
+offset_bottom = 64.0108
 tooltip_text = "Toggle Sun Axis"
 focus_mode = 0
 icon = ExtResource("4_el1dq")
+metadata/_edit_use_anchors_ = true
 
 [node name="ToggleYBtn" type="Button" parent="Body/TabButtons" groups=["model_tab"]]
-visible = false
 layout_mode = 2
-offset_left = 751.067
-offset_top = 932.923
-offset_right = 791.067
-offset_bottom = 972.923
+anchor_left = 0.817
+anchor_top = 8.781
+anchor_right = 0.817
+anchor_bottom = 8.781
+offset_left = 124.22
+offset_top = 15.9868
+offset_right = 164.22
+offset_bottom = 55.9868
 tooltip_text = "Toggle Z Axis"
 focus_mode = 0
 icon = ExtResource("4_65nxt")
+metadata/_edit_use_anchors_ = true
 
 [node name="ToggleAxesBtn" type="Button" parent="Body/TabButtons" groups=["model_tab"]]
-visible = false
 layout_mode = 2
-offset_left = 687.067
-offset_top = 932.923
-offset_right = 727.067
-offset_bottom = 972.923
+anchor_left = 0.817
+anchor_top = 8.781
+anchor_right = 0.817
+anchor_bottom = 8.781
+offset_left = 60.2196
+offset_top = 15.9868
+offset_right = 100.22
+offset_bottom = 55.9868
 tooltip_text = "Toggle X and Y Axes"
 focus_mode = 0
 icon = ExtResource("5_el1dq")
+metadata/_edit_use_anchors_ = true
 
 [node name="ToggleDateBtn" type="Button" parent="Body/TabButtons" groups=["model_tab"]]
-visible = false
 layout_mode = 0
-offset_left = 815.0
-offset_top = 933.0
-offset_right = 855.0
-offset_bottom = 973.0
+offset_left = 688.0
+offset_top = 925.0
+offset_right = 728.0
+offset_bottom = 965.0
+focus_mode = 0
+icon = ExtResource("18_d5po8")
+
+[node name="ToggleNucleusDateBtn" type="Button" parent="Body/TabButtons" groups=["model_tab"]]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.821
+anchor_top = 8.611
+anchor_right = 0.821
+anchor_bottom = 8.611
+offset_left = 235.543
+offset_top = 24.0108
+offset_right = 275.543
+offset_bottom = 64.0108
 focus_mode = 0
 icon = ExtResource("18_d5po8")
 
 [node name="SaveSimBtn" type="Button" parent="Body/TabButtons" groups=["model_tab"]]
-visible = false
 layout_mode = 2
 anchor_left = 0.820641
 anchor_top = 18.4166
 anchor_right = 0.976953
 anchor_bottom = 19.272
+offset_top = 52.0
+offset_bottom = 52.0
 focus_mode = 0
 text = "Save Image"
 metadata/_edit_use_anchors_ = true
 
 [node name="AnimationSlider" parent="Body/TabButtons" groups=["model_tab"] instance=ExtResource("3_gss2c")]
-visible = false
 layout_mode = 2
 anchors_preset = 0
 anchor_left = 0.853987
 anchor_top = 17.4788
 anchor_right = 0.945691
 anchor_bottom = 18.3263
-offset_right = 0.0
+offset_top = 52.0
+offset_right = -2.27374e-13
+offset_bottom = 52.0
 size_flags_vertical = 1
 size_flags_stretch_ratio = 0.45
 num_steps = 500
 
 [node name="SaveNucleusBtn" type="Button" parent="Body/TabButtons" groups=["model_tab"]]
-visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.820641
@@ -413,9 +466,22 @@ text = "Quit"
 access = 2
 metadata/is_screenshot = false
 
+[node name="MiniNucleusToggleInfoBtn" type="TextureButton" parent="Body/TabButtons" groups=["model_tab"]]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.817
+anchor_top = 8.781
+anchor_right = 0.817
+anchor_bottom = 8.781
+offset_left = 303.22
+offset_top = 23.9868
+offset_right = 327.22
+offset_bottom = 47.9868
+tooltip_text = "Toggle sun, spin axis vectors. Show coordinate grid on nucleus and date of nucleus model. Save image according to time span set in Settings Tab.​"
+texture_normal = ExtResource("25_27rlx")
+
 [node name="CometTab" type="CanvasLayer" parent="Body" groups=["alpha_p", "delta_p", "load", "model_tab", "save", "switch_date"]]
 layer = 3
-visible = false
 script = ExtResource("3_136eg")
 
 [node name="Control" type="Control" parent="Body/CometTab"]
@@ -453,12 +519,14 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_pkwgd")
 
 [node name="EditRadius" parent="Body/CometTab/Control" groups=["load"] instance=ExtResource("3_f5f8u")]
 layout_mode = 1
-anchor_left = 0.00515463
-anchor_top = 0.757576
-anchor_right = 1.23711
-anchor_bottom = 0.897727
-offset_top = -19.0
-offset_bottom = -19.0
+anchor_left = -0.067
+anchor_top = 0.663
+anchor_right = -0.067
+anchor_bottom = 0.663
+offset_left = 13.998
+offset_top = 5.96806
+offset_right = 252.997
+offset_bottom = 42.9679
 label = &"Radius"
 resize_type = &"radius"
 minimum_value = 0.01
@@ -471,8 +539,8 @@ anchor_left = 0.0103093
 anchor_top = 1.51894
 anchor_right = 1.24227
 anchor_bottom = 1.65531
-offset_top = -67.0
-offset_bottom = -67.0
+offset_top = -53.0
+offset_bottom = -53.0
 grow_horizontal = 1
 grow_vertical = 1
 label = &"Spin Axis Inclination (°)"
@@ -483,14 +551,31 @@ maximum_value = 90.0
 starting_value = 0.0
 valid_zero = true
 
+[node name="Slider" parent="Body/CometTab/Control/EditCometIncl" index="0"]
+visible = false
+offset_left = 480.0
+offset_right = 640.0
+scale = Vector2(-1, 1)
+min_value = -90.0
+max_value = 90.0
+
+[node name="Label" parent="Body/CometTab/Control/EditCometIncl" index="1"]
+text = "Spin Axis Inclination (°)"
+
+[node name="SanitizedEdit" parent="Body/CometTab/Control/EditCometIncl" index="2"]
+text = "0.0"
+resize_type = &"inclination_rotation"
+lower_bound = -90.0
+higher_bound = 90.0
+
 [node name="EditCometDir" parent="Body/CometTab/Control" groups=["load", "reset_rotation"] instance=ExtResource("3_f5f8u")]
 layout_mode = 1
 anchor_left = 0.0103093
 anchor_top = 1.67045
 anchor_right = 1.24227
 anchor_bottom = 1.80682
-offset_top = -155.0
-offset_bottom = -155.0
+offset_top = -131.0
+offset_bottom = -131.0
 grow_horizontal = 1
 grow_vertical = 0
 label = &"Spin Axis PA (°)"
@@ -499,31 +584,103 @@ maximum_value = 360.0
 starting_value = 0.0
 valid_zero = true
 
+[node name="Slider" parent="Body/CometTab/Control/EditCometDir" index="0"]
+visible = false
+max_value = 360.0
+
+[node name="Label" parent="Body/CometTab/Control/EditCometDir" index="1"]
+text = "Spin Axis PA (°)"
+
+[node name="SanitizedEdit" parent="Body/CometTab/Control/EditCometDir" index="2"]
+text = "0.0"
+resize_type = &"direction_rotation"
+higher_bound = 360.0
+
 [node name="DeltaPSanEdit" parent="Body/CometTab/Control" instance=ExtResource("3_f5f8u")]
 layout_mode = 1
-anchor_left = 1.48453
-anchor_top = 0.969694
-anchor_right = 2.71134
-anchor_bottom = 1.10984
+anchor_left = 0.412365
+anchor_top = 1.09848
+anchor_right = 1.63918
+anchor_bottom = 1.23863
 offset_top = -27.0
 offset_bottom = -27.0
 label = &"Dec (°)"
 resize_type = &"delta_p"
-maximum_value = 1000.0
+minimum_value = -90.0
+maximum_value = 90.0
 starting_value = 0.0
+valid_zero = true
+
+[node name="Slider" parent="Body/CometTab/Control/DeltaPSanEdit" index="0"]
+offset_left = -79.0
+offset_right = 379.0
+min_value = -90.0
+max_value = 90.0
+step = 1.0
+
+[node name="Label" parent="Body/CometTab/Control/DeltaPSanEdit" index="1"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.324
+anchor_top = 0.057
+anchor_right = -0.324
+anchor_bottom = 0.057
+offset_left = 0.112369
+offset_top = -2.10892
+offset_right = 51.1124
+offset_bottom = 28.8911
+text = "Dec (°)"
+
+[node name="SanitizedEdit" parent="Body/CometTab/Control/DeltaPSanEdit" index="2"]
+anchors_preset = -1
+anchor_left = -0.29
+anchor_top = 0.273
+anchor_right = -0.29
+anchor_bottom = 0.273
+offset_left = 456.02
+offset_top = -8.1006
+offset_right = 512.02
+offset_bottom = 22.8994
+text = "0.0"
+resize_type = &"delta_p"
+lower_bound = -90.0
+higher_bound = 90.0
 
 [node name="AlphaPSanEdit" parent="Body/CometTab/Control" instance=ExtResource("3_f5f8u")]
 layout_mode = 1
 anchor_left = 0.0103093
-anchor_top = 0.969694
+anchor_top = 0.935603
 anchor_right = 1.23196
-anchor_bottom = 1.10984
+anchor_bottom = 1.07575
 offset_top = -27.0
 offset_bottom = -27.0
 label = &"RA (°)"
 resize_type = &"alpha_p"
-maximum_value = 1000.0
+maximum_value = 360.0
 starting_value = 0.0
+valid_zero = true
+
+[node name="Slider" parent="Body/CometTab/Control/AlphaPSanEdit" index="0"]
+offset_right = 457.0
+max_value = 360.0
+step = 1.0
+
+[node name="Label" parent="Body/CometTab/Control/AlphaPSanEdit" index="1"]
+text = "RA (°)"
+
+[node name="SanitizedEdit" parent="Body/CometTab/Control/AlphaPSanEdit" index="2"]
+anchors_preset = -1
+anchor_left = 0.004
+anchor_top = 0.057
+anchor_right = 0.004
+anchor_bottom = 0.057
+offset_left = 464.052
+offset_top = -0.108917
+offset_right = 520.052
+offset_bottom = 30.8911
+text = "0.0"
+resize_type = &"alpha_p"
+higher_bound = 360.0
 
 [node name="PhiLabel" type="RichTextLabel" parent="Body/CometTab/Control"]
 layout_mode = 1
@@ -533,9 +690,9 @@ anchor_top = 0.907977
 anchor_right = 0.252061
 anchor_bottom = 1.02711
 offset_left = 397.647
-offset_top = 49.294
+offset_top = 73.294
 offset_right = 402.747
-offset_bottom = 54.844
+offset_bottom = 78.844
 scale = Vector2(0.85, 0.85)
 bbcode_enabled = true
 text = "ϕ (°)
@@ -549,9 +706,9 @@ anchor_top = 0.963
 anchor_right = 0.127
 anchor_bottom = 0.963
 offset_left = 429.362
-offset_top = 31.768
+offset_top = 55.768
 offset_right = 500.362
-offset_bottom = 63.768
+offset_bottom = 87.768
 editable = false
 
 [node name="ILabel" type="RichTextLabel" parent="Body/CometTab/Control"]
@@ -562,9 +719,9 @@ anchor_top = 0.908967
 anchor_right = 1.01576
 anchor_bottom = 1.0281
 offset_left = 250.647
-offset_top = 96.294
+offset_top = 110.294
 offset_right = 255.747
-offset_bottom = 101.844
+offset_bottom = 115.844
 scale = Vector2(0.85, 0.85)
 bbcode_enabled = true
 text = "[i]I[/i]  (°)"
@@ -577,9 +734,9 @@ anchor_top = 0.963
 anchor_right = 0.127
 anchor_bottom = 0.963
 offset_left = 428.362
-offset_top = 78.768
+offset_top = 92.768
 offset_right = 500.362
-offset_bottom = 110.768
+offset_bottom = 124.768
 editable = false
 
 [node name="LambdaLabel" type="RichTextLabel" parent="Body/CometTab/Control"]
@@ -590,9 +747,9 @@ anchor_top = 0.76983
 anchor_right = 0.239933
 anchor_bottom = 0.892936
 offset_left = 271.353
-offset_top = 85.7649
+offset_top = 109.765
 offset_right = 287.453
-offset_bottom = 90.2649
+offset_bottom = 114.265
 scale = Vector2(0.85, 0.85)
 bbcode_enabled = true
 text = "λ (°)
@@ -606,9 +763,9 @@ anchor_top = 0.815545
 anchor_right = 0.169448
 anchor_bottom = 0.819333
 offset_left = 288.127
-offset_top = 70.696
+offset_top = 94.696
 offset_right = 361.127
-offset_bottom = 102.696
+offset_bottom = 126.696
 editable = false
 
 [node name="BetaLabel" type="RichTextLabel" parent="Body/CometTab/Control"]
@@ -619,9 +776,9 @@ anchor_top = 0.746311
 anchor_right = 0.408428
 anchor_bottom = 0.865439
 offset_left = 237.647
-offset_top = 139.294
+offset_top = 153.294
 offset_right = 242.747
-offset_bottom = 144.844
+offset_bottom = 158.844
 scale = Vector2(0.85, 0.85)
 text = "β (°)"
 
@@ -633,9 +790,9 @@ anchor_top = 0.773879
 anchor_right = -0.460325
 anchor_bottom = 0.773879
 offset_left = 411.303
-offset_top = 128.696
+offset_top = 142.696
 offset_right = 484.303
-offset_bottom = 160.696
+offset_bottom = 174.696
 editable = false
 
 [node name="HSeparator" type="HSeparator" parent="Body/CometTab/Control"]
@@ -685,6 +842,22 @@ maximum_value = 180.0
 starting_value = 90.0
 valid_zero = true
 
+[node name="Slider" parent="Body/CometTab/Control/EditSunIncl" index="0"]
+visible = false
+max_value = 180.0
+value = 90.0
+
+[node name="Label" parent="Body/CometTab/Control/EditSunIncl" index="1"]
+offset_top = 2.0
+offset_right = 52.0
+offset_bottom = 33.0
+text = "STO (°)"
+
+[node name="SanitizedEdit" parent="Body/CometTab/Control/EditSunIncl" index="2"]
+text = "90.0"
+resize_type = &"sun_inc_rotation"
+higher_bound = 180.0
+
 [node name="EditSunDir" parent="Body/CometTab/Control" groups=["load"] instance=ExtResource("3_f5f8u")]
 layout_mode = 1
 anchor_left = 1.45876
@@ -696,6 +869,21 @@ resize_type = &"sun_dir_rotation"
 maximum_value = 360.0
 starting_value = 0.0
 valid_zero = true
+
+[node name="Slider" parent="Body/CometTab/Control/EditSunDir" index="0"]
+visible = false
+max_value = 360.0
+
+[node name="Label" parent="Body/CometTab/Control/EditSunDir" index="1"]
+offset_top = 2.0
+offset_right = 75.0
+offset_bottom = 33.0
+text = "Sun PA (°)"
+
+[node name="SanitizedEdit" parent="Body/CometTab/Control/EditSunDir" index="2"]
+text = "0.0"
+resize_type = &"sun_dir_rotation"
+higher_bound = 360.0
 
 [node name="SunCometDistLabel" type="Label" parent="Body/CometTab/Control"]
 layout_mode = 1
@@ -779,7 +967,7 @@ anchors_preset = -1
 anchor_left = -0.0979381
 anchor_top = 1.68182
 anchor_right = 2.78866
-anchor_bottom = 2.27652
+anchor_bottom = 2.23864
 offset_top = -16.0
 offset_bottom = -16.0
 mouse_filter = 1
@@ -892,6 +1080,8 @@ anchor_left = 8.01546
 anchor_top = 1.51174
 anchor_right = 9.29381
 anchor_bottom = 1.72386
+offset_top = 52.0
+offset_bottom = 52.0
 metadata/_edit_use_anchors_ = true
 
 [node name="CometPanel" type="Panel" parent="Body/CometTab/Control/SwitchDate"]
@@ -907,15 +1097,14 @@ metadata/_edit_use_anchors_ = true
 [node name="ChangeDateLabel" type="Label" parent="Body/CometTab/Control/SwitchDate"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.194
-anchor_top = -0.125
-anchor_right = 0.194
-anchor_bottom = -0.125
+anchor_left = 0.157713
+anchor_top = -0.214276
+anchor_right = 0.157713
+anchor_bottom = -0.214276
 offset_left = 0.888
 offset_top = 3.0
 offset_right = 157.888
 offset_bottom = 26.0
-scale = Vector2(0.75, 0.75)
 text = "Change Date  / Hour"
 metadata/_edit_use_anchors_ = true
 
@@ -989,15 +1178,127 @@ anchor_left = -0.0930867
 anchor_top = 2.58065
 anchor_right = 1.27908
 anchor_bottom = 2.60149
-offset_top = -85.0
+offset_top = -97.0
 offset_right = -21.2
-offset_bottom = -85.5
+offset_bottom = -97.5
 scale = Vector2(1.1, 1.1)
 metadata/_edit_use_anchors_ = true
 
+[node name="ShowFOVRulerLabel" type="Label" parent="Body/CometTab/Control"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 3.026
+anchor_top = 3.33
+anchor_right = 3.026
+anchor_bottom = 3.33
+offset_left = 586.766
+offset_top = 11.68
+offset_right = 709.766
+offset_bottom = 34.68
+text = "Show FOV Ruler:"
+
+[node name="ArcKmToggle" type="CheckButton" parent="Body/CometTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 7.191
+anchor_top = 3.239
+anchor_right = 7.191
+anchor_bottom = 3.239
+offset_left = -29.244
+offset_top = 28.704
+offset_right = 14.756
+offset_bottom = 60.704
+scale = Vector2(1.25, 1.25)
+focus_mode = 0
+button_pressed = true
+
+[node name="KmToggleLabel" type="Label" parent="Body/CometTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 7.479
+anchor_top = 3.239
+anchor_right = 7.479
+anchor_bottom = 3.239
+offset_left = -24.116
+offset_top = 36.704
+offset_right = 7.884
+offset_bottom = 59.704
+text = "Km"
+
+[node name="ArcsecToggleLabel" type="Label" parent="Body/CometTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 6.737
+anchor_top = 3.239
+anchor_right = 6.737
+anchor_bottom = 3.239
+offset_left = 2.832
+offset_top = 35.704
+offset_right = 58.832
+offset_bottom = 58.704
+text = "Arcsec"
+
+[node name="JetsInfoBtn" type="TextureButton" parent="Body/CometTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.067
+anchor_top = -0.034
+anchor_right = -0.067
+anchor_bottom = -0.034
+offset_left = 176.388
+offset_top = 600.336
+offset_right = 200.388
+offset_bottom = 624.336
+tooltip_text = "Enter estimated speed, latitude, longitude of each dust jet. Diffusion defines spread of dust particles alround trajectory. Select preferred color​"
+texture_normal = ExtResource("25_27rlx")
+
+[node name="DustInfoBtn" type="TextureButton" parent="Body/CometTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.067
+anchor_top = -0.034
+anchor_right = -0.067
+anchor_bottom = -0.034
+offset_left = 164.998
+offset_top = 411.076
+offset_right = 188.998
+offset_bottom = 435.076
+tooltip_text = "Enter estimated ranges of dust properties (size: 0.001 – 1.00 mm, density: 0.00-5.00 g/cm3, albedo 0.01-2.00)​.
+Beta and Acceleration calculated automatically by software"
+texture_normal = ExtResource("25_27rlx")
+
+[node name="SpinAxisInfoBtn" type="TextureButton" parent="Body/CometTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.067
+anchor_top = -0.034
+anchor_right = -0.067
+anchor_bottom = -0.034
+offset_left = 259.998
+offset_top = 148.076
+offset_right = 283.998
+offset_bottom = 172.076
+tooltip_text = "Enter estimated coordinates of the North pole in decimal degrees. Alternatively, enter estimated PA of spin axis and inclination on skyplane.​
+Ecliptic and orbital coordinates are calculated by software from RA/Dec coordinates only ​"
+texture_normal = ExtResource("25_27rlx")
+
+[node name="SunInfoBtn" type="TextureButton" parent="Body/CometTab/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.067
+anchor_top = -0.034
+anchor_right = -0.067
+anchor_bottom = -0.034
+offset_left = 167.998
+offset_top = 0.076
+offset_right = 191.998
+offset_bottom = 24.076
+tooltip_text = "All values arealso  imported or calculated automatically by software​."
+texture_normal = ExtResource("25_27rlx")
+
 [node name="JetsTab" type="CanvasLayer" parent="Body" groups=["model_tab"]]
 layer = 3
-visible = false
 
 [node name="Control" type="Control" parent="Body/JetsTab"]
 z_index = 1
@@ -1014,13 +1315,13 @@ metadata/_edit_use_anchors_ = true
 layout_mode = 1
 anchors_preset = -1
 anchor_left = -2.00672
-anchor_top = 13.8319
+anchor_top = 14.0993
 anchor_right = 0.887435
-anchor_bottom = 13.9342
+anchor_bottom = 14.2016
 offset_left = 140.763
-offset_top = 477.768
+offset_top = 456.768
 offset_right = 172.139
-offset_bottom = 499.643
+offset_bottom = 478.643
 text = "Dust Jets"
 metadata/_edit_use_anchors_ = true
 
@@ -1029,11 +1330,13 @@ z_index = -2
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 1.84615
-anchor_top = 59.091
+anchor_top = 59.1023
 anchor_right = 44.9231
-anchor_bottom = 84.6364
+anchor_bottom = 85.2215
 offset_left = 2.0
+offset_top = -21.0
 offset_right = 2.0
+offset_bottom = -21.0
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_pkwgd")
 metadata/_edit_use_anchors_ = true
@@ -1046,9 +1349,9 @@ anchor_top = 8.0
 anchor_right = 0.923
 anchor_bottom = 8.0
 offset_left = 26.001
-offset_top = 576.0
+offset_top = 555.0
 offset_right = 53.001
-offset_bottom = 599.0
+offset_bottom = 578.0
 text = "ID"
 
 [node name="SpeedLabel" type="Label" parent="Body/JetsTab/Control"]
@@ -1059,9 +1362,9 @@ anchor_top = 8.0
 anchor_right = 2.538
 anchor_bottom = 8.0
 offset_left = 36.006
-offset_top = 576.0
+offset_top = 555.0
 offset_right = 127.006
-offset_bottom = 599.0
+offset_bottom = 578.0
 text = "Speed (m/s)"
 
 [node name="LatitudeLabel" type="Label" parent="Body/JetsTab/Control"]
@@ -1072,9 +1375,9 @@ anchor_top = 8.0
 anchor_right = 7.769
 anchor_bottom = 8.0
 offset_left = 74.003
-offset_top = 576.0
+offset_top = 555.0
 offset_right = 124.003
-offset_bottom = 599.0
+offset_bottom = 578.0
 text = "Lat. (°)"
 
 [node name="LongitudeLabel" type="Label" parent="Body/JetsTab/Control"]
@@ -1085,9 +1388,9 @@ anchor_top = 8.0
 anchor_right = 11.538
 anchor_bottom = 8.0
 offset_left = 93.006
-offset_top = 576.0
+offset_top = 555.0
 offset_right = 157.006
-offset_bottom = 599.0
+offset_bottom = 578.0
 text = "Long. (°)"
 
 [node name="DiffusionLabel" type="Label" parent="Body/JetsTab/Control"]
@@ -1098,9 +1401,9 @@ anchor_top = 8.0
 anchor_right = 15.385
 anchor_bottom = 8.0
 offset_left = 122.995
-offset_top = 576.0
+offset_top = 555.0
 offset_right = 193.995
-offset_bottom = 599.0
+offset_bottom = 578.0
 text = "Diffus."
 
 [node name="ColorLabel" type="Label" parent="Body/JetsTab/Control"]
@@ -1111,9 +1414,9 @@ anchor_top = 8.0
 anchor_right = 19.308
 anchor_bottom = 8.0
 offset_left = 132.996
-offset_top = 576.0
+offset_top = 555.0
 offset_right = 174.996
-offset_bottom = 599.0
+offset_bottom = 578.0
 text = "Color"
 
 [node name="ToggleLabel" type="Label" parent="Body/JetsTab/Control"]
@@ -1124,9 +1427,9 @@ anchor_top = 8.0
 anchor_right = 22.154
 anchor_bottom = 8.0
 offset_left = 151.998
-offset_top = 576.0
+offset_top = 555.0
 offset_right = 202.998
-offset_bottom = 599.0
+offset_bottom = 578.0
 text = "Toggle"
 
 [node name="RemoveLabel" type="Label" parent="Body/JetsTab/Control"]
@@ -1137,9 +1440,9 @@ anchor_top = 8.0
 anchor_right = 25.231
 anchor_bottom = 8.0
 offset_left = 177.997
-offset_top = 576.0
+offset_top = 555.0
 offset_right = 240.997
-offset_bottom = 599.0
+offset_bottom = 578.0
 text = "Remove"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Body/JetsTab/Control"]
@@ -1159,9 +1462,9 @@ metadata/_edit_use_anchors_ = true
 z_index = 1
 layout_mode = 2
 offset_left = 37.0
-offset_top = 691.0
+offset_top = 670.0
 offset_right = 798.0
-offset_bottom = 726.0
+offset_bottom = 705.0
 scale = Vector2(0.7, 0.7)
 script = ExtResource("4_136eg")
 content_node = NodePath("JetBodyScrollBar/JetBody")
@@ -1182,7 +1485,6 @@ text = "Add new jet"
 
 [node name="SimTab" type="CanvasLayer" parent="Body" groups=["i", "load", "model_tab", "n_points", "phi", "save", "true_anomaly"]]
 layer = 3
-visible = false
 script = ExtResource("7_h022r")
 
 [node name="Control" type="Control" parent="Body/SimTab"]
@@ -1195,9 +1497,9 @@ mouse_filter = 2
 [node name="ModelingLabel" type="Label" parent="Body/SimTab/Control"]
 layout_mode = 0
 offset_left = 1619.0
-offset_top = 629.0
+offset_top = 681.0
 offset_right = 1785.0
-offset_bottom = 652.0
+offset_bottom = 704.0
 text = "Modeling Parameters"
 
 [node name="ModelingParametersPanel" type="Panel" parent="Body/SimTab/Control"]
@@ -1208,6 +1510,8 @@ anchor_left = 120.0
 anchor_top = 59.6364
 anchor_right = 145.231
 anchor_bottom = 73.3636
+offset_top = 52.0
+offset_bottom = 52.0
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_pkwgd")
 metadata/_edit_use_anchors_ = true
@@ -1216,10 +1520,14 @@ metadata/_edit_use_anchors_ = true
 z_index = -2
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 120.0
-anchor_top = 49.2727
-anchor_right = 145.231
-anchor_bottom = 55.7273
+anchor_left = 119.385
+anchor_top = 54.5453
+anchor_right = 119.385
+anchor_bottom = 54.5453
+offset_left = 7.995
+offset_top = -7.998
+offset_right = 335.995
+offset_bottom = 73.002
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_pkwgd")
 metadata/_edit_use_anchors_ = true
@@ -1231,9 +1539,9 @@ anchor_top = 13.091
 anchor_right = 11.7695
 anchor_bottom = 13.091
 offset_left = 1671.0
-offset_top = 525.999
+offset_top = 577.999
 offset_right = 1719.0
-offset_bottom = 556.999
+offset_bottom = 608.999
 text = "0"
 resize_type = &"num_rotation"
 lower_bound = 0.1
@@ -1246,9 +1554,9 @@ anchor_top = 17.4543
 anchor_right = 11.8464
 anchor_bottom = 17.4543
 offset_left = 1670.0
-offset_top = 526.003
+offset_top = 578.003
 offset_right = 1718.0
-offset_bottom = 557.003
+offset_bottom = 609.003
 text = "0"
 resize_type = &"jet_rate"
 lower_bound = 0.5
@@ -1261,9 +1569,9 @@ anchor_top = 1.45455
 anchor_right = 10.7256
 anchor_bottom = 1.48524
 offset_left = 1686.0
-offset_top = 750.0
+offset_top = 802.0
 offset_right = 1732.56
-offset_bottom = 780.662
+offset_bottom = 832.662
 text = "1"
 resize_type = &"n_points"
 lower_bound = 1.0
@@ -1287,10 +1595,14 @@ metadata/_edit_use_anchors_ = true
 [node name="ToggleTransparency" type="CheckButton" parent="Body/SimTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 140.231
-anchor_top = 49.5455
-anchor_right = 143.615
-anchor_bottom = 51.7273
+anchor_left = 120.0
+anchor_top = 54.1823
+anchor_right = 120.0
+anchor_bottom = 54.1823
+offset_left = 263.003
+offset_top = -0.0045
+offset_right = 307.003
+offset_bottom = 23.9955
 focus_mode = 0
 button_pressed = true
 metadata/_edit_use_anchors_ = true
@@ -1298,23 +1610,28 @@ metadata/_edit_use_anchors_ = true
 [node name="ModelTransparencyLabel" type="Label" parent="Body/SimTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 122.154
-anchor_top = 51.6364
-anchor_right = 131.096
-anchor_bottom = 53.2045
-offset_right = 38.75
-offset_bottom = 5.75
-scale = Vector2(0.75, 0.75)
+anchor_left = 120.23
+anchor_top = 53.6365
+anchor_right = 120.23
+anchor_bottom = 53.6365
+offset_left = 20.007
+offset_top = 35.9994
+offset_right = 175.007
+offset_bottom = 58.9994
 text = "Model transparency"
 metadata/_edit_use_anchors_ = true
 
 [node name="TransparencySlider" type="HSlider" parent="Body/SimTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 121.923
-anchor_top = 53.3636
-anchor_right = 143.385
-anchor_bottom = 54.8182
+anchor_left = 120.615
+anchor_top = 53.8183
+anchor_right = 120.615
+anchor_bottom = 53.8183
+offset_left = 17.004
+offset_top = 54.9986
+offset_right = 296.01
+offset_bottom = 70.9992
 max_value = 1.0
 step = 0.01
 value = 1.0
@@ -1346,9 +1663,9 @@ anchor_top = 13.091
 anchor_right = 1.231
 anchor_bottom = 13.091
 offset_left = 1558.0
-offset_top = 521.999
+offset_top = 573.999
 offset_right = 1764.0
-offset_bottom = 561.999
+offset_bottom = 613.999
 tooltip_text = "Number of rotations"
 mouse_filter = 0
 text = "Number Nucleus rotations"
@@ -1362,9 +1679,9 @@ anchor_top = 16.727
 anchor_right = 1.231
 anchor_bottom = 16.727
 offset_left = 1560.0
-offset_top = 529.003
+offset_top = 581.003
 offset_right = 1733.0
-offset_bottom = 569.003
+offset_bottom = 621.003
 tooltip_text = "Jet emission rate in minutes"
 mouse_filter = 0
 text = "Integration step  (min)"
@@ -1373,9 +1690,9 @@ vertical_alignment = 1
 [node name="NPointsLabel" type="Label" parent="Body/SimTab/Control"]
 layout_mode = 0
 offset_left = 1576.0
-offset_top = 770.0
+offset_top = 822.0
 offset_right = 1813.0
-offset_bottom = 793.0
+offset_bottom = 845.0
 text = "N. particles emitted per step"
 
 [node name="AccelValLabel" type="Label" parent="Body/SimTab/Control"]
@@ -1404,13 +1721,14 @@ text = "Overlay Image"
 [node name="CCDImgLabel" type="Label" parent="Body/SimTab/Control"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 122.154
-anchor_top = 49.7273
-anchor_right = 128.269
-anchor_bottom = 51.3637
-offset_right = 26.5
-offset_bottom = 6.00007
-scale = Vector2(0.75, 0.75)
+anchor_left = 120.153
+anchor_top = 54.1823
+anchor_right = 120.153
+anchor_bottom = 54.1823
+offset_left = 20.007
+offset_top = -0.0047
+offset_right = 126.002
+offset_bottom = 23.9958
 text = "CCD Image"
 metadata/_edit_use_anchors_ = true
 
@@ -1551,21 +1869,22 @@ show_hidden_files = true
 
 [node name="FrequencyEdit" parent="Body/SimTab/Control" instance=ExtResource("3_f5f8u")]
 layout_mode = 1
-anchor_left = 25.4615
-anchor_top = 27.9091
-anchor_right = 43.923
-anchor_bottom = 30.8182
-offset_left = 2.0
-offset_top = -63.0
-offset_right = 2.0
-offset_bottom = -63.0
-label = &"Rotation Period"
+anchor_left = 2.462
+anchor_top = 21.091
+anchor_right = 2.462
+anchor_bottom = 21.091
+offset_left = 300.994
+offset_top = 13.9991
+offset_right = 540.993
+offset_bottom = 45.9992
+label = &"Rotation Period (h)"
 resize_type = &"frequency"
 maximum_value = 1000.0
 starting_value = 0.0
 
 [node name="ScaleTab" type="CanvasLayer" parent="Body" groups=["camera", "delta_au", "load", "save", "settings_tab", "tel_image_size", "tel_resolution", "window_fov", "window_size"]]
 layer = 3
+visible = false
 script = ExtResource("9_0h1do")
 
 [node name="Control" type="Control" parent="Body/ScaleTab"]
@@ -1650,7 +1969,7 @@ metadata/_edit_use_anchors_ = true
 
 [node name="DeltaAUEdit" parent="Body/ScaleTab/Control" instance=ExtResource("6_oj5la")]
 layout_mode = 1
-anchor_left = 8.725
+anchor_left = 7.925
 anchor_top = 1.6
 anchor_right = 10.125
 anchor_bottom = 2.375
@@ -1802,7 +2121,7 @@ anchor_bottom = 5.6025
 offset_top = -11.0
 offset_right = -29.1
 offset_bottom = -4.1
-text = "FOV  (Arcmin/Km):"
+text = "FOV  (Arcsec/Km):"
 metadata/_edit_use_anchors_ = true
 
 [node name="FOVArcminLineEdit" type="LineEdit" parent="Body/ScaleTab/Control"]
@@ -1881,62 +2200,9 @@ focus_mode = 0
 theme_override_constants/minimum_character_width = 0
 editable = false
 
-[node name="ShowFOVRulerLabel" type="Label" parent="Body/ScaleTab/Control"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.725
-anchor_top = 0.2
-anchor_right = 0.725
-anchor_bottom = 0.2
-offset_left = 16.0
-offset_top = 225.0
-offset_right = 139.0
-offset_bottom = 248.0
-text = "Show FOV Ruler"
-
-[node name="ArcKmToggle" type="CheckButton" parent="Body/ScaleTab/Control"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.725
-anchor_top = 0.2
-anchor_right = 0.725
-anchor_bottom = 0.2
-offset_left = 295.0
-offset_top = 223.0
-offset_right = 339.0
-offset_bottom = 255.0
-scale = Vector2(1.25, 1.25)
-focus_mode = 0
-button_pressed = true
-
-[node name="KmToggleLabel" type="Label" parent="Body/ScaleTab/Control"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.725
-anchor_top = 0.2
-anchor_right = 0.725
-anchor_bottom = 0.2
-offset_left = 344.0
-offset_top = 230.0
-offset_right = 376.0
-offset_bottom = 253.0
-text = "Km"
-
-[node name="ArcsecToggleLabel" type="Label" parent="Body/ScaleTab/Control"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.725
-anchor_top = 0.2
-anchor_right = 0.725
-anchor_bottom = 0.2
-offset_left = 245.0
-offset_top = 230.0
-offset_right = 301.0
-offset_bottom = 253.0
-text = "Arcmin"
-
 [node name="JPLTab" type="CanvasLayer" parent="Body" groups=["alpha_p", "delta_p", "settings_tab", "step_size"]]
 layer = 3
+visible = false
 script = ExtResource("16_gmc6u")
 
 [node name="Control" type="Control" parent="Body/JPLTab"]
@@ -2181,9 +2447,9 @@ metadata/_edit_use_anchors_ = true
 
 [node name="StepSizeSanEdit" parent="Body/JPLTab/Control" instance=ExtResource("6_oj5la")]
 layout_mode = 1
-anchor_left = 0.136
+anchor_left = 0.141709
 anchor_top = -0.064
-anchor_right = 0.136
+anchor_right = 0.141709
 anchor_bottom = -0.064
 offset_left = 264.895
 offset_top = 155.159
@@ -2466,7 +2732,7 @@ offset_top = 25.0
 offset_right = 321.0
 offset_bottom = 48.0
 scale = Vector2(0.9, 0.9)
-text = "Observer range & range-rate (delta)"
+text = "Observer range (delta)"
 
 [node name="cbSnAngLabel" type="Label" parent="Body/JPLTab/Control/TableSettings"]
 layout_mode = 0
@@ -2475,7 +2741,7 @@ offset_top = 46.0
 offset_right = 376.0
 offset_bottom = 69.0
 scale = Vector2(0.9, 0.9)
-text = "Sub-Sun position angle & distance (SN.ang)"
+text = "Sub-Sun position angle (SN.ang)"
 
 [node name="cbHeliocentricLabel" type="Label" parent="Body/JPLTab/Control/TableSettings"]
 layout_mode = 0
@@ -2484,7 +2750,7 @@ offset_top = 69.0
 offset_right = 311.0
 offset_bottom = 92.0
 scale = Vector2(0.9, 0.9)
-text = "Heliocentric range & range-rate (r)"
+text = "Heliocentric range (r)"
 
 [node name="cbSTOLabel" type="Label" parent="Body/JPLTab/Control/TableSettings"]
 layout_mode = 0
@@ -2520,7 +2786,7 @@ offset_top = 162.0
 offset_right = 345.0
 offset_bottom = 185.0
 scale = Vector2(0.9, 0.9)
-text = "Sky motion: rate & angles (Sky mot PA)​"
+text = "Sky motion angle (Sky mot PA)​"
 
 [node name="cbRaDec" type="CheckBox" parent="Body/JPLTab/Control/TableSettings"]
 layout_mode = 0
@@ -2629,9 +2895,9 @@ anchor_top = -0.055
 anchor_right = 0.137
 anchor_bottom = -0.055
 offset_left = 285.349
-offset_top = 773.698
+offset_top = 772.698
 offset_right = 309.349
-offset_bottom = 797.698
+offset_bottom = 796.698
 tooltip_text = "To be calculated by user from telescope focal length and CCD pixel size​"
 disabled = true
 texture_normal = ExtResource("25_27rlx")
@@ -2644,9 +2910,9 @@ anchor_top = -0.055
 anchor_right = 0.137
 anchor_bottom = -0.055
 offset_left = 285.349
-offset_top = 735.698
+offset_top = 733.698
 offset_right = 309.349
-offset_bottom = 759.698
+offset_bottom = 757.698
 tooltip_text = "PLEASE NOTE if image is rectangular please crop it square with the comet in the center, then enter the size of one side​"
 disabled = true
 texture_normal = ExtResource("25_27rlx")
@@ -2811,7 +3077,6 @@ text = "Time:"
 
 [node name="Viewport" type="CanvasLayer" parent="." groups=["model_tab"]]
 layer = 2
-visible = false
 
 [node name="NucleusPanel" type="Panel" parent="Viewport"]
 z_index = -1
@@ -2822,6 +3087,20 @@ anchor_right = 0.983333
 anchor_bottom = 0.427184
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_pkwgd")
+metadata/_edit_use_anchors_ = true
+
+[node name="NucleusDateLabel" type="Label" parent="Viewport/NucleusPanel"]
+z_index = 2
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.00318642
+anchor_top = 0.0264323
+anchor_right = 0.00318642
+anchor_bottom = 0.0264323
+offset_left = 17.678
+offset_top = 274.252
+offset_right = 57.678
+offset_bottom = 297.252
 metadata/_edit_use_anchors_ = true
 
 [node name="Panel" type="Panel" parent="Viewport"]
@@ -2850,6 +3129,7 @@ grow_vertical = 2
 metadata/_edit_use_anchors_ = true
 
 [node name="CurrCameraLabel" type="Label" parent="Viewport/Panel"]
+visible = false
 layout_mode = 1
 offset_right = 233.0
 offset_bottom = 23.0
@@ -2891,6 +3171,58 @@ offset_right = 40.0
 offset_bottom = 23.0
 metadata/_edit_use_anchors_ = true
 
+[node name="CoordinateGrid" type="Control" parent="Viewport/Panel"]
+anchors_preset = 0
+offset_right = 903.0
+offset_bottom = 901.0
+
+[node name="Sprite2D" type="Sprite2D" parent="Viewport/Panel/CoordinateGrid"]
+position = Vector2(450, 450)
+texture = ExtResource("28_emer0")
+
+[node name="RACenterLabel" type="Label" parent="Viewport/Panel/CoordinateGrid"]
+layout_mode = 0
+offset_left = 432.0
+offset_top = 20.0
+offset_right = 472.0
+offset_bottom = 43.0
+text = "N/A"
+
+[node name="RALeftLabel" type="Label" parent="Viewport/Panel/CoordinateGrid"]
+offset_left = 208.0
+offset_top = 20.0
+offset_right = 248.0
+offset_bottom = 43.0
+text = "N/A"
+
+[node name="RARightLabel" type="Label" parent="Viewport/Panel/CoordinateGrid"]
+offset_left = 656.0
+offset_top = 20.0
+offset_right = 696.0
+offset_bottom = 43.0
+text = "N/A"
+
+[node name="DECCenterLabel" type="Label" parent="Viewport/Panel/CoordinateGrid"]
+offset_left = 24.0
+offset_top = 437.0
+offset_right = 64.0
+offset_bottom = 460.0
+text = "N/A"
+
+[node name="DECLeftLabel" type="Label" parent="Viewport/Panel/CoordinateGrid"]
+offset_left = 24.0
+offset_top = 213.0
+offset_right = 64.0
+offset_bottom = 236.0
+text = "N/A"
+
+[node name="DECRightLabel" type="Label" parent="Viewport/Panel/CoordinateGrid"]
+offset_left = 24.0
+offset_top = 661.0
+offset_right = 70.0
+offset_bottom = 684.0
+text = "N/A"
+
 [node name="SubViewportContainer" type="SubViewportContainer" parent="Viewport"]
 visibility_layer = 4
 z_index = -1
@@ -2906,7 +3238,7 @@ metadata/_edit_use_anchors_ = true
 [node name="SubViewport" type="SubViewport" parent="Viewport/SubViewportContainer" node_paths=PackedStringArray("_fr_camera", "_rot_camera") groups=["camera"]]
 handle_input_locally = false
 size = Vector2i(900, 900)
-render_target_update_mode = 0
+render_target_update_mode = 4
 script = ExtResource("9_4jqwt")
 _fr_camera = NodePath("FreeRoamCamera")
 _rot_camera = NodePath("RotatingCamera")
@@ -2940,7 +3272,7 @@ metadata/_edit_use_anchors_ = true
 [node name="SubViewport" type="SubViewport" parent="Viewport/MiniViewportContainer"]
 handle_input_locally = false
 size = Vector2i(300, 300)
-render_target_update_mode = 0
+render_target_update_mode = 4
 
 [node name="MiniCamera" type="Camera3D" parent="Viewport/MiniViewportContainer/SubViewport" groups=["camera", "radius"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 11.8985)
@@ -2961,10 +3293,13 @@ text = "Nucleus Model"
 metadata/_edit_use_anchors_ = true
 
 [connection signal="tab_changed" from="Body/Navbar" to="Body" method="_on_navbar_tab_changed"]
+[connection signal="pressed" from="Body/TabButtons/ToggleModelGridBtn" to="Body" method="_on_toggle_model_grid_btn_pressed"]
+[connection signal="pressed" from="Body/TabButtons/ToggleNucleusGridBtn" to="Body" method="_on_toggle_nucleus_grid_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ToggleSunBtn" to="Body" method="_on_toggle_sun_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ToggleYBtn" to="Body" method="_on_toggle_y_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ToggleAxesBtn" to="Body" method="_on_toggle_axes_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/ToggleDateBtn" to="Body" method="_on_toggle_date_btn_pressed"]
+[connection signal="pressed" from="Body/TabButtons/ToggleNucleusDateBtn" to="Body" method="_on_toggle_nucleus_date_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/SaveSimBtn" to="Body" method="_on_screenshot_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/SaveNucleusBtn" to="Body" method="_on_save_nucleus_btn_pressed"]
 [connection signal="pressed" from="Body/TabButtons/SaveBtn" to="Body" method="_on_save_btn_pressed"]
@@ -2987,6 +3322,7 @@ metadata/_edit_use_anchors_ = true
 [connection signal="pressed" from="Body/CometTab/Control/SwitchDate/PrevDateBtn" to="Body/CometTab" method="_on_prev_date_btn_pressed"]
 [connection signal="pressed" from="Body/CometTab/Control/SwitchDate/NextDateBtn" to="Body/CometTab" method="_on_next_date_btn_pressed"]
 [connection signal="pressed" from="Body/CometTab/Control/SwitchDate/NextDateFullBtn" to="Body/CometTab" method="_on_next_date_full_btn_pressed"]
+[connection signal="toggled" from="Body/CometTab/Control/ArcKmToggle" to="Body/ScaleTab" method="_on_arc_km_toggle_toggled"]
 [connection signal="pressed" from="Body/JetsTab/Control/JetTable/AddJetEntryBtn" to="Body" method="_on_add_jet_entry_btn_pressed"]
 [connection signal="pressed" from="Body/JetsTab/Control/JetTable/AddJetEntryBtn" to="Body/JetsTab/Control/JetTable" method="_on_add_jet_entry_btn_pressed"]
 [connection signal="toggled" from="Body/SimTab/Control/ToggleTransparency" to="Body" method="_on_toggle_transparency_toggled"]
@@ -2994,7 +3330,6 @@ metadata/_edit_use_anchors_ = true
 [connection signal="file_selected" from="Body/SimTab/Control/FileExplorer" to="Body/SimTab" method="_on_file_explorer_file_selected"]
 [connection signal="pressed" from="Body/ScaleTab/Control/OverlayImgPickerBtn" to="Body/SimTab" method="_on_overlay_img_picker_btn_pressed"]
 [connection signal="pressed" from="Body/ScaleTab/Control/DelOverlayImgBtn" to="Body/SimTab" method="_on_del_overlay_img_btn_pressed"]
-[connection signal="toggled" from="Body/ScaleTab/Control/ArcKmToggle" to="Body/ScaleTab" method="_on_arc_km_toggle_toggled"]
 [connection signal="pressed" from="Body/JPLTab/Control/SearchBtn" to="Body/JPLTab" method="_on_search_btn_pressed"]
 [connection signal="date_selected" from="Body/JPLTab/Control/StartCalendarBtn" to="Body/JPLTab" method="_on_start_calendar_btn_date_selected"]
 [connection signal="pressed" from="Body/JPLTab/Control/ClearStartDateBtn" to="Body/JPLTab" method="_on_clear_start_date_btn_pressed"]
@@ -3010,3 +3345,10 @@ metadata/_edit_use_anchors_ = true
 [connection signal="toggled" from="Body/JPLTab/Control/TableSettings/cbSkyMotion" to="Body/JPLTab" method="_on_cb_sky_motion_toggled"]
 [connection signal="pressed" from="Body/JPLTab/Control/ExportCSVBtn" to="Body/JPLTab" method="_on_export_csv_btn_pressed"]
 [connection signal="file_selected" from="Body/JPLTab/Control/FileExplorer" to="Body/JPLTab" method="_on_file_explorer_file_selected"]
+
+[editable path="Body/CometTab/Control/EditCometIncl"]
+[editable path="Body/CometTab/Control/EditCometDir"]
+[editable path="Body/CometTab/Control/DeltaPSanEdit"]
+[editable path="Body/CometTab/Control/AlphaPSanEdit"]
+[editable path="Body/CometTab/Control/EditSunIncl"]
+[editable path="Body/CometTab/Control/EditSunDir"]

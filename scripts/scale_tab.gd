@@ -50,6 +50,7 @@ func update_delta_au(value: float) -> void:
 	Util.earth_comet_delta = value
 	update_tel_res_km_pixel()
 	# update_scale_factor()
+	get_tree().call_group("comet", "update_coordinate_grid_labels")
 
 func update_tel_resolution(value: float) -> void:
 	if Util.PRINT_UPDATE_METHOD: print("Updated tel_resolution:%f"%value)
@@ -57,6 +58,7 @@ func update_tel_resolution(value: float) -> void:
 	update_tel_res_km_pixel()
 	update_fov_arcmin()
 	update_scale_factor()
+	get_tree().call_group("comet", "update_coordinate_grid_labels")
 
 func update_tel_image_size(value: float) -> void:
 	if Util.PRINT_UPDATE_METHOD: print("Updated tel_image_size:%f"%value)
@@ -64,6 +66,7 @@ func update_tel_image_size(value: float) -> void:
 	update_fov_km()
 	update_fov_arcmin()
 	update_scale_factor()
+	get_tree().call_group("comet", "update_coordinate_grid_labels")
 
 func update_window_fov(value: float) -> void:
 	if Util.PRINT_UPDATE_METHOD: print("Updated window_fov:%f"%value)
@@ -87,7 +90,9 @@ func update_tel_res_km_pixel() -> void:
 func update_fov_arcmin() -> void:
 	Util.fov_arcmin = Util.tel_resolution * Util.tel_image_size / 60
 	if fov_arcmin:
-		fov_arcmin.text = str(Util.fov_arcmin)
+		# arcsmin to arcsec
+		fov_arcmin.text = str(Util.fov_arcmin * 60)
+		# fov_arcmin.text = str(Util.fov_arcmin)
 
 func update_fov_km() -> void:
 	Util.fov_km = Util.tel_image_size * Util.tel_res_km_pixel
@@ -125,4 +130,6 @@ func _on_arc_km_toggle_toggled(toggled_on: bool) -> void:
 	if toggled_on:
 		update_ruler()
 	else:
-		Util.current_fov_label.text = str(int(Util.fov_arcmin)) + " Arcmin"
+		var fov_full_img_arcsec := Util.fov_arcmin * 60
+		var arcsec_ruler := fov_full_img_arcsec / 6
+		Util.current_fov_label.text = str(int(arcsec_ruler)) + " Arcsec"

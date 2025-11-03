@@ -7,6 +7,8 @@ enum ANIMATION_STATE {
 	RESUMED,
 }
 
+@onready var shader_material: ShaderMaterial = self.get_active_material(0) as ShaderMaterial
+
 #debug/metrics related
 @onready var fps_label: Label = $"/root/Hud/Body/DebugPanel/Control/DebugContainer/FPSLabel"
 @onready var steps_label: Label = $"/root/Hud/Body/DebugPanel/Control/DebugContainer/StepsLabel"
@@ -16,7 +18,7 @@ var total_sim_time: float = 0.0
 
 #switch dateViewport/Panel/DateLabel
 # @onready var switch_date: LineEdit = $"/root/Hud/Body/CometTab/Control/SwitchDate/CurrDateLineEdit"
-@onready var switch_date: Label = $"/root/Hud/Viewport/Panel/DateLabel"
+# @onready var switch_date: Label = $"/root/Hud/Viewport/Panel/DateLabel"
 var current_date_index: int = 0
 
 
@@ -259,6 +261,13 @@ func reset_rotation() -> void:
 		emitter.enabled = rotation_enabled
 	rotation = starting_rotation
 
+func toggle_nucleus_grid() -> void:
+	if not shader_material:
+		return
+	var is_grid_enabled: bool = shader_material.get_shader_parameter("grid_enabled")
+	shader_material.set_shader_parameter("grid_enabled", not is_grid_enabled)
+
+
 ## These methods are called by SanitizedEdit through call_group() mechanism
 #region Update methods
 
@@ -454,7 +463,8 @@ func update_subsolar_latitude() -> void:
 func switch_date_set_date(date: String, reset: bool = false) -> void:
 	if reset:
 		current_date_index = 0
-	switch_date.text = date
+	Util.date_label.text = date
+	Util.nucleus_date_label.text = date
 	# updates all parameters based on the jpl data in that date
 	update_pa_incl()
 	update_lambda_beta()
@@ -466,6 +476,24 @@ func switch_date_set_date(date: String, reset: bool = false) -> void:
 	Util.sun_dist_line_edit.set_value(float(Util.jpl_data[current_date_index]["sun_distance_r"]))
 	# scale 
 	Util.scale_line_edit.set_value(float(Util.jpl_data[current_date_index]["delta"]))
+
+	# update coords grid labels
+	update_coordinate_grid_labels()
+func update_coordinate_grid_labels() -> void:
+	var ra: float = float(Util.jpl_data[current_date_index]["right_ascension"])
+	var dec: float = float(Util.jpl_data[current_date_index]["declination"])
+	if not Util.fov_arcmin:
+		return
+	var fov_arcsec := Util.fov_arcmin * 60.0
+	# 5 columns in the grid
+	var fov_arcsec_step := fov_arcsec / 5
+	var fov_deg_step := fov_arcsec_step / 3600.0
+	Util.ra_center_label.text = "%.2f°" % ra
+	Util.dec_center_label.text = "%.2f°" % dec
+	Util.ra_left_label.text = "%.2f°" % (ra - fov_deg_step)
+	Util.ra_right_label.text = "%.2f°" % (ra + fov_deg_step)
+	Util.dec_left_label.text = "%.2f°" % clamp(dec - fov_deg_step, -90, 90)
+	Util.dec_right_label.text = "%.2f°" % clamp(dec + fov_deg_step, -90, 90)
 # called by CometTab._on_prev_date_btn_pressed
 func switch_date_prev_date() -> void:
 	_switch_date_prev_next_date(-1, 0)
