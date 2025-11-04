@@ -158,6 +158,7 @@ mouse_filter = 2
 metadata/_edit_use_anchors_ = true
 
 [node name="RunModelLabel" type="Label" parent="Body/TabButtons" groups=["model_tab"]]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.817
@@ -171,6 +172,7 @@ offset_bottom = 22.5618
 text = "Run Model"
 
 [node name="RunModelBtn" type="Panel" parent="Body/TabButtons" groups=["model_tab"]]
+visible = false
 z_index = -2
 layout_mode = 1
 anchors_preset = -1
@@ -187,6 +189,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_pkwgd")
 metadata/_edit_use_anchors_ = true
 
 [node name="ToggleModelGridBtn" type="Button" parent="Body/TabButtons" groups=["model_tab"]]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.008
@@ -201,6 +204,7 @@ focus_mode = 0
 icon = ExtResource("3_vuvg6")
 
 [node name="ToggleNucleusGridBtn" type="Button" parent="Body/TabButtons" groups=["model_tab"]]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.812
@@ -215,6 +219,7 @@ focus_mode = 0
 icon = ExtResource("3_vuvg6")
 
 [node name="ToggleSunBtn" type="Button" parent="Body/TabButtons" groups=["model_tab"]]
+visible = false
 layout_mode = 2
 anchor_left = 0.812
 anchor_top = 8.611
@@ -229,6 +234,7 @@ focus_mode = 0
 icon = ExtResource("4_el1dq")
 
 [node name="ToggleYBtn" type="Button" parent="Body/TabButtons" groups=["model_tab"]]
+visible = false
 layout_mode = 2
 anchor_left = 0.817
 anchor_top = 8.781
@@ -243,6 +249,7 @@ focus_mode = 0
 icon = ExtResource("4_65nxt")
 
 [node name="ToggleAxesBtn" type="Button" parent="Body/TabButtons" groups=["model_tab"]]
+visible = false
 layout_mode = 2
 anchor_left = 0.812832
 anchor_top = 8.781
@@ -257,6 +264,7 @@ focus_mode = 0
 icon = ExtResource("5_el1dq")
 
 [node name="ToggleDateBtn" type="Button" parent="Body/TabButtons" groups=["model_tab"]]
+visible = false
 layout_mode = 0
 offset_left = 688.0
 offset_top = 925.0
@@ -266,6 +274,7 @@ focus_mode = 0
 icon = ExtResource("18_d5po8")
 
 [node name="ToggleNucleusDateBtn" type="Button" parent="Body/TabButtons" groups=["model_tab"]]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.821
@@ -280,6 +289,7 @@ focus_mode = 0
 icon = ExtResource("18_d5po8")
 
 [node name="SaveSimBtn" type="Button" parent="Body/TabButtons" groups=["model_tab"]]
+visible = false
 layout_mode = 2
 anchor_left = 0.820641
 anchor_top = 18.5225
@@ -292,6 +302,7 @@ text = "Save Image"
 metadata/_edit_use_anchors_ = true
 
 [node name="AnimationSlider" parent="Body/TabButtons" groups=["model_tab"] instance=ExtResource("3_gss2c")]
+visible = false
 layout_mode = 2
 anchors_preset = 0
 anchor_left = 0.812
@@ -307,6 +318,7 @@ size_flags_stretch_ratio = 0.45
 num_steps = 500
 
 [node name="SaveNucleusBtn" type="Button" parent="Body/TabButtons" groups=["model_tab"]]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.817
@@ -472,6 +484,7 @@ access = 2
 metadata/is_screenshot = false
 
 [node name="RunModelInfoBtn" type="TextureButton" parent="Body/TabButtons" groups=["model_tab"]]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.817
@@ -487,6 +500,7 @@ INST for instantenous simulation. SIM for step-by-step automatic simulation."
 texture_normal = ExtResource("25_27rlx")
 
 [node name="MiniNucleusToggleInfoBtn" type="TextureButton" parent="Body/TabButtons" groups=["model_tab"]]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.817
@@ -502,6 +516,7 @@ texture_normal = ExtResource("25_27rlx")
 
 [node name="CometTab" type="CanvasLayer" parent="Body" groups=["alpha_p", "delta_p", "load", "model_tab", "save", "switch_date"]]
 layer = 3
+visible = false
 script = ExtResource("3_136eg")
 
 [node name="Control" type="Control" parent="Body/CometTab"]
@@ -573,8 +588,8 @@ valid_zero = true
 
 [node name="Slider" parent="Body/CometTab/Control/EditCometIncl" index="0"]
 visible = false
-offset_left = 2080.0
-offset_right = 2240.0
+offset_left = 2240.0
+offset_right = 2400.0
 scale = Vector2(-1, 1)
 min_value = -90.0
 max_value = 90.0
@@ -1333,6 +1348,7 @@ texture_normal = ExtResource("25_27rlx")
 
 [node name="JetsTab" type="CanvasLayer" parent="Body" groups=["model_tab"]]
 layer = 3
+visible = false
 
 [node name="Control" type="Control" parent="Body/JetsTab"]
 z_index = 1
@@ -1506,6 +1522,7 @@ text = "Add new jet"
 
 [node name="SimTab" type="CanvasLayer" parent="Body" groups=["i", "load", "model_tab", "n_points", "phi", "save", "true_anomaly"]]
 layer = 3
+visible = false
 script = ExtResource("7_h022r")
 
 [node name="Control" type="Control" parent="Body/SimTab"]
@@ -1920,7 +1937,6 @@ texture_normal = ExtResource("25_27rlx")
 
 [node name="ScaleTab" type="CanvasLayer" parent="Body" groups=["camera", "delta_au", "load", "save", "settings_tab", "tel_image_size", "tel_resolution", "window_fov", "window_size"]]
 layer = 3
-visible = false
 script = ExtResource("9_0h1do")
 
 [node name="Control" type="Control" parent="Body/ScaleTab"]
@@ -1937,12 +1953,12 @@ layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.723471
 anchor_top = 0.40223
-anchor_right = 0.723475
-anchor_bottom = 2.32722
+anchor_right = 0.725
+anchor_bottom = 0.40223
 offset_left = 0.0611798
 offset_top = -11.0892
-offset_right = 408.061
-offset_bottom = 178.911
+offset_right = 408.0
+offset_bottom = 231.911
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_pkwgd")
 metadata/_edit_use_anchors_ = true
@@ -2238,7 +2254,6 @@ editable = false
 
 [node name="JPLTab" type="CanvasLayer" parent="Body" groups=["alpha_p", "delta_p", "settings_tab", "step_size"]]
 layer = 3
-visible = false
 script = ExtResource("16_gmc6u")
 
 [node name="Control" type="Control" parent="Body/JPLTab"]
@@ -3104,6 +3119,7 @@ text = "Time:"
 
 [node name="Viewport" type="CanvasLayer" parent="." groups=["model_tab"]]
 layer = 2
+visible = false
 
 [node name="NucleusPanel" type="Panel" parent="Viewport"]
 z_index = -1
@@ -3270,7 +3286,7 @@ metadata/_edit_use_anchors_ = true
 [node name="SubViewport" type="SubViewport" parent="Viewport/SubViewportContainer" node_paths=PackedStringArray("_fr_camera", "_rot_camera") groups=["camera"]]
 handle_input_locally = false
 size = Vector2i(900, 900)
-render_target_update_mode = 4
+render_target_update_mode = 0
 script = ExtResource("9_4jqwt")
 _fr_camera = NodePath("FreeRoamCamera")
 _rot_camera = NodePath("RotatingCamera")
@@ -3304,7 +3320,7 @@ metadata/_edit_use_anchors_ = true
 [node name="SubViewport" type="SubViewport" parent="Viewport/MiniViewportContainer"]
 handle_input_locally = false
 size = Vector2i(300, 300)
-render_target_update_mode = 4
+render_target_update_mode = 0
 
 [node name="MiniCamera" type="Camera3D" parent="Viewport/MiniViewportContainer/SubViewport" groups=["camera", "radius"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 11.8985)
