@@ -6,6 +6,7 @@ extends CanvasLayer
 @onready var fov_km: LineEdit = $Control/FOVKmLineEdit # display fov at zoom zero (the starting one)
 @onready var fov_curr_zoom_km: LineEdit = $Control/FOVCurrZoomKmLineEdit # display fov at the current zoom
 @onready var scale_factor: LineEdit = $Control/ScaleFactorLineEdit
+@onready var arcsec_km_toggle: bool = true # false:arcsec, true:km
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -123,13 +124,20 @@ func update_ruler() -> void:
 	var fov_km_ruler: float = (pixel_res_after_zoom * Util.window_size)
 	fov_curr_zoom_km.text = str(int(round(fov_km_ruler)))
 	fov_km_ruler = fov_km_ruler / Util.window_size * 150 # 150 is the length of the ruler in pixels
-	Util.current_fov_label.text = "%s Km" % str(int(round(fov_km_ruler)))
-
-
-func _on_arc_km_toggle_toggled(toggled_on: bool) -> void:
-	if toggled_on:
-		update_ruler()
+	if arcsec_km_toggle:
+		Util.current_fov_label.text = "%s Km" % str(int(round(fov_km_ruler)))
 	else:
 		var fov_full_img_arcsec := Util.fov_arcmin * 60
 		var arcsec_ruler := fov_full_img_arcsec / 6
 		Util.current_fov_label.text = str(int(arcsec_ruler)) + " arcsec"
+
+
+func _on_arc_km_toggle_toggled(toggled_on: bool) -> void:
+	# if toggled_on:
+	arcsec_km_toggle = toggled_on
+	update_ruler()
+	# else:
+	# 	arcsec_km_toggle = false
+	# 	var fov_full_img_arcsec := Util.fov_arcmin * 60
+	# 	var arcsec_ruler := fov_full_img_arcsec / 6
+	# 	Util.current_fov_label.text = str(int(arcsec_ruler)) + " arcsec"

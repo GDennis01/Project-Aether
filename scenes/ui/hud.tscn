@@ -588,8 +588,8 @@ valid_zero = true
 
 [node name="Slider" parent="Body/CometTab/Control/EditCometIncl" index="0"]
 visible = false
-offset_left = 2240.0
-offset_right = 2400.0
+offset_left = 2400.0
+offset_right = 2560.0
 scale = Vector2(-1, 1)
 min_value = -90.0
 max_value = 90.0
@@ -651,7 +651,6 @@ offset_left = -79.0
 offset_right = 379.0
 min_value = -90.0
 max_value = 90.0
-step = 1.0
 
 [node name="Label" parent="Body/CometTab/Control/DeltaPSanEdit" index="1"]
 layout_mode = 1
@@ -698,7 +697,6 @@ valid_zero = true
 [node name="Slider" parent="Body/CometTab/Control/AlphaPSanEdit" index="0"]
 offset_right = 457.0
 max_value = 360.0
-step = 1.0
 
 [node name="Label" parent="Body/CometTab/Control/AlphaPSanEdit" index="1"]
 text = "RA (°)"
@@ -1616,7 +1614,7 @@ lower_bound = 1.0
 higher_bound = 35.0
 no_decimal = true
 
-[node name="AccelValLineEdit" type="LineEdit" parent="Body/SimTab/Control"]
+[node name="AccelValLineEdit" type="LineEdit" parent="Body/SimTab/Control" groups=["model_tab"]]
 visible = false
 layout_mode = 1
 anchors_preset = -1
@@ -3233,17 +3231,17 @@ text = "N/A"
 
 [node name="RALeftLabel" type="Label" parent="Viewport/Panel/CoordinateGrid"]
 layout_mode = 0
-offset_left = 208.0
+offset_left = 656.0
 offset_top = 20.0
-offset_right = 248.0
+offset_right = 696.0
 offset_bottom = 43.0
 text = "N/A"
 
 [node name="RARightLabel" type="Label" parent="Viewport/Panel/CoordinateGrid"]
 layout_mode = 0
-offset_left = 656.0
+offset_left = 208.0
 offset_top = 20.0
-offset_right = 696.0
+offset_right = 248.0
 offset_bottom = 43.0
 text = "N/A"
 
@@ -3258,17 +3256,17 @@ text = "N/A"
 [node name="DECLeftLabel" type="Label" parent="Viewport/Panel/CoordinateGrid"]
 layout_mode = 0
 offset_left = 24.0
-offset_top = 213.0
+offset_top = 661.0
 offset_right = 64.0
-offset_bottom = 236.0
+offset_bottom = 684.0
 text = "N/A"
 
 [node name="DECRightLabel" type="Label" parent="Viewport/Panel/CoordinateGrid"]
 layout_mode = 0
 offset_left = 24.0
-offset_top = 661.0
+offset_top = 213.0
 offset_right = 70.0
-offset_bottom = 684.0
+offset_bottom = 236.0
 text = "N/A"
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="Viewport"]
@@ -3329,7 +3327,7 @@ projection = 1
 size = 2.031
 script = ExtResource("13_4d46k")
 
-[node name="Label" type="Label" parent="Viewport"]
+[node name="NucleusModelLabel" type="Label" parent="Viewport"]
 anchors_preset = -1
 anchor_right = 0.0598958
 anchor_bottom = 0.0223301

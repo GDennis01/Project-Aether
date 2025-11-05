@@ -17,7 +17,7 @@ func _ready() -> void:
 ## Called by Navbar._on_file_explorer_file_selected()
 ## Save the data into the SaveManager.config structure
 func save_data() -> void:
-	SaveManager.config.set_value("simulation", "frequency", float($Control/FrequencyEdit.text))
+	SaveManager.config.set_value("simulation", "frequency", float($Control/FrequencyEdit/SanitizedEdit.text))
 	SaveManager.config.set_value("simulation", "num_rotations", float($Control/NumRotationEdit.text))
 	SaveManager.config.set_value("simulation", "jet_rate", float($Control/JetRateEdit.text))
 	SaveManager.config.set_value("simulation", "scale", float($Control/KmScaleEdit.text))

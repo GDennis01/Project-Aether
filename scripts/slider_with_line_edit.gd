@@ -48,11 +48,15 @@ func _on_slider_value_changed(value: float) -> void:
 """
 Sets the value of both line edit and slider
 """
-func set_value(value: float) -> void:
+func set_value(value: float, send_signal: bool = true) -> void:
 	value = clampf(value, minimum_value, maximum_value)
 	# print(label + " clamped value between" + str(minimum_value) + " and maiximum value:" + str(maximum_value) + " is:" + str(value))
 	# this line of code triggers _on_slider_value_changed
-	slider.value = value
+	if send_signal:
+		slider.value = value
+	else:
+		slider.set_value_no_signal(value)
+	# slider.value = value
 
 
 """

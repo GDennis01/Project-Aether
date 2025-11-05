@@ -377,9 +377,11 @@ func update_pa_incl() -> void:
 
 	Util.comet_direction = rad_to_deg(pa)
 	Util.comet_inclination = -90 + rad_to_deg(incl)
+
+	# print("Updated PA:%f incl:%f" % [Util.comet_direction, Util.comet_inclination])
 	
-	Util.comet_incl_line_edit.set_value(Util.comet_inclination)
-	Util.comet_pa_line_edit.set_value(Util.comet_direction)
+	Util.comet_incl_line_edit.set_value(Util.comet_inclination, false)
+	Util.comet_pa_line_edit.set_value(Util.comet_direction, false)
 	update_comet_orientation()
 func update_lambda_beta() -> void:
 	var alpha_rad := deg_to_rad(Util.alpha_p)
@@ -487,15 +489,17 @@ func update_coordinate_grid_labels() -> void:
 	if not Util.fov_arcmin:
 		return
 	var fov_arcsec := Util.fov_arcmin * 60.0
-	# 5 columns in the grid
-	var fov_arcsec_step := fov_arcsec / 5
-	var fov_deg_step := fov_arcsec_step / 3600.0
+	var fov_deg := fov_arcsec / 3600.0
+	# 5 columns -> 4 spaces between labels
+	var fov_step := fov_deg / 4.0
+
 	Util.ra_center_label.text = "%.2f°" % ra
 	Util.dec_center_label.text = "%.2f°" % dec
-	Util.ra_left_label.text = "%.2f°" % (ra - fov_deg_step)
-	Util.ra_right_label.text = "%.2f°" % (ra + fov_deg_step)
-	Util.dec_left_label.text = "%.2f°" % clamp(dec - fov_deg_step, -90, 90)
-	Util.dec_right_label.text = "%.2f°" % clamp(dec + fov_deg_step, -90, 90)
+	Util.ra_left_label.text = "%.2f°" % (ra - fov_step)
+	Util.ra_right_label.text = "%.2f°" % (ra + fov_step)
+	Util.dec_left_label.text = "%.2f°" % clamp(dec - fov_step, -90, 90)
+	Util.dec_right_label.text = "%.2f°" % clamp(dec + fov_step, -90, 90)
+
 # called by CometTab._on_prev_date_btn_pressed
 func switch_date_prev_date() -> void:
 	_switch_date_prev_next_date(-1, 0)
@@ -552,10 +556,14 @@ func point_y_axis_toward(target_position: Vector3) -> void:
 # The Quaternion(from_vector, to_vector) constructor creates a quaternion
 # that represents the shortest rotation from 'from_vector' to 'to_vector'.
 # Thanks Gemini 2.5
-	var target_orientation_quat := Quaternion(Vector3.UP, direction)
+	var target_orientation_quat := Quaternion(Vector3.UP, direction).normalized()
+
 
 # Set the object's orientation using this quaternion.
 # This directly sets the rotation part of the global_transform.
+	# var new_quat := Quaternion(Vector3.UP, direction).normalized()
+	if not quaternion.is_equal_approx(target_orientation_quat):
+		quaternion = target_orientation_quat
 	quaternion = target_orientation_quat
 	
 # For debugging:

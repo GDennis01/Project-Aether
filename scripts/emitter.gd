@@ -505,7 +505,6 @@ func destroy_multimesh() -> void:
 ## updating the emitter position (and mesh size) on a sphere of radius "radius"
 ## called when the comet is resized
 func update_position(radius: float) -> void:
-	print("ciao")
 	var new_pos := Util.latlon_to_vector3(latitude, longitude, radius)
 	# the particle mesh is 1/25 of the comet mesh, chosen arbitrarly
 	particle_mesh.mesh.radius = radius * (1.0 / 25)
@@ -517,7 +516,6 @@ func update_speed(_speed: float) -> void:
 	speed = _speed
 	pass
 func update_lat(lat: float) -> void:
-	print("ciao")
 	if Util.PRINT_UPDATE_METHOD: print("Updated lat:%f"%lat)
 	latitude = lat
 	var new_pos := Util.latlon_to_vector3(latitude, longitude, Util.comet_radius)
