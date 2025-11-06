@@ -417,7 +417,8 @@ func _on_file_explorer_file_selected(path: String) -> void:
 		return
 	# print("Exporting CSV")
 	var csv_text := ""
-	var HEADER := {}
+	var HEADER := {"date": "Date",
+		"time": "Time", }
 	if options["RA_DEC"] == true:
 		HEADER["right_ascension"] = "Right Ascension (Deg)"
 		HEADER["declination"] = "Declination (Deg)"

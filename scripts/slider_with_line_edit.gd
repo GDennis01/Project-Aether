@@ -56,6 +56,7 @@ func set_value(value: float, send_signal: bool = true) -> void:
 		slider.value = value
 	else:
 		slider.set_value_no_signal(value)
+		line_edit.text = "%.2f" % value
 	# slider.value = value
 
 
