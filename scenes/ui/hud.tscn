@@ -588,8 +588,8 @@ valid_zero = true
 
 [node name="Slider" parent="Body/CometTab/Control/EditCometIncl" index="0"]
 visible = false
-offset_left = 3360.0
-offset_right = 3520.0
+offset_left = 3680.0
+offset_right = 3840.0
 scale = Vector2(-1, 1)
 min_value = -90.0
 max_value = 90.0
@@ -3041,11 +3041,11 @@ tooltip_text = "Calculated automatically by software​"
 disabled = true
 texture_normal = ExtResource("25_27rlx")
 
-[node name="DesignOptionsPopupMenu" type="PopupMenu" parent="Body/JPLTab/Control" groups=["settings_tab"]]
+[node name="DesignOptionsPopupMenu" type="PopupMenu" parent="Body/JPLTab/Control"]
 title = "Select the desired orbit"
 initial_position = 1
 
-[node name="LoadingLabel" type="Label" parent="Body/JPLTab/Control" groups=["settings_tab"]]
+[node name="LoadingLabel" type="Label" parent="Body/JPLTab/Control"]
 visible = false
 layout_mode = 1
 anchors_preset = -1
