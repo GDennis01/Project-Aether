@@ -297,10 +297,12 @@ func update_radius(value: float) -> void:
 func update_direction_rotation(value: float) -> void:
 	if Util.PRINT_UPDATE_METHOD: print("Updated comet PA:%f"%value)
 	Util.comet_direction = value
+	
 	update_comet_orientation()
 func update_inclination_rotation(value: float) -> void:
 	if Util.PRINT_UPDATE_METHOD: print("Updated comet inclination:%f"%value)
 	Util.comet_inclination = - value
+	print("Inclination set to:%f"%Util.comet_inclination)
 	update_comet_orientation()
 
 #jets related
@@ -376,12 +378,14 @@ func update_pa_incl() -> void:
 	var incl: float = acos(cos(alpha_rad - deg_to_rad(ra_comet_pos)) * cos(deg_to_rad(dec_comet_pos)) * cos(delta_rad) + sin(deg_to_rad(dec_comet_pos)) * sin(delta_rad))
 
 	Util.comet_direction = rad_to_deg(pa)
-	Util.comet_inclination = -90 + rad_to_deg(incl)
+	Util.comet_inclination = - rad_to_deg(incl)
+
 
 	# print("Updated PA:%f incl:%f" % [Util.comet_direction, Util.comet_inclination])
 	
-	Util.comet_incl_line_edit.set_value(Util.comet_inclination, false)
+	Util.comet_incl_line_edit.set_value(-Util.comet_inclination, false)
 	Util.comet_pa_line_edit.set_value(Util.comet_direction, false)
+	print("RADEC Inclination set to:%f" % -Util.comet_inclination)
 	update_comet_orientation()
 func update_lambda_beta() -> void:
 	var alpha_rad := deg_to_rad(Util.alpha_p)
