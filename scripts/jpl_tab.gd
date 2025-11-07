@@ -5,9 +5,10 @@ extends CanvasLayer
 @onready var end_date_ledit: LineEdit = $Control/EndDateLineEdit
 @onready var scroll_container: ScrollContainer = $Control/EphemScroll
 @onready var ephem_table: VBoxContainer = $Control/EphemScroll/EphemTable
-
-
+@onready var des_options_popup: PopupMenu = $Control/DesignOptionsPopupMenu
+@onready var loading_label: Label = $Control/LoadingLabel
 var http_request: HTTPRequest
+var http_request_name: HTTPRequest
 var start_date: Date
 var end_date: Date
 var step_size: float = 24.0
@@ -15,6 +16,10 @@ var alpha_p: float = 0.0
 var delta_p: float = 0.0
 # var target = "C/2013 R1"
 var api_url := "https://ssd.jpl.nasa.gov/api/horizons.api"
+var api_url_designation := "https://ssd.jpl.nasa.gov/api/horizons_support.api"
+
+# url encode semicolon
+const SC := "%3B"
 
 # var quantities := "1,19,20,23"
 var quantities := "1,16,19,20,24,28,41,47"
@@ -69,8 +74,12 @@ func _ready() -> void:
 	http_request = HTTPRequest.new()
 	add_child(http_request)
 	http_request.request_completed.connect(self._http_request_completed)
-	
 
+	http_request_name = HTTPRequest.new()
+	add_child(http_request_name)
+	http_request_name.request_completed.connect(self._http_request_name_completed)
+	
+## 1.Send search request to get designation ID
 func _on_search_btn_pressed() -> void:
 	var query := search_bar.text
 	if query == "":
@@ -82,32 +91,129 @@ func _on_search_btn_pressed() -> void:
 	if step_size <= 0:
 		Util.create_popup("Error", "Please select a valid step size (greater than 0).")
 		return
+
+	print("Fetching designation ID for:", query)
+	get_designation_id(query)
+	
+
+## 2.API Call to retrieve designation ID from name
+func get_designation_id(comet_name: String) -> void:
+	_show_loading_label(true)
+	var url_request := "%s?sstr=%s&time-span=1&www=1" % [api_url_designation, comet_name.uri_encode()]
+	print("Designation ID Request URL: ", url_request)
+	# encode url
+	
+	var tls_options := TLSOptions.client_unsafe()
+	http_request_name.set_tls_options(tls_options)
+	var error := http_request_name.request(url_request)
+	var error_msg: String = ""
+	match error:
+		OK:
+			error_msg = "HTTP request sent successfully."
+		ERR_UNCONFIGURED:
+			_show_loading_label(false)
+			error_msg = "HTTPRequest node is not configured."
+		ERR_BUSY:
+			_show_loading_label(false)
+			error_msg = "HTTPRequest node is busy with another request."
+		ERR_INVALID_PARAMETER:
+			_show_loading_label(false)
+			error_msg = "Invalid parameter provided to HTTPRequest."
+		ERR_CANT_CONNECT:
+			_show_loading_label(false)
+			error_msg = "Cannot connect to the server."
+		_:
+			_show_loading_label(false)
+			error_msg = "Default error message."
+	print("HTTP Request Status: ", error_msg)
+
+## 3.Handle designation ID response
+func _http_request_name_completed(_result: int, _response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
+	_show_loading_label(false)
+	var json_parser := JSON.new()
+	var body_string := body.get_string_from_utf8()
+	json_parser.parse(body_string)
+	# print(json_parser.data)
+	if _response_code != 200 and _response_code != 300:
+		print("Error, response code: ", _response_code)
+		Util.create_popup("Error", "Failed to retrieve designation ID:\n")
+		return
+	if json_parser.data.has("error"):
+		Util.create_popup("Error", "Failed to retrieve designation ID:\n%s" % json_parser.data.error)
+		return
+	if json_parser.data.count == 0:
+		Util.create_popup("Error", "No designation ID found for the given name.")
+		return
+	# if count is 1, then there's no need to retrieve the designatn id
+	if json_parser.data.count == 1:
+		var des_id: String = json_parser.data.data.id
+		print("Designation ID found:", des_id)
+		var command_parameter := "DES=" + str(des_id) + SC + "NOFRAG" + SC
+		print("Command Parameter: ", command_parameter)
+		request_ephemeris(command_parameter)
+		return
+	# else, show a popup to select the designation id
+	var raw_list: Array = json_parser.data.list
+	# print(raw_list)
+	var designation_options: Array[Dictionary] = []
+	# convert raw_list to array of dictionaries through json
+	for raw_item: Dictionary in raw_list:
+		designation_options.append(raw_item)
+	des_options_popup.clear()
+	des_options_popup.add_item("Select an orbit", 0)
+	des_options_popup.set_item_disabled(0, true)
+	des_options_popup.add_separator()
+	for i in range(designation_options.size()):
+		var option := designation_options[i]
+		var display_text := "%s " % [option.name]
+		des_options_popup.add_item(display_text, i)
+		des_options_popup.set_item_metadata(i, {"id": option.id, "orbit_id": option.orbit_id})
+	des_options_popup.popup_centered()
+	des_options_popup.popup()
+
+
+## 3B.Handle designation selection from popup
+func _on_design_options_popup_menu_id_pressed(id: int) -> void:
+	print("AAAAAAAA")
+	var selected_option: Dictionary = des_options_popup.get_item_metadata(id)
+	print("Selected designation ID: ", selected_option)
+	var command_parameter := "DES=" + str(selected_option["id"]) + SC + "NOFRAG" + SC + "SOLN=" + str(selected_option["orbit_id"]) + SC
+	print("Command Parameter: ", command_parameter)
+	request_ephemeris(command_parameter)
+	# You can now use the selected_option (which contains the ID) for further processing.
+
+## 4.Send ephemeris request. Command must be in the form of DES=designation_id;NOFRAG;SOLN=orbit_id; or DES=designation_id;
+func request_ephemeris(command_parameter: String) -> void:
+	_show_loading_label(true)
 	var params := {
-		"format": "json",
-		"COMMAND": "'%s'" % query,
-		"OBJ_DATA": "NO",
-		"MAKE_EPHEM": "YES",
-		"EPHEM_TYPE": "OBSERVER",
-		"CENTER": "'500@399'", # Geocentric (Observatory at the center of Earth)
-		
-		"STEP_SIZE": "'%sh'" % int(step_size),
-		"ANG_FORMAT": "DEG",
-		"QUANTITIES": "'%s'" % quantities
-	}
+			"format": "json",
+			"COMMAND": "'%s'" % [command_parameter],
+			"OBJ_DATA": "NO",
+			"MAKE_EPHEM": "YES",
+			"EPHEM_TYPE": "OBSERVER",
+			"CENTER": "'500@399'", # Geocentric (Observatory at the center of Earth)
+			
+			"STEP_SIZE": "'%sh'" % int(step_size),
+			"ANG_FORMAT": "DEG",
+			"QUANTITIES": "'%s'" % quantities
+		}
 	if end_date == null:
 		params["TLIST"] = "'%s 00:00'" % start_date.date("YYYY-MM-DD")
 	else:
 		params["START_TIME"] = "'%s 00:00'" % start_date.date("YYYY-MM-DD")
 		params["STOP_TIME"] = "'%s 00:00'" % end_date.date("YYYY-MM-DD")
-	# Construct the query string from the parameters
+		# Construct the query string from the parameters
 	var query_string := ""
 	for key: String in params.keys():
 		if query_string != "":
 			query_string += "&"
 		query_string += "%s=%s" % [key, params[key]]
 	var url := "{api_url}?{query_string}".format({"api_url": api_url, "query_string": query_string})
+	# make a post instead of get
+	#
+
 	# print("API URL:")
-	# print("Request URL: ", url)
+	print("Request URL: ", url)
 	var tls_options := TLSOptions.client_unsafe()
 	http_request.set_tls_options(tls_options)
 	var error := http_request.request(url)
@@ -116,14 +222,19 @@ func _on_search_btn_pressed() -> void:
 		OK:
 			error_msg = "HTTP request sent successfully."
 		ERR_UNCONFIGURED:
+			_show_loading_label(false)
 			error_msg = "HTTPRequest node is not configured."
 		ERR_BUSY:
+			_show_loading_label(false)
 			error_msg = "HTTPRequest node is busy with another request."
 		ERR_INVALID_PARAMETER:
+			_show_loading_label(false)
 			error_msg = "Invalid parameter provided to HTTPRequest."
 		ERR_CANT_CONNECT:
+			_show_loading_label(false)
 			error_msg = "Cannot connect to the server."
 		_:
+			_show_loading_label(false)
 			error_msg = "Default error message."
 	print("HTTP Request Status: ", error_msg)
 	# Util.create_popup("Request Status", error_msg)
@@ -131,8 +242,9 @@ func _on_search_btn_pressed() -> void:
 		push_error("An error occurred in the HTTP request.")
 	print("----------")
 
-
+## 5.Handle ephemeris response
 func _http_request_completed(result: int, _response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
+	_show_loading_label(false)
 	var json_parser := JSON.new()
 	var body_string := body.get_string_from_utf8()
 	json_parser.parse(body_string)
@@ -154,15 +266,6 @@ func _http_request_completed(result: int, _response_code: int, _headers: PackedS
 	print("Json:\n")
 	print(json_parser.data)
 	var ephemeris_data: Variant = json_parser.data
-	# print(ephemeris_data)
-	# $Control/JPLTablePanel.visible = true
-
-	# $Control/WLabel.visible = true
-	# $Control/OMLabel.visible = true
-	# $Control/INLabel.visible = true
-	# $Control/WLineEdit.visible = true
-	# $Control/OMLineEdit.visible = true
-	# $Control/INLineEdit.visible = true
 
 	$Control/ECLineEdit.text = str(ephemeris_data.ec)
 	$Control/QRLineEdit.text = str(ephemeris_data.qr)
@@ -458,3 +561,7 @@ func _on_file_explorer_file_selected(path: String) -> void:
 	file.close()
 
 	Util.create_popup("Export Successful", "Ephemeris data exported to %s" % path)
+
+
+func _show_loading_label(bool_value: bool) -> void:
+	loading_label.visible = bool_value

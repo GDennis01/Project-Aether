@@ -588,8 +588,8 @@ valid_zero = true
 
 [node name="Slider" parent="Body/CometTab/Control/EditCometIncl" index="0"]
 visible = false
-offset_left = 2880.0
-offset_right = 3040.0
+offset_left = 3360.0
+offset_right = 3520.0
 scale = Vector2(-1, 1)
 min_value = -90.0
 max_value = 90.0
@@ -2335,7 +2335,7 @@ offset_left = 192.536
 offset_top = 5.41728
 offset_right = 313.536
 offset_bottom = 36.4173
-text = "C/2013 R1"
+text = "67P"
 
 [node name="SearchBtn" type="Button" parent="Body/JPLTab/Control"]
 layout_mode = 1
@@ -3041,6 +3041,23 @@ tooltip_text = "Calculated automatically by software​"
 disabled = true
 texture_normal = ExtResource("25_27rlx")
 
+[node name="DesignOptionsPopupMenu" type="PopupMenu" parent="Body/JPLTab/Control" groups=["settings_tab"]]
+title = "Select the desired orbit"
+initial_position = 1
+
+[node name="LoadingLabel" type="Label" parent="Body/JPLTab/Control" groups=["settings_tab"]]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -0.21
+anchor_bottom = -0.21
+offset_left = 1031.34
+offset_top = 463.833
+offset_right = 1145.34
+offset_bottom = 486.833
+scale = Vector2(2.465, 2.465)
+text = "Loading data..."
+
 [node name="HelpPanel" type="CanvasLayer" parent="Body"]
 layer = 3
 visible = false
@@ -3391,6 +3408,7 @@ metadata/_edit_use_anchors_ = true
 [connection signal="toggled" from="Body/JPLTab/Control/TableSettings/cbSkyMotion" to="Body/JPLTab" method="_on_cb_sky_motion_toggled"]
 [connection signal="pressed" from="Body/JPLTab/Control/ExportCSVBtn" to="Body/JPLTab" method="_on_export_csv_btn_pressed"]
 [connection signal="file_selected" from="Body/JPLTab/Control/FileExplorer" to="Body/JPLTab" method="_on_file_explorer_file_selected"]
+[connection signal="id_pressed" from="Body/JPLTab/Control/DesignOptionsPopupMenu" to="Body/JPLTab" method="_on_design_options_popup_menu_id_pressed"]
 
 [editable path="Body/CometTab/Control/EditCometIncl"]
 [editable path="Body/CometTab/Control/EditCometDir"]
