@@ -1,6 +1,7 @@
 extends CanvasLayer
 
 # @onready var rot_camera_viewport: SubViewport = $"/root/Hud/Body/SubViewportContainer/SubViewport"
+@onready var sub_viewport_container: SubViewportContainer = $"/root/Hud/Viewport/SubViewportContainer"
 @onready var rot_camera_viewport: SubViewport = $"/root/Hud/Viewport/SubViewportContainer/SubViewport"
 @onready var minicamera_viewport: SubViewport = $"/root/Hud/Viewport/MiniViewportContainer/SubViewport"
 @onready var cam: Camera3D = $"/root/Hud/Viewport/SubViewportContainer/SubViewport/RotatingCamera"
@@ -330,7 +331,7 @@ func _on_toggle_nucleus_date_btn_pressed() -> void:
 
 func _on_toggle_transparency_toggled(toggled_on: bool) -> void:
 	$/root/Hud/Viewport/Panel/OverlayImg.visible = toggled_on
-
+	sub_viewport_container.get_node("SubViewport").transparent_bg = toggled_on
 
 func _on_toggle_nucleus_grid_btn_pressed() -> void:
 	get_tree().call_group("comet", "toggle_nucleus_grid")
