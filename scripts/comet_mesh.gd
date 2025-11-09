@@ -487,6 +487,7 @@ func switch_date_set_date(date: String, reset: bool = false) -> void:
 
 	# update coords grid labels
 	update_coordinate_grid_labels()
+## update grid labels
 func update_coordinate_grid_labels() -> void:
 	if Util.jpl_data == null or Util.jpl_data.size() == 0:
 		return
@@ -494,7 +495,9 @@ func update_coordinate_grid_labels() -> void:
 	var dec: float = float(Util.jpl_data[current_date_index]["declination"])
 	if not Util.fov_arcmin:
 		return
+	var zoom_factor := Util.starting_visible_area / Util.visible_area
 	var fov_arcsec := Util.fov_arcmin * 60.0
+	fov_arcsec /= zoom_factor
 	var fov_deg := fov_arcsec / 3600.0
 	# 5 columns -> 4 spaces between labels
 	var fov_step := fov_deg / 4.0

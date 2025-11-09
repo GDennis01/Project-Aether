@@ -118,6 +118,7 @@ func update_scale_factor() -> void:
 
 
 func update_ruler() -> void:
+	get_tree().call_group("comet", "update_coordinate_grid_labels")
 	var fov_full_zoom: float = Util.visible_area / 1000 * (Util.tel_image_size / Util.window_size)
 	var pixel_resolution_full_zoom: float = fov_full_zoom / Util.window_size
 	var pixel_res_after_zoom: float = pixel_resolution_full_zoom * Util.scale
@@ -129,6 +130,8 @@ func update_ruler() -> void:
 	else:
 		var fov_full_img_arcsec := Util.fov_arcmin * 60
 		var arcsec_ruler := fov_full_img_arcsec / 6
+		var zoom_factor := Util.starting_visible_area / Util.visible_area
+		arcsec_ruler = arcsec_ruler / zoom_factor
 		Util.current_fov_label.text = str(int(arcsec_ruler)) + " arcsec"
 
 
