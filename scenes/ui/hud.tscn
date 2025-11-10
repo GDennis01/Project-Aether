@@ -588,8 +588,8 @@ valid_zero = true
 
 [node name="Slider" parent="Body/CometTab/Control/EditCometIncl" index="0"]
 visible = false
-offset_left = 4480.0
-offset_right = 4640.0
+offset_left = 4640.0
+offset_right = 4800.0
 scale = Vector2(-1, 1)
 min_value = -90.0
 max_value = 90.0

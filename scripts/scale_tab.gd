@@ -110,8 +110,11 @@ func update_scale_factor() -> void:
 	# var fov_full_zoom: float = Util.window_fov / 1000 * window_image_scale_factor
 	var fov_full_zoom: float = Util.starting_visible_area / 1000 * window_image_scale_factor
 	var pixel_resolution_full_zoom: float = fov_full_zoom / Util.window_size
-	# Util.scale = Util.tel_res_km_pixel / pixel_resolution_full_zoom * window_image_scale_factor * 1000
-	Util.scale = Util.tel_res_km_pixel / pixel_resolution_full_zoom * window_image_scale_factor
+	var window_res_km_pixel := Util.visible_area / 1000 / Util.window_size
+	Util.scale = Util.tel_res_km_pixel / window_res_km_pixel * window_image_scale_factor
+	print("Tel_res_km_pixel: %f Visible_area:%f Window_res_km_pixel:%.10f Window_image_scale_factor: %f Scale: %f" % [Util.tel_res_km_pixel, Util.visible_area, window_res_km_pixel, window_image_scale_factor, Util.scale])
+	# Util.scale = Util.tel_res_km_pixel / pixel_resolution_full_zoom * window_image_scale_factor
+	
 	update_ruler()
 	if scale_factor:
 		scale_factor.text = str(Util.scale)
