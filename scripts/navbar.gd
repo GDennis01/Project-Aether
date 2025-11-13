@@ -171,6 +171,7 @@ func _on_screenshot_btn_pressed() -> void:
 	file_explorer.file_mode = FileDialog.FILE_MODE_SAVE_FILE
 	file_explorer.filters = ["*.png;Image File"]
 	file_explorer.set_meta("is_screenshot", true)
+	file_explorer.set_meta("is_screenshot_mini", false)
 	file_explorer.popup_centered()
 	file_explorer.current_file = "screenshot"
 	
@@ -180,6 +181,7 @@ func _on_save_nucleus_btn_pressed() -> void:
 	file_explorer.file_mode = FileDialog.FILE_MODE_SAVE_FILE
 	file_explorer.filters = ["*.png;Image File"]
 	file_explorer.set_meta("is_screenshot_mini", true)
+	file_explorer.set_meta("is_screenshot", false)
 	file_explorer.popup_centered()
 	file_explorer.current_file = "screenshot"
 	
