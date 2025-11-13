@@ -191,12 +191,16 @@ func _on_save_nucleus_btn_pressed() -> void:
 func _on_file_explorer_file_selected(path: String) -> void:
 	if file_explorer.file_mode == FileDialog.FILE_MODE_SAVE_FILE:
 		if file_explorer.get_meta("is_screenshot", false):
-			var img := rot_camera_viewport.get_texture().get_image()
+			var model_panel := $"/root/Hud/Viewport/Panel"
+			var img := await screenshot_panel(model_panel)
+			# var img := rot_camera_viewport.get_texture().get_image()
 			img.resize(1200, 1200)
 			img.save_png(path)
 			print("Screenshot saved to: ", path)
 		elif file_explorer.get_meta("is_screenshot_mini", false):
-			var minicamera_img := minicamera_viewport.get_texture().get_image()
+			# var minicamera_img := minicamera_viewport.get_texture().get_image()
+			var nucleus_model_panel := $"/root/Hud/Viewport/NucleusPanelRect"
+			var minicamera_img := await screenshot_panel(nucleus_model_panel)
 			minicamera_img.save_png(path)
 			print("Minicamera screenshot saved to: ", path)
 		else:
@@ -205,6 +209,20 @@ func _on_file_explorer_file_selected(path: String) -> void:
 	if file_explorer.file_mode == FileDialog.FILE_MODE_OPEN_FILE:
 		SaveManager.load(path)
 		get_tree().call_group("load", "load_data")
+
+## Takes a screenshot of the whole frame and then crops it only to the given panel rect
+func screenshot_panel(panel: Panel) -> Image:
+	await RenderingServer.frame_post_draw # Wait for the frame to finish rendering
+
+	var viewport := get_viewport()
+	var img := viewport.get_texture().get_image()
+
+	# Get the panel's position and size in screen coordinates
+	var rect := panel.get_global_rect()
+
+	# Crop the screenshot to the panel's area
+	var cropped := img.get_region(rect)
+	return cropped
 
 
 ## Now is used as a button for debugging purposes
@@ -326,11 +344,15 @@ func _on_toggle_date_btn_pressed() -> void:
 	Util.date_label.visible = not Util.date_label.visible
 
 func _on_toggle_nucleus_date_btn_pressed() -> void:
+	print("Toggling nucleus date label visibility")
 	Util.nucleus_date_label.visible = not Util.nucleus_date_label.visible
 
 
 func _on_toggle_transparency_toggled(toggled_on: bool) -> void:
+	if $"/root/Hud/Viewport/Panel/OverlayImg".texture == null:
+		return
 	$/root/Hud/Viewport/Panel/OverlayImg.visible = toggled_on
+	# check if overlay_img exists
 	sub_viewport_container.get_node("SubViewport").transparent_bg = toggled_on
 
 func _on_toggle_nucleus_grid_btn_pressed() -> void:

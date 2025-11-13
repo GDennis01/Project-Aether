@@ -89,5 +89,7 @@ func _on_del_overlay_img_btn_pressed() -> void:
 	sub_viewport_container.get_node("SubViewport").transparent_bg = false
 
 func _on_transparency_slider_value_changed(value: float) -> void:
-	print(value)
+	if $"/root/Hud/Viewport/Panel/OverlayImg".texture == null:
+		sub_viewport_container.modulate.a = 1.0
+		return
 	sub_viewport_container.modulate.a = value

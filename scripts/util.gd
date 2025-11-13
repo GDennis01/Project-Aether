@@ -98,7 +98,7 @@ var is_simulation: bool = true ## True: simulation enabled, False: instant simul
 # Labels and LineEdits
 @onready var current_camera_label: Label = $"/root/Hud/Viewport/Panel/CurrCameraLabel"
 @onready var date_label: Label = $"/root/Hud/Viewport/Panel/DateLabel"
-@onready var nucleus_date_label: Label = $"/root/Hud/Viewport/NucleusPanel/NucleusDateLabel"
+@onready var nucleus_date_label: Label = $"/root/Hud/Viewport/NucleusPanelRect/NucleusDateLabel"
 @onready var current_fov_label: Label = $"/root/Hud/Viewport/Panel/CenterContainer/ScaleLabel"
 @onready var beta_val_line_edit: LineEdit = $"/root/Hud/Body/CometTab/Control/BetaValLineEdit"
 @onready var accel_val_line_edit: LineEdit = $"/root/Hud/Body/SimTab/Control/AccelValLineEdit"

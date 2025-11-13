@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://bwt7dtbn7pn3c"]
+[gd_scene load_steps=40 format=3 uid="uid://bwt7dtbn7pn3c"]
 
 [ext_resource type="Script" uid="uid://bmle6k05e5fff" path="res://scripts/hud.gd" id="1_moku2"]
 [ext_resource type="Script" uid="uid://bwvqb33hu6cxk" path="res://scripts/navbar.gd" id="1_r4m0t"]
@@ -74,6 +74,9 @@ border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0.17676, 0.18, 0.1152, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_emer0"]
+bg_color = Color(0, 0, 0, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d5po8"]
 bg_color = Color(0, 0, 0, 0)
@@ -588,8 +591,8 @@ valid_zero = true
 
 [node name="Slider" parent="Body/CometTab/Control/EditCometIncl" index="0"]
 visible = false
-offset_left = 4800.0
-offset_right = 4960.0
+offset_left = 5120.0
+offset_right = 5280.0
 scale = Vector2(-1, 1)
 min_value = -90.0
 max_value = 90.0
@@ -937,6 +940,8 @@ anchor_left = 0.675258
 anchor_top = 0.094697
 anchor_right = 1.23196
 anchor_bottom = 0.215909
+offset_right = 0.127991
+offset_bottom = -0.152008
 grow_horizontal = 2
 grow_vertical = 2
 text = "0"
@@ -1013,6 +1018,8 @@ anchor_left = 0.917828
 anchor_top = 1.81506
 anchor_right = 1.23226
 anchor_bottom = 1.93627
+offset_right = 0.127991
+offset_bottom = -0.152008
 grow_horizontal = 2
 grow_vertical = 2
 text = "0"
@@ -1039,6 +1046,7 @@ anchor_top = 1.71591
 anchor_right = 2.71134
 anchor_bottom = 1.83712
 offset_top = -16.0
+offset_right = 0.127991
 offset_bottom = -16.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -1066,6 +1074,8 @@ anchor_left = 0.917526
 anchor_top = 1.6553
 anchor_right = 1.23196
 anchor_bottom = 1.77652
+offset_right = 0.127991
+offset_bottom = -0.152008
 grow_horizontal = 2
 grow_vertical = 2
 text = "0"
@@ -2079,6 +2089,8 @@ anchor_left = 8.925
 anchor_top = 2.25
 anchor_right = 10.325
 anchor_bottom = 3.025
+offset_right = 0.127991
+offset_bottom = -0.152008
 text = "0"
 resize_type = &"tel_image_size"
 lower_bound = 100.0
@@ -2100,6 +2112,8 @@ text = "Window FOV (m): "
 [node name="WindowFOVEdit" parent="Body/ScaleTab/Control" instance=ExtResource("6_oj5la")]
 visible = false
 layout_mode = 1
+anchor_right = 0.111
+anchor_bottom = 0.099
 offset_left = 192.0
 offset_top = 393.0
 offset_right = 243.56
@@ -2124,6 +2138,8 @@ text = "Window size (pixels):"
 [node name="WindowSizeEdit" parent="Body/ScaleTab/Control" instance=ExtResource("6_oj5la")]
 visible = false
 layout_mode = 1
+anchor_right = 0.111
+anchor_bottom = 0.099
 offset_left = 192.0
 offset_top = 433.0
 offset_right = 243.56
@@ -2252,6 +2268,7 @@ editable = false
 
 [node name="JPLTab" type="CanvasLayer" parent="Body" groups=["alpha_p", "delta_p", "settings_tab", "step_size"]]
 layer = 3
+visible = false
 script = ExtResource("16_gmc6u")
 
 [node name="Control" type="Control" parent="Body/JPLTab"]
@@ -3134,7 +3151,26 @@ text = "Time:"
 
 [node name="Viewport" type="CanvasLayer" parent="." groups=["model_tab"]]
 layer = 2
-visible = false
+
+[node name="NucleusPanelRect" type="Panel" parent="Viewport"]
+offset_left = 1575.0
+offset_top = 75.0
+offset_right = 1875.0
+offset_bottom = 375.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_emer0")
+
+[node name="NucleusDateLabel" type="Label" parent="Viewport/NucleusPanelRect"]
+z_index = 2
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -5.25
+anchor_top = -0.25
+anchor_right = -5.25
+anchor_bottom = -0.25
+offset_left = 1592.0
+offset_top = 336.0
+offset_right = 1632.0
+offset_bottom = 359.0
 
 [node name="NucleusPanel" type="Panel" parent="Viewport"]
 z_index = -1
@@ -3147,30 +3183,12 @@ mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_pkwgd")
 metadata/_edit_use_anchors_ = true
 
-[node name="NucleusDateLabel" type="Label" parent="Viewport/NucleusPanel"]
-z_index = 2
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.00318642
-anchor_top = 0.0264323
-anchor_right = 0.00318642
-anchor_bottom = 0.0264323
-offset_left = 17.678
-offset_top = 274.252
-offset_right = 57.678
-offset_bottom = 297.252
-metadata/_edit_use_anchors_ = true
-
 [node name="Panel" type="Panel" parent="Viewport"]
 anchors_preset = -1
-anchor_left = 0.325
-anchor_top = 0.043
-anchor_right = 0.325
-anchor_bottom = 0.043
-offset_left = 0.67
-offset_top = -1.19
-offset_right = 900.67
-offset_bottom = 898.81
+offset_left = 624.67
+offset_top = 43.1
+offset_right = 1524.67
+offset_bottom = 943.1
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.55
 theme_override_styles/panel = SubResource("StyleBoxFlat_d5po8")
@@ -3290,10 +3308,10 @@ text = "N/A"
 visibility_layer = 4
 z_index = -1
 anchors_preset = -1
-anchor_left = 0.325521
-anchor_top = 0.0417476
-anchor_right = 0.794271
-anchor_bottom = 0.915534
+offset_left = 625.0
+offset_top = 43.0
+offset_right = 1525.0
+offset_bottom = 943.0
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.55
 metadata/_edit_use_anchors_ = true
@@ -3301,7 +3319,7 @@ metadata/_edit_use_anchors_ = true
 [node name="SubViewport" type="SubViewport" parent="Viewport/SubViewportContainer" node_paths=PackedStringArray("_fr_camera", "_rot_camera") groups=["camera"]]
 handle_input_locally = false
 size = Vector2i(900, 900)
-render_target_update_mode = 0
+render_target_update_mode = 4
 script = ExtResource("9_4jqwt")
 _fr_camera = NodePath("FreeRoamCamera")
 _rot_camera = NodePath("RotatingCamera")
@@ -3324,10 +3342,10 @@ enabled = false
 [node name="MiniViewportContainer" type="SubViewportContainer" parent="Viewport"]
 z_index = -1
 anchors_preset = -1
-anchor_left = 0.820312
-anchor_top = 0.0732021
-anchor_right = 0.976562
-anchor_bottom = 0.364464
+offset_left = 1575.0
+offset_top = 75.398
+offset_right = 1875.0
+offset_bottom = 375.398
 size_flags_horizontal = 4
 size_flags_vertical = 4
 metadata/_edit_use_anchors_ = true
@@ -3335,7 +3353,7 @@ metadata/_edit_use_anchors_ = true
 [node name="SubViewport" type="SubViewport" parent="Viewport/MiniViewportContainer"]
 handle_input_locally = false
 size = Vector2i(300, 300)
-render_target_update_mode = 0
+render_target_update_mode = 4
 
 [node name="MiniCamera" type="Camera3D" parent="Viewport/MiniViewportContainer/SubViewport" groups=["camera", "radius"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 11.8985)
