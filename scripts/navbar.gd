@@ -139,6 +139,7 @@ func _on_save_btn_pressed() -> void:
 	file_explorer.file_mode = FileDialog.FILE_MODE_SAVE_FILE
 	file_explorer.filters = ["*.txt;Configuration File"]
 	file_explorer.set_meta("is_screenshot", false)
+	file_explorer.set_meta("is_screenshot_mini", false)
 	file_explorer.popup_centered()
 	file_explorer.current_file = "config"
 	
@@ -148,6 +149,7 @@ func _on_load_btn_pressed() -> void:
 	file_explorer.file_mode = FileDialog.FILE_MODE_OPEN_FILE
 	file_explorer.filters = ["*.txt;Configuration File"]
 	file_explorer.set_meta("is_screenshot", false)
+	file_explorer.set_meta("is_screenshot_mini", false)
 	file_explorer.popup_centered()
 	
 	file_explorer.visible = true
