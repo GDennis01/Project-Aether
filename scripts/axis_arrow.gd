@@ -12,8 +12,6 @@ enum AXIS_TYPE {X, Y, Z, SUN, REVERSE_Y}
 var axis_type: AXIS_TYPE
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	#arrow_arm.mesh.material.albedo_color = color
-	#arrow_head.mesh.material.albedo_color = color
 	_original_arm_mesh_scale = arrow_arm.scale
 	_original_arm_mesh_height = arrow_arm.mesh.height
 	
@@ -72,8 +70,11 @@ func set_height(value: float, distance: float = 0) -> void:
 		# offsetting by the original height(which is 2 so 2/4 = 0.5) so that the arm is centered in the center of the mesh
 		match axis_type:
 			AXIS_TYPE.SUN:
-				arrow_arm.position.y = distance - Util.comet_radius * 2.05
-				arrow_head.position.y = distance + height / 2 - Util.comet_radius * 2.05
+				# arrow_arm.position.y = distance - Util.comet_radius * 2.05 - height / 2
+				arrow_arm.position.y = distance - 1.5
+
+				# arrow_head.position.y = distance - height / 2 - Util.comet_radius * 2.05
+				arrow_head.position.y = distance - 1
 				# position.z = position.z - distance
 			AXIS_TYPE.REVERSE_Y:
 				arrow_head.scale = Vector3.ZERO
@@ -86,9 +87,9 @@ func set_height(value: float, distance: float = 0) -> void:
 				arrow_head.position.y = height - _original_arm_mesh_height / 4
 
 
-func toggle_axis(type: AXIS_TYPE) -> void:
-	if type == axis_type:
-		visible = not visible
+# func toggle_axis(type: AXIS_TYPE) -> void:
+# 	if type == axis_type:
+# 		visible = not visible
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta: float) -> void:
 	#pass

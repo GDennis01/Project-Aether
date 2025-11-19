@@ -1,10 +1,10 @@
-[gd_scene load_steps=16 format=3 uid="uid://bqxoxn8bpfcfa"]
+[gd_scene load_steps=15 format=3 uid="uid://bqxoxn8bpfcfa"]
 
-[ext_resource type="Script" uid="uid://dsimhylkxu4no" path="res://scripts/world_manager.gd" id="1_wu602"]
 [ext_resource type="Script" uid="uid://d1gcq008ypdlq" path="res://scripts/sun.gd" id="2_i7141"]
 [ext_resource type="Texture2D" uid="uid://bipq3vjm1ku1g" path="res://asset/texture3.jpg" id="4_71j4m"]
 [ext_resource type="Script" uid="uid://cdbhqjf33rsg1" path="res://scripts/comet_mesh.gd" id="4_yu4gv"]
 [ext_resource type="Shader" uid="uid://ccpharluyb1qa" path="res://shaders/sphere.gdshader" id="6_4mrxx"]
+[ext_resource type="PackedScene" uid="uid://bwt7dtbn7pn3c" path="res://scenes/ui/hud.tscn" id="6_qfnet"]
 
 [sub_resource type="Environment" id="Environment_7r4gi"]
 background_mode = 1
@@ -29,8 +29,8 @@ height = 0.002
 
 [sub_resource type="SphereMesh" id="SphereMesh_f4gce"]
 material = SubResource("StandardMaterial3D_71j4m")
-radius = 5.0
-height = 10.0
+radius = 1.0
+height = 2.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7r4gi"]
 render_priority = 0
@@ -44,15 +44,10 @@ shader_parameter/border_thickness = 0.038
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_4mrxx"]
 
-[sub_resource type="SphereMesh" id="SphereMesh_4mrxx"]
-radius = 0.1
-height = 0.2
-
 [node name="World" type="WorldEnvironment"]
 environment = SubResource("Environment_7r4gi")
 camera_attributes = SubResource("CameraAttributesPractical_t5g0g")
 compositor = SubResource("Compositor_5tdcg")
-script = ExtResource("1_wu602")
 
 [node name="Sun" type="Node3D" parent="." groups=["sun", "sun_dir_rotation", "sun_inc_rotation"]]
 rotation_edit_mode = 1
@@ -88,22 +83,4 @@ comet_collider = NodePath("CometArea")
 shape = SubResource("SphereShape3D_4mrxx")
 debug_color = Color(0.771851, 0.441145, 0.120771, 0.42)
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." groups=["sun_dir_rotation", "sun_inc_rotation"]]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
-rotation_order = 1
-visible = false
-light_energy = 16.0
-light_indirect_energy = 0.0
-light_volumetric_fog_energy = 0.0
-light_specular = 0.443
-light_bake_mode = 0
-directional_shadow_mode = 0
-directional_shadow_fade_start = 0.843
-directional_shadow_max_distance = 85.5
-sky_mode = 1
-
-[node name="DebugRotationSphere" type="MeshInstance3D" parent="."]
-visible = false
-mesh = SubResource("SphereMesh_4mrxx")
-
-[node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="."]
+[node name="HUD" parent="." instance=ExtResource("6_qfnet")]
