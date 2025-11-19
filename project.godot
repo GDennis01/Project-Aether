@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="AETHER Minimal"
+config/name="Project Aether"
 config/description="Analysis of Evolved Thermal Hydrodynamics in Emission Regions"
 config/version="0.1"
 run/main_scene="res://scenes/world.tscn"
@@ -19,7 +19,9 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+Hud="*res://scenes/ui/hud.tscn"
 Util="*res://scripts/util.gd"
+SaveManager="*res://scenes/save_manager.tscn"
 
 [debug]
 
@@ -28,8 +30,13 @@ gdscript/warnings/untyped_declaration=1
 
 [display]
 
-window/size/viewport_width=600
-window/size/viewport_height=600
+window/size/viewport_width=1920
+window/size/viewport_height=1030
+window/size/mode=2
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/calendar_button/plugin.cfg")
 
 [gui]
 
@@ -85,8 +92,3 @@ zoom_out={
 [network]
 
 tls/enable_tls_v1.3=false
-
-[rendering]
-
-renderer/rendering_method="gl_compatibility"
-renderer/rendering_method.mobile="gl_compatibility"

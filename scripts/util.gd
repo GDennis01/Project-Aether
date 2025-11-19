@@ -3,10 +3,6 @@ extends Node
 ##Debug
 const PRINT_UPDATE_METHOD = false
 
-## Log Label 
-@onready var log_equatorial_label: Label = $"/root/World/HUD/Body/LogEquatorialLabel"
-@onready var log_orbital_label: Label = $"/root/World/HUD/Body/LogOrbitalLabel"
-
 ## current radius of the comet
 var comet_radius: float = 0.0
 ## current inclination rotation angle of the sun
@@ -25,13 +21,51 @@ var sun_comet_distance: float = 0.0
 var sun_direction_vector: Vector3 = Vector3.ZERO
 ## Earth-comet delta in AU
 var earth_comet_delta: float = 0.0
+## RA and DEC of the comet pole
+var alpha_p: float = 0.0
+var delta_p: float = 0.0
+## Beta and Lambda of the comet pole
+var beta: float = 0.0
+var lambda: float = 0.0
+## Latitude of subsolar point
+var subsolar_latitude: float = 0.0
 
+# Scale related properties
+#region Scale
+## Scale in meters/pixel
+var scale: float = 0.0
+## Telescope resolution in arcsec/pixel
+var tel_resolution: float = 0.0
+## Telescope resolution in km/pixel
+var tel_res_km_pixel: float = 0.0
+## Telescope image size in pixels
+var tel_image_size: float = 0.0
+## Window field of view in meters
+var window_fov: float = 0.0
+## Window size in pixels
+var window_size: float = 900.0
+## FOV in arcmin
+var fov_arcmin: float = 0.0
+## FOV in km
+var fov_km: float = 0.0
 ## Starting distance of the rotating camera
 var starting_distance: float = 0.0
 ## Visible area in meters at the starting distance of the rotating_camera
 var starting_visible_area: float = 0.0
 ## Visible area in meters at the current distance of the rotating_camera
 var visible_area: float = 0.0
+#endregion Scale
+
+## JPL Table
+var jpl_data: Variant
+var ec := 0.0 ## Eccentricity
+var qr := 0.0 ## Perihelion distance in AU
+var tp := 0.0 ## Time of perihelion passage in JD
+var om := 0.0 ## Longitude of ascending node
+var w := 0.0 ## Argument of perihelion
+var incl := 0.0 ## Inclination
+var i := 0.0 ## angle between rotationa xis and the orbital plane in degrees
+var phi := 0.0 ## angle between projection of axis direction and sun direction at perihelion in degrees
 
 ## Orbital comet basis
 var orbital_basis: Basis = Basis() ## Orbital basis of the comet in the 3D space
@@ -43,6 +77,15 @@ var orbital_transformation: Transform3D = Transform3D() ## Orbital transformatio
 var equatorial_transformation: Transform3D = Transform3D() ## Equatorial transformation of the comet in the 3D space
 var equatorial_rotation: Quaternion ## Equatorial rotation of the comet in the 3D space
 
+# Simulation related properties
+# var true_anomaly: float = 0.0 ## angular position of the comet in its orbit in degrees
+var n_points: int = 1 ## number of points in the orbit
+
+#particle properties
+var albedo: float = 0.0
+var particle_diameter: float = 0.0
+var particle_density: float = 0.0
+
 #constants
 const AU: float = 149597870707 ## AU. Astronomical Unit expressed in Meters
 const GRAVITATIONAL_CONSTANT: float = 6.674e-11 ## G. Gravitational Constant expressed in MKS
@@ -50,6 +93,45 @@ const SUN_MASS: float = 1.98892e30 ## Ms. Sun mass expressed in Kg
 const SUN_LUMINOSITY: float = 3.828e26 ## Ls. Sun Luminosity expressed in J/s
 const LIGHT_SPEED: float = 2.99792458e8 ## c. Speed of light Expressed in m/s
 
+var is_simulation: bool = true ## True: simulation enabled, False: instant simulation enabled
+
+# Labels and LineEdits
+@onready var current_camera_label: Label = $"/root/Hud/Viewport/Panel/CurrCameraLabel"
+@onready var date_label: Label = $"/root/Hud/Viewport/Panel/DateLabel"
+@onready var nucleus_date_label: Label = $"/root/Hud/Viewport/NucleusPanel/NucleusDateLabel"
+@onready var current_fov_label: Label = $"/root/Hud/Viewport/Panel/CenterContainer/ScaleLabel"
+@onready var beta_val_line_edit: LineEdit = $"/root/Hud/Body/CometTab/Control/BetaValLineEdit"
+@onready var accel_val_line_edit: LineEdit = $"/root/Hud/Body/SimTab/Control/AccelValLineEdit"
+@onready var comet_incl_line_edit: SliderWithLineEdit = $"/root/Hud/Body/CometTab/Control/EditCometIncl"
+@onready var comet_pa_line_edit: SliderWithLineEdit = $"/root/Hud/Body/CometTab/Control/EditCometDir"
+@onready var sun_pa_line_edit: SliderWithLineEdit = $"/root/Hud/Body/CometTab/Control/EditSunDir"
+@onready var sun_incl_line_edit: SliderWithLineEdit = $"/root/Hud/Body/CometTab/Control/EditSunIncl"
+@onready var sun_dist_line_edit: SanitizedEdit = $"/root/Hud/Body/CometTab/Control/EditSunCometDist"
+@onready var scale_line_edit: SanitizedEdit = $"/root/Hud/Body/ScaleTab/Control/DeltaAUEdit"
+@onready var lambda_line_edit: LineEdit = $"/root/Hud/Body/CometTab/Control/LambdaLineEdit"
+@onready var beta_line_edit: LineEdit = $"/root/Hud/Body/CometTab/Control/BetaLineEdit"
+@onready var phi_line_edit: LineEdit = $"/root/Hud/Body/CometTab/Control/PhiLineEdit"
+@onready var i_line_edit: LineEdit = $"/root/Hud/Body/CometTab/Control/ILineEdit"
+@onready var subsolar_lat_line_edit: LineEdit = $"/root/Hud/Body/CometTab/Control/SubsolarPLineEdit"
+
+# coords grid labels
+@onready var ra_center_label: Label = $"/root/Hud/Viewport/Panel/CoordinateGrid/RACenterLabel"
+@onready var dec_center_label: Label = $"/root/Hud/Viewport/Panel/CoordinateGrid/DECCenterLabel"
+@onready var ra_left_label: Label = $"/root/Hud/Viewport/Panel/CoordinateGrid/RALeftLabel"
+@onready var ra_right_label: Label = $"/root/Hud/Viewport/Panel/CoordinateGrid/RARightLabel"
+@onready var dec_left_label: Label = $"/root/Hud/Viewport/Panel/CoordinateGrid/DECLeftLabel"
+@onready var dec_right_label: Label = $"/root/Hud/Viewport/Panel/CoordinateGrid/DECRightLabel"
+
+
+#scale/sim tab variables
+# @onready var file_explorer: FileDialog = $"/root/Hud/Body/SimTab/Control/FileExplorer"
+# @onready var overlay_img_linedit: LineEdit = $"/root/Hud/Body/ScaleTab/Control/OverlayImgLineEdit"
+# @onready var overlay_img_picker_btn: Button = $"/root/Hud/Body/ScaleTab/Control/OverlayImgPickerBtn"
+# @onready var del_overlay_img_btn: Button = $"/root/Hud/Body/ScaleTab/Control/DelOverlayImgBtn"
+# # @onready var transparency_label: Label = $"Control/TransparencyLabel"
+# @onready var transparency_slider: HSlider = $"/root/Hud/Body/ScaleTab/Control/TransparencySlider"
+# @onready var overlay_img: TextureRect = $"/root/Hud/Viewport/Panel/OverlayImg"
+# @onready var sub_viewport_container: SubViewportContainer = $"/root/Hud/Viewport/SubViewportContainer"
 
 ## Converts Latitude/Longitude (in degrees) to a local 3D position
 ## vector relative to the center of a sphere with the given radius.

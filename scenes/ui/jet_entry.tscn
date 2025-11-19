@@ -1,0 +1,142 @@
+[gd_scene load_steps=3 format=3 uid="uid://owonx4k017vt"]
+
+[ext_resource type="Script" uid="uid://djgel4sl6epn1" path="res://scripts/jet_entry.gd" id="1_3tf12"]
+[ext_resource type="PackedScene" uid="uid://b31lb3a4drve4" path="res://scenes/ui/sanitized_edit.tscn" id="2_65ngw"]
+
+[node name="JetEntry" type="Control" groups=["jet_entry"]]
+custom_minimum_size = Vector2(475, 45)
+layout_mode = 3
+anchor_left = -0.00954861
+anchor_top = 0.0154321
+anchor_right = 0.442597
+anchor_bottom = 0.0851111
+offset_left = 11.0
+offset_top = -16.0
+offset_right = 2.12796
+offset_bottom = -16.152
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 1
+script = ExtResource("1_3tf12")
+metadata/_edit_use_anchors_ = true
+
+[node name="JetID" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -0.155969
+anchor_bottom = -0.155969
+offset_left = 8.0
+offset_top = 16.0
+offset_right = 32.0
+offset_bottom = 39.0
+scale = Vector2(1.255, 1.255)
+focus_mode = 1
+text = "0"
+metadata/_edit_use_anchors_ = true
+
+[node name="SpeedEdit" parent="." instance=ExtResource("2_65ngw")]
+layout_mode = 1
+anchor_left = 0.0372419
+anchor_top = -0.222
+anchor_right = 0.0372419
+anchor_bottom = -0.222
+offset_left = 35.0
+offset_top = 16.99
+offset_right = 115.0
+offset_bottom = 47.99
+scale = Vector2(1.255, 1.255)
+higher_bound = 10000.0
+no_decimal = true
+
+[node name="LatitudeEdit" parent="." instance=ExtResource("2_65ngw")]
+layout_mode = 1
+anchor_left = 0.0907772
+anchor_top = -0.222
+anchor_right = 0.0907772
+anchor_bottom = -0.222
+offset_left = 128.0
+offset_top = 16.99
+offset_right = 184.0
+offset_bottom = 47.99
+scale = Vector2(1.255, 1.255)
+lower_bound = -90.0
+higher_bound = 90.0
+
+[node name="LongitudeEdit" parent="." instance=ExtResource("2_65ngw")]
+layout_mode = 1
+anchor_left = 0.119873
+anchor_top = -0.222
+anchor_right = 0.119873
+anchor_bottom = -0.222
+offset_left = 200.0
+offset_top = 16.99
+offset_right = 256.96
+offset_bottom = 47.99
+scale = Vector2(1.255, 1.255)
+higher_bound = 360.0
+
+[node name="DiffusionEdit" parent="." instance=ExtResource("2_65ngw")]
+layout_mode = 1
+anchor_left = 0.166425
+anchor_top = -0.222
+anchor_right = 0.166425
+anchor_bottom = -0.222
+offset_left = 272.0
+offset_top = 16.99
+offset_right = 328.96
+offset_bottom = 47.99
+scale = Vector2(1.255, 1.255)
+higher_bound = 100.0
+no_decimal = true
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.190865
+anchor_top = -0.2
+anchor_right = 0.190865
+anchor_bottom = -0.2
+offset_left = 344.0
+offset_top = 16.0
+offset_right = 392.0
+offset_bottom = 47.0
+scale = Vector2(1.255, 1.255)
+focus_mode = 0
+color = Color(0.454524, 0.454524, 0.454524, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="ToggleJet" type="CheckButton" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.237418
+anchor_top = 0.026658
+anchor_right = 0.237418
+anchor_bottom = 0.026658
+offset_left = 392.0
+offset_top = 6.0
+offset_right = 436.0
+offset_bottom = 30.0
+scale = Vector2(1.505, 1.505)
+focus_mode = 0
+button_pressed = true
+metadata/_edit_use_anchors_ = true
+
+[node name="RemoveJetBtn" type="Button" parent="." groups=["remove"]]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.312139
+anchor_top = -0.207323
+anchor_right = 0.312139
+anchor_bottom = -0.207323
+offset_left = 456.0
+offset_top = 15.99
+offset_right = 488.0
+offset_bottom = 46.99
+scale = Vector2(1.255, 1.255)
+focus_mode = 0
+text = "X"
+metadata/_edit_use_anchors_ = true
+
+[connection signal="color_changed" from="ColorPickerButton" to="." method="_on_color_picker_button_color_changed"]
+[connection signal="pressed" from="ToggleJet" to="." method="_on_toggle_jet_pressed"]
+[connection signal="pressed" from="RemoveJetBtn" to="." method="_on_remove_jet_btn_pressed"]

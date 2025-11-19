@@ -1,0 +1,75 @@
+[gd_scene load_steps=2 format=3 uid="uid://dfq2g8u3hd1nh"]
+
+[ext_resource type="Script" uid="uid://c336gjggb421q" path="res://scripts/play_animation_slider.gd" id="1_ywch4"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchor_right = 0.153
+anchor_bottom = 0.0617284
+offset_right = -0.256012
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_ywch4")
+num_steps = 50
+metadata/_edit_use_anchors_ = true
+
+[node name="PlayBtn" type="Button" parent="."]
+layout_mode = 0
+offset_left = 8.0
+offset_right = 61.0
+offset_bottom = 31.0
+focus_mode = 0
+text = "SIM"
+
+[node name="PauseBtn" type="Button" parent="."]
+layout_mode = 0
+offset_left = 136.0
+offset_right = 195.0
+offset_bottom = 32.0
+focus_mode = 0
+disabled = true
+text = "PAUSE"
+
+[node name="StopBtn" type="Button" parent="."]
+layout_mode = 0
+offset_left = 208.0
+offset_right = 261.0
+offset_bottom = 32.0
+focus_mode = 0
+disabled = true
+text = "STOP"
+
+[node name="SpeedUpBtn" type="Button" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 128.0
+offset_right = 210.0
+offset_bottom = 31.0
+scale = Vector2(0.6, 0.6)
+text = "Speed Up"
+
+[node name="Slider" type="HSlider" parent="."]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 40.0
+offset_right = 264.0
+offset_bottom = 56.0
+focus_mode = 0
+step = 0.0
+editable = false
+
+[node name="PlayInstantBtn" type="Button" parent="."]
+layout_mode = 0
+offset_left = 72.0
+offset_right = 128.0
+offset_bottom = 32.0
+focus_mode = 0
+text = "INST"
+
+[connection signal="pressed" from="PlayBtn" to="." method="_on_play_btn_pressed"]
+[connection signal="pressed" from="PauseBtn" to="." method="_on_pause_btn_pressed"]
+[connection signal="pressed" from="StopBtn" to="." method="_on_stop_btn_pressed"]
+[connection signal="pressed" from="SpeedUpBtn" to="." method="_on_speed_up_btn_pressed"]
+[connection signal="pressed" from="PlayInstantBtn" to="." method="_on_play_instant_btn_pressed"]

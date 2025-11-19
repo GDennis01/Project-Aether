@@ -12,7 +12,7 @@ const ALT_MULTIPLIER = 1.0 / SHIFT_MULTIPLIER
 @onready var starting_position := Vector3(0.0, 0.0, 10)
 @onready var starting_rotation := rotation
 @onready var starting_mouse_pos := Vector2(0.0, 0.0)
-@onready var sub_viewport: SubViewport = $"/root/World/HUD/Viewport/SubViewportContainer/SubViewport"
+@onready var sub_viewport: SubViewport = $"/root/Hud/Viewport/SubViewportContainer/SubViewport"
 
 
 # Mouse state
